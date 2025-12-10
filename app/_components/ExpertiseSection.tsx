@@ -1,58 +1,102 @@
-import { ShieldCheck, Clock, Users, Award } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  CircleUserRound,
+  HandCoins,
+  ShieldCheck,
+  UserCheck,
+  Hexagon,
+  Globe,
+  Zap,
+  Triangle,
+  Component,
+} from 'lucide-react';
+import { FeatureCard } from './FeatureCard';
 
 const features = [
   {
+    icon: CircleUserRound,
+    title: 'Trusted Expertise',
+    description: 'Years of experience to guide your property decisions.',
+  },
+  {
+    icon: HandCoins,
+    title: 'Affordable Wide Selection',
+    description: 'Homes, apartments, and commercial spaces to suit every need.',
+  },
+  {
     icon: ShieldCheck,
-    title: 'Secure Transaction',
+    title: 'Quality & Safety',
     description:
-      'We ensure every property transfer is legally sound and transparent.',
+      'Durable, well-inspected properties in secure, welcoming communities.',
   },
   {
-    icon: Clock,
-    title: 'Timely Delivery',
-    description: 'Our track record speaks for itself. We value your time.',
+    icon: UserCheck,
+    title: 'Experienced agents',
+    description: 'Find an experienced agent who knows your market best.',
   },
-  {
-    icon: Users,
-    title: 'Expert Assessment',
-    description: 'Our team of experts evaluates every property for quality.',
-  },
-  {
-    icon: Award,
-    title: 'Premium Quality',
-    description: 'We only list properties that meet our high standards.',
-  },
+];
+
+const partners = [
+  { name: 'Lumina', icon: Hexagon },
+  { name: 'Vortex', icon: Globe },
+  { name: 'Velocity', icon: Zap },
+  { name: 'Synergy', icon: Triangle },
+  { name: 'Enigma', icon: Component },
+  { name: 'Spectrum', icon: Hexagon },
 ];
 
 export function ExpertiseSection() {
   return (
-    <section className="bg-slate-900 py-20 text-white">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="mb-12 max-w-2xl">
-          <h2 className="text-3xl font-bold md:text-4xl text-white">
-            Why Choose Our Expertise
-          </h2>
-          <p className="mt-4 text-slate-300">
-            We bring decades of experience and a commitment to excellence to
-            every interaction.
-          </p>
-        </div>
+    <section className="bg-brand-dark py-20 text-white rounded-lg">
+      <div className="container mx-auto px-4 lg:px-8">
+        <div className="grid gap-16 lg:grid-cols-12 lg:gap-8">
+          {/* Left Text Content */}
+          <div className="flex flex-col justify-center lg:col-span-5">
+            <h2 className="text-4xl font-bold leading-tight md:text-5xl">
+              Why Choose Our Expertise
+            </h2>
+            <p className="mt-6 text-lg leading-relaxed text-slate-300">
+              We make finding your perfect property simple, secure, and
+              stress-free. With expert guidance, personalized support, and a
+              wide range of options, we help you make the right choice with
+              confidence.
+            </p>
+          </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {features.map((feature, idx) => (
-            <Card key={idx} className="border-none bg-white text-slate-900">
-              <CardHeader>
-                <feature.icon className="h-10 w-10 text-primary mb-2" />
-                <CardTitle className="text-lg">{feature.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  {feature.description}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
+          {/* Right Cards Grid */}
+          <div className="grid gap-4 sm:grid-cols-2 lg:col-span-7">
+            {features.map((feature, idx) => (
+              <FeatureCard
+                key={idx}
+                icon={feature.icon}
+                title={feature.title}
+                description={feature.description}
+                className="h-full"
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Partners Section */}
+      <div className="mt-24 border-t border-white/10 pt-12 text-center w-full">
+        <div className="container mx-auto px-4 lg:px-8">
+          <p className="mb-8 text-sm font-medium text-slate-400">
+            Trusted by 10+ Industry Partners
+          </p>
+          <div className="relative flex w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+            <div className="flex min-w-full shrink-0 animate-scroll items-center gap-12 py-4 hover:[animation-play-state:paused]">
+              {[...partners, ...partners, ...partners, ...partners].map(
+                (partner, idx) => (
+                  <div key={idx} className="flex items-center gap-2">
+                    <partner.icon className="h-6 w-6 grayscale transition-all duration-500 hover:grayscale-0" />
+                    <span className="text-lg font-semibold grayscale transition-all duration-500 hover:grayscale-0">
+                      {partner.name}
+                    </span>
+                  </div>
+                )
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </section>

@@ -30,6 +30,7 @@
   --footer-input: #1a1a1a;
   --footer-button: #313131;
   --footer-button-hover: #4a4a4a;
+  --brand-dark: #002b3d;
 }
 
 @theme inline {
@@ -59,6 +60,8 @@
   --font-mono: var(--font-geist-mono);
   --font-instrument: var(--font-instrument-sans);
 
+  --color-brand-dark: var(--brand-dark);
+
   /* Footer Colors */
   --color-footer-bg: var(--footer-bg);
   --color-footer-text: var(--footer-text);
@@ -67,6 +70,14 @@
   --color-footer-button: var(--footer-button);
   --color-footer-button-hover: var(--footer-button-hover);
   --color-footer-input: var(--footer-input);
+  /* Animation */
+  --animate-scroll: scroll 40s linear infinite;
+}
+
+@keyframes scroll {
+  to {
+    transform: translate(-50%);
+  }
 }
 
 * {

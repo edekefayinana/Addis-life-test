@@ -1,43 +1,59 @@
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
+import { ArrowRight } from 'lucide-react';
 
 export function DeveloperSection() {
   return (
-    <section className="container mx-auto grid gap-12 py-16 px-4 md:grid-cols-2 lg:px-6 items-center">
-      <div className="relative overflow-hidden rounded-2xl">
-        <Image
-          src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=1000&auto=format&fit=crop" // Placeholder meeting/office image
-          alt="Developer Team"
-          width={600}
-          height={400}
-          className="w-full object-cover"
-        />
-      </div>
+    <section className="container mx-auto py-16 px-4  lg:px-20">
+      <h2 className="text-3xl font-bold mb-10">
+        Your Trusted Property Developer
+      </h2>
 
-      <div className="flex flex-col gap-6">
-        <h2 className="text-3xl font-bold">Your Trusted Property Developer</h2>
-        <div className="space-y-4 text-muted-foreground">
-          <p>
-            With over 10 years of experience in the real estate market, Addis
-            Life has established itself as a leader in property development,
-            delivering premium spaces that inspire and elevate everyday living.
-          </p>
+      <div className="grid gap-8 md:grid-cols-13 lg:gap-12 items-center">
+        <div className="relative overflow-hidden rounded-2xl h-full min-h-[300px] md:col-span-7">
+          <Image
+            src="/dev-image.png"
+            alt="Developer Team"
+            fill
+            className="object-cover"
+          />
         </div>
 
-        <div className="grid grid-cols-2 gap-8 border-y py-6">
-          <div>
-            <h3 className="text-3xl font-bold text-primary">10,000+</h3>
-            <p className="text-sm text-muted-foreground">Units Delivered</p>
+        <div className="flex flex-col justify-center gap-8 rounded-3xl bg-muted p-8 lg:p-12 md:col-span-6">
+          <div className="space-y-4">
+            <span className="text-base font-light uppercase tracking-wider text-foreground ">
+              • About Us
+            </span>
+            <p className="text-xl leading-relaxed text-foreground mt-10 font-medium">
+              Addis Life Real Estate delivers modern, reliable homes across
+              Addis Ababa. Backed by years of experience and strong construction
+              expertise, we focus on quality, transparency, and timely delivery.
+            </p>
           </div>
-          <div>
-            <h3 className="text-3xl font-bold text-primary">10+</h3>
-            <p className="text-sm text-muted-foreground">Years Experience</p>
-          </div>
-        </div>
 
-        <Button size="lg" className="w-fit">
-          Learn More
-        </Button>
+          <div className="flex items-center gap-8 border-b border-border/50 pb-2 sm:border-0 sm:pb-0">
+            <div>
+              <h3 className="text-4xl font-semibold text-foreground">
+                10,000+
+              </h3>
+              <p className="text-sm text-muted-foreground mt-3">Customers</p>
+            </div>
+            <div className="h-12 w-px bg-gray-300"></div>
+            <div>
+              <h3 className="text-4xl font-semibold text-foreground">10+</h3>
+              <p className="text-sm text-muted-foreground mt-3">
+                Delivered Projects
+              </p>
+            </div>
+          </div>
+
+          <Button
+            className="w-fit rounded-full bg-brand-dark px-8 py-6 text-white hover:bg-brand-dark/90"
+            size="lg"
+          >
+            Learn More <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+        </div>
       </div>
     </section>
   );

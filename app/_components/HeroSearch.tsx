@@ -97,7 +97,7 @@ export function HeroSearch() {
         <Button
           type="submit"
           size="lg"
-          className="h-12 w-full rounded-full bg-[#002B3D] px-8 text-base font-semibold text-white hover:bg-[#002B3D]/90 md:w-auto"
+          className="h-12 w-full rounded-full bg-brand-dark px-8 text-base font-medium text-white hover:bg-brand-dark/90 md:w-auto"
         >
           Search
         </Button>
