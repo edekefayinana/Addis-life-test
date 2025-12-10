@@ -21,6 +21,15 @@
   --input: 214.3 31.8% 91.4%;
   --ring: 222.2 84% 4.9%;
   --radius: 0.75rem;
+
+  /* Footer palette */
+  --footer-bg: #111111;
+  --footer-text: #e5e5e5;
+  --footer-title: #9ca3af;
+  --footer-border: #333333;
+  --footer-input: #1a1a1a;
+  --footer-button: #313131;
+  --footer-button-hover: #4a4a4a;
 }
 
 @theme inline {
@@ -48,6 +57,16 @@
   --radius-lg: calc(var(--radius) + 0.125rem);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-instrument: var(--font-instrument-sans);
+
+  /* Footer Colors */
+  --color-footer-bg: var(--footer-bg);
+  --color-footer-text: var(--footer-text);
+  --color-footer-title: var(--footer-title);
+  --color-footer-border: var(--footer-border);
+  --color-footer-button: var(--footer-button);
+  --color-footer-button-hover: var(--footer-button-hover);
+  --color-footer-input: var(--footer-input);
 }
 
 * {

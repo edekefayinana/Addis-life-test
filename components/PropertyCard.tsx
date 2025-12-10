@@ -20,42 +20,59 @@ export function PropertyCard({
   baths,
   area,
   imageUrl,
-  type,
+  // type,
 }: PropertyCardProps) {
   return (
-    <Card className="overflow-hidden group cursor-pointer transition-all hover:shadow-lg">
-      <div className="relative aspect-[4/3] w-full overflow-hidden">
+    <Card className="overflow-hidden group cursor-pointer transition-all hover:shadow-lg border-0 shadow-md rounded-3xl">
+      <div className="relative aspect-[16/10] w-full overflow-hidden">
         <Image
           src={imageUrl}
           alt={title}
           fill
           className="object-cover transition-transform duration-300 group-hover:scale-105"
         />
-        {type && (
-          <div className="absolute top-3 left-3 rounded bg-white/90 px-2 py-1 text-xs font-semibold backdrop-blur-sm">
-            {type}
-          </div>
-        )}
+        {/* Type removed as it's not in the target design image, or if needed can be added back. 
+            The image shows no badges on top of the image. 
+            I will keep it hidden to be 'same as image' or maybe just comment it out. 
+            Actually, let's keep it but maybe verify if the user wants it removed. 
+            The user said "same as image", image has no badges. I will remove it. */}
       </div>
-      <CardContent className="p-4">
-        <h3 className="line-clamp-1 text-lg font-semibold">{title}</h3>
-        <div className="mt-1 flex items-center text-sm text-muted-foreground">
-          <MapPin className="mr-1 h-3 w-3" />
+      <CardContent className="p-5 pb-2">
+        <h3 className="line-clamp-1 text-lg font-bold text-gray-900">
+          {title}
+        </h3>
+        <div className="mt-2 flex items-center text-sm text-gray-500">
+          <MapPin className="mr-2 h-4 w-4 shrink-0" />
           <span className="line-clamp-1">{location}</span>
         </div>
       </CardContent>
-      <CardFooter className="grid grid-cols-3 gap-2 border-t bg-muted/20 p-4 text-xs">
-        <div className="flex items-center justify-center gap-1">
-          <Bed className="h-4 w-4 text-muted-foreground" />
-          <span>{beds} Beds</span>
+
+      <div className="px-5">
+        <div className="h-px w-full bg-gray-100" />
+      </div>
+
+      <CardFooter className="flex justify-between items-center p-5 text-sm text-gray-600">
+        <div className="flex items-center gap-2">
+          <Bed className="h-5 w-5 stroke-1" />
+          <span className="font-medium">{beds} Beds</span>
         </div>
-        <div className="flex items-center justify-center gap-1 border-l border-r border-border/50">
-          <Bath className="h-4 w-4 text-muted-foreground" />
-          <span>{baths} Baths</span>
+
+        {/* Vertical divider simulated with margin/borders if needed. 
+            The image has vertical lines between items? 
+            Let's look closely... hard to tell if it's a line or just spacing. 
+            Commonly it's a small vertical divider. I'll add a subtle one. */}
+        <div className="h-8 w-px bg-gray-200 mx-2" />
+
+        <div className="flex items-center gap-2">
+          <Bath className="h-5 w-5 stroke-1" />
+          <span className="font-medium">{baths} Baths</span>
         </div>
-        <div className="flex items-center justify-center gap-1">
-          <Maximize className="h-4 w-4 text-muted-foreground" />
-          <span>{area} m²</span>
+
+        <div className="h-8 w-px bg-gray-200 mx-2" />
+
+        <div className="flex items-center gap-2">
+          <Maximize className="h-5 w-5 stroke-1" />
+          <span className="font-medium">{area} sqft</span>
         </div>
       </CardFooter>
     </Card>
