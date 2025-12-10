@@ -54,27 +54,27 @@ export default function TableOfContents({
         <div className="flex gap-3">
           <Link
             href="/"
-            className="size-10 flex items-center justify-center rounded-full p-2.5 bg-gradient-to-tr from-[#833ab4] via-[#fd1d1d] to-[#fcb045]"
+            className="size-10 flex items-center justify-center rounded-full p-2.5 bg-gradient-to-tr from-[#833ab4] via-[#fd1d1d] to-[#fcb045] text-white"
           >
-            <Instagram />
+            <Instagram className="text-white" />
           </Link>
           <Link
             href="/"
             className="size-10 flex items-center justify-center rounded-full p-2.5 bg-[#0066C8] text-white"
           >
-            <Linkedin />
+            <Linkedin className="text-white" />
           </Link>
           <Link
             href="/"
             className="size-10 flex items-center justify-center rounded-full p-2.5 bg-[#1877F2] text-white"
           >
-            <Facebook />
+            <Facebook className="text-white" />
           </Link>
           <Link
             href="/"
             className="size-10 flex items-center justify-center rounded-full p-2.5 bg-black text-white"
           >
-            <Twitter />
+            <Twitter className="text-white" />
           </Link>
         </div>
       </div>
