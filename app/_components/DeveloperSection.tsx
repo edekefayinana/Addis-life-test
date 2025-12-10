@@ -4,12 +4,12 @@ import { ArrowRight } from 'lucide-react';
 
 export function DeveloperSection() {
   return (
-    <section className="container mx-auto py-16 px-4  lg:px-20">
-      <h2 className="text-3xl font-bold mb-10">
+    <section className="container mx-auto py-16 px-4 md:px-6 lg:px-8">
+      <h2 className="text-3xl font-semibold mb-10 font-instrument">
         Your Trusted Property Developer
       </h2>
 
-      <div className="grid gap-8 md:grid-cols-13 lg:gap-12 items-center">
+      <div className="grid gap-5 md:grid-cols-13 lg:gap-5 items-center">
         <div className="relative overflow-hidden rounded-2xl h-full min-h-[300px] md:col-span-7">
           <Image
             src="/dev-image.png"
@@ -24,7 +24,7 @@ export function DeveloperSection() {
             <span className="text-base font-light uppercase tracking-wider text-foreground ">
               • About Us
             </span>
-            <p className="text-xl leading-relaxed text-foreground mt-10 font-medium">
+            <p className="text-xl leading-relaxed text-foreground mt-10 font-medium font-instrument">
               Addis Life Real Estate delivers modern, reliable homes across
               Addis Ababa. Backed by years of experience and strong construction
               expertise, we focus on quality, transparency, and timely delivery.

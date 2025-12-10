@@ -28,7 +28,7 @@ export function Footer() {
           </Link>
 
           <div className="flex items-center gap-6">
-            <span className="text-sm font-medium">Follow Us</span>
+            <span className="text-base font-medium">Follow Us</span>
             <div className="flex gap-4">
               <Link href="#" className="hover:text-white transition-colors">
                 <Facebook className="h-5 w-5" />
@@ -62,7 +62,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8 mb-16 py-4">
           {/* Column 1: Description & Subscribe */}
           <div className="space-y-8 lg:col-span-2">
-            <p className="text-footer-white text-sm leading-relaxed max-w-xs">
+            <p className="text-footer-white text-base leading-relaxed max-w-xs">
               Addis Life Real Estate provides modern, reliable housing in Addis
               Ababa with transparency, quality construction, and a seamless
               experience.
@@ -79,7 +79,7 @@ export function Footer() {
                   Subscribe
                 </button>
               </div>
-              <p className="text-footer-white text-xs">
+              <p className="text-footer-white text-base font-normal">
                 Subscribe to our newsletter to receive our weekly feed.
               </p>
             </div>
@@ -87,10 +87,8 @@ export function Footer() {
 
           {/* Column 2: Services */}
           <div>
-            <h3 className="text-footer-title text-sm font-light mb-6">
-              Services
-            </h3>
-            <ul className="space-y-4 text-sm text-footer-text">
+            <h3 className="text-footer-title text-base mb-6">Services</h3>
+            <ul className="space-y-4 text-base font-normal text-footer-text">
               <li>
                 <Link href="#" className="hover:text-white transition-colors">
                   African Union 1 Site
@@ -126,8 +124,8 @@ export function Footer() {
 
           {/* Column 3: Links */}
           <div>
-            <h3 className="text-footer-title text-sm font-light mb-6">Links</h3>
-            <ul className="space-y-4 text-sm text-footer-text">
+            <h3 className="text-footer-title text-base mb-6">Links</h3>
+            <ul className="space-y-4 text-base font-normal text-footer-text">
               <li>
                 <Link
                   href="/about"
@@ -180,10 +178,8 @@ export function Footer() {
 
           {/* Column 4: Contact */}
           <div>
-            <h3 className="text-footer-title text-sm font-light mb-6">
-              Contact
-            </h3>
-            <ul className="space-y-6 text-sm text-footer-text">
+            <h3 className="text-footer-title text-base mb-6">Contact</h3>
+            <ul className="space-y-6 text-base font-normal text-footer-text">
               <li className="flex items-center gap-3">
                 <Mail className="h-5 w-5 text-footer-text shrink-0" />
                 <span>info@Example1.com</span>
@@ -204,7 +200,7 @@ export function Footer() {
 
         {/* Footer Bottom */}
         <div className="border-t border-footer-border/10 pt-12 pb-4 flex flex-col md:flex-row justify-center items-center relative">
-          <p className="text-footer-title text-sm text-center">
+          <p className="text-footer-title text-base text-center">
             Copyright &copy; 2025. Addis Life Real Estate
           </p>
         </div>

@@ -26,6 +26,8 @@ export const metadata: Metadata = {
 };
 
 import { ScrollToTop } from '@/components/ScrollToTop';
+import { Header } from '@/components/Header';
+import { Footer } from '@/components/Footer';
 
 export default function RootLayout({
   children,
@@ -42,8 +44,15 @@ export default function RootLayout({
           instrumentSans.variable
         )}
       >
-        {children}
-        <ScrollToTop />
+        <div className="min-h-screen bg-background p-2 font-sans md:p-2 lg:p-2">
+          <div className="relative mx-auto min-h-[calc(100vh-2rem)] max-w-[1920px] overflow-hidden bg-white md:min-h-[calc(100vh-3rem)] lg:min-h-[calc(100vh-4rem)]">
+            <Header />
+
+            {children}
+            <Footer />
+            <ScrollToTop />
+          </div>
+        </div>
       </body>
     </html>
   );

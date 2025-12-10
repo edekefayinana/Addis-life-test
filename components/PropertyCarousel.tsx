@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PropertyCard, PropertyCardProps } from './PropertyCard';
 
@@ -44,9 +44,13 @@ export function PropertyCarousel({
       <div className="container mx-auto px-4 md:px-6">
         <div className="mb-8 flex items-end justify-between">
           <div>
-            <h2 className="text-2xl font-bold md:text-3xl">{title}</h2>
+            <h2 className="text-2xl font-semibold md:text-4xl font-instrument ">
+              {title}
+            </h2>
             {description && (
-              <p className="mt-2 text-muted-foreground">{description}</p>
+              <p className="mt-2 text-muted-foreground text-base font-normal font-instrument">
+                {description}
+              </p>
             )}
           </div>
           <div className="flex gap-2">
@@ -86,10 +90,10 @@ export function PropertyCarousel({
 
         <div className="mt-8 flex justify-center">
           <Button
-            variant="outline"
-            className="rounded-full px-8 py-6 text-base font-medium"
+            className="w-fit rounded-full px-8 py-6 text-black bg-white hover:bg-white/90 border border-border/50 text-base font-normal font-instrument"
+            size="lg"
           >
-            View All Properties <span className="ml-2">→</span>
+            View All Properties <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </div>
       </div>

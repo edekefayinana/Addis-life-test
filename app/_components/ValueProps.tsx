@@ -46,7 +46,7 @@ export function ValueProps() {
         </p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-5 md:grid-cols-2">
         {valueItems.map((item) => (
           <Card key={item.title} className="h-full">
             <CardHeader>

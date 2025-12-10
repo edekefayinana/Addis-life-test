@@ -41,19 +41,19 @@ const projects = [
 
 export function ProjectListings() {
   return (
-    <section className="container mx-auto py-20 px-4 lg:px-20">
+    <section className="container mx-auto py-20 px-4 lg:px-8">
       <div className="mb-16 text-center">
-        <h2 className="text-4xl font-bold md:text-5xl text-foreground">
+        <h2 className="text-4xl font-semibold md:text-5xl text-foreground font-instrument">
           Our Project Listings
         </h2>
-        <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
+        <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground font-instrument">
           Explore our completed projects, ongoing developments, and prime sites
           to see our work firsthand, discover investment opportunities, and
           envision your future home.
         </p>
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 auto-rows-[300px]">
+      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4 auto-rows-[300px]">
         {projects.map((project, idx) => (
           <div
             key={idx}
@@ -63,7 +63,7 @@ export function ProjectListings() {
               src={project.imageUrl}
               alt={project.title}
               fill
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              className="object-cover"
             />
             {/* Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/0 to-black/0" />

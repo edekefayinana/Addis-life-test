@@ -31,6 +31,7 @@
   --footer-button: #313131;
   --footer-button-hover: #4a4a4a;
   --brand-dark: #002b3d;
+  --cta-bg: #f1cc68;
 }
 
 @theme inline {
@@ -61,7 +62,7 @@
   --font-instrument: var(--font-instrument-sans);
 
   --color-brand-dark: var(--brand-dark);
-
+  --color-cta-bg: var(--cta-bg);
   /* Footer Colors */
   --color-footer-bg: var(--footer-bg);
   --color-footer-text: var(--footer-text);
@@ -88,7 +89,7 @@ body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
   font-family:
-    var(--font-sans),
+    var(--font-instrument),
     system-ui,
     -apple-system,
     sans-serif;

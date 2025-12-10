@@ -23,22 +23,17 @@ export function PropertyCard({
   // type,
 }: PropertyCardProps) {
   return (
-    <Card className="overflow-hidden group cursor-pointer transition-all hover:shadow-lg border-0 shadow-md rounded-3xl">
-      <div className="relative aspect-[16/10] w-full overflow-hidden">
-        <Image
-          src={imageUrl}
-          alt={title}
-          fill
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
-        />
+    <Card className="overflow-hidden group cursor-pointer transition-all p-2 hover:shadow-lg border-0 shadow-md rounded-lg">
+      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg">
+        <Image src={imageUrl} alt={title} fill className="object-cover" />
         {/* Type removed as it's not in the target design image, or if needed can be added back. 
             The image shows no badges on top of the image. 
             I will keep it hidden to be 'same as image' or maybe just comment it out. 
             Actually, let's keep it but maybe verify if the user wants it removed. 
             The user said "same as image", image has no badges. I will remove it. */}
       </div>
-      <CardContent className="p-5 pb-2">
-        <h3 className="line-clamp-1 text-lg font-bold text-gray-900">
+      <CardContent className="p-4 pb-2">
+        <h3 className="line-clamp-1 text-lg font-semibold text-black">
           {title}
         </h3>
         <div className="mt-2 flex items-center text-sm text-gray-500">
@@ -51,10 +46,10 @@ export function PropertyCard({
         <div className="h-px w-full bg-gray-100" />
       </div>
 
-      <CardFooter className="flex justify-between items-center p-5 text-sm text-gray-600">
+      <CardFooter className="flex justify-between items-center p-4 text-sm text-black">
         <div className="flex items-center gap-2">
           <Bed className="h-5 w-5 stroke-1" />
-          <span className="font-medium">{beds} Beds</span>
+          <span className="font-normal">{beds} Beds</span>
         </div>
 
         {/* Vertical divider simulated with margin/borders if needed. 
@@ -65,14 +60,14 @@ export function PropertyCard({
 
         <div className="flex items-center gap-2">
           <Bath className="h-5 w-5 stroke-1" />
-          <span className="font-medium">{baths} Baths</span>
+          <span className="font-normal">{baths} Baths</span>
         </div>
 
         <div className="h-8 w-px bg-gray-200 mx-2" />
 
         <div className="flex items-center gap-2">
           <Maximize className="h-5 w-5 stroke-1" />
-          <span className="font-medium">{area} sqft</span>
+          <span className="font-normal">{area} sqft</span>
         </div>
       </CardFooter>
     </Card>

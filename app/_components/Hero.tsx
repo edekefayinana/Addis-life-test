@@ -10,13 +10,13 @@ export function Hero() {
         aria-hidden
       />
       <div className="absolute inset-0 -z-10 bg-black/40" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/60 via-transparent to-black/30" />
+      <div className="absolute inset-0 -z-10 " />
 
       <div className="mx-auto flex w-full max-w-7xl flex-col items-center gap-6 px-6 pb-32 text-center">
-        <h1 className="max-w-4xl text-5xl font-bold leading-tight tracking-tight sm:text-6xl md:text-7xl">
+        <h1 className="max-w-4xl text-5xl font-bold leading-tight tracking-tight sm:text-6xl md:text-7xl font-instrument ">
           Discover Premium Real Estate With Confidence
         </h1>
-        <p className="max-w-2xl text-lg text-slate-200/90 sm:text-xl">
+        <p className="max-w-2xl text-lg text-slate-200/90 sm:text-xl font-normal font-instrument">
           Explore ongoing and completed projects, find your ideal property, and
           connect with trusted freelance agents—all in one seamless platform.
         </p>

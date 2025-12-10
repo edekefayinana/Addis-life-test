@@ -42,13 +42,14 @@ export function Header() {
         <div className="hidden items-center gap-6 md:flex">
           <Link
             href="/login"
-            className="text-sm font-medium text-white/90 hover:text-white"
+            className="text-base font-medium text-white/90 hover:text-white font-instrument"
           >
             Login
           </Link>
+
           <Link
             href="/signup"
-            className="rounded-full bg-white px-6 py-2.5 text-sm font-semibold text-slate-900 transition-colors hover:bg-white/90"
+            className="rounded-full bg-white px-6 py-2 text-base !text-black font-instrument hover:bg-white/90 border border-border/50"
           >
             Sign Up
           </Link>
