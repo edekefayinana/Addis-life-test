@@ -19,7 +19,7 @@ const mockBlogs: Blog[] = [
       'Learn how to choose the perfect home by focus on location, budget, and lifestyle needs',
     date: 'Jan 28, 2025',
     image: '/images/property-1.png',
-    slug: 'finding-your-ideal-property-what-matters-most',
+    slug: '/finding-your-ideal-property-what-matters-most',
   },
   {
     id: 2,
@@ -28,7 +28,7 @@ const mockBlogs: Blog[] = [
       'Discover strategies to make smart property investments and maximize returns.',
     date: 'Jan 28, 2025',
     image: '/images/property-2.png',
-    slug: 'investing-in-addis-ababa-real-estate-tips-for-success',
+    slug: '/finding-your-ideal-property-what-matters-most',
   },
   {
     id: 3,
@@ -37,7 +37,7 @@ const mockBlogs: Blog[] = [
       'Explore the hottest areas in the city for living, investing, and future growth.',
     date: 'Jan 28, 2025',
     image: '/images/property-3.png',
-    slug: 'top-neighborhoods-to-watch-this-year',
+    slug: '/finding-your-ideal-property-what-matters-most',
   },
   {
     id: 4,
@@ -46,7 +46,7 @@ const mockBlogs: Blog[] = [
       'Discover strategies to make smart property investments and maximize returns.',
     date: 'Jan 28, 2025',
     image: '/images/property-1.png',
-    slug: 'investing-in-addis-ababa-real-estate-tips-for-success',
+    slug: '/finding-your-ideal-property-what-matters-most',
   },
   {
     id: 5,
@@ -55,7 +55,7 @@ const mockBlogs: Blog[] = [
       'Discover strategies to make smart property investments and maximize returns.',
     date: 'Jan 28, 2025',
     image: '/images/property-2.png',
-    slug: 'investing-in-addis-ababa-real-estate-tips-for-success',
+    slug: '/finding-your-ideal-property-what-matters-most',
   },
   {
     id: 6,
@@ -64,7 +64,7 @@ const mockBlogs: Blog[] = [
       'Discover strategies to make smart property investments and maximize returns.',
     date: 'Jan 28, 2025',
     image: '/images/property-3.png',
-    slug: 'investing-in-addis-ababa-real-estate-tips-for-success',
+    slug: '/finding-your-ideal-property-what-matters-most',
   },
   {
     id: 7,
@@ -73,7 +73,7 @@ const mockBlogs: Blog[] = [
       'Discover strategies to make smart property investments and maximize returns.',
     date: 'Jan 28, 2025',
     image: '/images/property-1.png',
-    slug: 'investing-in-addis-ababa-real-estate-tips-for-success',
+    slug: '/finding-your-ideal-property-what-matters-most',
   },
   {
     id: 8,
@@ -82,7 +82,7 @@ const mockBlogs: Blog[] = [
       'Discover strategies to make smart property investments and maximize returns.',
     date: 'Jan 28, 2025',
     image: '/images/property-2.png',
-    slug: 'investing-in-addis-ababa-real-estate-tips-for-success',
+    slug: '/finding-your-ideal-property-what-matters-most',
   },
   {
     id: 9,
@@ -91,7 +91,7 @@ const mockBlogs: Blog[] = [
       'Discover strategies to make smart property investments and maximize returns.',
     date: 'Jan 28, 2025',
     image: '/images/property-3.png',
-    slug: 'investing-in-addis-ababa-real-estate-tips-for-success',
+    slug: '/finding-your-ideal-property-what-matters-most',
   },
 ];
 
