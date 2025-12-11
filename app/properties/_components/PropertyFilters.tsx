@@ -19,8 +19,8 @@ type Filters = {
 };
 
 const selectBase =
-  'h-14 w-full appearance-none rounded-full border border-gray-200 bg-white px-4 pr-10 text-sm font-medium text-gray-700 outline-none transition focus:border-gray-300';
-const selectWrapper = 'relative w-full sm:w-[150px] md:w-[170px]';
+  'h-13 w-full appearance-none rounded-full border border-gray-200 bg-white px-4 pr-10 text-sm font-normal text-gray-900 outline-none transition focus:border-gray-300';
+const selectWrapper = 'relative flex-1 min-w-[140px] py-2';
 
 export function PropertyFilters() {
   const router = useRouter();
@@ -55,15 +55,14 @@ export function PropertyFilters() {
   };
 
   return (
-    <div className="w-full space-y-3 pt-4">
-      <div className="flex flex-wrap items-center justify-between gap-3 md:w-[700px] lg:w-[820px]">
-        <h2 className="text-xl font-semibold text-gray-900">
+    <div className="w-full space-y-4">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-semibold text-gray-900">
           Properties for Sale In Addis Ababa
-        </h2>
+        </h1>
 
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-gray-500">View:</span>
-          <div className="flex overflow-hidden rounded-full border border-gray-200 bg-white">
+        <div className="flex items-center gap-2 bg-gray-100 p-1.5 rounded-full">
+          <div className="flex overflow-hidden rounded-full  bg-white">
             {(['list', 'map'] as Filters['view'][]).map((view) => {
               const isActive = filters.view === view;
               const Icon = view === 'list' ? LayoutGrid : MapPin;
@@ -72,14 +71,18 @@ export function PropertyFilters() {
                   key={view}
                   type="button"
                   onClick={() => setParam('view', view ?? null)}
-                  className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition ${
+                  className={`flex items-center  gap-1.5 px-3 py-3 text-sm font-medium transition ${
                     isActive
-                      ? 'bg-gray-100 text-gray-900'
-                      : 'bg-white text-gray-600 hover:bg-gray-50'
+                      ? 'bg-white text-black rounded-full'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-50 hover:text-black'
                   }`}
                   aria-pressed={isActive}
                 >
-                  <Icon className="h-4 w-4" />
+                  <Icon
+                    className={`h-4 w-4 ${
+                      isActive ? 'text-black' : 'text-gray-700'
+                    }`}
+                  />
                   {view === 'list' ? 'List' : 'Map'}
                 </button>
               );
@@ -89,15 +92,15 @@ export function PropertyFilters() {
       </div>
 
       <form onSubmit={onSubmit} className="flex w-full flex-col gap-3">
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="relative w-full sm:w-[260px] md:w-[360px] lg:w-[380px]">
-            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+        <div className="flex items-center gap-2">
+          <div className="relative flex-[1.6] min-w-[260px]">
+            <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
             <input
               type="text"
               name="location"
               defaultValue={filters.location}
               placeholder="Search location, area"
-              className="h-14 w-full rounded-full border border-gray-200 bg-white pl-11 pr-4 text-sm font-medium text-gray-700 outline-none transition focus:border-gray-300"
+              className="h-13 w-full rounded-full border border-gray-200 bg-white pl-10 pr-4 text-sm font-normal text-gray-900 placeholder:text-gray-500 outline-none transition focus:border-gray-300"
             />
           </div>
 
@@ -114,7 +117,7 @@ export function PropertyFilters() {
               <option value="townhouse">Townhouse</option>
               <option value="commercial">Commercial</option>
             </select>
-            <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
           </div>
 
           <div className={selectWrapper}>
@@ -130,7 +133,7 @@ export function PropertyFilters() {
               <option value="4">4</option>
               <option value="5">5</option>
             </select>
-            <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
           </div>
 
           <div className={selectWrapper}>
@@ -146,12 +149,12 @@ export function PropertyFilters() {
               <option value="rent-low">Rent: up to $2k/mo</option>
               <option value="rent-high">Rent: $2k+/mo</option>
             </select>
-            <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
           </div>
 
           <button
             type="button"
-            className="flex h-11 items-center gap-2 rounded-full border border-gray-200 bg-white px-4 text-sm font-medium text-gray-700 transition hover:border-gray-300"
+            className="flex h-13 items-center gap-1.5 rounded-full border border-gray-200 bg-white px-4 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
           >
             <Ellipsis className="h-4 w-4" />
             More

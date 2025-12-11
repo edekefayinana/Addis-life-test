@@ -40,7 +40,7 @@ export default function PropertiesPage({ searchParams }: PropertiesPageProps) {
   const visible = filtered.slice(start, start + PAGE_SIZE);
 
   return (
-    <main className="mx-auto flex min-h-[60vh] max-w-6xl flex-col gap-8 px-4 py-16">
+    <main className="mx-auto flex min-h-[60vh] max-w-6xl flex-col gap-8 px-6 pt-32 pb-16">
       <PropertyFilters />
 
       <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
