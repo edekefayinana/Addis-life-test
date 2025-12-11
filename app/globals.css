@@ -21,30 +21,17 @@
   --input: 214.3 31.8% 91.4%;
   --ring: 222.2 84% 4.9%;
   --radius: 0.75rem;
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-  }
+  /* Footer palette */
+  --footer-bg: #111111;
+  --footer-text: #e5e5e5;
+  --footer-title: #9ca3af;
+  --footer-border: #333333;
+  --footer-input: #1a1a1a;
+  --footer-button: #313131;
+  --footer-button-hover: #4a4a4a;
+  --brand-dark: #002b3d;
+  --cta-bg: #f1cc68;
 }
 
 @theme inline {
@@ -72,6 +59,26 @@
   --radius-lg: calc(var(--radius) + 0.125rem);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-instrument: var(--font-instrument-sans);
+
+  --color-brand-dark: var(--brand-dark);
+  --color-cta-bg: var(--cta-bg);
+  /* Footer Colors */
+  --color-footer-bg: var(--footer-bg);
+  --color-footer-text: var(--footer-text);
+  --color-footer-title: var(--footer-title);
+  --color-footer-border: var(--footer-border);
+  --color-footer-button: var(--footer-button);
+  --color-footer-button-hover: var(--footer-button-hover);
+  --color-footer-input: var(--footer-input);
+  /* Animation */
+  --animate-scroll: scroll 40s linear infinite;
+}
+
+@keyframes scroll {
+  to {
+    transform: translate(-50%);
+  }
 }
 
 * {
@@ -82,7 +89,7 @@ body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
   font-family:
-    var(--font-sans),
+    var(--font-instrument),
     system-ui,
     -apple-system,
     sans-serif;
