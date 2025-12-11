@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { PropertyFilters } from './_components/PropertyFilters';
 import { Pagination } from './_components/Pagination';
 import { PropertyCard } from '@/components/PropertyCard';
@@ -41,7 +42,13 @@ export default function PropertiesPage({ searchParams }: PropertiesPageProps) {
 
   return (
     <main className="mx-auto flex min-h-[60vh] max-w-6xl flex-col gap-8 px-6 pt-32 pb-16">
-      <PropertyFilters />
+      <Suspense
+        fallback={
+          <div className="h-20 w-full animate-pulse rounded-2xl border border-gray-100 bg-white/60" />
+        }
+      >
+        <PropertyFilters />
+      </Suspense>
 
       <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {visible.map((property: Listing, idx) => (
