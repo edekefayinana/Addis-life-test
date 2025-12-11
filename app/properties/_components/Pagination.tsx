@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 interface PaginationProps {
   totalPages: number;
@@ -34,6 +34,8 @@ export function Pagination({
   };
 
   const pages = createPageRange();
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === totalPages;
   const buildHref = (page: number) => {
     const params = new URLSearchParams();
     Object.entries(searchParams).forEach(([key, value]) => {
@@ -44,31 +46,33 @@ export function Pagination({
   };
 
   return (
-    <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
+    <div className="mt-8 flex flex-wrap items-center justify-between gap-6">
       <Link
         href={buildHref(Math.max(1, currentPage - 1))}
-        aria-disabled={currentPage === 1}
-        className="flex items-center gap-2 rounded-full border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 transition hover:border-gray-300 aria-disabled:pointer-events-none aria-disabled:opacity-60"
+        aria-disabled={isFirstPage}
+        tabIndex={isFirstPage ? -1 : 0}
+        className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-5 py-3 text-sm font-medium text-gray-900 transition hover:bg-gray-50 aria-disabled:pointer-events-none aria-disabled:opacity-40"
       >
-        <ChevronLeft className="h-4 w-4" />
+        <ArrowLeft className="h-4 w-4" />
         Previous
       </Link>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3">
         {pages.map((page, idx) =>
           page === 'ellipsis' ? (
             <span key={`ellipsis-${idx}`} className="px-2 text-gray-500">
-              …
+              ...
             </span>
           ) : (
             <Link
               key={page}
               href={buildHref(page)}
               aria-current={page === currentPage ? 'page' : undefined}
-              className={`grid h-9 w-9 place-items-center rounded-full text-sm font-medium transition ${
+              tabIndex={page === currentPage ? -1 : 0}
+              className={`grid h-10 min-w-10 place-items-center rounded-full px-3 text-sm font-medium transition ${
                 page === currentPage
-                  ? 'bg-gray-900 text-white'
-                  : 'text-gray-700 hover:bg-gray-100'
+                  ? 'border border-gray-900 text-gray-900'
+                  : 'text-gray-800 hover:bg-gray-50'
               }`}
             >
               {page}
@@ -79,11 +83,12 @@ export function Pagination({
 
       <Link
         href={buildHref(Math.min(totalPages, currentPage + 1))}
-        aria-disabled={currentPage === totalPages}
-        className="flex items-center gap-2 rounded-full border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 transition hover:border-gray-300 aria-disabled:pointer-events-none aria-disabled:opacity-60"
+        aria-disabled={isLastPage}
+        tabIndex={isLastPage ? -1 : 0}
+        className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-5 py-3 text-sm font-medium text-gray-900 transition hover:bg-gray-50 aria-disabled:pointer-events-none aria-disabled:opacity-40"
       >
         Next
-        <ChevronRight className="h-4 w-4" />
+        <ArrowRight className="h-4 w-4" />
       </Link>
     </div>
   );
