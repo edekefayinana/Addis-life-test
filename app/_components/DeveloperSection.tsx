@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react';
 
 export function DeveloperSection() {
   return (
-    <section className="container mx-auto py-16 px-4 md:px-6 lg:px-8">
+    <section className="container mx-auto py-16 px-4 md:px-6 lg:px-8 z-0">
       <h2 className="text-3xl font-semibold mb-10 font-instrument">
         Your Trusted Property Developer
       </h2>

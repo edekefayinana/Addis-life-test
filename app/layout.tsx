@@ -47,7 +47,6 @@ export default function RootLayout({
         <div className="min-h-screen bg-background p-2 font-sans md:p-2 lg:p-2">
           <div className="relative mx-auto min-h-[calc(100vh-2rem)] max-w-[1920px] overflow-hidden bg-white md:min-h-[calc(100vh-3rem)] lg:min-h-[calc(100vh-4rem)]">
             <Header />
-
             {children}
             <Footer />
             <ScrollToTop />

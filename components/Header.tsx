@@ -1,5 +1,8 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -11,6 +14,8 @@ const navItems = [
 ];
 
 export function Header() {
+  const pathname = usePathname();
+
   return (
     <header className="absolute inset-x-0 top-0 z-50">
       <div className="relative mx-auto flex h-24 max-w-7xl items-center justify-between px-6 text-white">
@@ -31,7 +36,12 @@ export function Header() {
             <Link
               key={item.href}
               href={item.href}
-              className="text-white/90 transition-colors hover:text-white"
+              aria-current={pathname === item.href ? 'page' : undefined}
+              className={`text-white/90 transition-colors hover:text-white ${
+                pathname === item.href
+                  ? 'border-b-2 border-white pb-1 text-white'
+                  : ''
+              }`}
             >
               {item.label}
             </Link>

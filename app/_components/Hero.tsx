@@ -1,5 +1,5 @@
 'use client';
-import { HeroSearch } from './HeroSearch';
+import { HeroSearchAlt } from './HeroSearch';
 
 export function Hero() {
   return (
@@ -23,7 +23,8 @@ export function Hero() {
       </div>
 
       <div className="absolute inset-x-0 bottom-12 z-10 flex justify-center px-6">
-        <HeroSearch />
+        {/* <HeroSearch /> */}
+        <HeroSearchAlt />
       </div>
     </section>
   );

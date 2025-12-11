@@ -1,5 +1,6 @@
 'use client';
 
+import type { SVGProps } from 'react';
 import {
   Facebook,
   Instagram,
@@ -10,6 +11,147 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+
+const sectionTitleClass = 'text-footer-title text-base mb-6';
+const linkClass = 'hover:text-white transition-colors';
+const listClass = 'space-y-4 text-base font-normal text-footer-text';
+const socialLinkClass = 'hover:text-white transition-colors';
+
+const services = [
+  'African Union 1 Site',
+  'Vatican City Site',
+  'Summit Real Estate Site',
+  'CMC Residential Site',
+  'African Union 2 Site',
+  'Megenagna Square Site',
+];
+
+const links = [
+  { href: '/about', label: 'About Us' },
+  { href: '/blogs', label: 'Blogs' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/properties', label: 'Properties' },
+  { href: '#', label: 'Privacy Policy' },
+  { href: '#', label: 'Terms & Conditions' },
+  { href: '#', label: 'Disclaimer' },
+];
+
+const socialLinks = [
+  { href: '#', Icon: Facebook },
+  { href: '#', Icon: Instagram },
+  { href: '#', Icon: Linkedin },
+  { href: '#', Icon: XIcon },
+];
+
+const contactItems = [
+  { Icon: Mail, label: 'info@Example1.com', multiline: false },
+  { Icon: Phone, label: '0911201096', multiline: false },
+  {
+    Icon: MapPin,
+    label: 'Kirkos ,in front of Africa union, AA, Ethiopia',
+    multiline: true,
+  },
+];
+
+function XIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
+      <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
+    </svg>
+  );
+}
+
+function FooterList({
+  title,
+  items,
+}: {
+  title: string;
+  items: { href: string; label: string }[];
+}) {
+  return (
+    <div>
+      <h3 className={sectionTitleClass}>{title}</h3>
+      <ul className={listClass}>
+        {items.map(({ href, label }) => (
+          <li key={`${title}-${label}`}>
+            <Link href={href} className={linkClass}>
+              {label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function SocialLinks() {
+  return (
+    <div className="flex items-center gap-6">
+      <span className="text-base font-medium">Follow Us</span>
+      <div className="flex gap-4">
+        {socialLinks.map(({ href, Icon }, index) => (
+          <Link
+            key={`${href}-${index}`}
+            href={href}
+            className={socialLinkClass}
+          >
+            <Icon className="h-5 w-5" />
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ContactList() {
+  return (
+    <div>
+      <h3 className={sectionTitleClass}>Contact</h3>
+      <ul className="space-y-6 text-base font-normal text-footer-text">
+        {contactItems.map(({ Icon, label, multiline }) => (
+          <li
+            key={label}
+            className={`flex items-${multiline ? 'start' : 'center'} gap-3`}
+          >
+            <Icon
+              className={`h-5 w-5 text-footer-text shrink-0 ${multiline ? 'mt-0.5' : ''}`}
+            />
+            <span className={multiline ? 'leading-tight' : ''}>{label}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function SubscribeForm() {
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center border-b border-footer-border/10 pb-2">
+        <input
+          type="email"
+          placeholder="Your e-mail"
+          className="bg-transparent border-none text-sm w-full focus:ring-0 placeholder:text-footer-title focus:outline-none"
+        />
+        <button className="bg-footer-button hover:bg-footer-button-hover text-white text-xs px-6 py-3 rounded-full transition-colors">
+          Subscribe
+        </button>
+      </div>
+      <p className="text-footer-white text-base font-normal">
+        Subscribe to our newsletter to receive our weekly feed.
+      </p>
+    </div>
+  );
+}
 
 export function Footer() {
   return (
@@ -27,35 +169,7 @@ export function Footer() {
             />
           </Link>
 
-          <div className="flex items-center gap-6">
-            <span className="text-base font-medium">Follow Us</span>
-            <div className="flex gap-4">
-              <Link href="#" className="hover:text-white transition-colors">
-                <Facebook className="h-5 w-5" />
-              </Link>
-              <Link href="#" className="hover:text-white transition-colors">
-                <Instagram className="h-5 w-5" />
-              </Link>
-              <Link href="#" className="hover:text-white transition-colors">
-                <Linkedin className="h-5 w-5" />
-              </Link>
-              <Link href="#" className="hover:text-white transition-colors">
-                {/* X Icon (Twitter) */}
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-5 w-5"
-                >
-                  <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
-                  <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
-                </svg>
-              </Link>
-            </div>
-          </div>
+          <SocialLinks />
         </div>
 
         {/* Main Content Grid */}
@@ -68,134 +182,17 @@ export function Footer() {
               experience.
             </p>
 
-            <div className="space-y-4">
-              <div className="flex items-center border-b border-footer-border/10 pb-2">
-                <input
-                  type="email"
-                  placeholder="Your e-mail"
-                  className="bg-transparent border-none text-sm w-full focus:ring-0 placeholder:text-footer-title focus:outline-none"
-                />
-                <button className="bg-footer-button hover:bg-footer-button-hover text-white text-xs px-6 py-3 rounded-full transition-colors">
-                  Subscribe
-                </button>
-              </div>
-              <p className="text-footer-white text-base font-normal">
-                Subscribe to our newsletter to receive our weekly feed.
-              </p>
-            </div>
+            <SubscribeForm />
           </div>
 
-          {/* Column 2: Services */}
-          <div>
-            <h3 className="text-footer-title text-base mb-6">Services</h3>
-            <ul className="space-y-4 text-base font-normal text-footer-text">
-              <li>
-                <Link href="#" className="hover:text-white transition-colors">
-                  African Union 1 Site
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-white transition-colors">
-                  Vatican City Site
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-white transition-colors">
-                  Summit Real Estate Site
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-white transition-colors">
-                  CMC Residential Site
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-white transition-colors">
-                  African Union 2 Site
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-white transition-colors">
-                  Megenagna Square Site
-                </Link>
-              </li>
-            </ul>
-          </div>
+          <FooterList
+            title="Services"
+            items={services.map((label) => ({ href: '#', label }))}
+          />
 
-          {/* Column 3: Links */}
-          <div>
-            <h3 className="text-footer-title text-base mb-6">Links</h3>
-            <ul className="space-y-4 text-base font-normal text-footer-text">
-              <li>
-                <Link
-                  href="/about"
-                  className="hover:text-white transition-colors"
-                >
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/blogs"
-                  className="hover:text-white transition-colors"
-                >
-                  Blogs
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/projects"
-                  className="hover:text-white transition-colors"
-                >
-                  Projects
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/properties"
-                  className="hover:text-white transition-colors"
-                >
-                  Properties
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-white transition-colors">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-white transition-colors">
-                  Terms & Conditions
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-white transition-colors">
-                  Disclaimer
-                </Link>
-              </li>
-            </ul>
-          </div>
+          <FooterList title="Links" items={links} />
 
-          {/* Column 4: Contact */}
-          <div>
-            <h3 className="text-footer-title text-base mb-6">Contact</h3>
-            <ul className="space-y-6 text-base font-normal text-footer-text">
-              <li className="flex items-center gap-3">
-                <Mail className="h-5 w-5 text-footer-text shrink-0" />
-                <span>info@Example1.com</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Phone className="h-5 w-5 text-footer-text shrink-0" />
-                <span>0911201096</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <MapPin className="h-5 w-5 text-footer-text shrink-0 mt-0.5" />
-                <span className="leading-tight">
-                  Kirkos ,in front of Africa union, AA, Ethiopia
-                </span>
-              </li>
-            </ul>
-          </div>
+          <ContactList />
         </div>
 
         {/* Footer Bottom */}
