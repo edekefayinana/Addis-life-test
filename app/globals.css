@@ -32,6 +32,18 @@
   --footer-button-hover: #4a4a4a;
   --brand-dark: #002b3d;
   --cta-bg: #f1cc68;
+  /* Testimonials */
+  --testimonial-bg: var(--accent);
+  --testimonial-text: #101010;
+  --testimonial-muted: #6b7280;
+  --testimonial-icon: #d2d5d9;
+  --testimonial-overlay: rgba(0, 0, 0, 0.1);
+  --testimonial-overlay-hover: rgba(0, 0, 0, 0.2);
+  --testimonial-play-fill: #111111;
+  --testimonial-border: #e5e7eb;
+  --testimonial-border-hover: #d1d5db;
+  --testimonial-bg-hover: #f3f4f6;
+  --description: #444444; /* light gray, for text descriptions */
 }
 
 @theme inline {

@@ -49,7 +49,7 @@ export function Testimonials() {
   }, []);
 
   return (
-    <section className="w-full bg-accent py-14 md:py-20 rounded-lg">
+    <section className="w-full bg-[var(--testimonial-bg)] py-14 md:py-20 rounded-lg">
       <div className="container mx-auto px-4 md:px-6">
         <div className="text-center mb-10 md:mb-14">
           <h2 className="text-4xl font-semibold text-black font-instrument">
@@ -72,20 +72,20 @@ export function Testimonials() {
               className="object-cover"
               priority
             />
-            <div className="absolute inset-0 flex items-center justify-center bg-black/10 transition-colors hover:bg-black/20">
+            <div className="absolute inset-0 flex items-center justify-center bg-[var(--testimonial-overlay)] transition-colors hover:bg-[var(--testimonial-overlay-hover)]">
               <button className="flex h-16 w-16 items-center justify-center rounded-full bg-white transition-transform hover:scale-105 shadow-lg">
-                <Play className="ml-0.5 h-8 w-8 text-[#111] fill-[#111]" />
+                <Play className="ml-0.5 h-8 w-8 text-[var(--testimonial-play-fill)] fill-[var(--testimonial-play-fill)]" />
               </button>
             </div>
           </div>
 
           {/* Content */}
           <div className="flex-1 space-y-8 flex flex-col">
-            <Quote className="h-12 w-12 text-[#d2d5d9]" />
+            <Quote className="h-12 w-12 text-[var(--testimonial-icon)]" />
 
             <div className="flex-1 flex">
               <blockquote
-                className={`text-xl md:text-2xl leading-relaxed text-[#101010] transition-opacity duration-300 ${
+                className={`text-xl md:text-2xl leading-relaxed text-[var(--testimonial-text)] transition-opacity duration-300 ${
                   isFading ? 'opacity-0' : 'opacity-100'
                 }`}
                 style={{ minHeight: '150px' }}
@@ -105,10 +105,10 @@ export function Testimonials() {
                   />
                 </div>
                 <div>
-                  <p className="font-semibold text-[#101010]">
+                  <p className="font-semibold text-[var(--testimonial-text)]">
                     {activeTestimonial.name}
                   </p>
-                  <p className="text-sm text-[#6b7280]">
+                  <p className="text-sm text-[var(--testimonial-muted)]">
                     {activeTestimonial.role}
                   </p>
                 </div>
@@ -117,17 +117,17 @@ export function Testimonials() {
               <div className="flex gap-3">
                 <button
                   onClick={() => changeTestimonial('prev')}
-                  className="flex h-12 w-12 items-center justify-center rounded-full border border-[#e5e7eb] bg-white transition-colors hover:bg-[#f3f4f6] hover:border-[#d1d5db]"
+                  className="flex h-12 w-12 items-center justify-center rounded-full border border-[var(--testimonial-border)] bg-white transition-colors hover:bg-[var(--testimonial-bg-hover)] hover:border-[var(--testimonial-border-hover)]"
                   aria-label="Previous testimonial"
                 >
-                  <ChevronLeft className="h-5 w-5 text-[#111]" />
+                  <ChevronLeft className="h-5 w-5 text-[var(--testimonial-play-fill)]" />
                 </button>
                 <button
                   onClick={() => changeTestimonial('next')}
-                  className="flex h-12 w-12 items-center justify-center rounded-full border border-[#e5e7eb] bg-white transition-colors hover:bg-[#f3f4f6] hover:border-[#d1d5db]"
+                  className="flex h-12 w-12 items-center justify-center rounded-full border border-[var(--testimonial-border)] bg-white transition-colors hover:bg-[var(--testimonial-bg-hover)] hover:border-[var(--testimonial-border-hover)]"
                   aria-label="Next testimonial"
                 >
-                  <ChevronRight className="h-5 w-5 text-[#111]" />
+                  <ChevronRight className="h-5 w-5 text-[var(--testimonial-play-fill)]" />
                 </button>
               </div>
             </div>
