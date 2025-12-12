@@ -38,7 +38,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          'min-h-screen bg-background text-foreground font-sans antialiased m-4',
+          'min-h-screen bg-background text-foreground font-sans antialiased m-1 lg:m-4',
           geistSans.variable,
           geistMono.variable,
           instrumentSans.variable

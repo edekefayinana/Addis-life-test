@@ -5,7 +5,7 @@ import Image from 'next/image';
 export function AgentBanner() {
   return (
     <section className="pb-10 ">
-      <div className="relative overflow-hidden rounded-lg bg-cta-bg text-[#1A1A1A] shadow-sm py-12 px-36">
+      <div className="relative overflow-hidden rounded-lg bg-cta-bg text-black shadow-sm py-12 lg:px-36 px-6 ">
         {/* Wavy decorative overlay from reg-vector.png */}
         <div className="absolute inset-0 rounded-lg overflow-hidden">
           <div className="absolute right-0 top-0 bottom-0 w-[55%]">
@@ -29,12 +29,12 @@ export function AgentBanner() {
           </div>
         </div>
 
-        <div className="relative flex flex-col items-start justify-between gap-6 px-6 py-10 md:flex-row md:items-center md:px-10 lg:px-12">
+        <div className="relative flex flex-col items-center justify-between gap-6 px-6 py-10 md:flex-row md:items-center md:px-10 lg:px-12">
           <div className="space-y-3 max-w-3xl font-instrument ">
-            <h3 className="text-2xl md:text-4xl font-semibold text-black ">
+            <h3 className="text-2xl md:text-4xl font-semibold text-black text-center md:text-left">
               Join Our Freelance Agent Network
             </h3>
-            <p className="text-base md:text-lg leading-relaxed text-black/70 font-light ">
+            <p className="text-base md:text-lg leading-relaxed text-black/70 font-light text-center md:text-left">
               Join Addis Life Real Estate&apos;s freelance agent community.
               Access exclusive listings, manage clients, and earn competitive
               commissions through our Agent Portal.
