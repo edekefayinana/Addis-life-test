@@ -97,7 +97,7 @@ const mockBlogs: Blog[] = [
 
 export default function BlogsList() {
   return (
-    <section className="flex flex-col gap-8 max-w-[1212px] mx-auto px-4 xl:px-0 py-10 border-t">
+    <section className="flex flex-col gap-8 max-w-[1212px] mx-auto px-4 xl:px-0 py-10 mb-20 border-t">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {mockBlogs.map((blog) => (
           <BlogCard key={blog.id} blog={blog} />
