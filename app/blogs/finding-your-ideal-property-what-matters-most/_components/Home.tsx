@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <section className="flex max-w-[1212px] flex-col mt-32 relative items-center w-full mx-auto justify-center gap-4 py-10">
+    <section className="flex max-w-[1212px] flex-col mt-6 relative items-center w-full mx-auto justify-center gap-4 py-10">
       <Link
         href={'/blogs'}
         className="absolute flex items-center gap-2 rounded-full border py-1 shadow px-4 top-8 left-0"
