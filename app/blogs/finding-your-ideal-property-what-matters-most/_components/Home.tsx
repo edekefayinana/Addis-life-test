@@ -1,11 +1,19 @@
+import { ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
-import React from 'react';
+import Link from 'next/link';
 
 export default function Home() {
   return (
-    <section className="flex flex-col items-center w-full mx-auto justify-center gap-4 py-10">
+    <section className="flex max-w-[1212px] flex-col mt-32 relative items-center w-full mx-auto justify-center gap-4 py-10">
+      <Link
+        href={'/blogs'}
+        className="absolute flex items-center gap-2 rounded-full border py-1 shadow px-4 top-8 left-0"
+      >
+        <ArrowLeft className="size-4" />
+        Back
+      </Link>
       <p className="lg:text-lg font-normal">Jan 28, 2025</p>
-      <h1 className="lg:text-5xl font-semibold leading leading-[120%] w-full max-w-[892px] text-center">
+      <h1 className="lg:text-5xl font-semibold font-instrument leading leading-[120%] w-full max-w-[892px] text-center">
         Finding Your Ideal Property: What Matters Most?
       </h1>
       <p className="lg:text-lg font-normal">

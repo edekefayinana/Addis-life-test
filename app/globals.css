@@ -8,9 +8,9 @@
   --card-foreground: 222.2 84% 4.9%;
   --popover: 0 0% 100%;
   --popover-foreground: 222.2 84% 4.9%;
-  --primary: 222.2 47.4% 11.2%;
-  --primary-foreground: 210 40% 98%;
-  --secondary: 210 40% 96.1%;
+  --primary: 197, 100%, 14%;
+  --primary-foreground: 0, 0%, 100%;
+  --secondary: 210, 40%, 96%;
   --secondary-foreground: 222.2 47.4% 11.2%;
   --muted: 210 40% 96.1%;
   --muted-foreground: 215.4 16.3% 46.9%;
@@ -44,7 +44,8 @@
   --testimonial-border: #e5e7eb;
   --testimonial-border-hover: #d1d5db;
   --testimonial-bg-hover: #f3f4f6;
-  --description: #444444; /* light gray, for text descriptions */
+  --description: 0, 0%, 27%; /* light gray, for description text descriptions */
+  --contain-width: 1212px;
 }
 
 @theme inline {
@@ -87,7 +88,8 @@
   /* Animation */
   --animate-scroll: scroll 40s linear infinite;
 
-  --text-description: var(--description);
+  --color-description: var(--description);
+  --width-contain-width: var(--contain-width);
 }
 
 @keyframes scroll {
@@ -98,6 +100,10 @@
 
 * {
   border-color: hsl(var(--border));
+}
+
+.text-description {
+  color: #444444;
 }
 
 body {

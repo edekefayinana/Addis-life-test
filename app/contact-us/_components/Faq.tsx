@@ -44,12 +44,12 @@ export default function Faq() {
   };
 
   return (
-    <section className="py-24 bg-[#F6F8FA] m-4 rounded-3xl">
+    <section className="py-24 bg-[#F6F8FA] my-4 rounded-3xl">
       <div className="max-w-[1212px] mx-auto">
         <div className="flex justify-between gap-12 lg:gap-16">
           {/* Left Column - Title and Description */}
           <div className="w-full max-w-[457px] space-y-6">
-            <h2 className="text-4xl md:text-5xl font-semibold leading-tight">
+            <h2 className="text-4xl md:text-5xl font-semibold font-instrument leading-tight">
               Frequently Asked
               <br />
               Questions
