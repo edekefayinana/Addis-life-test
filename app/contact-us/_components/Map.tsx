@@ -128,7 +128,7 @@ function MapContent() {
                     height={40}
                   />
                 </div>
-                <h3 className="font-bold text-lg font-sans">
+                <h3 className="font-bold text-lg font-instrument">
                   Addis Life Real Estate PLC
                 </h3>
               </div>
