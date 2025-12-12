@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react';
 
 export function DeveloperSection() {
   return (
-    <section className="container mx-auto py-16 px-4 md:px-6 lg:px-8 z-0">
+    <section className="container mx-auto py-16 px-2 md:px-6 lg:px-8 z-0">
       <h2 className="text-3xl font-semibold mb-10 font-instrument">
         Your Trusted Property Developer
       </h2>
@@ -19,7 +19,7 @@ export function DeveloperSection() {
           />
         </div>
 
-        <div className="flex flex-col justify-center gap-8 rounded-3xl bg-muted p-8 lg:p-12 md:col-span-6">
+        <div className="flex flex-col justify-center gap-8 rounded-3xl bg-muted p-4 md:p-8 lg:p-12 md:col-span-6">
           <div className="space-y-4">
             <span className="text-base font-light uppercase tracking-wider text-foreground ">
               • About Us

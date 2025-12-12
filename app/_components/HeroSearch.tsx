@@ -137,29 +137,29 @@ export function HeroSearchAlt() {
   };
 
   return (
-    <div className="w-full max-w-[900px] rounded-full bg-white p-3 shadow-2xl overflow-visible">
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-3 md:flex-row md:items-center"
-      >
-        <div className="flex flex-1 items-center gap-3 rounded-full border border-gray-200 px-5 py-3">
-          <Search className="h-5 w-5 text-gray-500" aria-hidden />
-          <input
-            id="altLocation"
-            type="text"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            placeholder="Search location, area, or property type..."
-            className="w-full text-sm font-medium text-black outline-none placeholder:text-gray-500"
-          />
-        </div>
+    <div className="w-full max-w-[900px]">
+      <form onSubmit={handleSubmit} className="relative">
+        {/* Desktop: Single integrated pill with all elements */}
+        <div className="hidden md:flex items-center gap-0 rounded-full border border-gray-200 bg-white px-3 py-3 shadow-[0_2px_8px_rgba(0,0,0,0.1)]">
+          {/* Search Input Section */}
+          <div className="flex min-w-0 flex-1 items-center gap-3 px-3 ">
+            <Search className="h-5 w-5 shrink-0 text-gray-500" aria-hidden />
+            <input
+              id="altLocation"
+              type="text"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              placeholder="Search location, area, or property type..."
+              className="w-full text-sm font-normal text-gray-700 outline-none placeholder:text-gray-500 bg-transparent"
+            />
+          </div>
 
-        <div className="flex gap-3 md:w-auto">
-          <div className="relative">
+          {/* Filter Button Section */}
+          <div className="relative border-l border-gray-200 pl-3 pr-2">
             <button
               type="button"
               onClick={() => setShowFilters((prev) => !prev)}
-              className="flex items-center gap-2 rounded-full border border-gray-200 px-4 py-3 text-sm font-medium text-gray-700 transition hover:border-gray-300 hover:bg-gray-50"
+              className="flex items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition hover:border-gray-300 hover:bg-gray-50"
               aria-expanded={showFilters}
               aria-controls="hero-filters"
             >
@@ -170,7 +170,7 @@ export function HeroSearchAlt() {
             {showFilters && (
               <div
                 id="hero-filters"
-                className="absolute right-0 bottom-full z-9999 mb-2 w-72 rounded-xl border border-gray-200 bg-white p-4 shadow-xl"
+                className="absolute right-0 top-full z-9999 mt-2 w-72 rounded-xl border border-gray-200 bg-white p-4 shadow-xl"
               >
                 <div className="space-y-3 text-sm">
                   <label className="flex flex-col gap-1">
@@ -250,13 +250,37 @@ export function HeroSearchAlt() {
             )}
           </div>
 
-          <Button
+          {/* Search Button Section */}
+          <button
             type="submit"
-            size="lg"
-            className="h-12 w-full rounded-full bg-brand-dark px-8 text-base font-medium text-white hover:bg-brand-dark/90 md:w-auto"
+            className="ml-2 rounded-full bg-brand-dark px-6 py-2.5 text-sm font-medium text-white transition hover:bg-brand-dark/90"
+            aria-label="Search"
           >
             Search
-          </Button>
+          </button>
+        </div>
+
+        {/* Mobile: Input with button at the end */}
+        <div className="relative flex md:hidden items-center">
+          <div className="flex min-w-0 flex-1 items-center gap-3 rounded-full border p-1 border-gray-200 bg-white px-4 py-3 pr-12 shadow-[0_2px_8px_rgba(0,0,0,0.1)]">
+            <Search className="h-5 w-5 shrink-0 text-gray-500" aria-hidden />
+            <input
+              id="altLocationMobile"
+              type="text"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              placeholder="Search location, area..."
+              className="w-full text-sm font-normal text-gray-700 outline-none placeholder:text-gray-500 bg-transparent "
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="absolute right-1 top-1/2 flex h-10 w-10 -translate-y-1/2 shrink-0 items-center justify-center rounded-full bg-brand-dark text-white shadow-[0_2px_8px_rgba(0,0,0,0.15)] transition hover:bg-brand-dark/90 z-10"
+            aria-label="Search"
+          >
+            <Search className="h-4 w-4" aria-hidden />
+          </button>
         </div>
       </form>
     </div>
