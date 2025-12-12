@@ -36,16 +36,17 @@ export function LeafletMap({ position }: LeafletMapProps) {
 
   if (!markerIcon) {
     return (
-      <div className="rounded-2xl overflow-hidden border bg-white h-[420px]" />
+      <div className="rounded-xl sm:rounded-2xl overflow-hidden border bg-white h-[300px] sm:h-[420px]" />
     );
   }
 
   return (
-    <div className="rounded-2xl overflow-hidden border bg-white">
+    <div className="rounded-xl sm:rounded-2xl overflow-hidden border bg-white">
       <MapContainer
         center={position}
         zoom={15}
-        style={{ height: '420px', width: '100%' }}
+        style={{ height: '300px', width: '100%' }}
+        className="sm:h-[420px]"
         scrollWheelZoom={false}
       >
         <TileLayer
