@@ -1,32 +1,38 @@
-import Image from 'next/image';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import BlogCard from '../blogs/_components/BlogCard';
+import type { Blog } from '../blogs/finding-your-ideal-property-what-matters-most/_components/LatestListings';
 
-const insights = [
+const insights: Blog[] = [
   {
+    id: 1,
     image:
       'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1000&auto=format&fit=crop',
     title: 'Finding Your Perfect Home In Addis Ababa',
     date: 'Dec 12, 2024',
-    excerpt:
+    description:
       'Detailed guide on what to look for when buying property in the bustling capital.',
+    slug: 'finding-your-perfect-home-in-addis-ababa',
   },
   {
+    id: 2,
     image:
       'https://images.unsplash.com/photo-1448630360428-65456885c650?q=80&w=1000&auto=format&fit=crop',
     title: 'Real Estate Trends for 2025',
     date: 'Nov 28, 2024',
-    excerpt:
+    description:
       'Market analysis and predictions for the upcoming year in the Ethiopian market.',
+    slug: 'real-estate-trends-for-2025',
   },
   {
+    id: 3,
     image:
       'https://images.unsplash.com/photo-1486325212027-8081e485255e?q=80&w=1000&auto=format&fit=crop',
     title: 'Top Tips for First-Time Buyers',
     date: 'Nov 15, 2024',
-    excerpt:
+    description:
       'Everything you need to know before making your first real estate investment.',
+    slug: 'top-tips-for-first-time-buyers',
   },
 ];
 
@@ -42,40 +48,18 @@ export function Insights() {
       </div>
 
       <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        {insights.map((item, idx) => (
-          <Card
-            key={idx}
-            className="overflow-hidden border-none shadow-sm hover:shadow-md transition-shadow"
-          >
-            <div className="relative h-48 w-full">
-              <Image
-                src={item.image}
-                alt={item.title}
-                fill
-                className="object-cover"
-              />
-            </div>
-            <CardHeader className="p-6 pb-2">
-              <p className="text-sm text-primary font-medium">{item.date}</p>
-              <h3 className="line-clamp-2 text-xl font-bold">{item.title}</h3>
-            </CardHeader>
-            <CardContent className="p-6 pt-2">
-              <p className="line-clamp-3 text-muted-foreground text-sm mb-4">
-                {item.excerpt}
-              </p>
-              <Button
-                variant="ghost"
-                className="p-0 h-auto gap-1 font-semibold hover:bg-transparent hover:underline"
-              >
-                Read More <ArrowRight className="h-4 w-4" />
-              </Button>
-            </CardContent>
-          </Card>
+        {insights.map((item) => (
+          <BlogCard key={item.id} blog={item} />
         ))}
       </div>
 
-      <div className="mt-10 flex justify-center">
-        <Button variant="outline">View All Articles</Button>
+      <div className="mt-8 flex justify-center">
+        <Button
+          className="w-fit rounded-full px-8 py-6 text-black bg-white hover:bg-white/90 border border-border/50 text-base font-normal font-instrument"
+          size="lg"
+        >
+          View All Properties <ArrowRight className="ml-2 h-4 w-4" />
+        </Button>
       </div>
     </section>
   );
