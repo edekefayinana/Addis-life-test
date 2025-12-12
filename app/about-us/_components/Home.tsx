@@ -3,7 +3,7 @@ import React from 'react';
 
 export default function Home() {
   return (
-    <section className="mb-20 mt-40">
+    <section className="mb-20 mt-20">
       <div className="max-w-[1212px] mx-auto">
         <div className="flex justify-between items-start">
           {/* Left Column - Main Heading and CTA */}
