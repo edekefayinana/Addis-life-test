@@ -25,6 +25,7 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { PropertyCard } from '@/components/PropertyCard';
+import { cn } from '@/lib/utils';
 
 const LeafletMap = dynamic(
   () => import('./LeafletMap').then((m) => m.LeafletMap),
@@ -128,8 +129,8 @@ export default function PropertyPage() {
       <main className="max-w-[1400px] mx-auto px-6 py-8">
         {/* Property Title Section */}
         <div className="flex items-center justify-between mb-6">
-          <div className="flex-1 flex gap-4 items-center justify-between">
-            <h1 className="text-3xl font-semibold text-foreground mb-4">
+          <div className="flex-1 flex items-center gap-6">
+            <h1 className="text-3xl font-semibold text-foreground mb-0">
               Vatican site - Three BedRoom Apartment
             </h1>
             <div className="flex items-center gap-4 justify-self-start">
@@ -281,7 +282,7 @@ export default function PropertyPage() {
 
         {activeTab === 'overview' && (
           <div className="grid grid-cols-2 gap-4 mb-12">
-            <div className="overflow-hidden relative aspect-square">
+            <div className="overflow-hidden relative aspect-[4/3] rounded-l-xl rounded-bl-xl">
               <Image
                 src={propertyImages[0] || '/placeholder.svg'}
                 alt="Building Exterior"
@@ -293,16 +294,20 @@ export default function PropertyPage() {
               {propertyImages.slice(1, 5).map((img, idx) => (
                 <div
                   key={idx}
-                  className="overflow-hidden relative aspect-square"
+                  className="overflow-hidden relative aspect-[4/3]"
                 >
                   <Image
                     src={img || '/placeholder.svg'}
                     alt={`Interior ${idx + 1}`}
                     fill
-                    className="object-cover"
+                    className={cn(
+                      'object-cover',
+                      idx === 1 && 'rounded-tr-xl',
+                      idx === 3 && 'rounded-br-xl'
+                    )}
                   />
                   {idx === 3 && (
-                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center rounded-br-xl">
                       <span className="text-white text-xl font-semibold">
                         +{propertyImages.length - 4}
                       </span>
