@@ -2,7 +2,14 @@
 
 import { useMemo } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { ChevronDown, LayoutGrid, MapPin, Search, X } from 'lucide-react';
+import {
+  ChevronDown,
+  Ellipsis,
+  LayoutGrid,
+  MapPin,
+  Search,
+  X,
+} from 'lucide-react';
 
 type Filters = {
   location?: string;
@@ -139,16 +146,16 @@ export function PropertyFilters() {
       {/* Search and Filters Form */}
       <form onSubmit={onSubmit} className="w-full">
         <div className="bg-white rounded-2xl p-4 md:p-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 md:gap-4">
             {/* Search Input */}
-            <div className="relative sm:col-span-2 lg:col-span-1">
+            <div className="relative sm:col-span-2 lg:col-span-2">
               <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
               <input
                 type="text"
                 name="location"
                 defaultValue={filters.location}
                 placeholder="Search location, area"
-                className="h-12 w-full rounded-full border border-gray-200 bg-gray-50 pl-11 pr-4 text-sm font-medium text-gray-900 placeholder:text-gray-400 outline-none transition-all focus:border-gray-300 focus:bg-white focus:ring-2 focus:ring-gray-100"
+                className="h-12 w-full rounded-full border border-gray-200  pl-11 pr-4 text-sm font-medium text-gray-900 placeholder:text-gray-400 outline-none transition-all focus:border-gray-300 focus:bg-white focus:ring-2 focus:ring-gray-100"
               />
             </div>
 
@@ -157,7 +164,7 @@ export function PropertyFilters() {
               <select
                 name="type"
                 defaultValue={filters.type}
-                className="h-12 w-full appearance-none rounded-full border border-gray-200 bg-gray-50 px-4 pr-10 text-sm font-medium text-gray-900 outline-none transition-all focus:border-gray-300 focus:bg-white focus:ring-2 focus:ring-gray-100"
+                className="h-12 w-full appearance-none rounded-full border border-gray-200  px-4 pr-10 text-sm font-medium text-gray-900 outline-none transition-all focus:border-gray-300 focus:bg-white focus:ring-2 focus:ring-gray-100"
               >
                 <option value="">Property Type</option>
                 <option value="apartment">Apartment</option>
@@ -174,7 +181,7 @@ export function PropertyFilters() {
               <select
                 name="bedrooms"
                 defaultValue={filters.bedrooms}
-                className="h-12 w-full appearance-none rounded-full border border-gray-200 bg-gray-50 px-4 pr-10 text-sm font-medium text-gray-900 outline-none transition-all focus:border-gray-300 focus:bg-white focus:ring-2 focus:ring-gray-100"
+                className="h-12 w-full appearance-none rounded-full border border-gray-200  px-4 pr-10 text-sm font-medium text-gray-900 outline-none transition-all focus:border-gray-300 focus:bg-white focus:ring-2 focus:ring-gray-100"
               >
                 <option value="">Bedrooms</option>
                 <option value="1">1 Bedroom</option>
@@ -191,7 +198,7 @@ export function PropertyFilters() {
               <select
                 name="price"
                 defaultValue={filters.price}
-                className="h-12 w-full appearance-none rounded-full border border-gray-200 bg-gray-50 px-4 pr-10 text-sm font-medium text-gray-900 outline-none transition-all focus:border-gray-300 focus:bg-white focus:ring-2 focus:ring-gray-100"
+                className="h-12 w-full appearance-none rounded-full border border-gray-200  px-4 pr-10 text-sm font-medium text-gray-900 outline-none transition-all focus:border-gray-300 focus:bg-white focus:ring-2 focus:ring-gray-100"
               >
                 <option value="">Price Range</option>
                 <option value="lt-300k">$0 - $300k</option>
@@ -202,6 +209,15 @@ export function PropertyFilters() {
               </select>
               <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
             </div>
+
+            {/* More Button */}
+            <button
+              type="button"
+              className="h-12 flex items-center justify-center gap-1.5 rounded-full border border-gray-200 bg-white px-4 text-sm font-medium text-gray-700 transition-all hover:bg-gray-50 focus:border-gray-300 focus:ring-2 focus:ring-gray-100"
+            >
+              <Ellipsis className="h-4 w-4" />
+              <span>More</span>
+            </button>
           </div>
         </div>
       </form>
