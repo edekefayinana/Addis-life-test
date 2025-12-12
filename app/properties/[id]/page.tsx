@@ -492,7 +492,7 @@ export default function PropertyPage() {
                     <input
                       type="text"
                       placeholder="Biruk Solomon"
-                      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-dark"
+                      className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-dark"
                     />
                   </div>
 
@@ -503,7 +503,7 @@ export default function PropertyPage() {
                     <input
                       type="email"
                       placeholder="Example1@gmail.com"
-                      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-dark"
+                      className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-dark"
                     />
                   </div>
 
@@ -514,7 +514,7 @@ export default function PropertyPage() {
                     <input
                       type="tel"
                       placeholder="(+251)-911-201096"
-                      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-dark"
+                      className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-dark"
                     />
                   </div>
 
@@ -525,7 +525,7 @@ export default function PropertyPage() {
                     <textarea
                       placeholder="Write Your questions in detail..."
                       rows={4}
-                      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-dark resize-none"
+                      className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-dark resize-none"
                     />
                   </div>
 

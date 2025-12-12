@@ -1,15 +1,21 @@
 'use client';
 
+import dynamic from 'next/dynamic';
+import { useMemo } from 'react';
 import L from 'leaflet';
-import { MapContainer, Marker, TileLayer } from 'react-leaflet';
 
 import 'leaflet/dist/leaflet.css';
 
-const markerIcon = L.icon({
-  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
+const MapContainer = dynamic(
+  () => import('react-leaflet').then((m) => m.MapContainer),
+  { ssr: false }
+);
+const TileLayer = dynamic(
+  () => import('react-leaflet').then((m) => m.TileLayer),
+  { ssr: false }
+);
+const Marker = dynamic(() => import('react-leaflet').then((m) => m.Marker), {
+  ssr: false,
 });
 
 type LeafletMapProps = {
@@ -17,9 +23,18 @@ type LeafletMapProps = {
 };
 
 export function LeafletMap({ position }: LeafletMapProps) {
-  const isClient = typeof window !== 'undefined';
+  const markerIcon = useMemo(() => {
+    if (typeof window === 'undefined') return null;
+    return L.icon({
+      iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+      shadowUrl:
+        'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+    });
+  }, []);
 
-  if (!isClient) {
+  if (!markerIcon) {
     return (
       <div className="rounded-2xl overflow-hidden border bg-white h-[420px]" />
     );
@@ -34,8 +49,8 @@ export function LeafletMap({ position }: LeafletMapProps) {
         scrollWheelZoom={false}
       >
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'
+          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
         <Marker position={position} icon={markerIcon} />
       </MapContainer>
