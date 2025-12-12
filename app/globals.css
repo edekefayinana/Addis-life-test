@@ -126,11 +126,15 @@ a {
   border-radius: 1rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   padding: 0;
+  max-width: 380px;
+  min-width: 320px;
 }
 
 .custom-location-popup .leaflet-popup-content {
   margin: 0;
-  width: auto !important;
+  width: 380px !important;
+  max-width: 400px;
+  overflow: hidden;
 }
 
 .custom-location-popup .leaflet-popup-tip {
