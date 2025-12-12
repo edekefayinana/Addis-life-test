@@ -2,13 +2,7 @@
 
 import { useMemo } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import {
-  ChevronDown,
-  Ellipsis,
-  LayoutGrid,
-  MapPin,
-  Search,
-} from 'lucide-react';
+import { ChevronDown, LayoutGrid, MapPin, Search, X } from 'lucide-react';
 
 type Filters = {
   location?: string;
@@ -17,10 +11,6 @@ type Filters = {
   price?: string;
   view?: 'list' | 'map';
 };
-
-const selectBase =
-  'h-13 w-full appearance-none rounded-full border border-gray-200 bg-white px-4 pr-10 text-sm font-normal text-gray-900 outline-none transition focus:border-gray-300';
-const selectWrapper = 'relative flex-1 min-w-[140px] py-2';
 
 export function PropertyFilters() {
   const router = useRouter();
@@ -45,6 +35,13 @@ export function PropertyFilters() {
     router.push(`/properties?${params.toString()}`);
   };
 
+  const clearFilter = (key: string) => {
+    setParam(key, null);
+  };
+
+  const hasActiveFilters =
+    filters.location || filters.type || filters.bedrooms || filters.price;
+
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -55,110 +52,157 @@ export function PropertyFilters() {
   };
 
   return (
-    <div className="w-full space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold text-gray-900">
-          Properties for Sale In Addis Ababa
-        </h1>
+    <div className="w-full space-y-4 md:space-y-6">
+      {/* Header Section */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">
+            Properties for Sale In Addis Ababa
+          </h1>
+          <p className="text-sm text-gray-500 hidden sm:block">
+            Find your perfect property
+          </p>
+        </div>
 
-        <div className="flex items-center gap-2 bg-gray-100 p-1.5 rounded-full">
-          <div className="flex overflow-hidden rounded-full  bg-white">
-            {(['list', 'map'] as Filters['view'][]).map((view) => {
-              const isActive = filters.view === view;
-              const Icon = view === 'list' ? LayoutGrid : MapPin;
-              return (
-                <button
-                  key={view}
-                  type="button"
-                  onClick={() => setParam('view', view ?? null)}
-                  className={`flex items-center  gap-1.5 px-3 py-3 text-sm font-medium transition ${
-                    isActive
-                      ? 'bg-white text-black rounded-full'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-50 hover:text-black'
-                  }`}
-                  aria-pressed={isActive}
-                >
-                  <Icon
-                    className={`h-4 w-4 ${
-                      isActive ? 'text-black' : 'text-gray-700'
-                    }`}
-                  />
+        {/* View Toggle */}
+        <div className="flex items-center gap-2 bg-gray-100 p-1.5 rounded-full shrink-0">
+          {(['list', 'map'] as Filters['view'][]).map((view) => {
+            const isActive = filters.view === view;
+            const Icon = view === 'list' ? LayoutGrid : MapPin;
+            return (
+              <button
+                key={view}
+                type="button"
+                onClick={() => setParam('view', view ?? null)}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-all duration-200 ${
+                  isActive
+                    ? 'bg-white text-gray-900'
+                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                }`}
+                aria-pressed={isActive}
+              >
+                <Icon className="h-4 w-4" />
+                <span className="capitalize">
                   {view === 'list' ? 'List' : 'Map'}
-                </button>
-              );
-            })}
-          </div>
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      <form onSubmit={onSubmit} className="flex w-full flex-col gap-3">
-        <div className="flex items-center gap-2">
-          <div className="relative flex-[1.6] min-w-[260px]">
-            <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-            <input
-              type="text"
-              name="location"
-              defaultValue={filters.location}
-              placeholder="Search location, area"
-              className="h-13 w-full rounded-full border border-gray-200 bg-white pl-10 pr-4 text-sm font-normal text-gray-900 placeholder:text-gray-500 outline-none transition focus:border-gray-300"
-            />
-          </div>
-
-          <div className={selectWrapper}>
-            <select
-              name="type"
-              defaultValue={filters.type}
-              className={selectBase}
+      {/* Active Filters */}
+      {hasActiveFilters && (
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-xs font-medium text-gray-500">
+            Active filters:
+          </span>
+          {filters.location && (
+            <button
+              onClick={() => clearFilter('location')}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-xs font-medium hover:bg-gray-200 transition-colors"
             >
-              <option value="">Property Type</option>
-              <option value="apartment">Apartment</option>
-              <option value="house">House</option>
-              <option value="villa">Villa</option>
-              <option value="townhouse">Townhouse</option>
-              <option value="commercial">Commercial</option>
-            </select>
-            <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-          </div>
-
-          <div className={selectWrapper}>
-            <select
-              name="bedrooms"
-              defaultValue={filters.bedrooms}
-              className={selectBase}
+              Location: {filters.location}
+              <X className="h-3 w-3" />
+            </button>
+          )}
+          {filters.type && (
+            <button
+              onClick={() => clearFilter('type')}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-xs font-medium hover:bg-gray-200 transition-colors"
             >
-              <option value="">Bedrooms</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-            </select>
-            <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-          </div>
-
-          <div className={selectWrapper}>
-            <select
-              name="price"
-              defaultValue={filters.price}
-              className={selectBase}
+              Type: {filters.type}
+              <X className="h-3 w-3" />
+            </button>
+          )}
+          {filters.bedrooms && (
+            <button
+              onClick={() => clearFilter('bedrooms')}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-xs font-medium hover:bg-gray-200 transition-colors"
             >
-              <option value="">Price</option>
-              <option value="lt-300k">$0 - $300k</option>
-              <option value="300-500k">$300k - $500k</option>
-              <option value="gt-500k">$500k+</option>
-              <option value="rent-low">Rent: up to $2k/mo</option>
-              <option value="rent-high">Rent: $2k+/mo</option>
-            </select>
-            <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-          </div>
+              {filters.bedrooms} Bedrooms
+              <X className="h-3 w-3" />
+            </button>
+          )}
+          {filters.price && (
+            <button
+              onClick={() => clearFilter('price')}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-xs font-medium hover:bg-gray-200 transition-colors"
+            >
+              Price: {filters.price}
+              <X className="h-3 w-3" />
+            </button>
+          )}
+        </div>
+      )}
 
-          <button
-            type="button"
-            className="flex h-13 items-center gap-1.5 rounded-full border border-gray-200 bg-white px-4 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
-          >
-            <Ellipsis className="h-4 w-4" />
-            More
-          </button>
+      {/* Search and Filters Form */}
+      <form onSubmit={onSubmit} className="w-full">
+        <div className="bg-white rounded-2xl p-4 md:p-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+            {/* Search Input */}
+            <div className="relative sm:col-span-2 lg:col-span-1">
+              <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                name="location"
+                defaultValue={filters.location}
+                placeholder="Search location, area"
+                className="h-12 w-full rounded-full border border-gray-200 bg-gray-50 pl-11 pr-4 text-sm font-medium text-gray-900 placeholder:text-gray-400 outline-none transition-all focus:border-gray-300 focus:bg-white focus:ring-2 focus:ring-gray-100"
+              />
+            </div>
+
+            {/* Property Type */}
+            <div className="relative">
+              <select
+                name="type"
+                defaultValue={filters.type}
+                className="h-12 w-full appearance-none rounded-full border border-gray-200 bg-gray-50 px-4 pr-10 text-sm font-medium text-gray-900 outline-none transition-all focus:border-gray-300 focus:bg-white focus:ring-2 focus:ring-gray-100"
+              >
+                <option value="">Property Type</option>
+                <option value="apartment">Apartment</option>
+                <option value="house">House</option>
+                <option value="villa">Villa</option>
+                <option value="townhouse">Townhouse</option>
+                <option value="commercial">Commercial</option>
+              </select>
+              <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            </div>
+
+            {/* Bedrooms */}
+            <div className="relative">
+              <select
+                name="bedrooms"
+                defaultValue={filters.bedrooms}
+                className="h-12 w-full appearance-none rounded-full border border-gray-200 bg-gray-50 px-4 pr-10 text-sm font-medium text-gray-900 outline-none transition-all focus:border-gray-300 focus:bg-white focus:ring-2 focus:ring-gray-100"
+              >
+                <option value="">Bedrooms</option>
+                <option value="1">1 Bedroom</option>
+                <option value="2">2 Bedrooms</option>
+                <option value="3">3 Bedrooms</option>
+                <option value="4">4 Bedrooms</option>
+                <option value="5">5+ Bedrooms</option>
+              </select>
+              <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            </div>
+
+            {/* Price */}
+            <div className="relative">
+              <select
+                name="price"
+                defaultValue={filters.price}
+                className="h-12 w-full appearance-none rounded-full border border-gray-200 bg-gray-50 px-4 pr-10 text-sm font-medium text-gray-900 outline-none transition-all focus:border-gray-300 focus:bg-white focus:ring-2 focus:ring-gray-100"
+              >
+                <option value="">Price Range</option>
+                <option value="lt-300k">$0 - $300k</option>
+                <option value="300-500k">$300k - $500k</option>
+                <option value="gt-500k">$500k+</option>
+                <option value="rent-low">Rent: up to $2k/mo</option>
+                <option value="rent-high">Rent: $2k+/mo</option>
+              </select>
+              <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            </div>
+          </div>
         </div>
       </form>
     </div>

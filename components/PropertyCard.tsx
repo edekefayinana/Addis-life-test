@@ -47,7 +47,7 @@ export function PropertyCard({
       </div>
 
       <CardFooter className="flex justify-between items-center p-4 text-sm text-black">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
           <Bed className="h-5 w-5 stroke-1" />
           <span className="font-normal">{beds} Beds</span>
         </div>
@@ -56,16 +56,16 @@ export function PropertyCard({
             The image has vertical lines between items? 
             Let's look closely... hard to tell if it's a line or just spacing. 
             Commonly it's a small vertical divider. I'll add a subtle one. */}
-        <div className="h-8 w-px bg-gray-200 mx-2" />
+        <div className="h-8 w-px bg-gray-200 mx-1" />
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
           <Bath className="h-5 w-5 stroke-1" />
           <span className="font-normal">{baths} Baths</span>
         </div>
 
-        <div className="h-8 w-px bg-gray-200 mx-2" />
+        <div className="h-8 w-px bg-gray-200 mx-1" />
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
           <Maximize className="h-5 w-5 stroke-1" />
           <span className="font-normal">{area} sqft</span>
         </div>
