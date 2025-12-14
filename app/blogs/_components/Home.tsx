@@ -5,11 +5,11 @@ import Image from 'next/image';
 export default function Home() {
   return (
     <section className="flex relative py-20 pt-40 rounded-3xl bg-[#1A1A1A] ">
-      <div className="flex w-full max-w-[1212px] text-white flex-col gap-12 mx-auto items-start justify-end">
-        <h1 className="lg:text-[64px] max-w-[844px] font-instrument font-semibold leading-[120%]">
+      <div className="flex z-30 w-full max-w-[1212px] p-4 lg:p-0 text-white flex-col gap-6 md:gap-9 lg:gap-12 mx-auto items-start justify-end">
+        <h1 className="text-4xl lg:text-[64px] max-w-[844px] font-instrument font-semibold leading-[120%]">
           Real Estate Insights and Market Guidance
         </h1>
-        <p className="text-lg max-w-[700px] leading-[150%]">
+        <p className="text-base lg:text-lg max-w-[700px] leading-[150%]">
           Stay updated with new listings, market trends, and investment
           opportunities delivered directly to your inbox.
         </p>

@@ -8,7 +8,7 @@ import Home from './_components/Home';
 
 export default function page() {
   return (
-    <main>
+    <main className="m-4 lg:m-0">
       <Home />
       <Intro />
       <MissionVision />

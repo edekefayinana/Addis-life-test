@@ -6,7 +6,7 @@ import LatestListings from './_components/LatestListings';
 
 export default function page() {
   return (
-    <main>
+    <main className="p-4">
       <Home />
       <ReadingBlog />
       <LatestListings />
