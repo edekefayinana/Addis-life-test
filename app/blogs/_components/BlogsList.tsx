@@ -107,7 +107,7 @@ export default function BlogsList() {
       {/* Pagination */}
       <div className="flex">
         <Pagination className="py-8">
-          <PaginationContent className="min-w-full flex justify-between items-center">
+          <PaginationContent className="min-w-full flex justify-center md:justify-between items-center">
             <div className="flex gap-4">
               <PaginationItem>
                 <PaginationPrevious href="#" />
@@ -115,27 +115,33 @@ export default function BlogsList() {
             </div>
 
             <div className="flex gap-4">
-              <PaginationItem>
+              <PaginationItem className="mt-1.5 md:mt-3 ml-1">
                 <PaginationLink href="#" isActive>
                   1
                 </PaginationLink>
               </PaginationItem>
-              <PaginationItem>
+              <PaginationItem className="hidden md:block mt-3">
                 <PaginationLink>2</PaginationLink>
               </PaginationItem>
               <PaginationItem>
-                <PaginationLink href="#">3</PaginationLink>
+                <PaginationLink className="hidden md:block" href="#">
+                  3
+                </PaginationLink>
               </PaginationItem>
               <PaginationItem>
-                <PaginationEllipsis />
+                <PaginationEllipsis className="md:mt-2" />
               </PaginationItem>
               <PaginationItem>
-                <PaginationLink href="#">8</PaginationLink>
+                <PaginationLink className="hidden md:block" href="#">
+                  8
+                </PaginationLink>
               </PaginationItem>
               <PaginationItem>
-                <PaginationLink href="#">9</PaginationLink>
+                <PaginationLink className="hidden md:block" href="#">
+                  9
+                </PaginationLink>
               </PaginationItem>
-              <PaginationItem>
+              <PaginationItem className="mt-1.5 md:mt-3 mr-1 md:mr-0">
                 <PaginationLink href="#">10</PaginationLink>
               </PaginationItem>
             </div>
