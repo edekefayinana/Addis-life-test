@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button';
 
 export default function ContactForm() {
   return (
-    <Card className="bg-[#F6F8FA] p-8 shadow-none rounded-3xl">
-      <form className="space-y-6">
+    <Card className="bg-[#F6F8FA] w-full p-4 lg:p-8 shadow-none rounded-xl md:rounded-3xl">
+      <form className="space-y-3 md:space-y-6">
         {/* First Name and Last Name Row */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="space-y-3 flex flex-col">
@@ -75,7 +75,7 @@ export default function ContactForm() {
         {/* Submit Button */}
         <Button
           type="submit"
-          className="h-14 w-full rounded-full bg-primary text-base mt-8"
+          className="h-12 lg:h-14 w-full rounded-full bg-primary text-base mt-4 lg:mt-8"
         >
           Send A message
         </Button>

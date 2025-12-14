@@ -20,7 +20,7 @@ const Map = dynamic(() => import('./Map'), {
 
 export default function LocationMap() {
   return (
-    <div className="w-full h-full bg-[#F6F8FA] shadow-none rounded-3xl">
+    <div className="w-full h-[500px] lg:h-full bg-[#F6F8FA] shadow-none rounded-3xl">
       <Map />
     </div>
   );

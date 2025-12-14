@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export default function ContactAddresses() {
   return (
-    <section className=" mx-auto py-16 max-w-[1212px]">
+    <section className=" mx-auto py-5 lg:py-16 max-w-[1212px]">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {/* Email Support Card */}
         <Card className="border bg-[#F6F8FA] space-y-3 py-5 px-8 shadow-none hover:shadow-md">
