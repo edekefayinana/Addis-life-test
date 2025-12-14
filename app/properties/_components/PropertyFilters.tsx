@@ -7,7 +7,6 @@ import {
   LayoutGrid,
   MapPin,
   Search,
-  X,
 } from 'lucide-react';
 import { useFilters } from '@/lib/hooks/useFilters';
 import { useDebounce } from '@/lib/hooks/useDebounce';
@@ -21,7 +20,7 @@ type Filters = {
 };
 
 export function PropertyFilters() {
-  const { filters, setFilter, clearFilter, hasActiveFilters } = useFilters();
+  const { filters, setFilter } = useFilters();
   const [locationInput, setLocationInput] = useState(filters.location || '');
   const debouncedLocation = useDebounce(locationInput, 300);
 
@@ -40,9 +39,6 @@ export function PropertyFilters() {
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">
             Properties for Sale In Addis Ababa
           </h1>
-          <p className="text-sm text-gray-500 hidden sm:block">
-            Find your perfect property
-          </p>
         </div>
 
         {/* View Toggle */}
@@ -71,52 +67,6 @@ export function PropertyFilters() {
           })}
         </div>
       </div>
-
-      {/* Active Filters */}
-      {hasActiveFilters && (
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-medium text-gray-500">
-            Active filters:
-          </span>
-          {filters.location && (
-            <button
-              onClick={() => clearFilter('location')}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-xs font-medium hover:bg-gray-200 transition-colors"
-            >
-              Location: {filters.location}
-              <X className="h-3 w-3" />
-            </button>
-          )}
-          {filters.type && (
-            <button
-              onClick={() => clearFilter('type')}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-xs font-medium hover:bg-gray-200 transition-colors"
-            >
-              Type: {filters.type}
-              <X className="h-3 w-3" />
-            </button>
-          )}
-          {filters.bedrooms && (
-            <button
-              onClick={() => clearFilter('bedrooms')}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-xs font-medium hover:bg-gray-200 transition-colors"
-            >
-              {filters.bedrooms} Bedrooms
-              <X className="h-3 w-3" />
-            </button>
-          )}
-          {filters.price && (
-            <button
-              onClick={() => clearFilter('price')}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-xs font-medium hover:bg-gray-200 transition-colors"
-            >
-              Price: {filters.price}
-              <X className="h-3 w-3" />
-            </button>
-          )}
-        </div>
-      )}
-
       {/* Search and Filters Form */}
       <div className="w-full">
         <div className="bg-white rounded-2xl p-4 md:p-6">
