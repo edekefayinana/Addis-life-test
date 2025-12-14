@@ -170,7 +170,7 @@ export function HeroSearchAlt() {
             {showFilters && (
               <div
                 id="hero-filters"
-                className="absolute right-0 top-full z-9999 mt-2 w-72 rounded-xl border border-gray-200 bg-white p-4 shadow-xl"
+                className="absolute right-0 bottom-full z-50 mb-2 w-72 rounded-xl border border-gray-200 bg-white p-4 shadow-xl"
               >
                 <div className="space-y-3 text-sm">
                   <label className="flex flex-col gap-1">
