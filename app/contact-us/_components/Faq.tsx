@@ -44,17 +44,16 @@ export default function Faq() {
   };
 
   return (
-    <section className="py-24 bg-[#F6F8FA] my-4 rounded-3xl">
+    <section className="py-10 md:py-14 lg:py-24 mx-4 px-4 lg:px-0 bg-[#F6F8FA] my-4 rounded-3xl">
       <div className="max-w-[1212px] mx-auto">
-        <div className="flex justify-between gap-12 lg:gap-16">
+        <div className="flex flex-col lg:flex-row justify-between gap-12 lg:gap-16">
           {/* Left Column - Title and Description */}
-          <div className="w-full max-w-[457px] space-y-6">
-            <h2 className="text-4xl md:text-5xl font-semibold font-instrument leading-tight">
-              Frequently Asked
-              <br />
-              Questions
+          <div className="w-full max-w-[457px] space-y-4 md:space-y-6">
+            <h2 className="text-3xl md:text-5xl font-semibold font-instrument leading-tight">
+              Frequently Asked Questions
+              {/* <br className='lg:block'/> */}
             </h2>
-            <p className="text-description text-lg leading-[150%] font-normal tracking-normal">
+            <p className="text-description text-base lg:text-lg leading-[150%] font-normal tracking-normal">
               We provide thorough explanations to your most frequent questions,
               ensuring transparency and peace of mind throughout your property
               experience.
@@ -66,15 +65,17 @@ export default function Faq() {
             {faqData.map((faq, index) => (
               <div
                 key={index}
-                className="bg-white hover:bg-primary/5 rounded-3xl px-3 min-h-20 overflow-hidden transition-all duration-300"
+                className="bg-white hover:bg-primary/5 rounded-xl md:rounded-3xl px-3 min-h-20 overflow-hidden transition-all duration-300"
               >
                 {/* Question Header */}
                 <button
                   onClick={() => toggleFaq(index)}
-                  className="w-full flex items-center justify-between p-6 text-left cursor-pointer transition-colors duration-200"
+                  className="w-full flex items-center justify-between p-3 md:p-6 text-left cursor-pointer transition-colors duration-200"
                   aria-expanded={openIndex === index}
                 >
-                  <span className="font-medium text-xl">{faq.question}</span>
+                  <span className="font-medium text-lg md:text-xl">
+                    {faq.question}
+                  </span>
                   <div
                     className={`flex-shrink-0 size-8 flex items-center justify-center transition-transform duration-300 ${
                       openIndex === index ? 'rotate-45' : 'rotate-0'
