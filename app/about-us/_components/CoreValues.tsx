@@ -56,19 +56,19 @@ export default function CoreValues() {
     },
   ];
   return (
-    <section className="bg-primary rounded-3xl py-20 flex flex-col">
-      <div className="flex w-full max-w-[1212px] mx-auto gap-10 flex-col items-center justify-center">
-        <div className="flex flex-col w-full max-w-[720px] justify-center items-center gap-3 text-white">
-          <h2 className="text-4xl font-bold font-instrument leading-tight md:text-5xl">
+    <section className="bg-primary rounded-3xl py-10 lg:py-20 flex flex-col">
+      <div className="flex w-full max-w-[1212px] px-3 lg:px-0 mx-auto gap-5 lg:gap-10 flex-col items-center justify-center">
+        <div className="flex flex-col w-full max-w-[720px] justify-center items-center gap-2 lg:gap-3 text-white">
+          <h2 className="text-3xl lg:text-4xl font-bold font-instrument leading-tight md:text-5xl">
             Our Core Values
           </h2>
-          <p className=" text-center text-lg leading-relaxed ">
+          <p className=" text-center text-base lg:text-lg leading-relaxed ">
             Principles that shape our culture, guide our decisions, influence
             how we work together, and define the way we serve and support our
             clients.
           </p>
         </div>
-        <div className="flex gap-6 max-w-[1212px] mx-auto">
+        <div className="grid grid-cols1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 max-w-[1212px] mx-auto">
           {coreValues.map((value) => (
             <div
               key={value.id}
@@ -85,10 +85,10 @@ export default function CoreValues() {
           ))}
         </div>
       </div>
-      <span className="w-full w-full mx-auto h-[1px] bg-white/20 my-16" />
-      <div className="flex flex-col gap-10 items-center justify-center text-white">
+      <span className="w-full w-full mx-auto h-[1px] bg-white/20 my-10 lg:my-16" />
+      <div className="flex flex-col gap-7 lg:gap-10 items-center justify-center text-white">
         <p className="text-xl font-medium">Number & Achievements</p>
-        <div className="flex w-full mt-5 max-w-[1100px] mx-auto items-center justify-around gap-8 relative">
+        <div className="flex flex-col md:flex-row w-full mt-5 max-w-[1100px] mx-auto items-center justify-around gap-8 relative">
           {achievements.map((achievement, index) => (
             <div
               key={achievement.id}
@@ -99,7 +99,10 @@ export default function CoreValues() {
                 {achievement.title}
               </p>
               {index < achievements.length - 1 && (
-                <span className="h-16 w-px absolute -right-4 top-1/2 -translate-y-1/2 bg-white/30"></span>
+                <span className="md:h-16 md:w-px absolute -right-4 top-1/2 -translate-y-1/2 bg-white/30"></span>
+              )}
+              {index < achievements.length - 1 && (
+                <span className="md:hidden w-full h-px bg-white/30"></span>
               )}
             </div>
           ))}
