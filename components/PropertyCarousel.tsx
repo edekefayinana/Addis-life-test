@@ -73,19 +73,23 @@ export function PropertyCarousel({
           </div>
         </div>
 
-        <div
-          ref={scrollContainerRef}
-          className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        >
-          {properties.map((prop, idx) => (
-            <div
-              key={idx}
-              className="min-w-[85%] md:min-w-[calc(33.333%-1rem)] flex-none snap-start"
-            >
-              <PropertyCard {...prop} />
-            </div>
-          ))}
+        <div className="relative">
+          <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-accent to-transparent pointer-events-none z-10"></div>
+          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-accent to-transparent pointer-events-none z-10"></div>
+          <div
+            ref={scrollContainerRef}
+            className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {properties.map((prop, idx) => (
+              <div
+                key={idx}
+                className="min-w-[85%] md:min-w-[calc(33.333%-1rem)] flex-none snap-start"
+              >
+                <PropertyCard {...prop} />
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="mt-8 flex justify-center">
