@@ -1,19 +1,16 @@
-import Link from 'next/link';
+'use client';
+
+import { usePagination } from '@/lib/hooks/usePagination';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 interface PaginationProps {
   totalPages: number;
   currentPage: number;
-  basePath?: string;
-  searchParams?: Record<string, string | undefined>;
 }
 
-export function Pagination({
-  totalPages,
-  currentPage,
-  basePath = '/properties',
-  searchParams = {},
-}: PaginationProps) {
+export function Pagination({ totalPages, currentPage }: PaginationProps) {
+  const { setPage } = usePagination();
+
   if (totalPages <= 1) return null;
 
   const createPageRange = () => {
@@ -36,26 +33,17 @@ export function Pagination({
   const pages = createPageRange();
   const isFirstPage = currentPage === 1;
   const isLastPage = currentPage === totalPages;
-  const buildHref = (page: number) => {
-    const params = new URLSearchParams();
-    Object.entries(searchParams).forEach(([key, value]) => {
-      if (value) params.set(key, value);
-    });
-    params.set('page', String(page));
-    return `${basePath}?${params.toString()}`;
-  };
 
   return (
     <div className="mt-8 flex flex-wrap items-center justify-between gap-6">
-      <Link
-        href={buildHref(Math.max(1, currentPage - 1))}
-        aria-disabled={isFirstPage}
-        tabIndex={isFirstPage ? -1 : 0}
-        className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-5 py-3 text-sm font-medium text-gray-900 transition hover:bg-gray-50 aria-disabled:pointer-events-none aria-disabled:opacity-40"
+      <button
+        onClick={() => setPage(Math.max(1, currentPage - 1))}
+        disabled={isFirstPage}
+        className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-5 py-3 text-sm font-medium text-gray-900 transition hover:bg-gray-50 disabled:pointer-events-none disabled:opacity-40"
       >
         <ArrowLeft className="h-4 w-4" />
         Previous
-      </Link>
+      </button>
 
       <div className="flex items-center gap-3">
         {pages.map((page, idx) =>
@@ -64,32 +52,30 @@ export function Pagination({
               ...
             </span>
           ) : (
-            <Link
+            <button
               key={page}
-              href={buildHref(page)}
-              aria-current={page === currentPage ? 'page' : undefined}
-              tabIndex={page === currentPage ? -1 : 0}
+              onClick={() => setPage(page)}
+              disabled={page === currentPage}
               className={`grid h-10 min-w-10 place-items-center rounded-full px-3 text-sm font-medium transition ${
                 page === currentPage
                   ? 'border border-gray-900 text-gray-900'
-                  : 'text-gray-800 hover:bg-gray-50'
+                  : 'text-gray-800 hover:bg-gray-50 disabled:pointer-events-none'
               }`}
             >
               {page}
-            </Link>
+            </button>
           )
         )}
       </div>
 
-      <Link
-        href={buildHref(Math.min(totalPages, currentPage + 1))}
-        aria-disabled={isLastPage}
-        tabIndex={isLastPage ? -1 : 0}
-        className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-5 py-3 text-sm font-medium text-gray-900 transition hover:bg-gray-50 aria-disabled:pointer-events-none aria-disabled:opacity-40"
+      <button
+        onClick={() => setPage(Math.min(totalPages, currentPage + 1))}
+        disabled={isLastPage}
+        className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-5 py-3 text-sm font-medium text-gray-900 transition hover:bg-gray-50 disabled:pointer-events-none disabled:opacity-40"
       >
         Next
         <ArrowRight className="h-4 w-4" />
-      </Link>
+      </button>
     </div>
   );
 }

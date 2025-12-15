@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Bed, Bath, Maximize, MapPin } from 'lucide-react';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { truncate } from '@/lib/utils';
 
 export interface PropertyCardProps {
   title: string;
@@ -50,7 +51,7 @@ export function PropertyCard({
         </div>
         <CardContent className="p-4 pb-2">
           <h3 className="line-clamp-1 text-lg font-semibold text-black">
-            {title}
+            {truncate(title, 30)}
           </h3>
           <div className="mt-2 flex items-center text-sm text-gray-500">
             <MapPin className="mr-2 h-4 w-4 shrink-0" />

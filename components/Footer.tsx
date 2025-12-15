@@ -197,7 +197,7 @@ export function Footer() {
 
         {/* Footer Bottom */}
         <div className="border-t border-footer-border/10 pt-12 pb-4 flex flex-col md:flex-row justify-center items-center relative">
-          <p className="text-footer-title text-base text-center">
+          <p className="text-footer-white text-base text-center">
             Copyright &copy; 2025. Addis Life Real Estate
           </p>
         </div>
