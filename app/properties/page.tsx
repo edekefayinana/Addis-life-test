@@ -65,18 +65,7 @@ export default async function PropertiesPage({
             ))}
           </section>
 
-          <Pagination
-            totalPages={totalPages}
-            currentPage={currentPage}
-            searchParams={{
-              location,
-              type,
-              bedrooms,
-              price,
-              view: params?.view,
-            }}
-            basePath="/properties"
-          />
+          <Pagination totalPages={totalPages} currentPage={currentPage} />
         </>
       )}
     </main>

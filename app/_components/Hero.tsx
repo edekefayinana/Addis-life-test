@@ -13,7 +13,7 @@ export function Hero() {
       <div className="absolute inset-0 -z-10 " />
 
       <div className="mx-auto flex w-full max-w-7xl flex-col items-center gap-6 px-6 pb-32 text-center">
-        <h1 className="max-w-4xl text-5xl font-bold leading-tight tracking-tight sm:text-6xl md:text-7xl font-instrument ">
+        <h1 className="max-w-4xl text-4xl font-bold leading-tight tracking-tight sm:text-6xl md:text-7xl font-instrument ">
           Discover Premium Real Estate With Confidence
         </h1>
         <p className="max-w-2xl text-lg text-slate-200/90 sm:text-xl font-normal font-instrument">
