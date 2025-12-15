@@ -1,3 +1,4 @@
+@import 'leaflet/dist/leaflet.css';
 @import 'tailwindcss';
 
 :root {
@@ -7,9 +8,9 @@
   --card-foreground: 222.2 84% 4.9%;
   --popover: 0 0% 100%;
   --popover-foreground: 222.2 84% 4.9%;
-  --primary: 222.2 47.4% 11.2%;
-  --primary-foreground: 210 40% 98%;
-  --secondary: 210 40% 96.1%;
+  --primary: 197, 100%, 14%;
+  --primary-foreground: 0, 0%, 100%;
+  --secondary: 210, 40%, 96%;
   --secondary-foreground: 222.2 47.4% 11.2%;
   --muted: 210 40% 96.1%;
   --muted-foreground: 215.4 16.3% 46.9%;
@@ -21,30 +22,30 @@
   --input: 214.3 31.8% 91.4%;
   --ring: 222.2 84% 4.9%;
   --radius: 0.75rem;
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-  }
+  /* Footer palette */
+  --footer-bg: #111111;
+  --footer-text: #e5e5e5;
+  --footer-title: #9ca3af;
+  --footer-border: #333333;
+  --footer-input: #1a1a1a;
+  --footer-button: #313131;
+  --footer-button-hover: #4a4a4a;
+  --brand-dark: #002b3d;
+  --cta-bg: #f1cc68;
+  /* Testimonials */
+  --testimonial-bg: var(--accent);
+  --testimonial-text: #101010;
+  --testimonial-muted: #6b7280;
+  --testimonial-icon: #d2d5d9;
+  --testimonial-overlay: rgba(0, 0, 0, 0.1);
+  --testimonial-overlay-hover: rgba(0, 0, 0, 0.2);
+  --testimonial-play-fill: #111111;
+  --testimonial-border: #e5e7eb;
+  --testimonial-border-hover: #d1d5db;
+  --testimonial-bg-hover: #f3f4f6;
+  --description: 0, 0%, 27%; /* light gray, for description text descriptions */
+  --contain-width: 1212px;
 }
 
 @theme inline {
@@ -72,17 +73,44 @@
   --radius-lg: calc(var(--radius) + 0.125rem);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-instrument: var(--font-instrument-sans);
+
+  --color-brand-dark: var(--brand-dark);
+  --color-cta-bg: var(--cta-bg);
+  /* Footer Colors */
+  --color-footer-bg: var(--footer-bg);
+  --color-footer-text: var(--footer-text);
+  --color-footer-title: var(--footer-title);
+  --color-footer-border: var(--footer-border);
+  --color-footer-button: var(--footer-button);
+  --color-footer-button-hover: var(--footer-button-hover);
+  --color-footer-input: var(--footer-input);
+  /* Animation */
+  --animate-scroll: scroll 40s linear infinite;
+
+  --color-description: var(--description);
+  --width-contain-width: var(--contain-width);
+}
+
+@keyframes scroll {
+  to {
+    transform: translate(-50%);
+  }
 }
 
 * {
   border-color: hsl(var(--border));
 }
 
+.text-description {
+  color: #444444;
+}
+
 body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
   font-family:
-    var(--font-sans),
+    var(--font-instrument),
     system-ui,
     -apple-system,
     sans-serif;
@@ -90,4 +118,63 @@ body {
 
 a {
   color: inherit;
+}
+
+/* Custom Leaflet Popup Styling */
+.custom-location-popup .leaflet-popup-content-wrapper {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 0;
+  max-width: 380px;
+  min-width: 320px;
+}
+
+.custom-location-popup .leaflet-popup-content {
+  margin: 0;
+  width: 380px !important;
+  max-width: 400px;
+  overflow: hidden;
+}
+
+.custom-location-popup .leaflet-popup-tip {
+  background: white;
+}
+
+.custom-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.leaflet-control-recenter {
+  width: 30px;
+  height: 30px;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid #d4d3d3;
+  cursor: pointer;
+  background: white;
+  margin-top: -12px !important;
+  padding: 0 !important;
+  line-height: 0 !important;
+}
+
+.leaflet-control-recenter svg {
+  display: block !important;
+}
+
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+/* Make all buttons have pointer cursor */
+button {
+  cursor: pointer;
 }
