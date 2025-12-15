@@ -28,7 +28,7 @@ import { PropertyCard } from '@/components/PropertyCard';
 import { cn } from '@/lib/utils';
 
 const LeafletMap = dynamic(
-  () => import('./LeafletMap').then((m) => m.LeafletMap),
+  () => import('./_components/LeafletMap').then((m) => m.LeafletMap),
   { ssr: false }
 );
 
@@ -150,13 +150,13 @@ export default function PropertyPage() {
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
-            <button className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full hover:bg-accent transition-colors">
+            <button className="flex items-center gap-2 px-3 sm:px-4 py-3 rounded-full hover:bg-accent transition-colors">
               <Share2 className="w-4 h-4" />
               <span className="text-xs sm:text-sm font-medium hidden sm:inline">
                 Share
               </span>
             </button>
-            <button className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full hover:bg-accent transition-colors">
+            <button className="flex items-center gap-2 px-3 sm:px-4 py-3 rounded-full hover:bg-accent transition-colors">
               <Heart className="w-4 h-4" />
               <span className="text-xs sm:text-sm font-medium hidden sm:inline">
                 Save
@@ -456,7 +456,15 @@ export default function PropertyPage() {
                   {propertyLocation.address}
                 </span>
               </div>
-              <LeafletMap position={propertyLocation.coords} />
+              <LeafletMap
+                position={propertyLocation.coords}
+                address={propertyLocation.address}
+                title="Vatican site - Three BedRoom Apartment"
+                imageUrl="/property-1.jpg"
+                beds={3}
+                baths={2}
+                area={450}
+              />
             </section>
 
             {/* Amenities Download */}

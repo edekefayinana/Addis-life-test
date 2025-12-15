@@ -159,7 +159,7 @@ export function HeroSearchAlt() {
             <button
               type="button"
               onClick={() => setShowFilters((prev) => !prev)}
-              className="flex items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition hover:border-gray-300 hover:bg-gray-50"
+              className="flex items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-700 transition hover:border-gray-300 hover:bg-gray-50"
               aria-expanded={showFilters}
               aria-controls="hero-filters"
             >
@@ -253,7 +253,7 @@ export function HeroSearchAlt() {
           {/* Search Button Section */}
           <button
             type="submit"
-            className="ml-2 rounded-full bg-brand-dark px-6 py-2.5 text-sm font-medium text-white transition hover:bg-brand-dark/90"
+            className="ml-2 rounded-full bg-brand-dark px-6 py-3.5 text-sm font-medium text-white transition hover:bg-brand-dark/90"
             aria-label="Search"
           >
             Search
