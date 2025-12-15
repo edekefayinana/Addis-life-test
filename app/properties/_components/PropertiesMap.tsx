@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import L from 'leaflet';
 import type { Listing } from '@/data/featuredProperties';
 import type { PropertyCardProps } from '@/components/PropertyCard';
@@ -136,50 +137,65 @@ export function PropertiesMap({ properties }: PropertiesMapProps) {
 // Assuming you have access to a set of icons (like Heroicons, Lucide, or simply Unicode)
 // For this example, I'll use simple Unicode symbols (🛏️, 🛁, 🔲) which can be easily replaced.
 
-const PropertyCard = ({
+// Generate a random ID from title if not provided
+function generateId(title: string): string {
+  // Create a simple hash from the title and add random number
+  const hash = title
+    .split('')
+    .reduce((acc, char) => ((acc << 5) - acc + char.charCodeAt(0)) | 0, 0);
+  const random = Math.floor(Math.random() * 10000);
+  return `${Math.abs(hash)}-${random}`;
+}
+
+export const PropertyCard = ({
   imageUrl,
   title,
   beds,
   baths,
   area,
+  id,
 }: PropertyCardProps) => {
+  const propertyId = id || generateId(title);
+
   return (
-    <div className="flex rounded-md w-full max-w-full overflow-hidden text-gray-800 bg-white p-1">
-      <div className="relative w-[110px] h-[80px] shrink-0">
-        <Image
-          src={imageUrl}
-          alt={title}
-          fill
-          className="object-cover rounded-l-md"
-        />
-      </div>
+    <Link href={`/properties/${propertyId}`} className="block">
+      <div className="flex rounded-md w-full max-w-full overflow-hidden text-gray-800 bg-white p-1 cursor-pointer hover:bg-gray-50 transition-colors">
+        <div className="relative w-[110px] h-[80px] shrink-0">
+          <Image
+            src={imageUrl}
+            alt={title}
+            fill
+            className="object-cover rounded-l-md"
+          />
+        </div>
 
-      <div className="flex-1 min-w-0 p-3 flex flex-col justify-between">
-        <h3 className="text-sm font-semibold leading-tight mb-2 line-clamp-2">
-          {title}
-        </h3>
+        <div className="flex-1 min-w-0 p-3 flex flex-col justify-between">
+          <h3 className="text-sm font-semibold leading-tight mb-2 line-clamp-2">
+            {title}
+          </h3>
 
-        <div className="flex items-center justify-between gap-1 text-xs text-gray-600">
-          <div className="flex items-center gap-1 min-w-0">
-            <Bed className="h-4 w-4 shrink-0" />
-            <span className="font-medium">{beds} Beds</span>
-          </div>
+          <div className="flex items-center justify-between gap-1 text-xs text-gray-600">
+            <div className="flex items-center gap-1 min-w-0">
+              <Bed className="h-4 w-4 shrink-0" />
+              <span className="font-medium">{beds} Beds</span>
+            </div>
 
-          <div className="h-4 w-px bg-gray-200 shrink-0" />
+            <div className="h-4 w-px bg-gray-200 shrink-0" />
 
-          <div className="flex items-center gap-1 min-w-0">
-            <Bath className="h-4 w-4 shrink-0" />
-            <span className="font-medium">{baths} Baths</span>
-          </div>
+            <div className="flex items-center gap-1 min-w-0">
+              <Bath className="h-4 w-4 shrink-0" />
+              <span className="font-medium">{baths} Baths</span>
+            </div>
 
-          <div className="h-4 w-px bg-gray-200 shrink-0" />
+            <div className="h-4 w-px bg-gray-200 shrink-0" />
 
-          <div className="flex items-center gap-1 min-w-0">
-            <Maximize className="h-4 w-4 shrink-0" />
-            <span className="font-medium">{area} sqft</span>
+            <div className="flex items-center gap-1 min-w-0">
+              <Maximize className="h-4 w-4 shrink-0" />
+              <span className="font-medium">{area} sqft</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
