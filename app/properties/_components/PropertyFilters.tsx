@@ -42,7 +42,7 @@ export function PropertyFilters() {
         </div>
 
         {/* View Toggle */}
-        <div className="flex items-center gap-2 bg-gray-100 p-1.5 rounded-full shrink-0">
+        <div className="flex items-center justify-center max-w-[185px] ml-4 gap-2 bg-gray-100 p-1.5 rounded-full shrink-0 ">
           {(['list', 'map'] as Filters['view'][]).map((view) => {
             const isActive = filters.view === view;
             const Icon = view === 'list' ? LayoutGrid : MapPin;
