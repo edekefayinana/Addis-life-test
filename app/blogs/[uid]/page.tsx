@@ -4,6 +4,9 @@ import Image from 'next/image';
 import { AgentBanner } from '../../_components/AgentBanner';
 import { filter } from '@prismicio/client';
 import BlogContent from '../_components/BlogContent';
+import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
+import LatestBlogs from '../_components/LatestBlogs';
 
 type Params = { uid: string };
 
@@ -29,14 +32,21 @@ export default async function BlogDetails({
 
   return (
     <main className="flex flex-col gap-10 py-14 mx-auto px-4">
-      <div className="mx-auto w-full flex flex-col items-center justify-center max-w-[892px] gap-4">
+      <div className="relative mx-auto w-full flex flex-col items-center justify-center max-w-[892px] gap-4">
+        <Link
+          href={'/blogs'}
+          className="absolute hidden lg:flex items-center gap-2 rounded-full border py-1 shadow px-4 top-0 -left-44"
+        >
+          <ArrowLeft className="size-4" />
+          Back
+        </Link>
         <h1 className="text-3xl lg:text-5xl font-semibold leading-tight text-center">
           {blog.data.title}
         </h1>
-        <div className="flex items-center gap-4 text-description">
-          <p>{blog.data.author}</p>
-          <span>•</span>
-          <p>
+        <div className="flex flex-col md:flex-row items-center md:gap-4 text-description">
+          <p className="text-sm lg:text-base">{blog.data.author}</p>
+          <span className="text-sm lg:text-base">•</span>
+          <p className="text-sm lg:text-base">
             {new Date(blog.data.published_at as string).toLocaleDateString(
               'en-US',
               {
@@ -58,7 +68,11 @@ export default async function BlogDetails({
         />
       </div>
 
-      <BlogContent content={blog.data.blog_content} />
+      <BlogContent
+        content={blog.data.blog_content}
+        title={blog.data.title as string}
+      />
+      <LatestBlogs />
 
       <AgentBanner />
     </main>

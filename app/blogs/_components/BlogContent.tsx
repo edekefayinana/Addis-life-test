@@ -8,6 +8,7 @@ import Image from 'next/image';
 
 interface BlogContentProps {
   content: RichTextField;
+  title: string;
 }
 
 // Define specific node types for Prismic Rich Text
@@ -40,7 +41,7 @@ const slugify = (text: string) => {
     .replace(/(^-|-$)+/g, '');
 };
 
-export default function BlogContent({ content }: BlogContentProps) {
+export default function BlogContent({ content, title }: BlogContentProps) {
   const [activeSection, setActiveSection] = useState('');
   const tocRefs = useRef<{ [key: string]: HTMLElement | null }>({});
 
@@ -51,10 +52,13 @@ export default function BlogContent({ content }: BlogContentProps) {
       .filter((node: RTNode): node is HeadingNode =>
         ['heading1', 'heading2', 'heading3'].includes(node.type)
       )
-      .map((node: HeadingNode) => ({
-        id: slugify(node.text),
-        title: node.text,
-      }));
+      .map((node) => {
+        const heading = node as HeadingNode;
+        return {
+          id: slugify(heading.text),
+          title: heading.text,
+        };
+      });
   }, [content]);
 
   useEffect(() => {
@@ -147,6 +151,7 @@ export default function BlogContent({ content }: BlogContentProps) {
           activeSection={activeSection}
           onLinkClick={handleLinkClick}
           tocRefs={tocRefs}
+          title={title}
         />
       )}
 
