@@ -1,17 +1,9 @@
 import BlogCard from '../../_components/BlogCard';
-
-export type Blog = {
-  id: number;
-  title: string;
-  description: string;
-  date: string;
-  image: string;
-  slug: string;
-};
+import { Blog } from '@/types/blog';
 
 export const PropertyMockData: Blog[] = [
   {
-    id: 1,
+    id: '1',
     title: 'Finding Your Ideal Property: What Matters Most?',
     description:
       'Learn how to choose the perfect home by focus on location, budget, and lifestyle needs',
@@ -20,7 +12,7 @@ export const PropertyMockData: Blog[] = [
     slug: 'finding-your-ideal-property-what-matters-most',
   },
   {
-    id: 2,
+    id: '2',
     title: 'Investing in Addis Ababa Real Estate: Tips for Success',
     description:
       'Discover strategies to make smart property investments and maximize returns.',
@@ -29,7 +21,7 @@ export const PropertyMockData: Blog[] = [
     slug: 'investing-in-addis-ababa-real-estate-tips-for-success',
   },
   {
-    id: 3,
+    id: '3',
     title: 'Top Neighborhoods to Watch This Year',
     description:
       'Explore the hottest areas in the city for living, investing, and future growth.',
@@ -38,7 +30,7 @@ export const PropertyMockData: Blog[] = [
     slug: 'top-neighborhoods-to-watch-this-year',
   },
   {
-    id: 4,
+    id: '4',
     title: 'Investing in Addis Ababa Real Estate: Tips for Success ',
     description:
       'Discover strategies to make smart property investments and maximize returns.',

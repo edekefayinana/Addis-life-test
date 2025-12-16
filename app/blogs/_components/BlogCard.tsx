@@ -1,5 +1,5 @@
 import React from 'react';
-import { Blog } from '../finding-your-ideal-property-what-matters-most/_components/LatestListings';
+import { Blog } from '@/types/blog';
 import Image from 'next/image';
 import Link from 'next/link';
 

@@ -1,18 +1,22 @@
 import React from 'react';
-import { PropertyMockData } from '../finding-your-ideal-property-what-matters-most/_components/LatestListings';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Blog } from '@/types/blog';
 
-export default function FeaturedLists() {
-  const featuredBlog = PropertyMockData[0];
+export default function FeaturedLists({ blogs }: { blogs: Blog[] }) {
+  if (!blogs || blogs.length === 0) {
+    return null;
+  }
 
-  const latestBlogs = PropertyMockData.slice(1, 4);
+  const featuredBlog = blogs[0];
+  const latestBlogs = blogs.slice(1, 4);
+
   return (
     <div className="flex flex-col gap-3 lg:gap-8 max-w-[1212px] mx-auto px-3 xl:px-0 py-10">
       <p className="text-2xl lg:text-3xl font-semibold">Our Latest Articles</p>
       <div className="flex mx-auto flex-col items-start justify-center lg:flex-row gap-6 lg:gap-8 w-full">
-        <div className="flex w-full lg:w-1/2 border rounded-3xl p-2">
-          <div className="flex flex-col h-full gap-4 lg:gap-6 pb-2">
+        <div className="flex h-full w-full lg:w-1/2 border rounded-3xl p-2">
+          <div className="flex flex-col h-full gap-4 lg:gap-6 pb-5">
             <Link
               href={`/blogs/${featuredBlog.slug}`}
               className="relative w-full aspect-[16/11] max-h-[378px] rounded-2xl overflow-hidden hover:opacity-95 transition-opacity"
@@ -24,12 +28,12 @@ export default function FeaturedLists() {
                 className="object-cover"
               />
             </Link>
-            <div className="flex flex-col gap-3 px-3">
+            <div className="flex justify-between flex-col gap-4 px-3">
               <Link
                 href={`/blogs/${featuredBlog.slug}`}
                 className="text-xl lg:text-2xl hover:opacity-80 font-semibold leading-[135%]"
               >
-                Investing in Addis Ababa Real Estate: Tips for Success
+                {featuredBlog.title}
               </Link>
               <p className="text-base font-normal text-description leading-relaxed">
                 {featuredBlog.description}
@@ -41,29 +45,25 @@ export default function FeaturedLists() {
           </div>
         </div>
         <div className="flex w-full lg:w-1/2">
-          <div className="flex flex-col gap-4 lg:gap-5 w-full">
+          <div className="flex flex-col gap-4 w-full">
             {latestBlogs.map((blog) => (
-              <div
-                key={blog.title}
-                className="flex gap-5 border rounded-2xl p-2"
-              >
+              <div key={blog.id} className="flex gap-5 border rounded-2xl p-2">
                 <Link
                   href={`/blogs/${blog.slug}`}
-                  className="flex-shrink-0  rounded-xl overflow-hidden hover:opacity-95 transition-opacity"
+                  className="flex-shrink-0 relative w-[196px] h-[167px] rounded-xl overflow-hidden hover:opacity-95 transition-opacity"
                 >
                   <Image
                     src={blog.image}
                     alt={blog.title}
-                    width={196}
-                    height={167}
-                    className="object-cover w-full h-full rounded-2xl max-w-[196px] max-h-[167px] "
+                    fill
+                    className="object-cover rounded-2xl"
                   />
                 </Link>
                 <div className="flex flex-col justify-between py-1">
                   <div className="flex flex-col gap-1 lg:gap-3">
                     <Link
                       href={`/blogs/${blog.slug}`}
-                      className="text-lg hover:opacity-80 md:text-xl font-semibold line-clamp-3 lg:line-clamp-2 font-gilroy leading-snug"
+                      className="text-lg hover:opacity-80 md:text-xl font-semibold line-clamp-3 lg:line-clamp-2 font-instrument leading-snug"
                     >
                       {blog.title}
                     </Link>
