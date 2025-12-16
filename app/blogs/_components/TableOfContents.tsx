@@ -1,12 +1,21 @@
 'use client';
+
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
+import {
+  Facebook,
+  Linkedin,
+  Twitter,
+  Link as LinkIcon,
+  Check,
+} from 'lucide-react';
 
 interface TableOfContentsProps {
   sections: { id: string; title: string }[];
   activeSection: string;
   onLinkClick: (id: string) => void;
   tocRefs: React.RefObject<{ [key: string]: HTMLElement | null }>;
+  title: string;
 }
 
 export default function TableOfContents({
@@ -14,7 +23,28 @@ export default function TableOfContents({
   activeSection,
   onLinkClick,
   tocRefs,
+  title,
 }: TableOfContentsProps) {
+  const [currentUrl, setCurrentUrl] = useState('');
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setCurrentUrl(window.location.href);
+    }
+  }, []);
+
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(currentUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
+  };
+
   return (
     <div className="hidden lg:block w-[271px] min-h-screen h-auto">
       <div className="sticky top-20 flex flex-col gap-10 h-auto max-h-[calc(100vh-2rem)] overflow-y-auto">
@@ -52,26 +82,43 @@ export default function TableOfContents({
 
         <h3 className="text-xl font-semibold">Share Article</h3>
         <div className="flex gap-3">
-          <Link
-            href="/"
-            className="size-10 flex items-center justify-center rounded-full p-2.5 bg-gradient-to-tr from-[#833ab4] via-[#fd1d1d] to-[#fcb045] text-white"
+          <button
+            onClick={handleCopyLink}
+            className="size-10 flex items-center justify-center rounded-full p-2.5 bg-gray-600 text-white transition-colors hover:bg-gray-700"
+            title="Copy Link"
           >
-            <Instagram className="text-white" />
-          </Link>
+            {copied ? (
+              <Check className="text-white" />
+            ) : (
+              <LinkIcon className="text-white" />
+            )}
+          </button>
           <Link
-            href="/"
+            href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+              currentUrl
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
             className="size-10 flex items-center justify-center rounded-full p-2.5 bg-[#0066C8] text-white"
           >
             <Linkedin className="text-white" />
           </Link>
           <Link
-            href="/"
+            href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+              currentUrl
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
             className="size-10 flex items-center justify-center rounded-full p-2.5 bg-[#1877F2] text-white"
           >
             <Facebook className="text-white" />
           </Link>
           <Link
-            href="/"
+            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+              title
+            )}&url=${encodeURIComponent(currentUrl)}`}
+            target="_blank"
+            rel="noopener noreferrer"
             className="size-10 flex items-center justify-center rounded-full p-2.5 bg-black text-white"
           >
             <Twitter className="text-white" />

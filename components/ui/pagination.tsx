@@ -38,6 +38,8 @@ type PaginationLinkProps = {
 } & Pick<React.ComponentProps<typeof Button>, 'size'> &
   React.ComponentProps<'a'>;
 
+import Link from 'next/link';
+
 function PaginationLink({
   className,
   isActive,
@@ -45,12 +47,19 @@ function PaginationLink({
   ...props
 }: PaginationLinkProps) {
   return (
-    <a
+    <Link
       aria-current={isActive ? 'page' : undefined}
       data-slot="pagination-link"
       data-active={isActive}
-      className={cn('px-4 py-3 border rounded-full', className)}
-      {...props}
+      className={cn(
+        'px-4 py-3 border rounded-full transition-colors',
+        isActive
+          ? 'border-2 bg-black/5 border-black font-bold'
+          : 'border-transparent hover:border-border',
+        className
+      )}
+      scroll={false}
+      {...(props as React.ComponentProps<typeof Link>)}
     />
   );
 }
