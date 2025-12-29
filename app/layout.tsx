@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { Geist, Geist_Mono, Instrument_Sans } from 'next/font/google';
 import './globals.css';
 import { cn } from '@/lib/utils';
+import { ScrollToTop } from '@/components/ScrollToTop';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -25,10 +26,6 @@ export const metadata: Metadata = {
     'Addis Life | Modern Next.js app following server-component-first, design system, and shadcn-inspired patterns.',
 };
 
-import { ScrollToTop } from '@/components/ScrollToTop';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -38,15 +35,13 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          'min-h-screen bg-background text-foreground font-sans antialiased m-1 lg:m-4',
+          'min-h-screen bg-background text-foreground font-sans antialiased',
           geistSans.variable,
           geistMono.variable,
           instrumentSans.variable
         )}
       >
-        <Header />
         {children}
-        <Footer />
         <ScrollToTop />
       </body>
     </html>
