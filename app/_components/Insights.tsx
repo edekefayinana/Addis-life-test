@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
-import BlogCard from '../blogs/_components/BlogCard';
+import BlogCard from '../(main)/blogs/_components/BlogCard';
 import type { Blog } from '@/types/blog';
 
 const insights: Blog[] = [
