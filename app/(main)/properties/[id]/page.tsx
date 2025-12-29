@@ -2,6 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
+import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import {
@@ -25,7 +26,8 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { PropertyCard } from '@/components/PropertyCard';
-import { cn } from '@/lib/utils';
+import propertiesData from '@/data/african Union 2 site-all units';
+import { cn, truncate } from '@/lib/utils';
 
 const LeafletMap = dynamic(
   () => import('./_components/LeafletMap').then((m) => m.LeafletMap),
@@ -33,10 +35,19 @@ const LeafletMap = dynamic(
 );
 
 export default function PropertyPage() {
+  const params = useParams() as { id?: string };
+  function slugify(title: string): string {
+    return title
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
   const [activeTab, setActiveTab] = useState<'overview' | 'video' | 'virtual'>(
     'overview'
   );
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [overviewExpanded, setOverviewExpanded] = useState(false);
 
   const virtualTourImages = [
     { src: '/property-1.jpg', label: 'Living Room' },
@@ -54,74 +65,93 @@ export default function PropertyPage() {
     '/hero-image.jpg',
   ];
 
-  const amenities = [
-    { name: 'Elevator', icon: true },
-    { name: 'Garbage Shoot', icon: true },
-    { name: "Kid's Zone", icon: true },
-    { name: 'Parking Space', icon: true },
-    { name: 'CCTV Surveillance', icon: true },
-    { name: 'Green Terrace', icon: true },
-    { name: 'EV Charging Station', icon: true },
-    { name: 'Water Storage', icon: true },
-    { name: 'Parking Spot', icon: true },
-  ];
+  const currentProperty =
+    propertiesData.find((p) =>
+      params.id ? slugify(p.title) === params.id : false
+    ) || propertiesData[0];
 
-  const locations = [
-    { distance: '5 min to supermarket', icon: true },
-    { distance: '10 min to schools', icon: true },
-    { distance: '24/7 transport access', icon: true },
-  ];
+  const amenities = currentProperty.amenities.map((name) => ({
+    name,
+    icon: true,
+  }));
+
+  const locations = currentProperty.location_and_surroundings.nearby_places.map(
+    (place) => ({
+      distance: place,
+      icon: true,
+    })
+  );
 
   const propertyDetails = [
-    { label: 'Built from', value: '2023 Year', icon: Calendar },
-    { label: 'Property Type', value: 'Residential', icon: HomeIcon },
-    { label: 'Price Per M²', value: '78,000 ETB', icon: DollarSign },
-    { label: 'Work Level', value: 'Excavation to begin', icon: Clock },
+    {
+      label: 'Built from',
+      value: currentProperty.overview.built_start_date,
+      icon: Calendar,
+    },
+    {
+      label: 'Property Type',
+      value: currentProperty.overview.property_type,
+      icon: HomeIcon,
+    },
+    { label: 'Price Per M²', value: 'N/A', icon: DollarSign },
+    {
+      label: 'Work Level',
+      value: currentProperty.overview.current_status,
+      icon: Clock,
+    },
   ];
 
-  const otherListings = [
-    {
-      title: 'Vatican site - Three BedRoom Apartment',
-      location: 'Sarbet Blue Point, Sarbet',
-      beds: 4,
-      baths: 2,
-      sqft: 450,
-      image: '/pro-4.jpg',
-    },
-    {
-      title: 'Vatican site - Three BedRoom Apartment',
-      location: 'Sarbet Blue Point, Sarbet',
-      beds: 4,
-      baths: 2,
-      sqft: 450,
-      image: '/pro-5.jpg',
-    },
-    {
-      title: 'Vatican site - Three BedRoom Apartment',
-      location: 'Sarbet Blue Point, Sarbet',
-      beds: 4,
-      baths: 2,
-      sqft: 450,
-      image: '/pro-6.jpg',
-    },
-  ];
+  // Using shared properties dataset for "Other Latest Listings"
+
+  const availableFloors = Array.isArray(
+    currentProperty.property_details.available_floors
+  )
+    ? currentProperty.property_details.available_floors.join(', ')
+    : currentProperty.property_details.available_floors;
 
   const propertySpecs = [
-    { label: 'Total Bedroom', value: '3 Bedroom' },
-    { label: 'Furnishing', value: '3 Bedroom' },
-    { label: 'Total Bathroom', value: '2 Bathroom' },
-    { label: 'Kitchen', value: 'Modern & Traditional kitchen' },
-    { label: 'Carport/Parking Space', value: '2 Car Garage' },
-    { label: 'Outdoor Space', value: 'Private' },
-    { label: 'Building Size', value: 'G+20+T' },
-    { label: 'Area Size', value: '450 sqft' },
-    { label: 'Delivery Time', value: '36 Months' },
+    {
+      label: 'Total Bedroom',
+      value: `${currentProperty.property_details.total_bedrooms} Bedroom`,
+    },
+    {
+      label: 'Total Bathroom',
+      value: `${currentProperty.property_details.total_bathrooms} Bathroom`,
+    },
+    {
+      label: 'Carport/Parking Space',
+      value: `${currentProperty.property_details.parking_space} Parking`,
+    },
+    { label: 'Available Floors', value: `${availableFloors}` },
+    {
+      label: 'Building Size',
+      value: currentProperty.property_details.building_size,
+    },
+    {
+      label: 'Area Size',
+      value: `${currentProperty.property_details.area_size_m2} m²`,
+    },
+    {
+      label: 'Delivery Time',
+      value: currentProperty.property_details.delivery_time,
+    },
   ];
 
   const propertyLocation = {
-    coords: [9.0108, 38.7546] as [number, number],
-    address: 'Sarbet Blue Point, Sarbet, Addis Ababa Ethiopia',
+    coords: [
+      currentProperty.location.latitude,
+      currentProperty.location.longitude,
+    ] as [number, number],
+    address: `${currentProperty.location.address}, ${currentProperty.location.city}, ${currentProperty.location.country}`,
   };
+
+  const nearbySummary = currentProperty.location_and_surroundings.nearby_places
+    .slice(0, 4)
+    .join(', ');
+  const overviewTextFull = `${currentProperty.title} is a ${currentProperty.overview.property_type.toLowerCase()} property featuring ${currentProperty.property_details.total_bedrooms} bedrooms, ${currentProperty.property_details.total_bathrooms} bathrooms, and ${currentProperty.property_details.area_size_m2} m² of space. Building size: ${currentProperty.property_details.building_size}. Current status: ${currentProperty.overview.current_status}. Estimated delivery: ${currentProperty.property_details.delivery_time}. Located at ${currentProperty.location.address}, ${currentProperty.location.city}. Nearby: ${nearbySummary}.`;
+  const displayedOverview = overviewExpanded
+    ? overviewTextFull
+    : truncate(overviewTextFull, 240);
 
   return (
     <div className="min-h-screen bg-background mt-[70px]">
@@ -131,20 +161,26 @@ export default function PropertyPage() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <div className="flex-1 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
             <h1 className="text-2xl sm:text-3xl font-semibold text-foreground mb-0">
-              Vatican site - Three BedRoom Apartment
+              {truncate(currentProperty.title, 40)}
             </h1>
             <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
               <div className="flex items-center gap-2 bg-accent py-2 sm:py-3 px-4 sm:px-5 rounded-full">
                 <Bed className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
-                <span className="text-xs sm:text-sm font-medium">3 Beds</span>
+                <span className="text-xs sm:text-sm font-medium">
+                  {currentProperty.property_details.total_bedrooms} Beds
+                </span>
               </div>
               <div className="flex items-center gap-2 bg-accent py-2 sm:py-3 px-4 sm:px-5 rounded-full">
                 <Bath className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
-                <span className="text-xs sm:text-sm font-medium">2 Baths</span>
+                <span className="text-xs sm:text-sm font-medium">
+                  {currentProperty.property_details.total_bathrooms} Baths
+                </span>
               </div>
               <div className="flex items-center gap-2 bg-accent py-2 sm:py-3 px-4 sm:px-5 rounded-full">
                 <Maximize2 className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
-                <span className="text-xs sm:text-sm font-medium">450 sqft</span>
+                <span className="text-xs sm:text-sm font-medium">
+                  {currentProperty.property_details.area_size_m2} m²
+                </span>
               </div>
             </div>
           </div>
@@ -286,7 +322,7 @@ export default function PropertyPage() {
 
         {activeTab === 'overview' && (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 sm:mb-12">
-            <div className="overflow-hidden relative aspect-[4/3] rounded-xl sm:rounded-l-xl sm:rounded-bl-xl">
+            <div className="overflow-hidden relative aspect-4/3 rounded-xl sm:rounded-l-xl sm:rounded-bl-xl">
               <Image
                 src={propertyImages[0] || '/placeholder.svg'}
                 alt="Building Exterior"
@@ -296,10 +332,7 @@ export default function PropertyPage() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               {propertyImages.slice(1, 5).map((img, idx) => (
-                <div
-                  key={idx}
-                  className="overflow-hidden relative aspect-[4/3]"
-                >
+                <div key={idx} className="overflow-hidden relative aspect-4/3">
                   <Image
                     src={img || '/placeholder.svg'}
                     alt={`Interior ${idx + 1}`}
@@ -336,17 +369,13 @@ export default function PropertyPage() {
                 Overview
               </h2>
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-4">
-                This three-bedroom apartment for sale in Ethiopia offers a
-                spacious and thoughtfully designed living environment, perfect
-                for families or individuals seeking comfort and style. The
-                apartment features three well-appointed bedrooms, providing
-                ample space, including the option to create a home office or add
-                extra storage. Residents also enjoy 0,700 sq.ft of alerts also
-                enjoy 0,700 sq.ft of common area including terraces, a 750 sq.ft
-                garden for...
+                {displayedOverview}
               </p>
-              <button className="text-primary font-medium text-xs sm:text-sm flex items-center gap-1">
-                Show more
+              <button
+                onClick={() => setOverviewExpanded((prev) => !prev)}
+                className="text-primary font-medium text-xs sm:text-sm flex items-center gap-1"
+              >
+                {overviewExpanded ? 'Show less' : 'Show more'}
                 <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
               </button>
             </section>
@@ -459,11 +488,11 @@ export default function PropertyPage() {
               <LeafletMap
                 position={propertyLocation.coords}
                 address={propertyLocation.address}
-                title="Vatican site - Three BedRoom Apartment"
+                title={currentProperty.title}
                 imageUrl="/property-1.jpg"
-                beds={3}
-                baths={2}
-                area={450}
+                beds={currentProperty.property_details.total_bedrooms}
+                baths={currentProperty.property_details.total_bathrooms}
+                area={currentProperty.property_details.area_size_m2}
               />
             </section>
 
@@ -582,17 +611,12 @@ export default function PropertyPage() {
           Other Latest Listings
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {otherListings.map((listing, idx) => (
-            <PropertyCard
-              key={idx}
-              title={listing.title}
-              location={listing.location}
-              beds={listing.beds}
-              baths={listing.baths}
-              area={listing.sqft}
-              imageUrl={listing.image}
-            />
-          ))}
+          {propertiesData
+            .filter((p) => slugify(p.title) !== slugify(currentProperty.title))
+            .slice(0, 3)
+            .map((prop, idx) => (
+              <PropertyCard key={idx} {...prop} />
+            ))}
         </div>
       </section>
     </div>
