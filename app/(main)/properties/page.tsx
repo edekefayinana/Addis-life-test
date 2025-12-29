@@ -4,7 +4,7 @@ import { PropertyFilters } from './_components/PropertyFilters';
 import { Pagination } from './_components/Pagination';
 import { PropertiesMapView } from './_components/PropertiesMapView';
 import { PropertyCard } from '@/components/PropertyCard';
-import { featuredProperties, type Listing } from '@/data/featuredProperties';
+import data, { Listing } from '@/data/african Union 2 site-all units';
 
 export const metadata: Metadata = {
   title: 'Properties | Addis Life',
@@ -33,7 +33,7 @@ export default async function PropertiesPage({
   const page = Math.max(Number(params?.page ?? '1'), 1);
   const currentView = view === 'map' ? 'map' : 'list';
 
-  const filtered = filterListings(featuredProperties, {
+  const filtered = filterListings(data, {
     location,
     type,
     bedrooms,
@@ -81,16 +81,19 @@ function filterListings(
     price?: string;
   }
 ) {
-  const { location, type, bedrooms, price } = filters;
+  const { location, type, bedrooms } = filters;
   return listings.filter((item) => {
     const matchesLocation = location
-      ? item.location.toLowerCase().includes(location.toLowerCase())
+      ? item.location.address.toLowerCase().includes(location.toLowerCase())
       : true;
     const matchesType = type
-      ? item.type?.toLowerCase().includes(type.toLowerCase())
+      ? item.overview.property_type.toLowerCase().includes(type.toLowerCase())
       : true;
-    const matchesBeds = bedrooms ? item.beds === Number(bedrooms) : true;
-    const matchesPrice = price ? item.priceBand === price : true;
+    const matchesBeds = bedrooms
+      ? item.property_details.total_bedrooms === Number(bedrooms)
+      : true;
+    // No price field available in current data shape; ignore price filter for now
+    const matchesPrice = true;
     return matchesLocation && matchesType && matchesBeds && matchesPrice;
   });
 }

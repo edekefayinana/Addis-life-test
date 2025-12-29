@@ -6,7 +6,7 @@ import { ProjectListings } from '../_components/ProjectListings';
 import { Testimonials } from '../_components/Testimonials';
 import { Insights } from '../_components/Insights';
 import { AgentBanner } from '../_components/AgentBanner';
-import { featuredProperties } from '@/data/featuredProperties';
+import propertiesData from '@/data/african Union 2 site-all units';
 
 export default function HomePage() {
   return (
@@ -15,7 +15,7 @@ export default function HomePage() {
       <PropertyCarousel
         title="Find Your Perfect Property"
         description="Browse top real estate options across Ethiopia . From modern apartments to luxury villas."
-        properties={featuredProperties}
+        properties={propertiesData}
       />
       <DeveloperSection />
       <ExpertiseSection />
