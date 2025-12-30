@@ -536,10 +536,10 @@ export default function PropertyPage() {
                 position={propertyLocation.coords}
                 address={propertyLocation.address}
                 title={currentProperty.title}
-                imageUrl="/property-1.jpg"
                 beds={currentProperty.property_details.total_bedrooms}
                 baths={currentProperty.property_details.total_bathrooms}
                 area={currentProperty.property_details.area_size_m2}
+                imagesFolder={currentProperty.imagesFolder}
               />
             </section>
 

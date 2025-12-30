@@ -26,20 +26,20 @@ type LeafletMapProps = {
   position: [number, number];
   address?: string;
   title?: string;
-  imageUrl?: string;
   beds?: number;
   baths?: number;
   area?: number;
+  imagesFolder?: string;
 };
 
 export function LeafletMap({
   position,
   address,
   title,
-  imageUrl,
   beds,
   baths,
   area,
+  imagesFolder,
 }: LeafletMapProps) {
   const markerIcon = useMemo(() => {
     if (typeof window === 'undefined') return null;
@@ -80,12 +80,33 @@ export function LeafletMap({
           >
             <div className="w-[380px] p-0">
               <PropertyCard
-                title={title || 'Property Location'}
-                location={address || 'Unknown Address'}
-                beds={beds || 0}
-                baths={baths || 0}
-                area={area || 0}
-                imageUrl={imageUrl || '/placeholder-property.jpg'}
+                {...{
+                  title: title || 'Property Location',
+                  overview: {
+                    built_start_date: '',
+                    property_type: 'Residential',
+                    current_status: '',
+                  },
+                  property_details: {
+                    total_bedrooms: beds || 0,
+                    total_bathrooms: baths || 0,
+                    parking_space: 0,
+                    area_size_m2: area || 0,
+                    available_floors: 'Not Available',
+                    building_size: '',
+                    delivery_time: '',
+                  },
+                  amenities: [],
+                  location_and_surroundings: { nearby_places: [] },
+                  location: {
+                    address: address || 'Unknown Address',
+                    city: '',
+                    country: '',
+                    longitude: position[1],
+                    latitude: position[0],
+                  },
+                  imagesFolder,
+                }}
               />
             </div>
           </Popup>

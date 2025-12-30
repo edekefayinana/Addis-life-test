@@ -5,9 +5,9 @@ import { useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import L from 'leaflet';
-import type { Listing } from '@/data/featuredProperties';
-import type { PropertyCardProps } from '@/components/PropertyCard';
+import type { PropertyCardProps as Listing } from '@/components/PropertyCard';
 import { Bath, Bed, Maximize } from 'lucide-react';
+import { buildPublicPaths } from '@/data/au2ImagesManifest';
 
 import 'leaflet/dist/leaflet.css';
 
@@ -84,7 +84,9 @@ export function PropertiesMap({ properties }: PropertiesMapProps) {
   const center: [number, number] = useMemo(() => {
     if (properties.length === 0) return [9.0108, 38.7546]; // Default Addis Ababa center
 
-    const coords = properties.map((p) => getCoordinatesForLocation(p.location));
+    const coords = properties.map((p) =>
+      getCoordinatesForLocation(p.location.address)
+    );
     const avgLat = coords.reduce((sum, [lat]) => sum + lat, 0) / coords.length;
     const avgLng =
       coords.reduce((sum, [, lng]) => sum + lng, 0) / coords.length;
@@ -113,7 +115,7 @@ export function PropertiesMap({ properties }: PropertiesMapProps) {
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
         {properties.map((property, idx) => {
-          const coords = getCoordinatesForLocation(property.location);
+          const coords = getCoordinatesForLocation(property.location.address);
           return (
             <Marker key={idx} position={coords} icon={markerIcon}>
               <Popup
@@ -138,31 +140,34 @@ export function PropertiesMap({ properties }: PropertiesMapProps) {
 // For this example, I'll use simple Unicode symbols (🛏️, 🛁, 🔲) which can be easily replaced.
 
 // Generate a random ID from title if not provided
-function generateId(title: string): string {
+function slugify(title: string): string {
   // Create a simple hash from the title and add random number
-  const hash = title
-    .split('')
-    .reduce((acc, char) => ((acc << 5) - acc + char.charCodeAt(0)) | 0, 0);
-  const random = Math.floor(Math.random() * 10000);
-  return `${Math.abs(hash)}-${random}`;
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }
 
 export const PropertyCard = ({
-  imageUrl,
   title,
-  beds,
-  baths,
-  area,
-  id,
-}: PropertyCardProps) => {
-  const propertyId = id || generateId(title);
+  property_details,
+  imagesFolder,
+}: Listing) => {
+  const propertyId = slugify(title);
+  const beds = property_details.total_bedrooms;
+  const baths = property_details.total_bathrooms;
+  const area = property_details.area_size_m2;
+  const resolvedImage = imagesFolder
+    ? (buildPublicPaths(imagesFolder)[0] ?? '/property-1.jpg')
+    : '/property-1.jpg';
 
   return (
     <Link href={`/properties/${propertyId}`} className="block">
       <div className="flex rounded-md w-full max-w-full overflow-hidden text-gray-800 bg-white p-1 cursor-pointer hover:bg-gray-50 transition-colors">
-        <div className="relative w-[110px] h-[80px] shrink-0">
+        <div className="relative w-[110px] h-20 shrink-0">
           <Image
-            src={imageUrl}
+            src={resolvedImage}
             alt={title}
             fill
             className="object-cover rounded-l-md"
@@ -191,7 +196,7 @@ export const PropertyCard = ({
 
             <div className="flex items-center gap-1 min-w-0">
               <Maximize className="h-4 w-4 shrink-0" />
-              <span className="font-medium">{area} sqft</span>
+              <span className="font-medium">{area} m²</span>
             </div>
           </div>
         </div>
