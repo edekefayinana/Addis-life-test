@@ -1,7 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -24,9 +24,11 @@ import {
   MapPin,
   Check,
   ExternalLink,
+  X,
 } from 'lucide-react';
 import { PropertyCard } from '@/components/PropertyCard';
 import propertiesData from '@/data/african Union 2 site-all units';
+import { buildPublicPaths } from '@/data/au2ImagesManifest';
 import { cn, truncate } from '@/lib/utils';
 
 const LeafletMap = dynamic(
@@ -48,6 +50,8 @@ export default function PropertyPage() {
   );
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [overviewExpanded, setOverviewExpanded] = useState(false);
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
+  const [galleryIndex, setGalleryIndex] = useState(0);
 
   const virtualTourImages = [
     { src: '/property-1.jpg', label: 'Living Room' },
@@ -56,19 +60,54 @@ export default function PropertyPage() {
     { src: '/pro-4.jpg', label: 'Bathroom' },
   ];
 
-  const propertyImages = [
-    '/property-1.jpg',
-    '/property-2.jpg',
-    '/property-3.jpg',
-    '/hero-image.jpg',
-    '/hero-image.jpg',
-    '/hero-image.jpg',
-  ];
+  // propertyImages will be derived after resolving currentProperty
 
   const currentProperty =
     propertiesData.find((p) =>
       params.id ? slugify(p.title) === params.id : false
     ) || propertiesData[0];
+
+  const propertyImages = currentProperty.imagesFolder
+    ? buildPublicPaths(currentProperty.imagesFolder)
+    : [
+        '/property-1.jpg',
+        '/property-2.jpg',
+        '/property-3.jpg',
+        '/hero-image.jpg',
+      ];
+
+  // Keyboard navigation for gallery: Escape to close, arrows to navigate
+  useEffect(() => {
+    if (!isGalleryOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        setIsGalleryOpen(false);
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        setGalleryIndex((i) => (i + 1) % propertyImages.length);
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        setGalleryIndex(
+          (i) => (i - 1 + propertyImages.length) % propertyImages.length
+        );
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [isGalleryOpen, propertyImages.length]);
+
+  const openGallery = (index = 0) => {
+    setGalleryIndex(index);
+    setIsGalleryOpen(true);
+  };
+  const closeGallery = () => setIsGalleryOpen(false);
+  const nextGalleryImage = () =>
+    setGalleryIndex((i) => (i + 1) % propertyImages.length);
+  const prevGalleryImage = () =>
+    setGalleryIndex(
+      (i) => (i - 1 + propertyImages.length) % propertyImages.length
+    );
 
   const amenities = currentProperty.amenities.map((name) => ({
     name,
@@ -327,12 +366,17 @@ export default function PropertyPage() {
                 src={propertyImages[0] || '/placeholder.svg'}
                 alt="Building Exterior"
                 fill
-                className="object-cover"
+                className="object-cover cursor-pointer"
+                onClick={() => openGallery(0)}
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
               {propertyImages.slice(1, 5).map((img, idx) => (
-                <div key={idx} className="overflow-hidden relative aspect-4/3">
+                <div
+                  key={idx}
+                  className="overflow-hidden relative aspect-4/3 cursor-pointer"
+                  onClick={() => openGallery(idx + 1)}
+                >
                   <Image
                     src={img || '/placeholder.svg'}
                     alt={`Interior ${idx + 1}`}
@@ -347,7 +391,10 @@ export default function PropertyPage() {
                     )}
                   />
                   {idx === 3 && (
-                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center rounded-br-xl">
+                    <div
+                      className="absolute inset-0 bg-black/60 flex items-center justify-center rounded-br-xl"
+                      onClick={() => openGallery(4)}
+                    >
                       <span className="text-white text-lg sm:text-xl font-semibold">
                         +{propertyImages.length - 4}
                       </span>
@@ -619,6 +666,73 @@ export default function PropertyPage() {
             ))}
         </div>
       </section>
+      {isGalleryOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center"
+          onClick={closeGallery}
+        >
+          <div
+            className="relative w-[90vw] max-w-5xl h-[70vh] bg-black rounded-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={closeGallery}
+              className="absolute top-3 right-3 p-2 rounded-full bg-white/90 text-black hover:bg-white z-10"
+              aria-label="Close"
+            >
+              <X className="w-3 h-3" />
+            </button>
+            <button
+              onClick={prevGalleryImage}
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform z-10"
+              aria-label="Previous image"
+            >
+              <ChevronLeft className="w-5 h-5 text-foreground" />
+            </button>
+            <button
+              onClick={nextGalleryImage}
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform z-10"
+              aria-label="Next image"
+            >
+              <ChevronRight className="w-5 h-5 text-foreground" />
+            </button>
+            <div className="absolute top-3 left-3 text-white text-xs bg-black/60 px-3 py-1 rounded-full z-10">
+              {galleryIndex + 1} / {propertyImages.length}
+            </div>
+            <div className="relative w-full h-full">
+              <Image
+                src={propertyImages[galleryIndex] || '/placeholder.svg'}
+                alt={`Gallery image ${galleryIndex + 1}`}
+                fill
+                className="object-contain"
+                sizes="(max-width: 768px) 90vw, 1024px"
+              />
+            </div>
+            {/* Thumbnails strip */}
+            <div className="absolute bottom-3 left-0 right-0 px-4">
+              <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+                {propertyImages.map((src, i) => (
+                  <button
+                    key={src + i}
+                    onClick={() => setGalleryIndex(i)}
+                    className={`relative w-20 h-14 rounded-md overflow-hidden border ${
+                      i === galleryIndex ? 'border-white' : 'border-white/40'
+                    }`}
+                    aria-label={`View image ${i + 1}`}
+                  >
+                    <Image
+                      src={src}
+                      alt={`Thumbnail ${i + 1}`}
+                      fill
+                      className="object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
