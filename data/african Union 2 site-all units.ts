@@ -3,6 +3,7 @@ export type Listing = PropertyCardProps;
 const data: PropertyCardProps[] = [
   {
     title: 'African Union Site 2 – Type A Two Bedroom Apartment',
+    imagesFolder: 'Type A 3 bedroom + maids',
     overview: {
       built_start_date: '2025-03-14',
       property_type: 'Residential',
@@ -46,6 +47,7 @@ const data: PropertyCardProps[] = [
 
   {
     title: 'African Union Site 2 – Type B Three Bedroom Apartment',
+    imagesFolder: 'Type B 3 bedroom + maids',
     overview: {
       built_start_date: '2025-03-14',
       property_type: 'Residential',
@@ -89,6 +91,7 @@ const data: PropertyCardProps[] = [
 
   {
     title: 'African Union Site 2 – Type C Two Bedroom Apartment',
+    imagesFolder: 'Type C 2 bedroom + maids',
     overview: {
       built_start_date: '2025-03-14',
       property_type: 'Residential',
@@ -132,6 +135,7 @@ const data: PropertyCardProps[] = [
 
   {
     title: 'African Union Site 2 – Type D Two Bedroom Apartment',
+    imagesFolder: 'Type D 2 bedroom + maids',
     overview: {
       built_start_date: '2025-03-14',
       property_type: 'Residential',
@@ -175,6 +179,7 @@ const data: PropertyCardProps[] = [
 
   {
     title: 'African Union Site 2 – Type E One Bedroom Apartment',
+    imagesFolder: 'Type E 2 bedroom + maids',
     overview: {
       built_start_date: '2025-03-14',
       property_type: 'Residential',

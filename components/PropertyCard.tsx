@@ -1,7 +1,18 @@
+'use client';
+import { useState } from 'react';
 import Link from 'next/link';
-import { Bed, Bath, Maximize, MapPin } from 'lucide-react';
+import Image from 'next/image';
+import {
+  Bed,
+  Bath,
+  Maximize,
+  MapPin,
+  ChevronLeft,
+  ChevronRight,
+} from 'lucide-react';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { truncate } from '@/lib/utils';
+import { buildPublicPaths } from '@/data/au2ImagesManifest';
 
 type PropertyType = 'Residential' | 'Commercial';
 
@@ -37,6 +48,8 @@ export type PropertyCardProps = {
     longitude: number;
     latitude: number;
   };
+  // Optional images base folder under public for this property
+  imagesFolder?: string;
 };
 
 // Generate a random ID from title if not provided
@@ -52,13 +65,50 @@ export function PropertyCard({
   title,
   location,
   property_details,
+  imagesFolder,
 }: PropertyCardProps) {
   const propertyId = slugify(title);
+  const images = imagesFolder
+    ? buildPublicPaths(imagesFolder)
+    : ['/property-1.jpg', '/property-2.jpg', '/property-3.jpg'];
+  const [imgIndex, setImgIndex] = useState(0);
+  const showImage = images[imgIndex] ?? '/property-1.jpg';
+  const goPrev = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setImgIndex((i) => (i - 1 + images.length) % images.length);
+  };
+  const goNext = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setImgIndex((i) => (i + 1) % images.length);
+  };
 
   return (
     <Link href={`/properties/${propertyId}`} className="block">
       <Card className="overflow-hidden group cursor-pointer transition-all p-2 hover:shadow-lg border-0 shadow-md rounded-lg">
-        <div className="relative aspect-16/10 w-full overflow-hidden rounded-lg bg-gray-100" />
+        <div className="relative aspect-16/10 w-full overflow-hidden rounded-lg bg-gray-100">
+          <Image src={showImage} alt={title} fill className="object-cover" />
+          {/* Navigation buttons on image */}
+          <button
+            onClick={goPrev}
+            className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 text-black flex items-center justify-center shadow hover:bg-white opacity-0 group-hover:opacity-100 transition-opacity"
+            aria-label="Previous image"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          <button
+            onClick={goNext}
+            className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 text-black flex items-center justify-center shadow hover:bg-white opacity-0 group-hover:opacity-100 transition-opacity"
+            aria-label="Next image"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+          {/* Small index indicator */}
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs px-2 py-1 rounded-full bg-black/50 text-white">
+            {imgIndex + 1}/{images.length}
+          </div>
+        </div>
         <CardContent className="p-4 pb-2">
           <h3 className="line-clamp-1 text-lg font-semibold text-black">
             {truncate(title, 30)}
