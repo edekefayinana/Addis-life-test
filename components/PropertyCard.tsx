@@ -1,53 +1,113 @@
-import Image from 'next/image';
+'use client';
+import { useState } from 'react';
 import Link from 'next/link';
-import { Bed, Bath, Maximize, MapPin } from 'lucide-react';
+import Image from 'next/image';
+import {
+  Bed,
+  Bath,
+  Maximize,
+  MapPin,
+  ChevronLeft,
+  ChevronRight,
+} from 'lucide-react';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { truncate } from '@/lib/utils';
+import { buildPublicPaths } from '@/data/au2ImagesManifest';
 
-export interface PropertyCardProps {
+type PropertyType = 'Residential' | 'Commercial';
+
+export type PropertyCardProps = {
   title: string;
-  location: string;
-  beds: number;
-  baths: number;
-  area: number;
-  imageUrl: string;
-  price?: string;
-  type?: string;
-  id?: string;
-}
+
+  overview: {
+    built_start_date: string;
+    property_type: PropertyType;
+    current_status: string;
+  };
+
+  property_details: {
+    total_bedrooms: number;
+    total_bathrooms: number;
+    parking_space: number;
+    area_size_m2: number;
+    available_floors: string | number[];
+    building_size: string;
+    delivery_time: string;
+  };
+
+  amenities: string[];
+
+  location_and_surroundings: {
+    nearby_places: string[];
+  };
+
+  location: {
+    address: string;
+    city: string;
+    country: string;
+    longitude: number;
+    latitude: number;
+  };
+  // Optional images base folder under public for this property
+  imagesFolder?: string;
+};
 
 // Generate a random ID from title if not provided
-function generateId(title: string): string {
-  // Create a simple hash from the title and add random number
-  const hash = title
-    .split('')
-    .reduce((acc, char) => ((acc << 5) - acc + char.charCodeAt(0)) | 0, 0);
-  const random = Math.floor(Math.random() * 10000);
-  return `${Math.abs(hash)}-${random}`;
+function slugify(title: string): string {
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }
 
 export function PropertyCard({
   title,
   location,
-  beds,
-  baths,
-  area,
-  imageUrl,
-  id,
-  // type,
+  property_details,
+  imagesFolder,
 }: PropertyCardProps) {
-  const propertyId = id || generateId(title);
+  const propertyId = slugify(title);
+  const images = imagesFolder
+    ? buildPublicPaths(imagesFolder)
+    : ['/property-1.jpg', '/property-2.jpg', '/property-3.jpg'];
+  const [imgIndex, setImgIndex] = useState(0);
+  const showImage = images[imgIndex] ?? '/property-1.jpg';
+  const goPrev = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setImgIndex((i) => (i - 1 + images.length) % images.length);
+  };
+  const goNext = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setImgIndex((i) => (i + 1) % images.length);
+  };
 
   return (
     <Link href={`/properties/${propertyId}`} className="block">
       <Card className="overflow-hidden group cursor-pointer transition-all p-2 hover:shadow-lg border-0 shadow-md rounded-lg">
-        <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg">
-          <Image src={imageUrl} alt={title} fill className="object-cover" />
-          {/* Type removed as it's not in the target design image, or if needed can be added back. 
-            The image shows no badges on top of the image. 
-            I will keep it hidden to be 'same as image' or maybe just comment it out. 
-            Actually, let's keep it but maybe verify if the user wants it removed. 
-            The user said "same as image", image has no badges. I will remove it. */}
+        <div className="relative aspect-16/10 w-full overflow-hidden rounded-lg bg-gray-100">
+          <Image src={showImage} alt={title} fill className="object-cover" />
+          {/* Navigation buttons on image */}
+          <button
+            onClick={goPrev}
+            className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 text-black flex items-center justify-center shadow hover:bg-white opacity-0 group-hover:opacity-100 transition-opacity"
+            aria-label="Previous image"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          <button
+            onClick={goNext}
+            className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 text-black flex items-center justify-center shadow hover:bg-white opacity-0 group-hover:opacity-100 transition-opacity"
+            aria-label="Next image"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+          {/* Small index indicator */}
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs px-2 py-1 rounded-full bg-black/50 text-white">
+            {imgIndex + 1}/{images.length}
+          </div>
         </div>
         <CardContent className="p-4 pb-2">
           <h3 className="line-clamp-1 text-lg font-semibold text-black">
@@ -55,7 +115,9 @@ export function PropertyCard({
           </h3>
           <div className="mt-2 flex items-center text-sm text-gray-500">
             <MapPin className="mr-2 h-4 w-4 shrink-0" />
-            <span className="line-clamp-1">{location}</span>
+            <span className="line-clamp-1">
+              {location.address}, {location.city}
+            </span>
           </div>
         </CardContent>
 
@@ -66,7 +128,9 @@ export function PropertyCard({
         <CardFooter className="flex justify-between items-center p-4 text-sm text-black">
           <div className="flex items-center gap-1">
             <Bed className="h-5 w-5 stroke-1" />
-            <span className="font-normal">{beds} Beds</span>
+            <span className="font-normal">
+              {property_details.total_bedrooms} Beds
+            </span>
           </div>
 
           {/* Vertical divider simulated with margin/borders if needed. 
@@ -77,14 +141,18 @@ export function PropertyCard({
 
           <div className="flex items-center gap-1">
             <Bath className="h-5 w-5 stroke-1" />
-            <span className="font-normal">{baths} Baths</span>
+            <span className="font-normal">
+              {property_details.total_bathrooms} Baths
+            </span>
           </div>
 
           <div className="h-8 w-px bg-gray-200 mx-1" />
 
           <div className="flex items-center gap-1">
             <Maximize className="h-5 w-5 stroke-1" />
-            <span className="font-normal">{area} sqft</span>
+            <span className="font-normal">
+              {property_details.area_size_m2} m²
+            </span>
           </div>
         </CardFooter>
       </Card>

@@ -1,11 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
-import BlogCard from '../blogs/_components/BlogCard';
-import type { Blog } from '../blogs/finding-your-ideal-property-what-matters-most/_components/LatestListings';
+import BlogCard from '../(main)/blogs/_components/BlogCard';
+import type { Blog } from '@/types/blog';
 
 const insights: Blog[] = [
   {
-    id: 1,
+    id: '1',
     image:
       'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1000&auto=format&fit=crop',
     title: 'Finding Your Perfect Home In Addis Ababa',
@@ -15,7 +15,7 @@ const insights: Blog[] = [
     slug: 'finding-your-perfect-home-in-addis-ababa',
   },
   {
-    id: 2,
+    id: '2',
     image:
       'https://images.unsplash.com/photo-1448630360428-65456885c650?q=80&w=1000&auto=format&fit=crop',
     title: 'Real Estate Trends for 2025',
@@ -25,7 +25,7 @@ const insights: Blog[] = [
     slug: 'real-estate-trends-for-2025',
   },
   {
-    id: 3,
+    id: '3',
     image:
       'https://images.unsplash.com/photo-1486325212027-8081e485255e?q=80&w=1000&auto=format&fit=crop',
     title: 'Top Tips for First-Time Buyers',
