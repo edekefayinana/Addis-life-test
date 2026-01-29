@@ -4,37 +4,37 @@ const projects = [
   {
     title: 'African Union 1 Site',
     subtitle: '14 properties',
-    imageUrl: '/pro-1.jpg',
+    imageUrl: '/AU2 site Building Renders/1_1 - Photo.jpg',
     className: 'md:col-span-2',
   },
   {
     title: 'Summit Real Estate Site',
     subtitle: '14 properties',
-    imageUrl: '/pro-6.jpg',
+    imageUrl: '/AU2 site Building Renders/1_2 - Photo.jpg',
     className: 'md:col-span-1',
   },
   {
     title: 'African Union 2 Site',
     subtitle: '14 properties',
-    imageUrl: '/pro-3.jpg',
+    imageUrl: '/AU2 site Building Renders/1_3 - Photo.jpg',
     className: 'md:col-span-1',
   },
   {
     title: 'Vatican City 2 Site',
     subtitle: '14 properties',
-    imageUrl: '/pro-2.jpg',
+    imageUrl: '/AU2 site Building Renders/1_4 - Photo.jpg',
     className: 'md:col-span-1',
   },
   {
     title: 'CMC Residential Site',
     subtitle: '14 properties',
-    imageUrl: '/pro-4.jpg',
+    imageUrl: '/AU2 site Building Renders/1_5 - Photo.jpg',
     className: 'md:col-span-2',
   },
   {
     title: 'Vatican City Site',
     subtitle: '14 properties',
-    imageUrl: '/pro-5.jpg',
+    imageUrl: '/AU2 site Building Renders/1_6 - Photo.jpg',
     className: 'md:col-span-1',
   },
 ];

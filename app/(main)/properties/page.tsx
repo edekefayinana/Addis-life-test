@@ -83,8 +83,13 @@ function filterListings(
 ) {
   const { location, type, bedrooms } = filters;
   return listings.filter((item) => {
-    const matchesLocation = location
-      ? item.location.address.toLowerCase().includes(location.toLowerCase())
+    const search = location?.toLowerCase().trim();
+
+    const matchesSearch = search
+      ? item.title.toLowerCase().includes(search) ||
+        item.location.address.toLowerCase().includes(search) ||
+        item.location.city.toLowerCase().includes(search) ||
+        item.location.country.toLowerCase().includes(search)
       : true;
     const matchesType = type
       ? item.overview.property_type.toLowerCase().includes(type.toLowerCase())
@@ -94,6 +99,6 @@ function filterListings(
       : true;
     // No price field available in current data shape; ignore price filter for now
     const matchesPrice = true;
-    return matchesLocation && matchesType && matchesBeds && matchesPrice;
+    return matchesSearch && matchesType && matchesBeds && matchesPrice;
   });
 }
