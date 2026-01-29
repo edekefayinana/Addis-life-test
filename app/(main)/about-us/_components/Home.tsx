@@ -1,4 +1,5 @@
 import { ArrowRight, Play } from 'lucide-react';
+import Image from 'next/image';
 import React from 'react';
 
 export default function Home() {
@@ -25,10 +26,17 @@ export default function Home() {
               </button>
             </div>
           </div>
-          <div className="flex w-full lg:max-w-[530px] bg-[#D9D9D9] h-full aspect-video rounded-lg">
-            <div className="flex w-full items-center justify-center">
+          <div className="relative flex w-full lg:max-w-[530px] bg-[#D9D9D9] h-full aspect-video rounded-lg overflow-hidden">
+            <Image
+              src="/AU2 site Building Renders/1_9 - Photo.jpg"
+              alt="Addis Life properties overview"
+              fill
+              className="object-cover"
+              priority
+            />
+            <div className="relative z-10 flex w-full items-center justify-center">
               <button className="flex h-16 w-16 items-center justify-center rounded-full bg-white transition-transform hover:scale-105 shadow-lg">
-                <Play className="ml-0.5 h-8 w-8 fill-[#D9D9D9]" />
+                <Play className="ml-0.5 h-8 w-8 fill-[#000000]" />
               </button>
             </div>
           </div>
