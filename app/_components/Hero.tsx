@@ -7,9 +7,12 @@ import { HeroSearch } from './HeroSearch';
 export function Hero() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAutoPlay, setIsAutoPlay] = useState(true);
+  const [progress, setProgress] = useState(0);
   const pointerStartX = useRef<number | null>(null);
   const resumeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const progressFrameRef = useRef<number | null>(null);
   const slides = heroSlides;
+  const autoPlayMs = 10000;
 
   const handleNext = useCallback(() => {
     setActiveIndex((prev) => (prev + 1) % slides.length);
@@ -35,9 +38,38 @@ export function Hero() {
     }
     const intervalId = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % slides.length);
-    }, 10000);
+    }, autoPlayMs);
     return () => clearInterval(intervalId);
-  }, [isAutoPlay, slides.length]);
+  }, [autoPlayMs, isAutoPlay, slides.length]);
+
+  useEffect(() => {
+    if (progressFrameRef.current) {
+      cancelAnimationFrame(progressFrameRef.current);
+    }
+    if (!isAutoPlay) {
+      // setProgress(0);
+      return;
+    }
+
+    const startTime = performance.now();
+
+    const tick = (now: number) => {
+      const elapsed = now - startTime;
+      const nextProgress = Math.min(elapsed / autoPlayMs, 1);
+      setProgress(nextProgress);
+      if (nextProgress < 1) {
+        progressFrameRef.current = requestAnimationFrame(tick);
+      }
+    };
+
+    progressFrameRef.current = requestAnimationFrame(tick);
+
+    return () => {
+      if (progressFrameRef.current) {
+        cancelAnimationFrame(progressFrameRef.current);
+      }
+    };
+  }, [activeIndex, autoPlayMs, isAutoPlay]);
 
   useEffect(() => {
     return () => {
@@ -141,13 +173,16 @@ export function Hero() {
               pauseAutoPlay();
               setActiveIndex(index);
             }}
-            className={`h-2.5 w-8 rounded-full transition ${
-              index === activeIndex
-                ? 'bg-white'
-                : 'bg-white/40 hover:bg-white/60'
-            }`}
+            className="relative h-1 w-8 overflow-hidden rounded-full bg-white/40 transition hover:bg-white/60"
             aria-label={`Go to slide ${index + 1}`}
-          />
+          >
+            {index === activeIndex && (
+              <span
+                className="absolute inset-y-0 left-0 rounded-full bg-white"
+                style={{ width: `${progress * 100}%` }}
+              />
+            )}
+          </button>
         ))}
       </div>
 

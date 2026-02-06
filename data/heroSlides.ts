@@ -26,7 +26,7 @@ export const heroSlides: HeroSlide[] = [
   {
     id: 'curated-options',
     type: 'image',
-    src: '/addis%20life%202.jpg',
+    src: '/property-1.jpg',
     headline: 'Curated Properties Across Ethiopia',
     subhead:
       'From city apartments to private villas, find a place that matches your goals and budget.',
