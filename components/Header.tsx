@@ -283,6 +283,81 @@ export function Header({ variant }: HeaderProps) {
           </DropdownMenu>
         </div>
       </div>
+
+      {/* Mobile overlay */}
+      {isMobileOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/50 md:hidden"
+          onClick={() => setIsMobileOpen(false)}
+          aria-hidden
+        />
+      )}
+
+      {/* Mobile drawer */}
+      <aside
+        className={cn(
+          'fixed inset-y-0 right-0 z-50 w-72 transform bg-white shadow-2xl transition-transform duration-300 md:hidden',
+          isMobileOpen ? 'translate-x-0' : 'translate-x-full'
+        )}
+        aria-hidden={!isMobileOpen}
+      >
+        <div className="flex items-center justify-between px-6 py-4">
+          <Link href="/" className="flex items-center gap-2">
+            <Image
+              src="/logo.svg"
+              alt="Addis Life Logo"
+              width={100}
+              height={30}
+              className="object-contain"
+            />
+          </Link>
+          <button
+            type="button"
+            onClick={() => setIsMobileOpen(false)}
+            className="rounded-full p-2 text-foreground transition hover:bg-gray-100"
+            aria-label="Close menu"
+          >
+            <X className="h-6 w-6" aria-hidden />
+          </button>
+        </div>
+
+        <nav className="flex flex-col gap-2 px-6 pb-6 text-base font-medium text-foreground">
+          {navItems.map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setIsMobileOpen(false)}
+                aria-current={isActive ? 'page' : undefined}
+                className={cn(
+                  'rounded-lg px-3 py-2 transition hover:bg-gray-100',
+                  isActive && 'bg-gray-100 font-semibold'
+                )}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+
+          <div className="mt-4 flex flex-col gap-2">
+            <Link
+              href="/login"
+              className="rounded-full px-4 py-2 text-center text-sm font-medium text-foreground hover:bg-gray-100"
+              onClick={() => setIsMobileOpen(false)}
+            >
+              Login
+            </Link>
+            <Link
+              href="/signup"
+              className="rounded-full bg-brand-dark px-4 py-2 text-center text-sm font-semibold text-white hover:bg-brand-dark/90"
+              onClick={() => setIsMobileOpen(false)}
+            >
+              Sign Up
+            </Link>
+          </div>
+        </nav>
+      </aside>
     </header>
   );
 }
