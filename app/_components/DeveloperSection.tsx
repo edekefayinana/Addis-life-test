@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 
 export function DeveloperSection() {
   return (
@@ -51,7 +52,9 @@ export function DeveloperSection() {
             className="w-fit rounded-full bg-brand-dark px-8 py-6 text-white hover:bg-brand-dark/90"
             size="lg"
           >
-            Learn More <ArrowRight className="ml-2 h-4 w-4" />
+            <Link href="/about" className="flex items-center gap-2">
+              Learn More <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
           </Button>
         </div>
       </div>

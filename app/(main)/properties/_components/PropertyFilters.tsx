@@ -13,7 +13,7 @@ import { useDebounce } from '@/lib/hooks/useDebounce';
 
 type Filters = {
   location?: string;
-  // type?: string;
+  type?: 'sale' | 'rent';
   bedrooms?: string;
   // price?: string;
   view?: 'list' | 'map';
@@ -99,6 +99,18 @@ export function PropertyFilters() {
               </select>
               <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
             </div> */}
+            <div className="relative">
+              <select
+                value={filters.type || ''}
+                onChange={(e) => setFilter('type', e.target.value || null)}
+                className="h-12 w-full appearance-none rounded-full border border-gray-200  px-4 pr-10 text-sm font-medium text-gray-900 outline-none transition-all focus:border-gray-300 focus:bg-white focus:ring-2 focus:ring-gray-100"
+              >
+                <option value="">Property Type</option>
+                <option value="rent">Rent</option>
+                <option value="sale">Sale</option>
+              </select>
+              <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            </div>
 
             {/* Bedrooms */}
             <div className="relative">

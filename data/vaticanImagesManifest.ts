@@ -1,0 +1,50 @@
+// Image manifest for Vatican Site visual assets
+// Lists filenames per subfolder. Paths are resolved relative to `/public/VATICAN-SITE`.
+
+export const VATICAN_IMAGES_MANIFEST: Record<string, string[]> = {
+  '3d': [
+    'Enscape_2023-08-01-01-05-34.png',
+    'Enscape_2023-08-01-03-25-21.png',
+    '3d3.png',
+    '3d4.png',
+    '3d5.png',
+  ],
+  'F 3': [
+    '/African Union Site- visual Assets/Type C 2 bedroom + maids/Enscape_2023-08-01-00-59-11.png',
+    '/African Union Site- visual Assets/Type C 2 bedroom + maids/Enscape_2023-08-01-03-25-21.png',
+    'F3 PLAN.png',
+    'F3.png',
+  ],
+  'F 4': [
+    'Enscape_2023-08-01-01-05-34.png',
+    'Enscape_2023-08-01-01-13-11.png',
+    'F4 PLAN.png',
+    'F4-A PLAN.png',
+    'F4-A.png',
+    'F4-B PLAN.png',
+    'F4-B.png',
+    'F4-C PLAN.png',
+    'F4-C.png',
+    'F4-D PLAN.png',
+    'F4-D.png',
+    'F4.png',
+  ],
+  'F 6': [
+    'Enscape_2023-08-01-00-59-11.png',
+    'Enscape_2023-08-01-01-05-34.png',
+    'F6 PLAN.png',
+    'F6-A PLAN.png',
+    'F6-A.png',
+    'F6-B PLAN.png',
+    'F6-B.png',
+    'F6-C PLAN.png',
+    'F6-C.png',
+    'F6-D PLAN.png',
+    'F6-D.png',
+    'F6-E PLAN.png',
+    'F6-E.png',
+    'F6-F PLAN.png',
+    'F6-F.png',
+    'F6.png',
+  ],
+};

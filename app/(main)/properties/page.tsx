@@ -92,7 +92,7 @@ function filterListings(
         item.location.country.toLowerCase().includes(search)
       : true;
     const matchesType = type
-      ? item.overview.property_type.toLowerCase().includes(type.toLowerCase())
+      ? item?.type?.toLowerCase().includes(type.toLowerCase())
       : true;
     const matchesBeds = bedrooms
       ? item.property_details.total_bedrooms === Number(bedrooms)

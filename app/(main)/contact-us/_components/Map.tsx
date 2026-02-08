@@ -104,8 +104,8 @@ function MapContent() {
   return (
     <>
       <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
       />
       <RecenterControl />
       <Marker ref={markerRef} position={OFFICE_LOCATION} icon={customIcon}>
@@ -156,7 +156,7 @@ export default function Map() {
       center={OFFICE_LOCATION}
       zoom={15}
       scrollWheelZoom={true}
-      className="h-full w-full rounded-2xl overflow-hidden"
+      className="h-full w-full"
       style={{ height: '100%', width: '100%' }}
     >
       <MapContent />
