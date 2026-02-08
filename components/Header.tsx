@@ -4,9 +4,20 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -15,6 +26,11 @@ const navItems = [
   { href: '/about-us', label: 'About Us' },
   { href: '/blogs', label: 'Blogs' },
   { href: '/contact-us', label: 'Contact US' },
+];
+
+const propertyMenuItems = [
+  { href: '/properties?type=rent', label: 'Rent' },
+  { href: '/properties?type=sale', label: 'Sale' },
 ];
 
 type HeaderVariant = 'dark' | 'light';
@@ -85,6 +101,40 @@ export function Header({ variant }: HeaderProps) {
         <nav className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-8 text-sm font-medium md:flex">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
+            if (item.href === '/properties') {
+              return (
+                <DropdownMenu key={item.href}>
+                  <DropdownMenuTrigger
+                    className={cn(
+                      'flex items-center gap-1 transition-colors focus:outline-none',
+                      styles.nav,
+                      isActive && styles.navActive
+                    )}
+                  >
+                    {item.label}
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    align="center"
+                    className="w-44 rounded-lg border border-border bg-white/95 p-1 text-sm text-foreground shadow-lg"
+                  >
+                    {propertyMenuItems.map((menuItem) => (
+                      <DropdownMenuItem
+                        key={menuItem.href}
+                        className="p-0"
+                        asChild
+                      >
+                        <Link
+                          href={menuItem.href}
+                          className="block w-full rounded-md px-3 py-2 transition hover:bg-gray-100"
+                        >
+                          {menuItem.label}
+                        </Link>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              );
+            }
             return (
               <Link
                 key={item.href}
@@ -126,90 +176,78 @@ export function Header({ variant }: HeaderProps) {
         </div>
 
         {/* Mobile toggle */}
-        <button
-          type="button"
-          onClick={() => setIsMobileOpen(true)}
-          className="inline-flex items-center justify-center rounded-full p-2 transition hover:bg-white/10 md:hidden"
-          aria-label="Open menu"
-        >
-          <Menu className="h-6 w-6" aria-hidden />
-        </button>
-      </div>
+        <div className="md:hidden">
+          <DropdownMenu open={isMobileOpen} onOpenChange={setIsMobileOpen}>
+            <DropdownMenuTrigger className="inline-flex items-center justify-center rounded-full p-2 transition hover:bg-white/10">
+              <Menu className="h-6 w-6" aria-hidden />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="end"
+              className="flex w-56 flex-col gap-2 rounded-xl border border-border bg-white/95 p-2 shadow-lg"
+            >
+              {navItems.map((item) => {
+                if (item.href === '/properties') {
+                  return (
+                    <DropdownMenuSub key={item.href}>
+                      <DropdownMenuSubTrigger className="cursor-pointer px-3 text-base font-medium text-foreground">
+                        {item.label}
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuPortal>
+                        <DropdownMenuSubContent className="flex flex-col gap-1 rounded-xl border border-border bg-white p-1 shadow-lg">
+                          {propertyMenuItems.map((menuItem) => (
+                            <DropdownMenuItem
+                              key={menuItem.href}
+                              className="p-0"
+                              asChild
+                            >
+                              <Link
+                                href={menuItem.href}
+                                className="w-full rounded-md px-3 py-2 text-base transition hover:bg-gray-100"
+                              >
+                                {menuItem.label}
+                              </Link>
+                            </DropdownMenuItem>
+                          ))}
+                        </DropdownMenuSubContent>
+                      </DropdownMenuPortal>
+                    </DropdownMenuSub>
+                  );
+                }
 
-      {/* Mobile overlay */}
-      {isMobileOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/50 md:hidden"
-          onClick={() => setIsMobileOpen(false)}
-          aria-hidden
-        />
-      )}
+                return (
+                  <DropdownMenuItem key={item.href} className="p-0" asChild>
+                    <Link
+                      href={item.href}
+                      className="w-full rounded-lg px-3 py-2 text-base font-medium text-foreground transition hover:bg-gray-100"
+                    >
+                      {item.label}
+                    </Link>
+                  </DropdownMenuItem>
+                );
+              })}
 
-      {/* Mobile drawer */}
-      <aside
-        className={cn(
-          'fixed inset-y-0 right-0 z-50 w-72 transform bg-white shadow-2xl transition-transform duration-300 md:hidden',
-          isMobileOpen ? 'translate-x-0' : 'translate-x-full'
-        )}
-        aria-hidden={!isMobileOpen}
-      >
-        <div className="flex items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-2">
-            <Image
-              src="/logo.svg"
-              alt="Addis Life Logo"
-              width={100}
-              height={30}
-              className="object-contain"
-            />
-          </Link>
-          <button
-            type="button"
-            onClick={() => setIsMobileOpen(false)}
-            className="rounded-full p-2 text-foreground transition hover:bg-gray-100"
-            aria-label="Close menu"
-          >
-            <X className="h-6 w-6" aria-hidden />
-          </button>
+              <DropdownMenuSeparator />
+
+              <DropdownMenuItem className="p-0" asChild>
+                <Link
+                  href="/login"
+                  className="w-full rounded-full px-4 py-2 text-center text-sm font-medium text-foreground transition hover:bg-gray-100"
+                >
+                  Login
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="p-0" asChild>
+                <Link
+                  href="/signup"
+                  className="w-full rounded-full bg-brand-dark px-4 py-2 text-center text-sm font-semibold text-white transition hover:bg-brand-dark/90"
+                >
+                  Sign Up
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
-
-        <nav className="flex flex-col gap-2 px-6 pb-6 text-base font-medium text-foreground">
-          {navItems.map((item) => {
-            const isActive = pathname === item.href;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setIsMobileOpen(false)}
-                aria-current={isActive ? 'page' : undefined}
-                className={cn(
-                  'rounded-lg px-3 py-2 transition hover:bg-gray-100',
-                  isActive && 'bg-gray-100 font-semibold'
-                )}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
-
-          <div className="mt-4 flex flex-col gap-2">
-            <Link
-              href="/login"
-              className="rounded-full px-4 py-2 text-center text-sm font-medium text-foreground hover:bg-gray-100"
-              onClick={() => setIsMobileOpen(false)}
-            >
-              Login
-            </Link>
-            <Link
-              href="/signup"
-              className="rounded-full bg-brand-dark px-4 py-2 text-center text-sm font-semibold text-white hover:bg-brand-dark/90"
-              onClick={() => setIsMobileOpen(false)}
-            >
-              Sign Up
-            </Link>
-          </div>
-        </nav>
-      </aside>
+      </div>
     </header>
   );
 }

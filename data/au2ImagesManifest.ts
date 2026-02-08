@@ -1,6 +1,8 @@
 // Image manifest for African Union Site visual assets
 // Lists filenames per subfolder. Paths are resolved relative to `/public/African Union Site- visual Assets`.
 
+import { VATICAN_IMAGES_MANIFEST } from './vaticanImagesManifest';
+
 export const AU2_IMAGES_MANIFEST: Record<string, string[]> = {
   'Building image': ['3 (4).jpg', '4 (4).jpg'],
   'Floor Plan': ['01.jpg', '1 (3).jpg'],
@@ -78,7 +80,34 @@ export const AU2_IMAGES_MANIFEST: Record<string, string[]> = {
 };
 
 export function buildPublicPaths(folder: string): string[] {
-  const files = AU2_IMAGES_MANIFEST[folder] ?? [];
-  const base = '/African Union Site- visual Assets/' + folder;
-  return files.map((f) => `${base}/${f}`);
+  const au2Files = AU2_IMAGES_MANIFEST[folder];
+  if (au2Files) {
+    const base = '/African Union Site- visual Assets/' + folder;
+    return au2Files.map((f) => `${base}/${f}`);
+  }
+
+  const vaticanFiles = VATICAN_IMAGES_MANIFEST[folder];
+  if (vaticanFiles) {
+    const base = '/VATICAN-SITE/' + folder;
+    return vaticanFiles.map((f) => {
+      if (f.startsWith('/')) {
+        return f;
+      }
+
+      const auMatch = findAuPathForFile(f);
+      return auMatch ?? `${base}/${f}`;
+    });
+  }
+
+  return [];
+}
+
+function findAuPathForFile(fileName: string): string | null {
+  for (const [folder, files] of Object.entries(AU2_IMAGES_MANIFEST)) {
+    if (files.includes(fileName)) {
+      return `/African Union Site- visual Assets/${folder}/${fileName}`;
+    }
+  }
+
+  return null;
 }

@@ -577,7 +577,7 @@ export default function PropertyPage() {
           {/* Right Column - Pricing & Contact */}
           <div className="lg:col-span-1">
             <div className="space-y-6 lg:sticky lg:top-24">
-              <div className="border rounded-2xl p-4 sm:p-6 bg-white">
+              {/* <div className="border rounded-2xl p-4 sm:p-6 bg-white">
                 <p className="text-xs sm:text-sm text-muted-foreground mb-1">
                   Total Down Payment
                 </p>
@@ -589,7 +589,7 @@ export default function PropertyPage() {
                     Call to Invest
                   </Button>
                 </div>
-              </div>
+              </div> */}
 
               <div className="border rounded-2xl p-4 sm:p-6 bg-white">
                 <h3 className="text-base sm:text-lg font-bold mb-4">

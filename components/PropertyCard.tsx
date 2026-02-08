@@ -11,13 +11,14 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { truncate } from '@/lib/utils';
+import { cn, truncate } from '@/lib/utils';
 import { buildPublicPaths } from '@/data/au2ImagesManifest';
 
 type PropertyType = 'Residential' | 'Commercial';
 
 export type PropertyCardProps = {
   title: string;
+  type?: 'rent' | 'sale';
 
   overview: {
     built_start_date: string;
@@ -63,6 +64,7 @@ function slugify(title: string): string {
 
 export function PropertyCard({
   title,
+  type,
   location,
   property_details,
   imagesFolder,
@@ -89,6 +91,18 @@ export function PropertyCard({
       <Card className="overflow-hidden group cursor-pointer transition-all p-2 hover:shadow-lg border-0 shadow-md rounded-lg">
         <div className="relative aspect-16/10 w-full overflow-hidden rounded-lg bg-gray-100">
           <Image src={showImage} alt={title} fill className="object-cover" />
+          {type && (
+            <span
+              className={cn(
+                'absolute left-3 top-3 rounded-sm border px-3 py-1 text-[11px] font-semibold uppercase tracking-wide shadow-sm backdrop-blur',
+                type === 'rent'
+                  ? 'border-emerald-200 bg-emerald-50/90 text-emerald-800'
+                  : 'border-amber-200 bg-amber-50/90 text-amber-800'
+              )}
+            >
+              {type}
+            </span>
+          )}
           {/* Navigation buttons on image */}
           <button
             onClick={goPrev}

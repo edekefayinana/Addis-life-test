@@ -10,7 +10,7 @@ export const heroSlides: HeroSlide[] = [
   {
     id: 'intro-video',
     type: 'video',
-    src: '/video/video.mp4',
+    src: '/video/WEBESIT.mp4',
     headline: 'Experience Addis Life in Motion',
     subhead:
       'Take a cinematic look at our flagship communities and the lifestyle they unlock.',
