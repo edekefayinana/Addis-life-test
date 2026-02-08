@@ -98,7 +98,7 @@ export function Header({ variant }: HeaderProps) {
         </Link>
 
         {/* Centered Navigation */}
-        <nav className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-8 text-sm font-medium md:flex">
+        <nav className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-8 text-sm font-medium leading-none md:flex">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             if (item.href === '/properties') {
@@ -106,7 +106,7 @@ export function Header({ variant }: HeaderProps) {
                 <DropdownMenu key={item.href}>
                   <DropdownMenuTrigger
                     className={cn(
-                      'flex items-center gap-1 transition-colors focus:outline-none',
+                      'inline-flex h-6 items-center gap-1 transition-colors focus:outline-none',
                       styles.nav,
                       isActive && styles.navActive
                     )}
@@ -141,7 +141,7 @@ export function Header({ variant }: HeaderProps) {
                 href={item.href}
                 aria-current={isActive ? 'page' : undefined}
                 className={cn(
-                  'transition-colors',
+                  'inline-flex h-6 items-center transition-colors',
                   styles.nav,
                   isActive && styles.navActive
                 )}

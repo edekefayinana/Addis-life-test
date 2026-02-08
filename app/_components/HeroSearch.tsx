@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { Search, SlidersHorizontal } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 export function HeroSearch() {
   const router = useRouter();
@@ -11,6 +11,31 @@ export function HeroSearch() {
   const [status, setStatus] = useState('');
   const [bedrooms, setBedrooms] = useState('');
   const [showFilters, setShowFilters] = useState(false);
+  const filtersRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!showFilters) return;
+
+    const handlePointerDown = (event: MouseEvent) => {
+      const target = event.target as Node | null;
+      if (filtersRef.current?.contains(target)) return;
+      setShowFilters(false);
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setShowFilters(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handlePointerDown);
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('mousedown', handlePointerDown);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showFilters]);
 
   const searchParams = useMemo(
     () =>
@@ -49,7 +74,10 @@ export function HeroSearch() {
           </div>
 
           {/* Filter Button Section */}
-          <div className="relative border-l border-gray-200 pl-3 pr-2">
+          <div
+            className="relative border-l border-gray-200 pl-3 pr-2"
+            ref={filtersRef}
+          >
             <button
               type="button"
               onClick={() => setShowFilters((prev) => !prev)}

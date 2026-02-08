@@ -1,6 +1,7 @@
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export function AgentBanner() {
   return (
@@ -42,13 +43,13 @@ export function AgentBanner() {
           </div>
 
           <Button
-            as="a"
-            href="/register"
             variant="secondary"
             size="lg"
             className="rounded-full bg-white text-black hover:bg-white/90 shadow-md px-9 py-6 font-normal"
           >
-            Register <ArrowRight className="h-4 w-4 ml-1" />
+            <Link href="/signup" className="flex items-center gap-2">
+              Register <ArrowRight className="h-4 w-4 ml-1" />
+            </Link>
           </Button>
         </div>
       </div>

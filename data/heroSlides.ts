@@ -10,7 +10,7 @@ export const heroSlides: HeroSlide[] = [
   {
     id: 'intro-video',
     type: 'video',
-    src: '/video/WEBESIT.mp4',
+    src: '/video/video.mp4',
     headline: 'Experience Addis Life in Motion',
     subhead:
       'Take a cinematic look at our flagship communities and the lifestyle they unlock.',
@@ -19,16 +19,16 @@ export const heroSlides: HeroSlide[] = [
     id: 'premium-living',
     type: 'image',
     src: '/hero-image.jpg',
-    headline: 'Discover Premium Real Estate With Confidence',
+    headline: 'Priority Access Now Open',
     subhead:
-      'Explore ongoing and completed projects, find your ideal property, and connect with trusted freelance agents.',
+      'Secure early access to our newest releases with flexible payment plans and verified availability.',
   },
   {
     id: 'curated-options',
     type: 'image',
     src: '/property-1.jpg',
-    headline: 'Curated Properties Across Ethiopia',
+    headline: 'Limited Units, Verified Listings',
     subhead:
-      'From city apartments to private villas, find a place that matches your goals and budget.',
+      'Explore a curated selection with clear pricing, transparent details, and priority scheduling.',
   },
 ];

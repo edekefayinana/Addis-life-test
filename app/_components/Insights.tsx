@@ -3,6 +3,7 @@ import type { Blog } from '@/types/blog';
 import { createClient } from '@/prismicio';
 import { ArrowRight } from 'lucide-react';
 import BlogCard from '../(main)/blogs/_components/BlogCard';
+import Link from 'next/link';
 
 export async function Insights() {
   const client = createClient();
@@ -51,7 +52,9 @@ export async function Insights() {
           className="w-fit rounded-full px-8 py-6 text-black bg-white hover:bg-white/90 border border-border/50 text-base font-normal font-instrument"
           size="lg"
         >
-          View All Blogs <ArrowRight className="ml-2 h-4 w-4" />
+          <Link href="/blogs" className="flex items-center gap-2">
+            View All Blogs <ArrowRight className="ml-2 h-4 w-4" />
+          </Link>
         </Button>
       </div>
     </section>

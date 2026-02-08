@@ -94,7 +94,7 @@ export function PropertyCard({
           {type && (
             <span
               className={cn(
-                'absolute left-3 top-3 rounded-sm border px-3 py-1 text-[11px] font-semibold uppercase tracking-wide shadow-sm backdrop-blur',
+                'absolute left-3 top-3 rounded-[4px] border px-3 py-1 text-[11px] font-semibold uppercase tracking-wide shadow-sm backdrop-blur',
                 type === 'rent'
                   ? 'border-emerald-200 bg-emerald-50/90 text-emerald-800'
                   : 'border-amber-200 bg-amber-50/90 text-amber-800'

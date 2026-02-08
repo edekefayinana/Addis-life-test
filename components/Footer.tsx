@@ -27,9 +27,9 @@ const services = [
 ];
 
 const links = [
-  { href: '/about', label: 'About Us' },
+  { href: '/about-us', label: 'About Us' },
   { href: '/blogs', label: 'Blogs' },
-  { href: '/projects', label: 'Projects' },
+  // { href: '/projects', label: 'Projects' },
   { href: '/properties', label: 'Properties' },
   { href: '#', label: 'Privacy Policy' },
   { href: '#', label: 'Terms & Conditions' },
