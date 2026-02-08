@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Menu } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -75,6 +75,32 @@ export function Header({ variant }: HeaderProps) {
     variant ?? (isDarkRoute ? 'dark' : 'light');
   const styles = variantStyles[resolvedVariant];
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isPropertiesOpen, setIsPropertiesOpen] = useState(false);
+  const propertiesRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!isPropertiesOpen) return;
+
+    const handlePointerDown = (event: MouseEvent) => {
+      const target = event.target as Node | null;
+      if (propertiesRef.current?.contains(target)) return;
+      setIsPropertiesOpen(false);
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsPropertiesOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handlePointerDown);
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('mousedown', handlePointerDown);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isPropertiesOpen]);
 
   return (
     <header className={cn('z-50 w-full', styles.header)}>
@@ -103,36 +129,45 @@ export function Header({ variant }: HeaderProps) {
             const isActive = pathname === item.href;
             if (item.href === '/properties') {
               return (
-                <DropdownMenu key={item.href}>
-                  <DropdownMenuTrigger
+                <div
+                  key={item.href}
+                  ref={propertiesRef}
+                  className="relative"
+                  onMouseEnter={() => setIsPropertiesOpen(true)}
+                  onMouseLeave={() => setIsPropertiesOpen(false)}
+                >
+                  <span
+                    aria-hidden
+                    className="absolute left-0 right-0 top-full h-2"
+                  />
+                  <button
+                    type="button"
                     className={cn(
                       'inline-flex h-6 items-center gap-1 transition-colors focus:outline-none',
                       styles.nav,
                       isActive && styles.navActive
                     )}
+                    aria-haspopup="menu"
+                    aria-expanded={isPropertiesOpen}
+                    onClick={() => setIsPropertiesOpen((prev) => !prev)}
                   >
                     {item.label}
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    align="center"
-                    className="w-44 rounded-lg border border-border bg-white/95 p-1 text-sm text-foreground shadow-lg"
-                  >
-                    {propertyMenuItems.map((menuItem) => (
-                      <DropdownMenuItem
-                        key={menuItem.href}
-                        className="p-0"
-                        asChild
-                      >
+                  </button>
+                  {isPropertiesOpen && (
+                    <div className="absolute left-1/2 top-full z-50 mt-2 w-44 -translate-x-1/2 rounded-lg border border-border bg-white/95 p-1 text-sm text-foreground shadow-lg">
+                      {propertyMenuItems.map((menuItem) => (
                         <Link
+                          key={menuItem.href}
                           href={menuItem.href}
                           className="block w-full rounded-md px-3 py-2 transition hover:bg-gray-100"
+                          onClick={() => setIsPropertiesOpen(false)}
                         >
                           {menuItem.label}
                         </Link>
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                      ))}
+                    </div>
+                  )}
+                </div>
               );
             }
             return (
