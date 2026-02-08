@@ -1,5 +1,6 @@
 'use client';
 import { ArrowRight, Pause, Play, Volume2, VolumeX } from 'lucide-react';
+import Link from 'next/link';
 import React, { useRef, useState } from 'react';
 
 export default function Home() {
@@ -44,18 +45,22 @@ export default function Home() {
             </p>
             <div className="flex gap-3 md:gap-5 mt-3">
               <button className="bg-primary w-fit text-white px-5 py-2 lg:px-9 lg:py-4 rounded-full font-medium transition-colors duration-200">
-                Contact Us
+                <Link href="/contact-us" className="flex items-center gap-2">
+                  Contact Us
+                </Link>
               </button>
               <button className="bg-white flex items-center gap-2 w-fit text-primary border-2 px-5 py-2 lg:px-9 lg:py-4 rounded-full font-medium transition-colors duration-200">
-                Register
-                <ArrowRight />
+                <Link href="/signup" className="flex items-center gap-2">
+                  Register
+                  <ArrowRight />
+                </Link>
               </button>
             </div>
           </div>
           <div className="group relative flex w-full lg:max-w-[530px] bg-[#D9D9D9] h-full aspect-video rounded-lg overflow-hidden">
             <video
               ref={videoRef}
-              src="/video/WEBESIT.mp4"
+              src="/video/video.mp4"
               poster="/AU2 site Building Renders/1_9 - Photo.jpg"
               className="absolute inset-0 h-full w-full object-cover"
               autoPlay
