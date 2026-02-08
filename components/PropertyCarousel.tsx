@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PropertyCard, PropertyCardProps } from './PropertyCard';
+import Link from 'next/link';
 
 interface PropertyCarouselProps {
   title: string;
@@ -74,8 +75,8 @@ export function PropertyCarousel({
         </div>
 
         <div className="relative">
-          <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-accent to-transparent pointer-events-none z-10"></div>
-          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-accent to-transparent pointer-events-none z-10"></div>
+          <div className="absolute left-0 top-0 bottom-0 w-8 bg-linear-to-r from-accent to-transparent pointer-events-none z-10"></div>
+          <div className="absolute right-0 top-0 bottom-0 w-8 bg-linear-to-l from-accent to-transparent pointer-events-none z-10"></div>
           <div
             ref={scrollContainerRef}
             className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory"
@@ -97,7 +98,9 @@ export function PropertyCarousel({
             className="w-fit rounded-full px-8 py-6 text-black bg-white hover:bg-white/90 border border-border/50 text-base font-normal font-instrument"
             size="lg"
           >
-            View All Properties <ArrowRight className="ml-2 h-4 w-4" />
+            <Link href="/properties" className="flex items-center gap-2">
+              View All Properties <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
           </Button>
         </div>
       </div>

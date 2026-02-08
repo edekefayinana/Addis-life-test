@@ -2,7 +2,7 @@
 
 import { PropertiesMap } from './PropertiesMap';
 import { PropertyCard } from '@/components/PropertyCard';
-import type { Listing } from '@/data/featuredProperties';
+import type { PropertyCardProps as Listing } from '@/components/PropertyCard';
 
 type PropertiesMapViewProps = {
   properties: Listing[];

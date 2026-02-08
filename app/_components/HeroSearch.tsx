@@ -1,8 +1,8 @@
 'use client';
-import { useMemo, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { ChevronDown, Search, SlidersHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Search, SlidersHorizontal } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 export function HeroSearch() {
   const router = useRouter();
@@ -10,113 +10,32 @@ export function HeroSearch() {
   const [propertyType, setPropertyType] = useState('');
   const [status, setStatus] = useState('');
   const [bedrooms, setBedrooms] = useState('');
-
-  const searchParams = useMemo(
-    () =>
-      new URLSearchParams({
-        ...(location ? { location } : {}),
-        ...(propertyType ? { type: propertyType } : {}),
-        ...(status ? { status } : {}),
-        ...(bedrooms ? { bedrooms } : {}),
-      }),
-    [bedrooms, location, propertyType, status]
-  );
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const paramsString = searchParams.toString();
-    const href = paramsString ? `/properties?${paramsString}` : '/properties';
-    router.push(href);
-  };
-
-  return (
-    <div className="w-full max-w-[1000px] rounded-full bg-white p-3 shadow-2xl">
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-3 md:flex-row md:items-center"
-      >
-        <div className="relative flex-1">
-          <input
-            id="location"
-            type="text"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            placeholder="Location"
-            className="h-12 w-full rounded-full border border-gray-200 bg-transparent px-6 text-sm font-medium text-black outline-none placeholder:text-gray-500 focus:border-gray-400"
-          />
-        </div>
-
-        <div className="relative w-full md:w-[200px]">
-          <select
-            id="propertyType"
-            value={propertyType}
-            onChange={(e) => setPropertyType(e.target.value)}
-            className="h-12 w-full appearance-none rounded-full border border-gray-200 bg-transparent px-6 text-sm font-medium text-black outline-none placeholder:text-gray-500 focus:border-gray-400"
-          >
-            <option value="">Property Type</option>
-            <option value="apartment">Apartment</option>
-            <option value="house">House</option>
-            <option value="commercial">Commercial</option>
-            <option value="land">Land</option>
-          </select>
-          <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-        </div>
-
-        <div className="relative w-full md:w-[180px]">
-          <select
-            id="status"
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-            className="h-12 w-full appearance-none rounded-full border border-gray-200 bg-transparent px-6 text-sm font-medium text-black outline-none placeholder:text-gray-500 focus:border-gray-400"
-          >
-            <option value="">Status</option>
-            <option value="for-sale">For Sale</option>
-            <option value="for-rent">For Rent</option>
-            <option value="completed">Completed</option>
-          </select>
-          <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-        </div>
-
-        <div className="relative w-full md:w-[180px]">
-          <select
-            id="bedrooms"
-            value={bedrooms}
-            onChange={(e) => setBedrooms(e.target.value)}
-            className="h-12 w-full appearance-none rounded-full border border-gray-200 bg-transparent px-6 text-sm font-medium text-black outline-none placeholder:text-gray-500 focus:border-gray-400"
-          >
-            <option value="">Bedrooms</option>
-            <option value="studio">Studio</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4-plus">4+</option>
-          </select>
-          <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-        </div>
-
-        <Button
-          type="submit"
-          size="lg"
-          className="h-12 w-full rounded-full bg-brand-dark px-8 text-base font-medium text-white hover:bg-brand-dark/90 md:w-auto"
-        >
-          Search
-        </Button>
-      </form>
-    </div>
-  );
-}
-
-/**
- * Alternate compact option that matches the provided design.
- * Keeps the same query params as the main search.
- */
-export function HeroSearchAlt() {
-  const router = useRouter();
-  const [location, setLocation] = useState('');
-  const [propertyType, setPropertyType] = useState('');
-  const [status, setStatus] = useState('');
-  const [bedrooms, setBedrooms] = useState('');
   const [showFilters, setShowFilters] = useState(false);
+  const filtersRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!showFilters) return;
+
+    const handlePointerDown = (event: MouseEvent) => {
+      const target = event.target as Node | null;
+      if (filtersRef.current?.contains(target)) return;
+      setShowFilters(false);
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setShowFilters(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handlePointerDown);
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('mousedown', handlePointerDown);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showFilters]);
 
   const searchParams = useMemo(
     () =>
@@ -155,7 +74,10 @@ export function HeroSearchAlt() {
           </div>
 
           {/* Filter Button Section */}
-          <div className="relative border-l border-gray-200 pl-3 pr-2">
+          <div
+            className="relative border-l border-gray-200 pl-3 pr-2"
+            ref={filtersRef}
+          >
             <button
               type="button"
               onClick={() => setShowFilters((prev) => !prev)}
@@ -183,14 +105,12 @@ export function HeroSearchAlt() {
                       className="h-10 rounded-lg border border-gray-200 px-3 text-sm text-gray-800 outline-none focus:border-brand-dark"
                     >
                       <option value="">Any</option>
-                      <option value="apartment">Apartment</option>
-                      <option value="house">House</option>
-                      <option value="commercial">Commercial</option>
-                      <option value="land">Land</option>
+                      <option value="rent">Rent</option>
+                      <option value="sale">Sale</option>
                     </select>
                   </label>
 
-                  <label className="flex flex-col gap-1">
+                  {/* <label className="flex flex-col gap-1">
                     <span className="text-xs font-semibold text-gray-600">
                       Status
                     </span>
@@ -204,7 +124,7 @@ export function HeroSearchAlt() {
                       <option value="for-rent">For Rent</option>
                       <option value="completed">Completed</option>
                     </select>
-                  </label>
+                  </label> */}
 
                   <label className="flex flex-col gap-1">
                     <span className="text-xs font-semibold text-gray-600">

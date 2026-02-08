@@ -1,0 +1,427 @@
+import { PropertyCardProps } from '@/components/PropertyCard';
+
+export type Listing = PropertyCardProps;
+
+const data: PropertyCardProps[] = [
+  {
+    title: 'Vatican Site – Type A Three Bedroom Apartment',
+    overview: {
+      built_start_date: '2022-12-17',
+      property_type: 'Residential',
+      current_status: 'Plastering',
+    },
+    property_details: {
+      total_bedrooms: 3,
+      total_bathrooms: 3,
+      parking_space: 1,
+      area_size_m2: 208.21,
+      available_floors: 'Not Available',
+      building_size: '2B + G + 24 + Roof',
+      delivery_time: 'After 6 months (June 2026)',
+    },
+    amenities: [
+      'Garbage Chute',
+      'Lift',
+      'Parking Space',
+      'Green Area',
+      'Terrace',
+      'Underground Water',
+    ],
+    location_and_surroundings: {
+      nearby_places: [
+        'Vatican Embassy',
+        'Canada Embassy',
+        'ICS International School',
+        'Church',
+        'Mosque',
+      ],
+    },
+    location: {
+      address: 'Wereda 08, Lideta',
+      city: 'Addis Ababa',
+      country: 'Ethiopia',
+      longitude: 8.990955237,
+      latitude: 38.7356,
+    },
+  },
+
+  {
+    title: 'Vatican Site – Type B Three Bedroom Apartment',
+    overview: {
+      built_start_date: '2022-12-17',
+      property_type: 'Residential',
+      current_status: 'Plastering',
+    },
+    property_details: {
+      total_bedrooms: 3,
+      total_bathrooms: 3,
+      parking_space: 1,
+      area_size_m2: 211.25,
+      available_floors: 'Not Available',
+      building_size: '2B + G + 24 + Roof',
+      delivery_time: 'After 6 months (June 2026)',
+    },
+    amenities: [
+      'Garbage Chute',
+      'Lift',
+      'Parking Space',
+      'Green Area',
+      'Terrace',
+      'Underground Water',
+    ],
+    location_and_surroundings: {
+      nearby_places: [
+        'Vatican Embassy',
+        'Canada Embassy',
+        'ICS International School',
+        'Church',
+        'Mosque',
+      ],
+    },
+    location: {
+      address: 'Wereda 08, Lideta',
+      city: 'Addis Ababa',
+      country: 'Ethiopia',
+      longitude: 8.990955237,
+      latitude: 38.7356,
+    },
+  },
+
+  {
+    title: 'Vatican Site – Type C Three Bedroom Apartment',
+    overview: {
+      built_start_date: '2022-12-17',
+      property_type: 'Residential',
+      current_status: 'Plastering',
+    },
+    property_details: {
+      total_bedrooms: 3,
+      total_bathrooms: 3,
+      parking_space: 1,
+      area_size_m2: 216.5,
+      available_floors: [13, 14, 15],
+      building_size: '2B + G + 24 + Roof',
+      delivery_time: 'After 6 months (June 2026)',
+    },
+    amenities: [
+      'Garbage Chute',
+      'Lift',
+      'Parking Space',
+      'Green Area',
+      'Terrace',
+      'Underground Water',
+    ],
+    location_and_surroundings: {
+      nearby_places: [
+        'Vatican Embassy',
+        'Canada Embassy',
+        'ICS International School',
+        'Church',
+        'Mosque',
+      ],
+    },
+    location: {
+      address: 'Wereda 08, Lideta',
+      city: 'Addis Ababa',
+      country: 'Ethiopia',
+      longitude: 8.990955237,
+      latitude: 38.7356,
+    },
+  },
+
+  {
+    title: 'Vatican Site – Type D Three Bedroom Apartment',
+    overview: {
+      built_start_date: '2022-12-17',
+      property_type: 'Residential',
+      current_status: 'Plastering',
+    },
+    property_details: {
+      total_bedrooms: 3,
+      total_bathrooms: 3,
+      parking_space: 1,
+      area_size_m2: 218.43,
+      available_floors: 'Not Available',
+      building_size: '2B + G + 24 + Roof',
+      delivery_time: 'After 6 months (June 2026)',
+    },
+    amenities: [
+      'Garbage Chute',
+      'Lift',
+      'Parking Space',
+      'Green Area',
+      'Terrace',
+      'Underground Water',
+    ],
+    location_and_surroundings: {
+      nearby_places: [
+        'Vatican Embassy',
+        'Canada Embassy',
+        'ICS International School',
+        'Church',
+        'Mosque',
+      ],
+    },
+    location: {
+      address: 'Wereda 08, Lideta',
+      city: 'Addis Ababa',
+      country: 'Ethiopia',
+      longitude: 8.990955237,
+      latitude: 38.7356,
+    },
+  },
+
+  {
+    title: 'Vatican Site – Type A Three Bedroom Apartment (Variant)',
+    overview: {
+      built_start_date: '2022-12-17',
+      property_type: 'Residential',
+      current_status: 'Plastering',
+    },
+    property_details: {
+      total_bedrooms: 3,
+      total_bathrooms: 3,
+      parking_space: 1,
+      area_size_m2: 212.36,
+      available_floors: [6, 16],
+      building_size: '2B + G + 24 + Roof',
+      delivery_time: 'After 6 months (June 2026)',
+    },
+    amenities: [
+      'Garbage Chute',
+      'Lift',
+      'Parking Space',
+      'Green Area',
+      'Terrace',
+      'Underground Water',
+    ],
+    location_and_surroundings: {
+      nearby_places: [
+        'Vatican Embassy',
+        'Canada Embassy',
+        'ICS International School',
+        'Church',
+        'Mosque',
+      ],
+    },
+    location: {
+      address: 'Wereda 08, Lideta',
+      city: 'Addis Ababa',
+      country: 'Ethiopia',
+      longitude: 8.990955237,
+      latitude: 38.7356,
+    },
+  },
+
+  {
+    title: 'Vatican Site – Type B Three Bedroom Apartment (Variant)',
+    overview: {
+      built_start_date: '2022-12-17',
+      property_type: 'Residential',
+      current_status: 'Plastering',
+    },
+    property_details: {
+      total_bedrooms: 3,
+      total_bathrooms: 3,
+      parking_space: 1,
+      area_size_m2: 213.57,
+      available_floors: [9, 10, 16],
+      building_size: '2B + G + 24 + Roof',
+      delivery_time: 'After 6 months (June 2026)',
+    },
+    amenities: [
+      'Garbage Chute',
+      'Lift',
+      'Parking Space',
+      'Green Area',
+      'Terrace',
+      'Underground Water',
+    ],
+    location_and_surroundings: {
+      nearby_places: [
+        'Vatican Embassy',
+        'Canada Embassy',
+        'ICS International School',
+        'Church',
+        'Mosque',
+      ],
+    },
+    location: {
+      address: 'Wereda 08, Lideta',
+      city: 'Addis Ababa',
+      country: 'Ethiopia',
+      longitude: 8.990955237,
+      latitude: 38.7356,
+    },
+  },
+
+  {
+    title: 'Vatican Site – Type C One Bedroom Apartment',
+    overview: {
+      built_start_date: '2022-12-17',
+      property_type: 'Residential',
+      current_status: 'Plastering',
+    },
+    property_details: {
+      total_bedrooms: 1,
+      total_bathrooms: 1,
+      parking_space: 1,
+      area_size_m2: 67.02,
+      available_floors: [10],
+      building_size: '2B + G + 24 + Roof',
+      delivery_time: 'After 6 months (June 2026)',
+    },
+    amenities: [
+      'Garbage Chute',
+      'Lift',
+      'Parking Space',
+      'Green Area',
+      'Terrace',
+      'Underground Water',
+    ],
+    location_and_surroundings: {
+      nearby_places: [
+        'Vatican Embassy',
+        'Canada Embassy',
+        'ICS International School',
+        'Church',
+        'Mosque',
+      ],
+    },
+    location: {
+      address: 'Wereda 08, Lideta',
+      city: 'Addis Ababa',
+      country: 'Ethiopia',
+      longitude: 8.990955237,
+      latitude: 38.7356,
+    },
+  },
+
+  {
+    title: 'Vatican Site – Type D One Bedroom Apartment',
+    overview: {
+      built_start_date: '2022-12-17',
+      property_type: 'Residential',
+      current_status: 'Plastering',
+    },
+    property_details: {
+      total_bedrooms: 1,
+      total_bathrooms: 1,
+      parking_space: 1,
+      area_size_m2: 81.65,
+      available_floors: 'Not Available',
+      building_size: '2B + G + 24 + Roof',
+      delivery_time: 'After 6 months (June 2026)',
+    },
+    amenities: [
+      'Garbage Chute',
+      'Lift',
+      'Parking Space',
+      'Green Area',
+      'Terrace',
+      'Underground Water',
+    ],
+    location_and_surroundings: {
+      nearby_places: [
+        'Vatican Embassy',
+        'Canada Embassy',
+        'ICS International School',
+        'Church',
+        'Mosque',
+      ],
+    },
+    location: {
+      address: 'Wereda 08, Lideta',
+      city: 'Addis Ababa',
+      country: 'Ethiopia',
+      longitude: 8.990955237,
+      latitude: 38.7356,
+    },
+  },
+
+  {
+    title: 'Vatican Site – Type E Two Bedroom Apartment',
+    overview: {
+      built_start_date: '2022-12-17',
+      property_type: 'Residential',
+      current_status: 'Plastering',
+    },
+    property_details: {
+      total_bedrooms: 2,
+      total_bathrooms: 2,
+      parking_space: 1,
+      area_size_m2: 155.08,
+      available_floors: [6, 7, 8],
+      building_size: '2B + G + 24 + Roof',
+      delivery_time: 'After 6 months (June 2026)',
+    },
+    amenities: [
+      'Garbage Chute',
+      'Lift',
+      'Parking Space',
+      'Green Area',
+      'Terrace',
+      'Underground Water',
+    ],
+    location_and_surroundings: {
+      nearby_places: [
+        'Vatican Embassy',
+        'Canada Embassy',
+        'ICS International School',
+        'Church',
+        'Mosque',
+      ],
+    },
+    location: {
+      address: 'Wereda 08, Lideta',
+      city: 'Addis Ababa',
+      country: 'Ethiopia',
+      longitude: 8.990955237,
+      latitude: 38.7356,
+    },
+  },
+
+  {
+    title: 'Vatican Site – Type F Two Bedroom Apartment',
+    overview: {
+      built_start_date: '2022-12-17',
+      property_type: 'Residential',
+      current_status: 'Plastering',
+    },
+    property_details: {
+      total_bedrooms: 2,
+      total_bathrooms: 2,
+      parking_space: 1,
+      area_size_m2: 142.89,
+      available_floors: 'Not Available',
+      building_size: '2B + G + 24 + Roof',
+      delivery_time: 'After 6 months (June 2026)',
+    },
+    amenities: [
+      'Garbage Chute',
+      'Lift',
+      'Parking Space',
+      'Green Area',
+      'Terrace',
+      'Underground Water',
+    ],
+    location_and_surroundings: {
+      nearby_places: [
+        'Vatican Embassy',
+        'Canada Embassy',
+        'ICS International School',
+        'Church',
+        'Mosque',
+      ],
+    },
+    location: {
+      address: 'Wereda 08, Lideta',
+      city: 'Addis Ababa',
+      country: 'Ethiopia',
+      longitude: 8.990955237,
+      latitude: 38.7356,
+    },
+  },
+];
+
+export default data;

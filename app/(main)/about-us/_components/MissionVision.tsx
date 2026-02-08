@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 
 export default function MissionVision() {
@@ -16,7 +17,9 @@ export default function MissionVision() {
               future of real estate.
             </p>
             <button className="bg-primary mt-3 lg:mt-5 w-fit text-white px-5 py-3 lg:px-9 lg:py-4 rounded-full font-medium transition-colors duration-200">
-              Work With Us
+              <Link href="/contact-us" className="flex items-center gap-2">
+                Work With Us
+              </Link>
             </button>
           </div>
 

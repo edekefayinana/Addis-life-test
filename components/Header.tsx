@@ -3,18 +3,34 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { Menu } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 const navItems = [
   { href: '/', label: 'Home' },
-  { href: '/projects', label: 'Projects' },
+  // { href: '/projects', label: 'Projects' },
   { href: '/properties', label: 'Properties' },
   { href: '/about-us', label: 'About Us' },
   { href: '/blogs', label: 'Blogs' },
   { href: '/contact-us', label: 'Contact US' },
+];
+
+const propertyMenuItems = [
+  { href: '/properties?type=rent', label: 'Rent' },
+  { href: '/properties?type=sale', label: 'Sale' },
 ];
 
 type HeaderVariant = 'dark' | 'light';
@@ -59,6 +75,32 @@ export function Header({ variant }: HeaderProps) {
     variant ?? (isDarkRoute ? 'dark' : 'light');
   const styles = variantStyles[resolvedVariant];
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isPropertiesOpen, setIsPropertiesOpen] = useState(false);
+  const propertiesRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!isPropertiesOpen) return;
+
+    const handlePointerDown = (event: MouseEvent) => {
+      const target = event.target as Node | null;
+      if (propertiesRef.current?.contains(target)) return;
+      setIsPropertiesOpen(false);
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsPropertiesOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handlePointerDown);
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('mousedown', handlePointerDown);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isPropertiesOpen]);
 
   return (
     <header className={cn('z-50 w-full', styles.header)}>
@@ -82,16 +124,59 @@ export function Header({ variant }: HeaderProps) {
         </Link>
 
         {/* Centered Navigation */}
-        <nav className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-8 text-sm font-medium md:flex">
+        <nav className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-8 text-sm font-medium leading-none md:flex">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
+            if (item.href === '/properties') {
+              return (
+                <div
+                  key={item.href}
+                  ref={propertiesRef}
+                  className="relative"
+                  onMouseEnter={() => setIsPropertiesOpen(true)}
+                  onMouseLeave={() => setIsPropertiesOpen(false)}
+                >
+                  <span
+                    aria-hidden
+                    className="absolute left-0 right-0 top-full h-2"
+                  />
+                  <button
+                    type="button"
+                    className={cn(
+                      'inline-flex h-6 items-center gap-1 transition-colors focus:outline-none',
+                      styles.nav,
+                      isActive && styles.navActive
+                    )}
+                    aria-haspopup="menu"
+                    aria-expanded={isPropertiesOpen}
+                    onClick={() => setIsPropertiesOpen((prev) => !prev)}
+                  >
+                    {item.label}
+                  </button>
+                  {isPropertiesOpen && (
+                    <div className="absolute left-1/2 top-full z-50 mt-2 w-44 -translate-x-1/2 rounded-lg border border-border bg-white/95 p-1 text-sm text-foreground shadow-lg">
+                      {propertyMenuItems.map((menuItem) => (
+                        <Link
+                          key={menuItem.href}
+                          href={menuItem.href}
+                          className="block w-full rounded-md px-3 py-2 transition hover:bg-gray-100"
+                          onClick={() => setIsPropertiesOpen(false)}
+                        >
+                          {menuItem.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            }
             return (
               <Link
                 key={item.href}
                 href={item.href}
                 aria-current={isActive ? 'page' : undefined}
                 className={cn(
-                  'transition-colors',
+                  'inline-flex h-6 items-center transition-colors',
                   styles.nav,
                   isActive && styles.navActive
                 )}
@@ -126,14 +211,77 @@ export function Header({ variant }: HeaderProps) {
         </div>
 
         {/* Mobile toggle */}
-        <button
-          type="button"
-          onClick={() => setIsMobileOpen(true)}
-          className="inline-flex items-center justify-center rounded-full p-2 transition hover:bg-white/10 md:hidden"
-          aria-label="Open menu"
-        >
-          <Menu className="h-6 w-6" aria-hidden />
-        </button>
+        <div className="md:hidden">
+          <DropdownMenu open={isMobileOpen} onOpenChange={setIsMobileOpen}>
+            <DropdownMenuTrigger className="inline-flex items-center justify-center rounded-full p-2 transition hover:bg-white/10">
+              <Menu className="h-6 w-6" aria-hidden />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="end"
+              className="flex w-56 flex-col gap-2 rounded-xl border border-border bg-white/95 p-2 shadow-lg"
+            >
+              {navItems.map((item) => {
+                if (item.href === '/properties') {
+                  return (
+                    <DropdownMenuSub key={item.href}>
+                      <DropdownMenuSubTrigger className="cursor-pointer px-3 text-base font-medium text-foreground">
+                        {item.label}
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuPortal>
+                        <DropdownMenuSubContent className="flex flex-col gap-1 rounded-xl border border-border bg-white p-1 shadow-lg">
+                          {propertyMenuItems.map((menuItem) => (
+                            <DropdownMenuItem
+                              key={menuItem.href}
+                              className="p-0"
+                              asChild
+                            >
+                              <Link
+                                href={menuItem.href}
+                                className="w-full rounded-md px-3 py-2 text-base transition hover:bg-gray-100"
+                              >
+                                {menuItem.label}
+                              </Link>
+                            </DropdownMenuItem>
+                          ))}
+                        </DropdownMenuSubContent>
+                      </DropdownMenuPortal>
+                    </DropdownMenuSub>
+                  );
+                }
+
+                return (
+                  <DropdownMenuItem key={item.href} className="p-0" asChild>
+                    <Link
+                      href={item.href}
+                      className="w-full rounded-lg px-3 py-2 text-base font-medium text-foreground transition hover:bg-gray-100"
+                    >
+                      {item.label}
+                    </Link>
+                  </DropdownMenuItem>
+                );
+              })}
+
+              <DropdownMenuSeparator />
+
+              <DropdownMenuItem className="p-0" asChild>
+                <Link
+                  href="/login"
+                  className="w-full rounded-full px-4 py-2 text-center text-sm font-medium text-foreground transition hover:bg-gray-100"
+                >
+                  Login
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="p-0" asChild>
+                <Link
+                  href="/signup"
+                  className="w-full rounded-full bg-brand-dark px-4 py-2 text-center text-sm font-semibold text-white transition hover:bg-brand-dark/90"
+                >
+                  Sign Up
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
 
       {/* Mobile overlay */}

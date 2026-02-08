@@ -1,7 +1,8 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import {
@@ -23,9 +24,12 @@ import {
   MapPin,
   Check,
   ExternalLink,
+  X,
 } from 'lucide-react';
 import { PropertyCard } from '@/components/PropertyCard';
-import { cn } from '@/lib/utils';
+import propertiesData from '@/data/african Union 2 site-all units';
+import { buildPublicPaths } from '@/data/au2ImagesManifest';
+import { cn, truncate } from '@/lib/utils';
 
 const LeafletMap = dynamic(
   () => import('./_components/LeafletMap').then((m) => m.LeafletMap),
@@ -33,10 +37,21 @@ const LeafletMap = dynamic(
 );
 
 export default function PropertyPage() {
+  const params = useParams() as { id?: string };
+  function slugify(title: string): string {
+    return title
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
   const [activeTab, setActiveTab] = useState<'overview' | 'video' | 'virtual'>(
     'overview'
   );
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [overviewExpanded, setOverviewExpanded] = useState(false);
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
+  const [galleryIndex, setGalleryIndex] = useState(0);
 
   const virtualTourImages = [
     { src: '/property-1.jpg', label: 'Living Room' },
@@ -45,83 +60,137 @@ export default function PropertyPage() {
     { src: '/pro-4.jpg', label: 'Bathroom' },
   ];
 
-  const propertyImages = [
-    '/property-1.jpg',
-    '/property-2.jpg',
-    '/property-3.jpg',
-    '/hero-image.jpg',
-    '/hero-image.jpg',
-    '/hero-image.jpg',
-  ];
+  // propertyImages will be derived after resolving currentProperty
 
-  const amenities = [
-    { name: 'Elevator', icon: true },
-    { name: 'Garbage Shoot', icon: true },
-    { name: "Kid's Zone", icon: true },
-    { name: 'Parking Space', icon: true },
-    { name: 'CCTV Surveillance', icon: true },
-    { name: 'Green Terrace', icon: true },
-    { name: 'EV Charging Station', icon: true },
-    { name: 'Water Storage', icon: true },
-    { name: 'Parking Spot', icon: true },
-  ];
+  const currentProperty =
+    propertiesData.find((p) =>
+      params.id ? slugify(p.title) === params.id : false
+    ) || propertiesData[0];
 
-  const locations = [
-    { distance: '5 min to supermarket', icon: true },
-    { distance: '10 min to schools', icon: true },
-    { distance: '24/7 transport access', icon: true },
-  ];
+  const propertyImages = currentProperty.imagesFolder
+    ? buildPublicPaths(currentProperty.imagesFolder)
+    : [
+        '/property-1.jpg',
+        '/property-2.jpg',
+        '/property-3.jpg',
+        '/hero-image.jpg',
+      ];
+
+  // Keyboard navigation for gallery: Escape to close, arrows to navigate
+  useEffect(() => {
+    if (!isGalleryOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        setIsGalleryOpen(false);
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        setGalleryIndex((i) => (i + 1) % propertyImages.length);
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        setGalleryIndex(
+          (i) => (i - 1 + propertyImages.length) % propertyImages.length
+        );
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [isGalleryOpen, propertyImages.length]);
+
+  const openGallery = (index = 0) => {
+    setGalleryIndex(index);
+    setIsGalleryOpen(true);
+  };
+  const closeGallery = () => setIsGalleryOpen(false);
+  const nextGalleryImage = () =>
+    setGalleryIndex((i) => (i + 1) % propertyImages.length);
+  const prevGalleryImage = () =>
+    setGalleryIndex(
+      (i) => (i - 1 + propertyImages.length) % propertyImages.length
+    );
+
+  const amenities = currentProperty.amenities.map((name) => ({
+    name,
+    icon: true,
+  }));
+
+  const locations = currentProperty.location_and_surroundings.nearby_places.map(
+    (place) => ({
+      distance: place,
+      icon: true,
+    })
+  );
 
   const propertyDetails = [
-    { label: 'Built from', value: '2023 Year', icon: Calendar },
-    { label: 'Property Type', value: 'Residential', icon: HomeIcon },
-    { label: 'Price Per M²', value: '78,000 ETB', icon: DollarSign },
-    { label: 'Work Level', value: 'Excavation to begin', icon: Clock },
+    {
+      label: 'Built from',
+      value: currentProperty.overview.built_start_date,
+      icon: Calendar,
+    },
+    {
+      label: 'Property Type',
+      value: currentProperty.overview.property_type,
+      icon: HomeIcon,
+    },
+    { label: 'Price Per M²', value: 'N/A', icon: DollarSign },
+    {
+      label: 'Work Level',
+      value: currentProperty.overview.current_status,
+      icon: Clock,
+    },
   ];
 
-  const otherListings = [
-    {
-      title: 'Vatican site - Three BedRoom Apartment',
-      location: 'Sarbet Blue Point, Sarbet',
-      beds: 4,
-      baths: 2,
-      sqft: 450,
-      image: '/pro-4.jpg',
-    },
-    {
-      title: 'Vatican site - Three BedRoom Apartment',
-      location: 'Sarbet Blue Point, Sarbet',
-      beds: 4,
-      baths: 2,
-      sqft: 450,
-      image: '/pro-5.jpg',
-    },
-    {
-      title: 'Vatican site - Three BedRoom Apartment',
-      location: 'Sarbet Blue Point, Sarbet',
-      beds: 4,
-      baths: 2,
-      sqft: 450,
-      image: '/pro-6.jpg',
-    },
-  ];
+  // Using shared properties dataset for "Other Latest Listings"
+
+  const availableFloors = Array.isArray(
+    currentProperty.property_details.available_floors
+  )
+    ? currentProperty.property_details.available_floors.join(', ')
+    : currentProperty.property_details.available_floors;
 
   const propertySpecs = [
-    { label: 'Total Bedroom', value: '3 Bedroom' },
-    { label: 'Furnishing', value: '3 Bedroom' },
-    { label: 'Total Bathroom', value: '2 Bathroom' },
-    { label: 'Kitchen', value: 'Modern & Traditional kitchen' },
-    { label: 'Carport/Parking Space', value: '2 Car Garage' },
-    { label: 'Outdoor Space', value: 'Private' },
-    { label: 'Building Size', value: 'G+20+T' },
-    { label: 'Area Size', value: '450 sqft' },
-    { label: 'Delivery Time', value: '36 Months' },
+    {
+      label: 'Total Bedroom',
+      value: `${currentProperty.property_details.total_bedrooms} Bedroom`,
+    },
+    {
+      label: 'Total Bathroom',
+      value: `${currentProperty.property_details.total_bathrooms} Bathroom`,
+    },
+    {
+      label: 'Carport/Parking Space',
+      value: `${currentProperty.property_details.parking_space} Parking`,
+    },
+    { label: 'Available Floors', value: `${availableFloors}` },
+    {
+      label: 'Building Size',
+      value: currentProperty.property_details.building_size,
+    },
+    {
+      label: 'Area Size',
+      value: `${currentProperty.property_details.area_size_m2} m²`,
+    },
+    {
+      label: 'Delivery Time',
+      value: currentProperty.property_details.delivery_time,
+    },
   ];
 
   const propertyLocation = {
-    coords: [9.0108, 38.7546] as [number, number],
-    address: 'Sarbet Blue Point, Sarbet, Addis Ababa Ethiopia',
+    coords: [
+      currentProperty.location.latitude,
+      currentProperty.location.longitude,
+    ] as [number, number],
+    address: `${currentProperty.location.address}, ${currentProperty.location.city}, ${currentProperty.location.country}`,
   };
+
+  const nearbySummary = currentProperty.location_and_surroundings.nearby_places
+    .slice(0, 4)
+    .join(', ');
+  const overviewTextFull = `${currentProperty.title} is a ${currentProperty.overview.property_type.toLowerCase()} property featuring ${currentProperty.property_details.total_bedrooms} bedrooms, ${currentProperty.property_details.total_bathrooms} bathrooms, and ${currentProperty.property_details.area_size_m2} m² of space. Building size: ${currentProperty.property_details.building_size}. Current status: ${currentProperty.overview.current_status}. Estimated delivery: ${currentProperty.property_details.delivery_time}. Located at ${currentProperty.location.address}, ${currentProperty.location.city}. Nearby: ${nearbySummary}.`;
+  const displayedOverview = overviewExpanded
+    ? overviewTextFull
+    : truncate(overviewTextFull, 240);
 
   return (
     <div className="min-h-screen bg-background mt-[70px]">
@@ -131,20 +200,26 @@ export default function PropertyPage() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <div className="flex-1 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
             <h1 className="text-2xl sm:text-3xl font-semibold text-foreground mb-0">
-              Vatican site - Three BedRoom Apartment
+              {truncate(currentProperty.title, 40)}
             </h1>
             <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
               <div className="flex items-center gap-2 bg-accent py-2 sm:py-3 px-4 sm:px-5 rounded-full">
                 <Bed className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
-                <span className="text-xs sm:text-sm font-medium">3 Beds</span>
+                <span className="text-xs sm:text-sm font-medium">
+                  {currentProperty.property_details.total_bedrooms} Beds
+                </span>
               </div>
               <div className="flex items-center gap-2 bg-accent py-2 sm:py-3 px-4 sm:px-5 rounded-full">
                 <Bath className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
-                <span className="text-xs sm:text-sm font-medium">2 Baths</span>
+                <span className="text-xs sm:text-sm font-medium">
+                  {currentProperty.property_details.total_bathrooms} Baths
+                </span>
               </div>
               <div className="flex items-center gap-2 bg-accent py-2 sm:py-3 px-4 sm:px-5 rounded-full">
                 <Maximize2 className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
-                <span className="text-xs sm:text-sm font-medium">450 sqft</span>
+                <span className="text-xs sm:text-sm font-medium">
+                  {currentProperty.property_details.area_size_m2} m²
+                </span>
               </div>
             </div>
           </div>
@@ -286,19 +361,21 @@ export default function PropertyPage() {
 
         {activeTab === 'overview' && (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 sm:mb-12">
-            <div className="overflow-hidden relative aspect-[4/3] rounded-xl sm:rounded-l-xl sm:rounded-bl-xl">
+            <div className="overflow-hidden relative aspect-4/3 rounded-xl sm:rounded-l-xl sm:rounded-bl-xl">
               <Image
                 src={propertyImages[0] || '/placeholder.svg'}
                 alt="Building Exterior"
                 fill
-                className="object-cover"
+                className="object-cover cursor-pointer"
+                onClick={() => openGallery(0)}
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
               {propertyImages.slice(1, 5).map((img, idx) => (
                 <div
                   key={idx}
-                  className="overflow-hidden relative aspect-[4/3]"
+                  className="overflow-hidden relative aspect-4/3 cursor-pointer"
+                  onClick={() => openGallery(idx + 1)}
                 >
                   <Image
                     src={img || '/placeholder.svg'}
@@ -314,7 +391,10 @@ export default function PropertyPage() {
                     )}
                   />
                   {idx === 3 && (
-                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center rounded-br-xl">
+                    <div
+                      className="absolute inset-0 bg-black/60 flex items-center justify-center rounded-br-xl"
+                      onClick={() => openGallery(4)}
+                    >
                       <span className="text-white text-lg sm:text-xl font-semibold">
                         +{propertyImages.length - 4}
                       </span>
@@ -336,17 +416,13 @@ export default function PropertyPage() {
                 Overview
               </h2>
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-4">
-                This three-bedroom apartment for sale in Ethiopia offers a
-                spacious and thoughtfully designed living environment, perfect
-                for families or individuals seeking comfort and style. The
-                apartment features three well-appointed bedrooms, providing
-                ample space, including the option to create a home office or add
-                extra storage. Residents also enjoy 0,700 sq.ft of alerts also
-                enjoy 0,700 sq.ft of common area including terraces, a 750 sq.ft
-                garden for...
+                {displayedOverview}
               </p>
-              <button className="text-primary font-medium text-xs sm:text-sm flex items-center gap-1">
-                Show more
+              <button
+                onClick={() => setOverviewExpanded((prev) => !prev)}
+                className="text-primary font-medium text-xs sm:text-sm flex items-center gap-1"
+              >
+                {overviewExpanded ? 'Show less' : 'Show more'}
                 <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
               </button>
             </section>
@@ -459,11 +535,11 @@ export default function PropertyPage() {
               <LeafletMap
                 position={propertyLocation.coords}
                 address={propertyLocation.address}
-                title="Vatican site - Three BedRoom Apartment"
-                imageUrl="/property-1.jpg"
-                beds={3}
-                baths={2}
-                area={450}
+                title={currentProperty.title}
+                beds={currentProperty.property_details.total_bedrooms}
+                baths={currentProperty.property_details.total_bathrooms}
+                area={currentProperty.property_details.area_size_m2}
+                imagesFolder={currentProperty.imagesFolder}
               />
             </section>
 
@@ -501,7 +577,7 @@ export default function PropertyPage() {
           {/* Right Column - Pricing & Contact */}
           <div className="lg:col-span-1">
             <div className="space-y-6 lg:sticky lg:top-24">
-              <div className="border rounded-2xl p-4 sm:p-6 bg-white">
+              {/* <div className="border rounded-2xl p-4 sm:p-6 bg-white">
                 <p className="text-xs sm:text-sm text-muted-foreground mb-1">
                   Total Down Payment
                 </p>
@@ -513,7 +589,7 @@ export default function PropertyPage() {
                     Call to Invest
                   </Button>
                 </div>
-              </div>
+              </div> */}
 
               <div className="border rounded-2xl p-4 sm:p-6 bg-white">
                 <h3 className="text-base sm:text-lg font-bold mb-4">
@@ -582,19 +658,81 @@ export default function PropertyPage() {
           Other Latest Listings
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {otherListings.map((listing, idx) => (
-            <PropertyCard
-              key={idx}
-              title={listing.title}
-              location={listing.location}
-              beds={listing.beds}
-              baths={listing.baths}
-              area={listing.sqft}
-              imageUrl={listing.image}
-            />
-          ))}
+          {propertiesData
+            .filter((p) => slugify(p.title) !== slugify(currentProperty.title))
+            .slice(0, 3)
+            .map((prop, idx) => (
+              <PropertyCard key={idx} {...prop} />
+            ))}
         </div>
       </section>
+      {isGalleryOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center"
+          onClick={closeGallery}
+        >
+          <div
+            className="relative w-[90vw] max-w-5xl h-[70vh] bg-black rounded-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={closeGallery}
+              className="absolute top-3 right-3 p-2 rounded-full bg-white/90 text-black hover:bg-white z-10"
+              aria-label="Close"
+            >
+              <X className="w-3 h-3" />
+            </button>
+            <button
+              onClick={prevGalleryImage}
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform z-10"
+              aria-label="Previous image"
+            >
+              <ChevronLeft className="w-5 h-5 text-foreground" />
+            </button>
+            <button
+              onClick={nextGalleryImage}
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform z-10"
+              aria-label="Next image"
+            >
+              <ChevronRight className="w-5 h-5 text-foreground" />
+            </button>
+            <div className="absolute top-3 left-3 text-white text-xs bg-black/60 px-3 py-1 rounded-full z-10">
+              {galleryIndex + 1} / {propertyImages.length}
+            </div>
+            <div className="relative w-full h-full">
+              <Image
+                src={propertyImages[galleryIndex] || '/placeholder.svg'}
+                alt={`Gallery image ${galleryIndex + 1}`}
+                fill
+                className="object-contain"
+                sizes="(max-width: 768px) 90vw, 1024px"
+              />
+            </div>
+            {/* Thumbnails strip */}
+            <div className="absolute bottom-3 left-0 right-0 px-4">
+              <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+                {propertyImages.map((src, i) => (
+                  <button
+                    key={src + i}
+                    onClick={() => setGalleryIndex(i)}
+                    className={`relative w-20 h-14 rounded-md overflow-hidden border ${
+                      i === galleryIndex ? 'border-white' : 'border-white/40'
+                    }`}
+                    aria-label={`View image ${i + 1}`}
+                  >
+                    <Image
+                      src={src}
+                      alt={`Thumbnail ${i + 1}`}
+                      fill
+                      className="object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
