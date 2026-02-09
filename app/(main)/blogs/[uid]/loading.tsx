@@ -37,14 +37,12 @@ export default function Loading() {
         </div>
       </div>
 
-      <section className="flex flex-col gap-8 max-w-[1230px] mx-auto pt-5 pb-10 px-4 xl:px-0">
-        <div className="animate-pulse">
-          <SkeletonLine className="h-6 w-56 mb-6" />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {Array.from({ length: 3 }).map((_, idx) => (
-              <BlogCardSkeleton key={idx} />
-            ))}
-          </div>
+      <section className="flex flex-col gap-8 max-w-[1230px] mx-auto w-full pt-5 pb-10 px-4 xl:px-0 animate-pulse">
+        <SkeletonLine className="h-7 w-72" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {Array.from({ length: 3 }).map((_, idx) => (
+            <BlogCardSkeleton key={idx} />
+          ))}
         </div>
       </section>
 

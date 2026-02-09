@@ -1,9 +1,10 @@
+import { BlogCardSkeleton } from '@/components/skeletons/BlogCardSkeleton';
+import { PropertyCardSkeleton } from '@/components/skeletons/PropertyCardSkeleton';
 import {
   SkeletonBlock,
   SkeletonCircle,
   SkeletonLine,
 } from '@/components/ui/skeleton';
-import { PropertyCardSkeleton } from '@/components/skeletons/PropertyCardSkeleton';
 
 export default function Loading() {
   return (
@@ -136,7 +137,7 @@ export default function Loading() {
         </div>
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 3 }).map((_, idx) => (
-            <SkeletonBlock key={idx} className="h-80" />
+            <BlogCardSkeleton key={idx} />
           ))}
         </div>
         <div className="mt-8 flex justify-center">
