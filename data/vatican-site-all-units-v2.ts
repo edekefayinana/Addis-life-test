@@ -5,7 +5,7 @@ export type Listing = PropertyCardProps;
 const data: PropertyCardProps[] = [
   {
     title: 'Vatican Site – Type A Three Bedroom Apartment',
-    type: 'rent',
+    type: 'sale',
     imagesFolder: 'F 3',
     overview: {
       built_start_date: '2022-12-17',
@@ -93,7 +93,7 @@ const data: PropertyCardProps[] = [
 
   {
     title: 'Vatican Site – Type C Three Bedroom Apartment',
-    type: 'rent',
+    type: 'sale',
     imagesFolder: 'F 6',
     overview: {
       built_start_date: '2022-12-17',
@@ -181,7 +181,7 @@ const data: PropertyCardProps[] = [
 
   {
     title: 'Vatican Site – Type A Three Bedroom Apartment (Variant)',
-    type: 'rent',
+    type: 'sale',
     imagesFolder: 'F 3',
     overview: {
       built_start_date: '2022-12-17',
@@ -269,7 +269,7 @@ const data: PropertyCardProps[] = [
 
   {
     title: 'Vatican Site – Type C One Bedroom Apartment',
-    type: 'rent',
+    type: 'sale',
     imagesFolder: 'F 6',
     overview: {
       built_start_date: '2022-12-17',
@@ -357,7 +357,7 @@ const data: PropertyCardProps[] = [
 
   {
     title: 'Vatican Site – Type E Two Bedroom Apartment',
-    type: 'rent',
+    type: 'sale',
     imagesFolder: 'F 6',
     overview: {
       built_start_date: '2022-12-17',

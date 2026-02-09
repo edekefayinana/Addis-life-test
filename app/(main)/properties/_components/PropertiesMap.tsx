@@ -1,10 +1,9 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import L from 'leaflet';
 import type { PropertyCardProps as Listing } from '@/components/PropertyCard';
 import { Bath, Bed, Maximize } from 'lucide-react';
 import { buildPublicPaths } from '@/data/au2ImagesManifest';
@@ -69,15 +68,36 @@ function getCoordinatesForLocation(location: string): [number, number] {
 }
 
 export function PropertiesMap({ properties }: PropertiesMapProps) {
-  const markerIcon = useMemo(() => {
-    if (typeof window === 'undefined') return null;
-    return L.icon({
-      iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-      shadowUrl:
-        'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-    });
+  const [markerIcon, setMarkerIcon] = useState<L.Icon | null>(null);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+
+    let mounted = true;
+
+    const loadLeaflet = async () => {
+      const leaflet = await import('leaflet');
+      if (!mounted) return;
+      setMarkerIcon(
+        leaflet.icon({
+          iconUrl:
+            'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+          shadowUrl:
+            'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+        })
+      );
+    };
+
+    if (typeof window !== 'undefined') {
+      loadLeaflet();
+    }
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   // Calculate center based on all properties
@@ -94,7 +114,7 @@ export function PropertiesMap({ properties }: PropertiesMapProps) {
     return [avgLat, avgLng];
   }, [properties]);
 
-  if (!markerIcon) {
+  if (!isClient || !markerIcon) {
     return (
       <div className="rounded-xl overflow-hidden border bg-white h-full w-full" />
     );
@@ -104,16 +124,17 @@ export function PropertiesMap({ properties }: PropertiesMapProps) {
     <div className="rounded-xl overflow-hidden border bg-white h-full w-full relative">
       <MapContainer
         center={center}
-        zoom={properties.length === 1 ? 15 : 12}
+        zoom={properties.length === 1 ? 19 : 14}
         style={{ height: '100%', width: '100%', zIndex: 0 }}
         scrollWheelZoom={true}
         className="z-0"
       >
         <MapResizeHandler />
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'
-          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles style by Humanitarian OpenStreetMap Team hosted by <a href="https://www.openstreetmap.fr">OpenStreetMap France</a>'
+          url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
         />
+
         {properties.map((property, idx) => {
           const coords = getCoordinatesForLocation(property.location.address);
           return (

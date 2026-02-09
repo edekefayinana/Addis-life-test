@@ -3,7 +3,7 @@ export type Listing = PropertyCardProps;
 const data: PropertyCardProps[] = [
   {
     title: 'African Union Site 2 – Type A Two Bedroom Apartment',
-    type: 'rent',
+    type: 'sale',
     imagesFolder: 'Type A 3 bedroom + maids',
     overview: {
       built_start_date: '2025-03-14',
@@ -93,7 +93,7 @@ const data: PropertyCardProps[] = [
 
   {
     title: 'African Union Site 2 – Type C Two Bedroom Apartment',
-    type: 'rent',
+    type: 'sale',
     imagesFolder: 'Type C 2 bedroom + maids',
     overview: {
       built_start_date: '2025-03-14',
@@ -183,7 +183,7 @@ const data: PropertyCardProps[] = [
 
   {
     title: 'African Union Site 2 – Type E One Bedroom Apartment',
-    type: 'rent',
+    type: 'sale',
     imagesFolder: 'Type E 2 bedroom + maids',
     overview: {
       built_start_date: '2025-03-14',
@@ -272,7 +272,7 @@ const data: PropertyCardProps[] = [
 
   {
     title: 'Vatican Site – Type B Three Bedroom Apartment',
-    type: 'rent',
+    type: 'sale',
     imagesFolder: 'F 4',
     overview: {
       built_start_date: '2022-12-17',
@@ -360,7 +360,7 @@ const data: PropertyCardProps[] = [
 
   {
     title: 'Vatican Site – Type D Three Bedroom Apartment',
-    type: 'rent',
+    type: 'sale',
     imagesFolder: 'F 6',
     overview: {
       built_start_date: '2022-12-17',
@@ -448,7 +448,7 @@ const data: PropertyCardProps[] = [
 
   {
     title: 'Vatican Site – Type B Three Bedroom Apartment (Variant)',
-    type: 'rent',
+    type: 'sale',
     imagesFolder: 'F 4',
     overview: {
       built_start_date: '2022-12-17',
@@ -536,7 +536,7 @@ const data: PropertyCardProps[] = [
 
   {
     title: 'Vatican Site – Type D One Bedroom Apartment',
-    type: 'rent',
+    type: 'sale',
     imagesFolder: 'F 4',
     overview: {
       built_start_date: '2022-12-17',
@@ -624,7 +624,7 @@ const data: PropertyCardProps[] = [
 
   {
     title: 'Vatican Site – Type F Two Bedroom Apartment',
-    type: 'rent',
+    type: 'sale',
     imagesFolder: 'F 6',
     overview: {
       built_start_date: '2022-12-17',

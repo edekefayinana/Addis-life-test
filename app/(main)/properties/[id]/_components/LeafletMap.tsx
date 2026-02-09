@@ -68,8 +68,8 @@ export function LeafletMap({
         scrollWheelZoom={false}
       >
         <TileLayer
-          attribution="&copy; OpenStreetMap & CartoDB"
-          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles style by Humanitarian OpenStreetMap Team hosted by <a href="https://www.openstreetmap.fr">OpenStreetMap France</a>'
+          url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
         />
         <Marker position={position} icon={markerIcon}>
           <Popup
