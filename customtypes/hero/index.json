@@ -1,0 +1,111 @@
+{
+  "format": "custom",
+  "id": "hero",
+  "label": "hero",
+  "repeatable": false,
+  "status": true,
+  "json": {
+    "Main": {
+      "slides": {
+        "type": "Group",
+        "config": {
+          "label": "Slides",
+          "fields": {
+            "image": {
+              "type": "Image",
+              "config": {
+                "label": "Image",
+                "thumbnails": []
+              }
+            },
+            "eyebrow": {
+              "type": "Text",
+              "config": {
+                "label": "Eyebrow",
+                "placeholder": "Priority Access"
+              }
+            },
+            "headline": {
+              "type": "Text",
+              "config": {
+                "label": "Headline",
+                "placeholder": "Priority Access Now Open"
+              }
+            },
+            "subhead": {
+              "type": "Text",
+              "config": {
+                "label": "Subhead",
+                "placeholder": "Short supporting message"
+              }
+            },
+            "announcement_type": {
+              "type": "Select",
+              "config": {
+                "label": "Announcement Type",
+                "options": ["Discount", "Launch", "Event", "News"],
+                "placeholder": "Select type"
+              }
+            },
+            "cta_label": {
+              "type": "Text",
+              "config": {
+                "label": "CTA Label",
+                "placeholder": "View offers"
+              }
+            },
+            "cta_href": {
+              "type": "Text",
+              "config": {
+                "label": "CTA Href",
+                "placeholder": "/properties"
+              }
+            },
+            "highlight_1_label": {
+              "type": "Text",
+              "config": {
+                "label": "Highlight 1 Label",
+                "placeholder": "Communities"
+              }
+            },
+            "highlight_1_value": {
+              "type": "Text",
+              "config": {
+                "label": "Highlight 1 Value",
+                "placeholder": "12+"
+              }
+            },
+            "highlight_2_label": {
+              "type": "Text",
+              "config": {
+                "label": "Highlight 2 Label",
+                "placeholder": "Verified units"
+              }
+            },
+            "highlight_2_value": {
+              "type": "Text",
+              "config": {
+                "label": "Highlight 2 Value",
+                "placeholder": "480+"
+              }
+            },
+            "highlight_3_label": {
+              "type": "Text",
+              "config": {
+                "label": "Highlight 3 Label",
+                "placeholder": "Payment plans"
+              }
+            },
+            "highlight_3_value": {
+              "type": "Text",
+              "config": {
+                "label": "Highlight 3 Value",
+                "placeholder": "Flexible"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
