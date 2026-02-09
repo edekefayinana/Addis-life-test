@@ -2,33 +2,33 @@ export type HeroSlide = {
   id: string;
   type: 'image' | 'video';
   src: string;
+  eyebrow?: string;
   headline: string;
   subhead: string;
+  announcementType?: 'discount' | 'launch' | 'event' | 'news';
+  cta?: {
+    label: string;
+    href: string;
+  };
+  highlights?: Array<{
+    label: string;
+    value: string;
+  }>;
 };
 
-export const heroSlides: HeroSlide[] = [
-  {
-    id: 'intro-video',
-    type: 'video',
-    src: '/video/WEBESIT.mp4',
-    headline: 'Experience Addis Life in Motion',
-    subhead:
-      'Take a cinematic look at our flagship communities and the lifestyle they unlock.',
-  },
-  {
-    id: 'premium-living',
-    type: 'image',
-    src: '/hero-image.jpg',
-    headline: 'Priority Access Now Open',
-    subhead:
-      'Secure early access to our newest releases with flexible payment plans and verified availability.',
-  },
-  {
-    id: 'curated-options',
-    type: 'image',
-    src: '/AU2 site Building Renders/1_8 - Photo.jpg',
-    headline: 'Limited Units, Verified Listings',
-    subhead:
-      'Explore a curated selection with clear pricing, transparent details, and priority scheduling.',
-  },
-];
+export const heroVideoSlide: HeroSlide = {
+  id: 'intro-video',
+  type: 'video',
+  src: '/video/WEBESIT.mp4',
+  eyebrow: 'Addis Life Signature Collection',
+  headline: 'Experience Addis Life in Motion',
+  subhead:
+    'Take a cinematic look at our flagship communities and the lifestyle they unlock.',
+  highlights: [
+    { label: 'Communities', value: '12+' },
+    { label: 'Verified units', value: '480+' },
+    { label: 'Payment plans', value: 'Flexible' },
+  ],
+};
+
+export const fallbackHeroSlides: HeroSlide[] = [heroVideoSlide];
