@@ -1,35 +1,34 @@
 'use client';
 
-import dynamic from 'next/dynamic';
-import { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
-import Image from 'next/image';
-import { Button } from '@/components/ui/button';
-import {
-  Bed,
-  Bath,
-  Maximize2,
-  Share2,
-  Heart,
-  Play,
-  Grid3x3,
-  Video,
-  Sparkles,
-  ChevronLeft,
-  ChevronRight,
-  Calendar,
-  HomeIcon,
-  DollarSign,
-  Clock,
-  MapPin,
-  Check,
-  ExternalLink,
-  X,
-} from 'lucide-react';
 import { PropertyCard } from '@/components/PropertyCard';
+import { Button } from '@/components/ui/button';
 import propertiesData from '@/data/african Union 2 site-all units';
 import { buildPublicPaths } from '@/data/au2ImagesManifest';
 import { cn, truncate } from '@/lib/utils';
+import {
+  Bath,
+  Bed,
+  Calendar,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  ExternalLink,
+  Grid3x3,
+  Heart,
+  HomeIcon,
+  MapPin,
+  Maximize2,
+  Play,
+  Share2,
+  Sparkles,
+  Video,
+  X,
+} from 'lucide-react';
+import dynamic from 'next/dynamic';
+import Image from 'next/image';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 const LeafletMap = dynamic(
   () => import('./LeafletMap').then((m) => m.LeafletMap),
@@ -132,7 +131,7 @@ export default function PropertyPage() {
       value: currentProperty.overview.property_type,
       icon: HomeIcon,
     },
-    { label: 'Price Per M²', value: 'N/A', icon: DollarSign },
+    // { label: 'Price Per M²', value: 'N/A', icon: DollarSign },
     {
       label: 'Work Level',
       value: currentProperty.overview.current_status,
@@ -429,7 +428,7 @@ export default function PropertyPage() {
 
             {/* Property Details Bar */}
             <section className="p-4 sm:p-6 bg-white border rounded-2xl">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {propertyDetails.map(({ label, value, icon: Icon }) => (
                   <div key={label} className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-cta-bg/10 flex items-center justify-center shrink-0">

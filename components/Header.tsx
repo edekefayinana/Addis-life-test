@@ -14,7 +14,7 @@ const navItems = [
   { href: '/properties', label: 'Properties' },
   { href: '/about-us', label: 'About Us' },
   { href: '/blogs', label: 'Blogs' },
-  { href: '/contact-us', label: 'Contact US' },
+  { href: '/contact-us', label: 'Contact Us' },
 ];
 
 const propertyMenuItems = [
@@ -50,7 +50,7 @@ const variantStyles: Record<
   light: {
     header: 'relative bg-white/95 text-foreground border-b border-border',
     inner: 'text-foreground',
-    nav: 'text-muted-foreground hover:text-foreground',
+    nav: 'hover:text-foreground',
     navActive: 'border-b-2 border-brand-dark pb-1 text-foreground',
     action: 'text-foreground hover:text-foreground',
     cta: 'bg-brand-dark !text-white hover:bg-brand-dark/90 border border-brand-dark text-white',
@@ -132,7 +132,7 @@ export function Header({ variant }: HeaderProps) {
                   <button
                     type="button"
                     className={cn(
-                      'inline-flex h-6 items-center gap-1 transition-colors focus:outline-none',
+                      `inline-flex h-6 items-center gap-1 transition-colors focus:outline-none`,
                       styles.nav,
                       isActive && styles.navActive
                     )}

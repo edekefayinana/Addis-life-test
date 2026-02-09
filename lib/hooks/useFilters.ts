@@ -6,6 +6,8 @@ export type Filters = {
   type?: string;
   bedrooms?: string;
   price?: string;
+  bathrooms?: string;
+  furnishing?: string;
   view?: 'list' | 'map';
   page?: string;
 };
@@ -20,6 +22,8 @@ export function useFilters() {
       type: searchParams.get('type') ?? '',
       bedrooms: searchParams.get('bedrooms') ?? '',
       price: searchParams.get('price') ?? '',
+      bathrooms: searchParams.get('bathrooms') ?? '',
+      furnishing: searchParams.get('furnishing') ?? '',
       view: (searchParams.get('view') as Filters['view']) ?? 'list',
       page: searchParams.get('page') ?? '1',
     }),
@@ -48,7 +52,12 @@ export function useFilters() {
   };
 
   const hasActiveFilters = Boolean(
-    filters.location || filters.type || filters.bedrooms || filters.price
+    filters.location ||
+    filters.type ||
+    filters.bedrooms ||
+    filters.price ||
+    filters.bathrooms ||
+    filters.furnishing
   );
 
   return {
