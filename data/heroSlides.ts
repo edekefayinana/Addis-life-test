@@ -10,7 +10,7 @@ export const heroSlides: HeroSlide[] = [
   {
     id: 'intro-video',
     type: 'video',
-    src: '/video/video.mp4',
+    src: '/video/WEBESIT.mp4',
     headline: 'Experience Addis Life in Motion',
     subhead:
       'Take a cinematic look at our flagship communities and the lifestyle they unlock.',
@@ -26,7 +26,7 @@ export const heroSlides: HeroSlide[] = [
   {
     id: 'curated-options',
     type: 'image',
-    src: '/property-1.jpg',
+    src: '/AU2 site Building Renders/1_8 - Photo.jpg',
     headline: 'Limited Units, Verified Listings',
     subhead:
       'Explore a curated selection with clear pricing, transparent details, and priority scheduling.',

@@ -5,12 +5,14 @@ import Image from 'next/image';
 
 const testimonials = [
   {
+    img: '/AU2 site Building Renders/2_16 - Photo.jpg',
     quote:
       'I appreciated their transparency and consistent communication. Each step was clearly explained, and the quality of their service made the entire experience smooth and reassuring.',
     name: 'Solomon Mulugeta',
     role: 'Client',
   },
   {
+    img: '/AU2 site Building Renders/2_13 - Photo.jpg',
     quote:
       'From the first walkthrough to the final handover, the Addis Life team was attentive, honest, and on schedule. They made buying my home effortless.',
     name: 'Liya Tesfaye',
@@ -66,8 +68,8 @@ export function Testimonials() {
           {/* Video Thumbnail */}
           <div className="relative w-full md:w-[48%] aspect-video rounded-lg overflow-hidden">
             <Image
-              src="/teste-image.png"
-              alt="Client Video Testimonial"
+              src={activeTestimonial.img}
+              alt={activeTestimonial.name}
               fill
               className="object-cover"
               priority
