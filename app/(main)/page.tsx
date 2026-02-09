@@ -26,7 +26,10 @@ type PrismicHeroSlide = {
   highlight_3_value?: string | null;
 };
 
-const mapHeroSlides = (slides: PrismicHeroSlide[] = []): HeroSlide[] =>
+const mapHeroSlides = (
+  slides: PrismicHeroSlide[] = [],
+  sourceId = 'hero'
+): HeroSlide[] =>
   slides
     .map((slide, index) => {
       const imageUrl = slide.image?.url ?? undefined;
@@ -64,7 +67,7 @@ const mapHeroSlides = (slides: PrismicHeroSlide[] = []): HeroSlide[] =>
           : undefined;
 
       return {
-        id: `hero-${index}`,
+        id: `${sourceId}-${index}`,
         type: 'image',
         src: imageUrl,
         eyebrow: slide.eyebrow ?? undefined,
@@ -85,10 +88,19 @@ export default async function HomePage() {
   let prismicSlides: HeroSlide[] = [];
 
   try {
-    const heroDoc = await client.getSingle('hero' as never);
-    const rawSlides = (heroDoc as { data?: { slides?: PrismicHeroSlide[] } })
-      .data?.slides;
-    prismicSlides = mapHeroSlides(rawSlides);
+    const heroDocs = await client.getAllByType('hero' as never, {
+      orderings: {
+        field: 'document.last_publication_date',
+        direction: 'desc',
+      },
+      limit: 4,
+    });
+
+    prismicSlides = heroDocs.flatMap((doc) => {
+      const rawSlides = (doc as { data?: { slides?: PrismicHeroSlide[] } }).data
+        ?.slides;
+      return mapHeroSlides(rawSlides, doc.id);
+    });
   } catch {
     prismicSlides = [];
   }
