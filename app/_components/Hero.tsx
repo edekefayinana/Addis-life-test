@@ -146,6 +146,7 @@ export function Hero({ slides }: HeroProps) {
   };
 
   const activeSlide = slides[activeIndex];
+  const isVideoSlide = activeSlide?.type === 'video';
   const announcementType =
     activeSlide?.type === 'image' ? activeSlide.announcementType : undefined;
   const announcementConfig = announcementType
@@ -207,70 +208,86 @@ export function Hero({ slides }: HeroProps) {
       <div className="absolute -left-24 top-16 -z-10 h-72 w-72 rounded-full bg-amber-400/20 blur-3xl" />
       <div className="absolute -right-10 bottom-6 -z-10 h-96 w-96 rounded-full bg-emerald-400/15 blur-3xl" />
 
-      <div className="mx-auto flex w-full max-w-7xl flex-col px-6 pb-32 pt-24">
-        <div className={`flex w-full ${justifyClass}`}>
-          <div
-            className={`relative w-full max-w-3xl rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-md shadow-[0_30px_80px_rgba(0,0,0,0.45)] sm:p-10 ${textAlignClass}`}
-          >
+      {isVideoSlide ? (
+        <div className="mx-auto flex w-full max-w-5xl flex-col items-center px-6 pb-32 pt-24 text-center">
+          {activeSlide?.eyebrow && (
+            <span className="text-xs font-semibold uppercase tracking-[0.35em] text-white/70">
+              {activeSlide.eyebrow}
+            </span>
+          )}
+          <h1 className="mt-5 text-4xl font-semibold leading-tight tracking-tight sm:text-6xl md:text-7xl font-instrument">
+            {activeSlide?.headline}
+          </h1>
+          <p className="mt-4 text-base font-normal text-slate-200/90 sm:text-lg font-instrument">
+            {activeSlide?.subhead}
+          </p>
+        </div>
+      ) : (
+        <div className="mx-auto flex w-full max-w-7xl flex-col px-6 pb-32 pt-24">
+          <div className={`flex w-full ${justifyClass}`}>
             <div
-              className={`flex flex-wrap items-center gap-3 ${justifyClass}`}
+              className={`relative w-full max-w-3xl rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-md shadow-[0_30px_80px_rgba(0,0,0,0.45)] sm:p-10 ${textAlignClass}`}
             >
-              {activeSlide?.eyebrow && (
-                <span className="text-xs font-semibold uppercase tracking-[0.35em] text-white/70">
-                  {activeSlide.eyebrow}
-                </span>
-              )}
-              {announcementConfig && (
-                <span
-                  className={`inline-flex items-center rounded-full border px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] ${announcementConfig.badgeClass}`}
-                >
-                  {announcementConfig.badge}
-                </span>
-              )}
-            </div>
-            <h1 className="mt-6 text-4xl font-semibold leading-tight tracking-tight sm:text-6xl md:text-7xl font-instrument">
-              {activeSlide?.headline}
-            </h1>
-            <p className="mt-5 text-lg font-normal text-slate-200/90 sm:text-xl font-instrument">
-              {activeSlide?.subhead}
-            </p>
-            {highlights.length > 0 && (
               <div
-                className={`mt-6 flex flex-wrap gap-4 ${justifyClass}`}
-                data-hero-interactive="true"
+                className={`flex flex-wrap items-center gap-3 ${justifyClass}`}
               >
-                {highlights.map((item) => (
-                  <div
-                    key={`${item.label}-${item.value}`}
-                    className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left"
+                {activeSlide?.eyebrow && (
+                  <span className="text-xs font-semibold uppercase tracking-[0.35em] text-white/70">
+                    {activeSlide.eyebrow}
+                  </span>
+                )}
+                {announcementConfig && (
+                  <span
+                    className={`inline-flex items-center rounded-full border px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] ${announcementConfig.badgeClass}`}
                   >
-                    <div className="text-lg font-semibold text-white">
-                      {item.value}
-                    </div>
-                    <div className="text-xs uppercase tracking-[0.2em] text-white/60">
-                      {item.label}
-                    </div>
-                  </div>
-                ))}
+                    {announcementConfig.badge}
+                  </span>
+                )}
               </div>
-            )}
-            {cta && (
-              <div className={`mt-8 flex ${justifyClass}`}>
-                <Link
-                  href={cta.href}
-                  className={`inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-semibold transition ${
-                    announcementConfig?.ctaClass ??
-                    'bg-white text-slate-900 hover:bg-white/90'
-                  }`}
+              <h1 className="mt-6 text-4xl font-semibold leading-tight tracking-tight sm:text-6xl md:text-7xl font-instrument">
+                {activeSlide?.headline}
+              </h1>
+              <p className="mt-5 text-lg font-normal text-slate-200/90 sm:text-xl font-instrument">
+                {activeSlide?.subhead}
+              </p>
+              {highlights.length > 0 && (
+                <div
+                  className={`mt-6 flex flex-wrap gap-4 ${justifyClass}`}
                   data-hero-interactive="true"
                 >
-                  {cta.label}
-                </Link>
-              </div>
-            )}
+                  {highlights.map((item) => (
+                    <div
+                      key={`${item.label}-${item.value}`}
+                      className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left"
+                    >
+                      <div className="text-lg font-semibold text-white">
+                        {item.value}
+                      </div>
+                      <div className="text-xs uppercase tracking-[0.2em] text-white/60">
+                        {item.label}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {cta && (
+                <div className={`mt-8 flex ${justifyClass}`}>
+                  <Link
+                    href={cta.href}
+                    className={`inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-semibold transition ${
+                      announcementConfig?.ctaClass ??
+                      'bg-white text-slate-900 hover:bg-white/90'
+                    }`}
+                    data-hero-interactive="true"
+                  >
+                    {cta.label}
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       <div
         className="absolute inset-x-0 bottom-35 z-10 flex justify-center gap-2 px-6"
