@@ -178,8 +178,8 @@ export default function PropertyPage() {
 
   const propertyLocation = {
     coords: [
-      currentProperty.location.latitude,
       currentProperty.location.longitude,
+      currentProperty.location.latitude,
     ] as [number, number],
     address: `${currentProperty.location.address}, ${currentProperty.location.city}, ${currentProperty.location.country}`,
   };

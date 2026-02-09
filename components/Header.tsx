@@ -7,17 +7,6 @@ import { useEffect, useRef, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -212,75 +201,16 @@ export function Header({ variant }: HeaderProps) {
 
         {/* Mobile toggle */}
         <div className="md:hidden">
-          <DropdownMenu open={isMobileOpen} onOpenChange={setIsMobileOpen}>
-            <DropdownMenuTrigger className="inline-flex items-center justify-center rounded-full p-2 transition hover:bg-white/10">
-              <Menu className="h-6 w-6" aria-hidden />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="end"
-              className="flex w-56 flex-col gap-2 rounded-xl border border-border bg-white/95 p-2 shadow-lg"
-            >
-              {navItems.map((item) => {
-                if (item.href === '/properties') {
-                  return (
-                    <DropdownMenuSub key={item.href}>
-                      <DropdownMenuSubTrigger className="cursor-pointer px-3 text-base font-medium text-foreground">
-                        {item.label}
-                      </DropdownMenuSubTrigger>
-                      <DropdownMenuPortal>
-                        <DropdownMenuSubContent className="flex flex-col gap-1 rounded-xl border border-border bg-white p-1 shadow-lg">
-                          {propertyMenuItems.map((menuItem) => (
-                            <DropdownMenuItem
-                              key={menuItem.href}
-                              className="p-0"
-                              asChild
-                            >
-                              <Link
-                                href={menuItem.href}
-                                className="w-full rounded-md px-3 py-2 text-base transition hover:bg-gray-100"
-                              >
-                                {menuItem.label}
-                              </Link>
-                            </DropdownMenuItem>
-                          ))}
-                        </DropdownMenuSubContent>
-                      </DropdownMenuPortal>
-                    </DropdownMenuSub>
-                  );
-                }
-
-                return (
-                  <DropdownMenuItem key={item.href} className="p-0" asChild>
-                    <Link
-                      href={item.href}
-                      className="w-full rounded-lg px-3 py-2 text-base font-medium text-foreground transition hover:bg-gray-100"
-                    >
-                      {item.label}
-                    </Link>
-                  </DropdownMenuItem>
-                );
-              })}
-
-              <DropdownMenuSeparator />
-
-              <DropdownMenuItem className="p-0" asChild>
-                <Link
-                  href="/login"
-                  className="w-full rounded-full px-4 py-2 text-center text-sm font-medium text-foreground transition hover:bg-gray-100"
-                >
-                  Login
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="p-0" asChild>
-                <Link
-                  href="/signup"
-                  className="w-full rounded-full bg-brand-dark px-4 py-2 text-center text-sm font-semibold text-white transition hover:bg-brand-dark/90"
-                >
-                  Sign Up
-                </Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <button
+            type="button"
+            onClick={() => setIsMobileOpen((prev) => !prev)}
+            className="inline-flex items-center justify-center rounded-full p-2 transition hover:bg-white/10"
+            aria-label="Open menu"
+            aria-expanded={isMobileOpen}
+            aria-controls="mobile-drawer"
+          >
+            <Menu className="h-6 w-6" aria-hidden />
+          </button>
         </div>
       </div>
 
@@ -295,6 +225,7 @@ export function Header({ variant }: HeaderProps) {
 
       {/* Mobile drawer */}
       <aside
+        id="mobile-drawer"
         className={cn(
           'fixed inset-y-0 right-0 z-50 w-72 transform bg-white shadow-2xl transition-transform duration-300 md:hidden',
           isMobileOpen ? 'translate-x-0' : 'translate-x-full'
@@ -324,6 +255,37 @@ export function Header({ variant }: HeaderProps) {
         <nav className="flex flex-col gap-2 px-6 pb-6 text-base font-medium text-foreground">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
+
+            if (item.href === '/properties') {
+              return (
+                <div key={item.href} className="flex flex-col gap-2">
+                  <Link
+                    href={item.href}
+                    onClick={() => setIsMobileOpen(false)}
+                    aria-current={isActive ? 'page' : undefined}
+                    className={cn(
+                      'rounded-lg px-3 py-2 transition hover:bg-gray-100',
+                      isActive && 'bg-gray-100 font-semibold'
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                  <div className="ml-3 flex flex-col gap-1">
+                    {propertyMenuItems.map((menuItem) => (
+                      <Link
+                        key={menuItem.href}
+                        href={menuItem.href}
+                        onClick={() => setIsMobileOpen(false)}
+                        className="rounded-lg px-3 py-2 text-sm text-muted-foreground transition hover:bg-gray-100 hover:text-foreground"
+                      >
+                        {menuItem.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              );
+            }
+
             return (
               <Link
                 key={item.href}
