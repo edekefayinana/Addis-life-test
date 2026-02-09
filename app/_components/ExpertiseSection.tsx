@@ -3,11 +3,6 @@ import {
   HandCoins,
   ShieldCheck,
   UserCheck,
-  Hexagon,
-  Globe,
-  Zap,
-  Triangle,
-  Component,
 } from 'lucide-react';
 import { FeatureCard } from './FeatureCard';
 
@@ -35,14 +30,14 @@ const features = [
   },
 ];
 
-const partners = [
-  { name: 'Lumina', icon: Hexagon },
-  { name: 'Vortex', icon: Globe },
-  { name: 'Velocity', icon: Zap },
-  { name: 'Synergy', icon: Triangle },
-  { name: 'Enigma', icon: Component },
-  { name: 'Spectrum', icon: Hexagon },
-];
+// const partners = [
+//   { name: 'Lumina', icon: Hexagon },
+//   { name: 'Vortex', icon: Globe },
+//   { name: 'Velocity', icon: Zap },
+//   { name: 'Synergy', icon: Triangle },
+//   { name: 'Enigma', icon: Component },
+//   { name: 'Spectrum', icon: Hexagon },
+// ];
 
 export function ExpertiseSection() {
   return (
@@ -78,7 +73,7 @@ export function ExpertiseSection() {
       </div>
 
       {/* Partners Section */}
-      <div className="mt-24 border-t border-white/10 pt-12 text-center w-full">
+      {/* <div className="mt-24 border-t border-white/10 pt-12 text-center w-full">
         <div className="container mx-auto px-4 lg:px-8">
           <p className="mb-8 text-sm font-medium text-slate-400">
             Trusted by 10+ Industry Partners
@@ -98,7 +93,7 @@ export function ExpertiseSection() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </section>
   );
 }

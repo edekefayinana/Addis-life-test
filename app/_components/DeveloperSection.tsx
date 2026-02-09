@@ -13,7 +13,7 @@ export function DeveloperSection() {
       <div className="grid gap-5 md:grid-cols-13 lg:gap-5 items-center">
         <div className="relative overflow-hidden rounded-2xl h-full min-h-[300px] md:col-span-7">
           <Image
-            src="/dev-image.png"
+            src="/AU2 site Building Renders/2_11 - Photo.jpg"
             alt="Developer Team"
             fill
             className="object-cover"
