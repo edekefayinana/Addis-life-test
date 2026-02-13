@@ -7,7 +7,9 @@ import { useEffect, useRef } from 'react';
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
 
 // Office location coordinates (Kirkos, Addis Ababa - approximate)
-const OFFICE_LOCATION: [number, number] = [9.0054, 38.7636];
+const OFFICE_LOCATION: [number, number] = [
+  8.998685822515604, 38.745988863776404,
+];
 
 // Custom marker icon - simple circle marker
 const customIcon = new L.DivIcon({

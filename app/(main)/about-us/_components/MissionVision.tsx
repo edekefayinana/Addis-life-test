@@ -36,12 +36,11 @@ export default function MissionVision() {
                   </h3>
                 </div>
                 <p className="text-base lg:text-lg ml-[58.5px] leading-[165%] font-instrument text-description">
-                  Our mission is to provide trusted real estate services through
-                  transparent processes and expert guidance, ensuring every
-                  client feels confident and informed. We strive to exceed
-                  expectations with reliable property options and dedicated
-                  support that help people invest with clarity and peace of
-                  mind.
+                  To deliver exceptional, sustainable, and culturally resonant
+                  living spaces by combining modern architectural innovation
+                  with the warmth of Ethiopian hospitality, ensuring every
+                  client finds more than a house they find a home and most of
+                  all best investment locations in Addis.
                 </p>
               </div>
             </div>
@@ -56,11 +55,9 @@ export default function MissionVision() {
                   </h3>
                 </div>
                 <p className="text-base lg:text-lg ml-[58.5px] leading-[165%] font-instrument text-description">
-                  Our goals are to build trusted client relationships through
-                  responsible service and clear communication. We continually
-                  improve by developing our team and using modern technology.
-                  Our long-term aim is to be the top choice in Addis Ababa with
-                  a unique, personalized property experience.
+                  To be the heartbeat of the Ethiopian skyline, transforming
+                  urban living into a legacy of comfort, quality, and community
+                  for generations to come.
                 </p>
               </div>
             </div>
