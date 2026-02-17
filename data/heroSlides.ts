@@ -19,7 +19,7 @@ export type HeroSlide = {
 export const heroVideoSlide: HeroSlide = {
   id: 'intro-video',
   type: 'video',
-  src: 'https://my-nextjs-videos-fayinana.s3.eu-north-1.amazonaws.com/WEBESIT/WEBESIT.mp4',
+  src: '/video/vid.mp4',
   eyebrow: 'Addis Life Signature Collection',
   headline: 'Experience Addis Life in Motion',
   subhead:

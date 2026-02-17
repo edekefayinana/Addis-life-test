@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { HeroSlide } from '@/data/heroSlides';
 import { HeroSearch } from './HeroSearch';
+import { Button } from '@/components/ui/button';
 
 const announcementConfigs = {
   discount: {
@@ -313,7 +314,16 @@ export function Hero({ slides }: HeroProps) {
           </button>
         ))}
       </div>
-
+      {activeIndex === 0 && (
+        <div className="mt-8 flex justify-center">
+          <Button
+            className="rounded-full bg-primary px-8 py-7 text-lg font-bold shadow-lg transition focus:outline-none focus:ring-4 focus:ring-emerald-200/50"
+            size="lg"
+          >
+            <Link href="/apply">Join Our Freelance Agent Network</Link>
+          </Button>
+        </div>
+      )}
       <div
         className="absolute inset-x-0 bottom-12 z-10 flex justify-center px-6"
         data-hero-interactive="true"
