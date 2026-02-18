@@ -2,40 +2,34 @@ import Image from 'next/image';
 
 const projects = [
   {
-    title: 'African Union 1 Site',
+    title: 'Africa Union One',
     subtitle: '14 properties',
     imageUrl: '/AU2 site Building Renders/1_1 - Photo.jpg',
     className: 'md:col-span-2',
   },
   {
-    title: 'Summit Real Estate Site',
+    title: 'Africa Union Two',
     subtitle: '14 properties',
     imageUrl: '/AU2 site Building Renders/1_2 - Photo.jpg',
     className: 'md:col-span-1',
   },
   {
-    title: 'African Union 2 Site',
+    title: 'Vatican Site',
     subtitle: '14 properties',
     imageUrl: '/AU2 site Building Renders/1_3 - Photo.jpg',
     className: 'md:col-span-1',
   },
   {
-    title: 'Vatican City 2 Site',
+    title: 'Bulgaria Site',
     subtitle: '14 properties',
     imageUrl: '/AU2 site Building Renders/1_4 - Photo.jpg',
     className: 'md:col-span-1',
   },
   {
-    title: 'CMC Residential Site',
-    subtitle: '14 properties',
+    title: 'Upcoming Around East of Addis Ababa',
+    // subtitle: '14 properties',
     imageUrl: '/AU2 site Building Renders/1_5 - Photo.jpg',
     className: 'md:col-span-2',
-  },
-  {
-    title: 'Vatican City Site',
-    subtitle: '14 properties',
-    imageUrl: '/AU2 site Building Renders/1_6 - Photo.jpg',
-    className: 'md:col-span-1',
   },
 ];
 

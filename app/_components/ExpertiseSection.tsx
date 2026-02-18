@@ -19,7 +19,7 @@ const features = [
   },
   {
     icon: ShieldCheck,
-    title: 'Quality & Safety',
+    title: 'Quality First',
     description:
       'Durable, well-inspected properties in secure, welcoming communities.',
   },

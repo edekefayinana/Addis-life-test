@@ -15,21 +15,20 @@ export default function CoreValues() {
   const coreValues: CoreValues[] = [
     {
       id: 1,
-      title: 'Integrity & Transparency',
-      description:
-        'We act with honesty and openness in everything we do, ensuring our actions and decisions are clear, ethical, and trustworthy.',
+      title: 'Quality First:',
+      description: `To set a new gold standard in Addis Ababa's real estate market through rigorousconstruction standards and premium materials.`,
     },
     {
       id: 2,
-      title: 'Customer Commitment',
+      title: 'Empowerment through Ownership',
       description:
-        'Our clients’ needs guide our decisions, ensuring a personalized and supportive experience.',
+        'To make property ownership accessible and transparent for both the local community and the diaspora.',
     },
     {
       id: 3,
-      title: 'Trust & Reliability',
+      title: 'Timely Delivery',
       description:
-        'We consistently deliver on our promises, earning lasting confidence through dependable, high-quality service.',
+        'To redefine industry trust by meeting project milestones and handovers with absolute precision.',
     },
   ];
 
@@ -37,22 +36,27 @@ export default function CoreValues() {
     {
       id: 1,
       title: 'Satisfied Customers',
-      value: '10,000+',
+      value: '1,000+',
     },
     {
       id: 2,
-      title: 'Years of Experience',
-      value: '10+',
+      title: 'Employee',
+      value: '300+',
     },
     {
       id: 3,
       title: 'Deliverd Projects',
-      value: '10+',
+      value: '3+',
     },
     {
       id: 4,
-      title: 'Employees',
-      value: '10+',
+      title: 'Happy Client',
+      value: '300+',
+    },
+    {
+      id: 5,
+      title: 'Experience Days',
+      value: '1000+',
     },
   ];
   return (

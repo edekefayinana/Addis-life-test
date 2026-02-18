@@ -17,12 +17,10 @@ export default function ContactAddresses() {
             For quick questions and assistance, email our support team anytime.
           </p>
           <Link
-            href="mailto:support@addisliferealestate.com"
+            href="mailto:info@addisliferealestate.com"
             className="text-lg font-medium mt-2"
           >
-            <span className="text-blue-600">
-              support@addisliferealestate.com
-            </span>
+            <span className="text-blue-600">info@addisliferealestate.com</span>
           </Link>
         </Card>
 
@@ -52,7 +50,7 @@ export default function ContactAddresses() {
             Speak with our team during working hours for immediate support.
           </p>
           <Link href="tel:+251911201096" className="text-lg font-medium mt-2">
-            <span className="text-blue-600">(+251)-911-201096</span>
+            <span className="text-blue-600">0930696969/0930656565</span>
           </Link>
         </Card>
       </div>

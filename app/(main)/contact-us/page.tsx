@@ -1,8 +1,7 @@
-import React from 'react';
-import Home from './_components/Home';
+import { AgentBanner } from '../../_components/AgentBanner';
 import ContactOptions from './_components/ContactOptions';
 import Faq from './_components/Faq';
-import { AgentBanner } from '../../_components/AgentBanner';
+import Home from './_components/Home';
 
 export default function page() {
   return (

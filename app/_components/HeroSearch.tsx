@@ -1,5 +1,6 @@
 'use client';
 import { Button } from '@/components/ui/button';
+import { CustomSelect } from '@/components/ui/custom-select';
 import { Search, SlidersHorizontal } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -10,6 +11,35 @@ export function HeroSearch() {
   const [propertyType, setPropertyType] = useState('');
   const [status, setStatus] = useState('');
   const [bedrooms, setBedrooms] = useState('');
+
+  // Array of select fields for filter modal
+  const selectFields = [
+    {
+      key: 'propertyType',
+      label: 'Property type',
+      value: propertyType,
+      onChange: setPropertyType,
+      placeholder: 'Any',
+      options: [
+        { label: 'Rent', value: 'rent' },
+        { label: 'Sale', value: 'sale' },
+      ],
+    },
+    {
+      key: 'bedrooms',
+      label: 'Bedrooms',
+      value: bedrooms,
+      onChange: setBedrooms,
+      placeholder: 'Any',
+      options: [
+        { label: 'Studio', value: 'studio' },
+        { label: '1', value: '1' },
+        { label: '2', value: '2' },
+        { label: '3', value: '3' },
+        { label: '4+', value: '4-plus' },
+      ],
+    },
+  ];
   const [showFilters, setShowFilters] = useState(false);
   const filtersRef = useRef<HTMLDivElement | null>(null);
 
@@ -95,54 +125,17 @@ export function HeroSearch() {
                 className="absolute right-0 bottom-full z-50 mb-2 w-72 rounded-xl border border-gray-200 bg-white p-4 shadow-xl"
               >
                 <div className="space-y-3 text-sm">
-                  <label className="flex flex-col gap-1">
-                    <span className="text-xs font-semibold text-gray-600">
-                      Property type
-                    </span>
-                    <select
-                      value={propertyType}
-                      onChange={(e) => setPropertyType(e.target.value)}
-                      className="h-10 rounded-lg border border-gray-200 px-3 text-sm text-gray-800 outline-none focus:border-brand-dark"
-                    >
-                      <option value="">Any</option>
-                      <option value="rent">Rent</option>
-                      <option value="sale">Sale</option>
-                    </select>
-                  </label>
-
-                  {/* <label className="flex flex-col gap-1">
-                    <span className="text-xs font-semibold text-gray-600">
-                      Status
-                    </span>
-                    <select
-                      value={status}
-                      onChange={(e) => setStatus(e.target.value)}
-                      className="h-10 rounded-lg border border-gray-200 px-3 text-sm text-gray-800 outline-none focus:border-brand-dark"
-                    >
-                      <option value="">Any</option>
-                      <option value="for-sale">For Sale</option>
-                      <option value="for-rent">For Rent</option>
-                      <option value="completed">Completed</option>
-                    </select>
-                  </label> */}
-
-                  <label className="flex flex-col gap-1">
-                    <span className="text-xs font-semibold text-gray-600">
-                      Bedrooms
-                    </span>
-                    <select
-                      value={bedrooms}
-                      onChange={(e) => setBedrooms(e.target.value)}
-                      className="h-10 rounded-lg border border-gray-200 px-3 text-sm text-gray-800 outline-none focus:border-brand-dark"
-                    >
-                      <option value="">Any</option>
-                      <option value="studio">Studio</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4-plus">4+</option>
-                    </select>
-                  </label>
+                  {selectFields.map((field) => (
+                    <CustomSelect
+                      key={field.key}
+                      label={field.label}
+                      options={field.options}
+                      value={field.value}
+                      onChange={field.onChange}
+                      placeholder={field.placeholder}
+                      className="mb-2  text-black"
+                    />
+                  ))}
 
                   <div className="flex items-center justify-between pt-1">
                     <button

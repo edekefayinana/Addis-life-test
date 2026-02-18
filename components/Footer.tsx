@@ -1,16 +1,9 @@
 'use client';
 
-import type { SVGProps } from 'react';
-import {
-  Facebook,
-  Instagram,
-  Linkedin,
-  Mail,
-  MapPin,
-  Phone,
-} from 'lucide-react';
+import { Facebook, Instagram, Mail, MapPin, Phone } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+// import type { SVGProps } from 'react';
 
 const sectionTitleClass = 'text-footer-title text-base mb-6';
 const linkClass = 'hover:text-white transition-colors';
@@ -37,38 +30,42 @@ const links = [
 ];
 
 const socialLinks = [
-  { href: '#', Icon: Facebook },
-  { href: '#', Icon: Instagram },
-  { href: '#', Icon: Linkedin },
-  { href: '#', Icon: XIcon },
+  { href: 'https://www.facebook.com/share/1CAHdG7TSC/', Icon: Facebook },
+  {
+    href: 'https://www.instagram.com/addis_life_real_estate?igsh=MXFlanYxNnA4ZnduNQ==',
+    Icon: Instagram,
+  },
+  // { href: '#', Icon: Linkedin },
+  // { href: '#', Icon: XIcon },
 ];
 
 const contactItems = [
-  { Icon: Mail, label: 'info@Example1.com', multiline: false },
-  { Icon: Phone, label: '0911201096', multiline: false },
+  { Icon: Mail, label: 'info@addisliferealestate.com', multiline: false },
+  { Icon: Phone, label: '0930696969/0930656565', multiline: false },
+  { Icon: Phone, label: '7565', multiline: false },
   {
     Icon: MapPin,
-    label: 'Kirkos ,in front of Africa union, AA, Ethiopia',
+    label: 'AU1 Site (Main office is also located here)',
     multiline: true,
   },
 ];
 
-function XIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...props}
-    >
-      <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
-      <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
-    </svg>
-  );
-}
+// function XIcon(props: SVGProps<SVGSVGElement>) {
+//   return (
+//     <svg
+//       viewBox="0 0 24 24"
+//       fill="none"
+//       stroke="currentColor"
+//       strokeWidth="2"
+//       strokeLinecap="round"
+//       strokeLinejoin="round"
+//       {...props}
+//     >
+//       <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
+//       <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
+//     </svg>
+//   );
+// }
 
 function FooterList({
   title,
@@ -102,6 +99,7 @@ function SocialLinks() {
           <Link
             key={`${href}-${index}`}
             href={href}
+            target="_blank"
             className={socialLinkClass}
           >
             <Icon className="h-5 w-5" />
@@ -117,17 +115,56 @@ function ContactList() {
     <div>
       <h3 className={sectionTitleClass}>Contact</h3>
       <ul className="space-y-6 text-base font-normal text-footer-text">
-        {contactItems.map(({ Icon, label, multiline }) => (
-          <li
-            key={label}
-            className={`flex items-${multiline ? 'start' : 'center'} gap-3`}
-          >
-            <Icon
-              className={`h-5 w-5 text-footer-text shrink-0 ${multiline ? 'mt-0.5' : ''}`}
-            />
-            <span className={multiline ? 'leading-tight' : ''}>{label}</span>
-          </li>
-        ))}
+        {contactItems.map(({ Icon, label, multiline }) => {
+          // Email
+          if (Icon === Mail) {
+            return (
+              <li key={label} className={`flex items-center gap-3`}>
+                <Icon className="h-5 w-5 text-footer-text shrink-0" />
+                <a
+                  href={`mailto:${label}?subject=Inquiry%20from%20Addis%20Life%20Real%20Estate%20Website`}
+                  className="text-blue-400 hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {label}
+                </a>
+              </li>
+            );
+          }
+          // Phone (handle both numbers and short code)
+          if (Icon === Phone) {
+            // If label contains /, use the first number for tel: link
+            const phoneNumber = label.includes('/')
+              ? label.split('/')[0]
+              : label;
+            return (
+              <li key={label} className={`flex items-center gap-3`}>
+                <Icon className="h-5 w-5 text-footer-text shrink-0" />
+                <a
+                  href={`tel:${phoneNumber}`}
+                  className="text-blue-400 hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {label}
+                </a>
+              </li>
+            );
+          }
+          // Default (e.g. address)
+          return (
+            <li
+              key={label}
+              className={`flex items-${multiline ? 'start' : 'center'} gap-3`}
+            >
+              <Icon
+                className={`h-5 w-5 text-footer-text shrink-0 ${multiline ? 'mt-0.5' : ''}`}
+              />
+              <span className={multiline ? 'leading-tight' : ''}>{label}</span>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

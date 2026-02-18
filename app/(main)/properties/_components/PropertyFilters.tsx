@@ -1,16 +1,11 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import {
-  ChevronDown,
-  Ellipsis,
-  LayoutGrid,
-  MapPin,
-  Search,
-} from 'lucide-react';
-import { useFilters } from '@/lib/hooks/useFilters';
+import { CustomSelect } from '@/components/ui/custom-select';
 import { useDebounce } from '@/lib/hooks/useDebounce';
+import { useFilters } from '@/lib/hooks/useFilters';
 import { cn } from '@/lib/utils';
+import { Ellipsis, LayoutGrid, MapPin, Search } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 
 type Filters = {
   location?: string;
@@ -85,7 +80,6 @@ export function PropertyFilters() {
     (field) => field.group === 'primary'
   );
   const moreFields = filterFields.filter((field) => field.group === 'more');
-
   useEffect(() => {
     if (!showMoreFilters) return;
 
@@ -177,25 +171,16 @@ export function PropertyFilters() {
               }
 
               return (
-                <div key={field.key} className="relative">
-                  <select
-                    value={filters[field.key] || ''}
-                    onChange={(e) =>
-                      setFilter(field.key, e.target.value || null)
-                    }
-                    className="h-12 w-full appearance-none rounded-full border border-gray-200  px-4 pr-10 text-sm font-medium text-gray-900 outline-none transition-all focus:border-gray-300 focus:bg-white focus:ring-2 focus:ring-gray-100"
-                  >
-                    <option value="">{field.placeholder}</option>
-                    {field.options.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-                </div>
+                <CustomSelect
+                  key={field.key}
+                  options={field.options}
+                  value={filters[field.key] || ''}
+                  onChange={(val) => setFilter(field.key, val || null)}
+                  placeholder={field.placeholder}
+                />
               );
             })}
+
             {showMoreButton && (
               <div ref={moreFiltersRef} className="relative">
                 <button
@@ -230,23 +215,15 @@ export function PropertyFilters() {
                         }
 
                         return (
-                          <div key={field.key} className="relative">
-                            <select
-                              value={filters[field.key] || ''}
-                              onChange={(e) =>
-                                setFilter(field.key, e.target.value || null)
-                              }
-                              className="h-12 w-full appearance-none rounded-full border border-gray-200 px-4 pr-10 text-sm font-medium text-gray-900 outline-none transition-all focus:border-gray-300 focus:bg-white focus:ring-2 focus:ring-gray-100"
-                            >
-                              <option value="">{field.placeholder}</option>
-                              {field.options.map((option) => (
-                                <option key={option.value} value={option.value}>
-                                  {option.label}
-                                </option>
-                              ))}
-                            </select>
-                            <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-                          </div>
+                          <CustomSelect
+                            key={field.key}
+                            options={field.options}
+                            value={filters[field.key] || ''}
+                            onChange={(val) =>
+                              setFilter(field.key, val || null)
+                            }
+                            placeholder={field.placeholder}
+                          />
                         );
                       })}
                     </div>

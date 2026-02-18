@@ -10,30 +10,30 @@ interface FaqItem {
 
 const faqData: FaqItem[] = [
   {
-    question: 'What services do you provide?',
+    question: 'What Service Do you provide?',
     answer:
-      'We offer a comprehensive range of real estate services including property sales, rentals, property management, investment consulting, and market analysis. Our team is dedicated to helping you find the perfect property that meets your needs and budget.',
+      'We offer a comprehensive range of real estate services including property sales and rentals. Our team is dedicated to helping you find the perfect property that meets your needs and budget',
   },
-  {
-    question: 'Where are your projects located?',
-    answer:
-      'Our projects are strategically located across prime areas in Addis Ababa, including Bole, Kazanchis, CMC, and other developing neighborhoods. We carefully select locations that offer excellent connectivity, amenities, and growth potential.',
-  },
-  {
-    question: 'How can I get updates about ongoing projects?',
-    answer:
-      'You can stay updated about our ongoing projects by subscribing to our newsletter, following us on social media, or contacting our sales team directly. We regularly share project updates, new launches, and exclusive offers with our subscribers.',
-  },
-  {
-    question: 'How do I purchase a property?',
-    answer:
-      'The property purchase process is simple: First, browse our available properties and schedule a viewing. Once you find your ideal property, our team will guide you through the documentation, payment plans, and legal procedures to ensure a smooth transaction.',
-  },
-  {
-    question: 'Do you offer flexible payment plans?',
-    answer:
-      'Yes, we offer flexible payment plans tailored to your financial situation. Our options include installment plans, mortgage assistance, and customized payment schedules. Contact our sales team to discuss the best payment plan for your needs.',
-  },
+  // {
+  //   question: 'Where are your projects located?',
+  //   answer:
+  //     'Our projects are strategically located across prime areas in Addis Ababa, including Bole, Kazanchis, CMC, and other developing neighborhoods. We carefully select locations that offer excellent connectivity, amenities, and growth potential.',
+  // },
+  // {
+  //   question: 'How can I get updates about ongoing projects?',
+  //   answer:
+  //     'You can stay updated about our ongoing projects by subscribing to our newsletter, following us on social media, or contacting our sales team directly. We regularly share project updates, new launches, and exclusive offers with our subscribers.',
+  // },
+  // {
+  //   question: 'How do I purchase a property?',
+  //   answer:
+  //     'The property purchase process is simple: First, browse our available properties and schedule a viewing. Once you find your ideal property, our team will guide you through the documentation, payment plans, and legal procedures to ensure a smooth transaction.',
+  // },
+  // {
+  //   question: 'Do you offer flexible payment plans?',
+  //   answer:
+  //     'Yes, we offer flexible payment plans tailored to your financial situation. Our options include installment plans, mortgage assistance, and customized payment schedules. Contact our sales team to discuss the best payment plan for your needs.',
+  // },
 ];
 
 export default function Faq() {
