@@ -34,14 +34,12 @@ export function DeveloperSection() {
 
           <div className="flex items-center gap-8 border-b border-border/50 pb-2 sm:border-0 sm:pb-0">
             <div>
-              <h3 className="text-4xl font-semibold text-foreground">
-                10,000+
-              </h3>
+              <h3 className="text-4xl font-semibold text-foreground">1,000+</h3>
               <p className="text-sm text-muted-foreground mt-3">Customers</p>
             </div>
             <div className="h-12 w-px bg-gray-300"></div>
             <div>
-              <h3 className="text-4xl font-semibold text-foreground">10+</h3>
+              <h3 className="text-4xl font-semibold text-foreground">3+</h3>
               <p className="text-sm text-muted-foreground mt-3">
                 Delivered Projects
               </p>

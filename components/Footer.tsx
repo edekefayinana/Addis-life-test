@@ -11,12 +11,11 @@ const listClass = 'space-y-4 text-base font-normal text-footer-text';
 const socialLinkClass = 'hover:text-white transition-colors';
 
 const services = [
-  'African Union 1 Site',
-  'Vatican City Site',
-  'Summit Real Estate Site',
-  'CMC Residential Site',
-  'African Union 2 Site',
-  'Megenagna Square Site',
+  'Africa Union One',
+  'Africa Union Two',
+  'Vatican Site',
+  'Bulgaria Site',
+  'Upcoming Around East of Addis Ababa',
 ];
 
 const links = [
@@ -45,7 +44,7 @@ const contactItems = [
   { Icon: Phone, label: '7565', multiline: false },
   {
     Icon: MapPin,
-    label: 'AU1 Site (Main office is also located here)',
+    label: 'AU1 Site (Bulgaria, Mexico In front of African Union)',
     multiline: true,
   },
 ];
@@ -198,11 +197,11 @@ export function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center mb-12 md:mb-16 border-b border-footer-border/10 pb-12">
           <Link href="/" className="mb-6 md:mb-0">
             <Image
-              src="/logo.svg"
+              src="/logo.png"
               alt="Addis Life Real Estate"
-              width={120}
-              height={40}
-              className="h-10 w-auto"
+              width={180}
+              height={60}
+              className="h-20 w-auto"
             />
           </Link>
 

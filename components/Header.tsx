@@ -103,7 +103,7 @@ export function Header({ variant }: HeaderProps) {
       >
         <Link href="/" className="flex items-center gap-2">
           <Image
-            src="/logo.svg"
+            src="/logo.png"
             alt="Addis Life Logo"
             width={100}
             height={30}
