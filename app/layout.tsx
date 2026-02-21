@@ -23,7 +23,48 @@ const instrumentSans = Instrument_Sans({
 export const metadata: Metadata = {
   title: 'Addis Life',
   description:
-    'Addis Life | Modern Next.js app following server-component-first, design system, and shadcn-inspired patterns.',
+    'Addis Life | Explore properties, connect with agents, and discover modern living in Addis Ababa.',
+  icons: {
+    icon: [
+      {
+        url: '/logo.png',
+        media: '(prefers-color-scheme: light)',
+      },
+      {
+        url: '/logo.png',
+        media: '(prefers-color-scheme: dark)',
+      },
+      {
+        url: '/logo.svg',
+        type: 'image/svg+xml',
+      },
+    ],
+    apple: '/logo.png',
+  },
+  keywords: [
+    'Addis Ababa',
+    'Real Estate',
+    'Property Listings',
+    'Agent',
+    'Modern Living',
+    'Next.js',
+    'Design System',
+    'shadcn',
+  ],
+  openGraph: {
+    title: 'Addis Life',
+    description:
+      'Explore properties, connect with agents, and discover modern living in Addis Ababa.',
+    images: ['/logo.png'],
+    url: 'https://addis-life-realstate.vercel.app/',
+    siteName: 'Addis Life',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Addis Life',
+    description: 'Modern property platform for Addis Ababa.',
+    images: ['/logo.png'],
+  },
 };
 
 export default function RootLayout({
