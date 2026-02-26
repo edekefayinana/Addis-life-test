@@ -1,0 +1,199 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+datasource db {
+  provider = "postgresql"
+}
+
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  phone         String?
+  emailVerified DateTime?
+  image         String?
+  password      String
+  role          Role      @default(AGENT)
+  approvalStatus ApprovalStatus @default(PENDING)
+  accounts      Account[]
+  sessions      Session[]
+  properties    Property[]
+  reservations  Reservation[]
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+enum Role {
+  ADMIN
+  AGENT
+}
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+}
+
+model Account {
+  id                String   @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  type       VerificationTokenType @default(EMAIL)
+  otp        Int?
+
+  @@unique([identifier, token])
+}
+
+enum VerificationTokenType {
+  EMAIL
+  PASSWORD_RESET
+  OTP
+}
+
+
+
+enum PropertyType {
+  APARTMENT
+  HOUSE
+  VILLA
+  CONDO
+  COMMERCIAL
+}
+
+
+enum PropertyListingType {
+  RENT
+  SALE
+}
+
+model Project {
+  id          String     @id @default(uuid())
+  name        String
+  properties  Property[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Property {
+  id        String   @id @default(uuid())
+  title     String
+
+  // Overview
+  builtStartDate DateTime
+  propertyType   PropertyType
+  listingType    PropertyListingType
+  currentStatus  String
+
+  // Property Details
+  totalBedrooms    Int
+  totalBathrooms   Int
+  parkingSpace     Int
+  areaSizeM2       Float
+  availableFloors  Json
+  buildingSize     String
+  deliveryTime     String
+
+  // Location
+  address   String
+  city      String
+  country   String
+  longitude Float
+  latitude  Float
+
+  // 🔗 Relation to User (ADMIN)
+  createdBy   User   @relation(fields: [createdById], references: [id])
+  createdById String
+
+  // 🔗 Relation to Project
+  project     Project @relation(fields: [projectId], references: [id])
+  projectId   String
+
+  // Relations
+  amenities        Amenity[]
+  nearbyPlaces     NearbyPlace[]
+  images           PropertyImage[]
+  reservations     Reservation[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Amenity {
+  id         String   @id @default(uuid())
+  name       String
+  property   Property @relation(fields: [propertyId], references: [id])
+  propertyId String
+}
+
+model NearbyPlace {
+  id         String   @id @default(uuid())
+  name       String
+  property   Property @relation(fields: [propertyId], references: [id])
+  propertyId String
+}
+
+model PropertyImage {
+  id         String   @id @default(uuid())
+  url        String
+  property   Property @relation(fields: [propertyId], references: [id])
+  propertyId String
+}
+
+model Reservation {
+  id          String   @id @default(uuid())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  property    Property @relation(fields: [propertyId], references: [id])
+  propertyId  String
+  status      ReservationStatus @default(PENDDING)
+  description String?
+  createdAt   DateTime @default(now())
+  expiresAt   DateTime
+  confirmedAt DateTime?
+  cancelledAt DateTime?
+}
+
+enum ReservationStatus {
+  PENDDING
+  CONFIRMED
+  CANCELLED
+  EXPIRED
+  SELLED
+}

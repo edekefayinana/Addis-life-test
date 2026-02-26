@@ -6,7 +6,43 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Logo } from '@/components/Logo';
 
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+
 export default function ForgotPasswordPage() {
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setErrorMessage('');
+    setSuccessMessage('');
+    setIsSubmitting(true);
+    try {
+      const response = await fetch('/api/auth/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        setErrorMessage(data.error || 'Failed to send OTP.');
+      } else {
+        setSuccessMessage('OTP sent! Please check your email.');
+        setTimeout(() => {
+          if (router)
+            router.push(`/reset-password?email=${encodeURIComponent(email)}`);
+        }, 1500);
+      }
+    } catch {
+      setErrorMessage('Failed to send OTP.');
+    }
+    setIsSubmitting(false);
+  };
+
   return (
     <div className="space-y-8">
       <Logo />
@@ -16,30 +52,42 @@ export default function ForgotPasswordPage() {
           Forget Password
         </h1>
         <p className="text-base text-gray-600 leading-relaxed">
-          Enter your Email/ Phone Number, and we&apos;ll send you an OTP to
-          reset your password.
+          Enter your Email, and we&apos;ll send you an OTP to reset your
+          password.
         </p>
       </div>
 
-      <form className="space-y-6">
+      <form className="space-y-6" onSubmit={handleSubmit}>
         <div className="space-y-2">
           <Label htmlFor="email" className="text-sm font-medium text-gray-900">
-            Email/ Phone Number
+            Email
           </Label>
           <Input
             id="email"
-            type="text"
-            placeholder="+(251)-900-000-000"
+            type="email"
+            placeholder="johndue@email.com"
             className="h-14 rounded-lg text-base"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            disabled={isSubmitting}
           />
         </div>
 
         <Button
           type="submit"
           className="h-14 w-full rounded-full bg-primary text-base font-medium text-white hover:bg-primary/90"
+          disabled={isSubmitting}
         >
-          Send OTP
+          {isSubmitting ? 'Sending...' : 'Send OTP'}
         </Button>
+
+        {errorMessage && (
+          <p className="text-sm text-red-600 text-center">{errorMessage}</p>
+        )}
+        {successMessage && (
+          <p className="text-sm text-green-600 text-center">{successMessage}</p>
+        )}
 
         <div className="text-center text-base">
           <span className="text-gray-600">{"Don't have agent account? "}</span>

@@ -173,3 +173,40 @@ export function PropertyCard({
     </Link>
   );
 }
+
+// Skeleton loader for PropertyCard
+export function PropertyCardSkeleton() {
+  return (
+    <div className="block">
+      <Card className="overflow-hidden group cursor-pointer transition-all p-2 border-0 shadow-md rounded-lg animate-pulse bg-gray-100">
+        <div className="relative aspect-16/10 w-full overflow-hidden rounded-lg bg-gray-200" />
+        <CardContent className="p-4 pb-2">
+          <div className="h-5 w-3/4 bg-gray-300 rounded mb-2" />
+          <div className="mt-2 flex items-center text-sm">
+            <div className="h-4 w-4 bg-gray-300 rounded mr-2" />
+            <div className="h-4 w-1/2 bg-gray-300 rounded" />
+          </div>
+        </CardContent>
+        <div className="px-5">
+          <div className="h-px w-full bg-gray-200" />
+        </div>
+        <CardFooter className="flex justify-between items-center p-4 text-sm">
+          <div className="flex items-center gap-1">
+            <div className="h-5 w-5 bg-gray-300 rounded" />
+            <div className="h-4 w-10 bg-gray-300 rounded" />
+          </div>
+          <div className="h-8 w-px bg-gray-200 mx-1" />
+          <div className="flex items-center gap-1">
+            <div className="h-5 w-5 bg-gray-300 rounded" />
+            <div className="h-4 w-10 bg-gray-300 rounded" />
+          </div>
+          <div className="h-8 w-px bg-gray-200 mx-1" />
+          <div className="flex items-center gap-1">
+            <div className="h-5 w-5 bg-gray-300 rounded" />
+            <div className="h-4 w-10 bg-gray-300 rounded" />
+          </div>
+        </CardFooter>
+      </Card>
+    </div>
+  );
+}

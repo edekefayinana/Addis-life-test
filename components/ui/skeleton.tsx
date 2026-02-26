@@ -1,19 +1,40 @@
 import { cn } from '@/lib/utils';
 
-type SkeletonProps = {
-  className?: string;
-};
-
-export function SkeletonLine({ className = '' }: SkeletonProps) {
-  return <div className={cn('h-4 rounded-full bg-slate-200/70', className)} />;
-}
-
-export function SkeletonBlock({ className = '' }: SkeletonProps) {
-  return <div className={cn('rounded-2xl bg-slate-200/70', className)} />;
-}
-
-export function SkeletonCircle({ className = '' }: SkeletonProps) {
+function Skeleton({ className, ...props }: React.ComponentProps<'div'>) {
   return (
-    <div className={cn('h-10 w-10 rounded-full bg-slate-200/70', className)} />
+    <div
+      data-slot="skeleton"
+      className={cn('bg-muted rounded-md animate-pulse', className)}
+      {...props}
+    />
+  );
+}
+
+export { Skeleton };
+
+export function SkeletonLine({
+  className,
+  ...props
+}: React.ComponentProps<'div'>) {
+  return (
+    <Skeleton className={cn('h-4 w-full rounded-full', className)} {...props} />
+  );
+}
+
+export function SkeletonBlock({
+  className,
+  ...props
+}: React.ComponentProps<'div'>) {
+  return (
+    <Skeleton className={cn('h-6 w-full rounded-md', className)} {...props} />
+  );
+}
+
+export function SkeletonCircle({
+  className,
+  ...props
+}: React.ComponentProps<'div'>) {
+  return (
+    <Skeleton className={cn('h-10 w-10 rounded-full', className)} {...props} />
   );
 }

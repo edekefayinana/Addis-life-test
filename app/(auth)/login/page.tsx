@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 import { Eye, EyeOff, ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,6 +13,38 @@ import { Checkbox } from '@/components/ui/checkbox';
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setErrorMessage('');
+    setIsSubmitting(true);
+
+    const result = await signIn('credentials', {
+      email,
+      password,
+      redirect: false,
+    });
+
+    setIsSubmitting(false);
+
+    if (result?.error) {
+      if (result.error.includes('verify your email')) {
+        setErrorMessage(
+          'Your email is not verified. Please check your inbox for the verification code.'
+        );
+      } else {
+        setErrorMessage('Invalid email or password.');
+      }
+      return;
+    }
+
+    router.push('/admin');
+  };
 
   return (
     <div className="space-y-8">
@@ -24,16 +58,19 @@ export default function LoginPage() {
         </p>
       </div>
 
-      <form className="space-y-6">
+      <form className="space-y-6" onSubmit={handleSubmit}>
         <div className="space-y-2">
           <Label htmlFor="email" className="text-sm font-medium text-gray-900">
-            Email/ Phone Number
+            Email
           </Label>
           <Input
             id="email"
-            type="text"
-            placeholder="+(251)-900-000-000"
+            type="email"
+            placeholder="agent@example.com"
             className="h-14 rounded-lg text-base"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            required
           />
         </div>
 
@@ -50,6 +87,9 @@ export default function LoginPage() {
               type={showPassword ? 'text' : 'password'}
               placeholder="•••••3"
               className="h-14 rounded-lg pr-12 text-base"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              required
             />
             <button
               type="button"
@@ -90,9 +130,14 @@ export default function LoginPage() {
         <Button
           type="submit"
           className="h-14 w-full rounded-full bg-primary text-base font-medium text-white hover:bg-primary/90"
+          disabled={isSubmitting}
         >
-          Login
+          {isSubmitting ? 'Logging in...' : 'Login'}
         </Button>
+
+        {errorMessage ? (
+          <p className="text-sm text-red-600 text-center">{errorMessage}</p>
+        ) : null}
 
         <div className="text-center text-sm">
           <span className="text-gray-600">{"Don't have agent account? "}</span>

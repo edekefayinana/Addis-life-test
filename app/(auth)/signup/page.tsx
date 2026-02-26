@@ -1,16 +1,49 @@
 'use client';
 
-import Link from 'next/link';
-import { useState } from 'react';
-import { Eye, EyeOff } from 'lucide-react';
+import { Logo } from '@/components/Logo';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Logo } from '@/components/Logo';
+import { Eye, EyeOff } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function ApplyPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showEmail, setShowEmail] = useState(false);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setErrorMessage('');
+    setIsSubmitting(true);
+
+    const name = `${firstName} ${lastName}`.trim();
+
+    const response = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, phone, password }),
+    });
+
+    if (!response.ok) {
+      const data = await response.json().catch(() => ({}));
+      setErrorMessage(data.error || 'Unable to create account.');
+      setIsSubmitting(false);
+      return;
+    }
+
+    setIsSubmitting(false);
+    router.push(`/otp?email=${encodeURIComponent(email)}`);
+  };
 
   return (
     <div className="space-y-8">
@@ -26,7 +59,7 @@ export default function ApplyPage() {
         </p>
       </div>
 
-      <form className="space-y-6">
+      <form className="space-y-6" onSubmit={handleSubmit}>
         <div className="grid gap-6 md:grid-cols-2">
           <div className="space-y-2">
             <Label
@@ -40,6 +73,9 @@ export default function ApplyPage() {
               type="text"
               placeholder="Biruk"
               className="h-14 rounded-lg text-base"
+              value={firstName}
+              onChange={(event) => setFirstName(event.target.value)}
+              required
             />
           </div>
 
@@ -55,6 +91,9 @@ export default function ApplyPage() {
               type="text"
               placeholder="Solomon"
               className="h-14 rounded-lg text-base"
+              value={lastName}
+              onChange={(event) => setLastName(event.target.value)}
+              required
             />
           </div>
         </div>
@@ -68,6 +107,8 @@ export default function ApplyPage() {
             type="tel"
             placeholder="+(251)-900-000-000"
             className="h-14 rounded-lg text-base"
+            value={phone}
+            onChange={(event) => setPhone(event.target.value)}
           />
         </div>
 
@@ -82,6 +123,9 @@ export default function ApplyPage() {
               type="email"
               placeholder="Example1@gmail.com"
               className="h-14 rounded-lg pr-12 text-base"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              required
             />
             <button
               type="button"
@@ -110,6 +154,9 @@ export default function ApplyPage() {
               type={showPassword ? 'text' : 'password'}
               placeholder="•••••3"
               className="h-14 rounded-lg pr-12 text-base"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              required
             />
             <button
               type="button"
@@ -128,9 +175,14 @@ export default function ApplyPage() {
         <Button
           type="submit"
           className="h-14 w-full rounded-full bg-primary text-base font-medium text-white hover:bg-primary/90"
+          disabled={isSubmitting}
         >
-          Submit for Application
+          {isSubmitting ? 'Creating account...' : 'Submit for Application'}
         </Button>
+
+        {errorMessage ? (
+          <p className="text-sm text-red-600 text-center">{errorMessage}</p>
+        ) : null}
 
         <div className="text-center text-base">
           <span className="text-gray-600">Already have agent account? </span>
