@@ -21,7 +21,7 @@ export default function MarketingAssets() {
           }}
         >
           <AssetDetailPanel
-            assetId={selectedAsset}
+            // assetId={selectedAsset}
             onClose={() => setSelectedAsset(null)}
           />
         </div>

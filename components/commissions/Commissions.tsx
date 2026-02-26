@@ -23,7 +23,7 @@ export default function Commissions() {
           }}
         >
           <CommissionDetailPanel
-            commissionId={selectedCommission}
+            // commissionId={selectedCommission}
             onClose={() => setSelectedCommission(null)}
           />
         </div>

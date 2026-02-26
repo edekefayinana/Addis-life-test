@@ -15,7 +15,9 @@ export async function GET(
       return NextResponse.json({ error: 'Not found' }, { status: 404 });
     return NextResponse.json(project);
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    const message =
+      error instanceof Error ? error.message : 'Internal server error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
@@ -32,7 +34,9 @@ export async function PATCH(
     });
     return NextResponse.json(project);
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    const message =
+      error instanceof Error ? error.message : 'Internal server error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
@@ -45,6 +49,8 @@ export async function DELETE(
     await prisma.project.delete({ where: { id: params.id } });
     return NextResponse.json({ success: true });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    const message =
+      error instanceof Error ? error.message : 'Internal server error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

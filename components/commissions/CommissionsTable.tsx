@@ -116,8 +116,7 @@ export function CommissionsTable({
   const [searchTerm, setSearchTerm] = useState('');
   const searchParams = useSearchParams();
   const activeStatus = (searchParams.get('status') as Status) ?? 'all';
-  const { currentPage, setPage, currentPageSize, setPageSize } =
-    usePagination();
+  const { currentPage, setPage } = usePagination();
 
   const handleDownload = (id: string) => {
     // TODO: Replace with real receipt download
@@ -229,10 +228,10 @@ export function CommissionsTable({
         ]}
         data={sortedData}
         page={currentPage}
-        pageSize={currentPageSize || PAGE_SIZE}
+        pageSize={currentPage || PAGE_SIZE}
         total={filtered.length}
         onPageChange={setPage}
-        onPageSizeChange={setPageSize}
+        onPageSizeChange={setPage}
         getRowId={(row) => row.id}
         actionsMenuItems={(row) => [
           { label: 'View Detail', onClick: () => onSelectCommission(row.id) },

@@ -10,7 +10,9 @@ export async function POST(req: NextRequest) {
     const project = await prisma.project.create({ data: { name } });
     return NextResponse.json(project, { status: 201 });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    const message =
+      error instanceof Error ? error.message : 'Internal server error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
@@ -22,6 +24,8 @@ export async function GET() {
     });
     return NextResponse.json(projects);
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    const message =
+      error instanceof Error ? error.message : 'Internal server error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
