@@ -10,10 +10,13 @@ export async function POST(req: NextRequest) {
   if (!session?.user?.id) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-  // Only allow AGENT role to create reservation
-  if (session.user.role !== 'AGENT') {
+  // Only allow AGENT role with APPROVED status to create reservation
+  if (
+    session.user.role !== 'AGENT' ||
+    session.user.approvalStatus !== 'APPROVED'
+  ) {
     return NextResponse.json(
-      { error: 'Only agents can create reservations' },
+      { error: 'Only approved agents can create reservations' },
       { status: 403 }
     );
   }

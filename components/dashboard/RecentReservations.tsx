@@ -48,25 +48,6 @@ export function RecentReservations() {
 
   const visibleReservations = sortedData.slice(0, 5);
 
-  if (loading) {
-    return (
-      <div className="bg-white rounded-2xl p-6 border border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">
-          Recent Reservations
-        </h3>
-        <p className="text-sm text-gray-600 mb-6">
-          View and manage all property reservations you&apos;ve made for
-          clients.
-        </p>
-        <div className="space-y-4">
-          {[...Array(5)].map((_, idx) => (
-            <div key={idx} className="h-12 bg-gray-100 rounded animate-pulse" />
-          ))}
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="bg-white rounded-2xl p-6 border border-gray-200">
       <h3 className="text-lg font-semibold text-gray-900 mb-2">
