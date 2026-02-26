@@ -4,11 +4,12 @@ import prisma from '@/lib/prisma';
 // Get single Project
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await context.params;
     const project = await prisma.project.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: { properties: true },
     });
     if (!project)
@@ -24,12 +25,13 @@ export async function GET(
 // Update Project
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await context.params;
     const { name } = await req.json();
     const project = await prisma.project.update({
-      where: { id: params.id },
+      where: { id },
       data: { name },
     });
     return NextResponse.json(project);
@@ -43,10 +45,11 @@ export async function PATCH(
 // Delete Project
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    await prisma.project.delete({ where: { id: params.id } });
+    const { id } = await context.params;
+    await prisma.project.delete({ where: { id } });
     return NextResponse.json({ success: true });
   } catch (error) {
     const message =
