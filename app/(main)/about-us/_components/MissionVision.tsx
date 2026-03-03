@@ -36,11 +36,10 @@ export default function MissionVision() {
                   </h3>
                 </div>
                 <p className="text-base lg:text-lg ml-[58.5px] leading-[165%] font-instrument text-description">
-                  To deliver exceptional, sustainable, and culturally resonant
-                  living spaces by combining modern architectural innovation
-                  with the warmth of Ethiopian hospitality, ensuring every
-                  client finds more than a house they find a home and most of
-                  all best investment locations in Addis.
+                  To develop high quality, durable, and well-designed real
+                  estate that improves lives and adds value to our communities.
+                  We are committed to honest service, transparent processes, and
+                  delivering every project with professionalism and integrity.
                 </p>
               </div>
             </div>
@@ -55,9 +54,9 @@ export default function MissionVision() {
                   </h3>
                 </div>
                 <p className="text-base lg:text-lg ml-[58.5px] leading-[165%] font-instrument text-description">
-                  To be the heartbeat of the Ethiopian skyline, transforming
-                  urban living into a legacy of comfort, quality, and community
-                  for generations to come.
+                  To become East Africa’s most trusted real estate developer,
+                  recognized for superior construction quality, reliability, and
+                  transparent business practices.
                 </p>
               </div>
             </div>

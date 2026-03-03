@@ -6,9 +6,9 @@ import { ProjectListings } from '../_components/ProjectListings';
 import { Testimonials } from '../_components/Testimonials';
 import { Insights } from '../_components/Insights';
 import { AgentBanner } from '../_components/AgentBanner';
-import propertiesData from '@/data/african Union 2 site-all units';
 import { createClient } from '@/prismicio';
 import { heroVideoSlide, type HeroSlide } from '@/data/heroSlides';
+import { PropertyCardProps } from '@/components/PropertyCard';
 
 type PrismicHeroSlide = {
   image?: { url?: string | null } | null;
@@ -24,6 +24,29 @@ type PrismicHeroSlide = {
   highlight_2_value?: string | null;
   highlight_3_label?: string | null;
   highlight_3_value?: string | null;
+};
+
+type DbProperty = {
+  title: string;
+  listingType?: string;
+  builtStartDate?: string;
+  propertyType?: string;
+  currentStatus?: string;
+  totalBedrooms?: number;
+  totalBathrooms?: number;
+  parkingSpace?: number;
+  areaSizeM2?: number;
+  availableFloors?: number;
+  buildingSize?: number;
+  deliveryTime?: string;
+  amenities?: Array<{ name: string }>;
+  nearbyPlaces?: Array<{ name: string }>;
+  address?: string;
+  city?: string;
+  country?: string;
+  longitude?: number;
+  latitude?: number;
+  images?: Array<{ url: string }>;
 };
 
 const mapHeroSlides = (
@@ -83,6 +106,76 @@ const mapHeroSlides = (
     })
     .filter(Boolean) as HeroSlide[];
 
+async function fetchFeaturedProperties(): Promise<PropertyCardProps[]> {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const response = await fetch(`${baseUrl}/api/inventory?limit=8`, {
+      cache: 'no-store',
+    });
+
+    if (!response.ok) {
+      console.error('Failed to fetch properties:', response.statusText);
+      return [];
+    }
+
+    const result = await response.json();
+    const dbProperties: DbProperty[] = result.data?.properties || [];
+
+    // Transform and filter database properties to PropertyCard format
+    return dbProperties
+      .filter(
+        (property) =>
+          property.title &&
+          property.builtStartDate &&
+          property.propertyType &&
+          property.currentStatus &&
+          property.totalBedrooms &&
+          property.totalBathrooms &&
+          property.areaSizeM2 &&
+          property.address &&
+          property.city &&
+          property.country
+      )
+      .map((property) => ({
+        title: property.title,
+        type: (property.listingType?.toLowerCase() || 'sale') as
+          | 'rent'
+          | 'sale',
+        overview: {
+          built_start_date: property.builtStartDate!,
+          property_type: (property.propertyType || 'Residential') as
+            | 'Residential'
+            | 'Commercial',
+          current_status: property.currentStatus!,
+        },
+        property_details: {
+          total_bedrooms: property.totalBedrooms!,
+          total_bathrooms: property.totalBathrooms!,
+          parking_space: property.parkingSpace || 0,
+          area_size_m2: property.areaSizeM2!,
+          available_floors: property.availableFloors?.toString() || '0',
+          building_size: property.buildingSize?.toString() || '0',
+          delivery_time: property.deliveryTime || 'TBD',
+        },
+        amenities: property.amenities?.map((a) => a.name) || [],
+        location_and_surroundings: {
+          nearby_places: property.nearbyPlaces?.map((p) => p.name) || [],
+        },
+        location: {
+          address: property.address!,
+          city: property.city!,
+          country: property.country!,
+          longitude: property.longitude || 0,
+          latitude: property.latitude || 0,
+        },
+        images: property.images?.map((img) => ({ url: img.url })) || [],
+      }));
+  } catch (error) {
+    console.error('Error fetching properties:', error);
+    return [];
+  }
+}
+
 export default async function HomePage() {
   const client = createClient();
   let prismicSlides: HeroSlide[] = [];
@@ -107,13 +200,16 @@ export default async function HomePage() {
 
   const slides = [heroVideoSlide, ...prismicSlides];
 
+  // Fetch featured properties from API
+  const properties = await fetchFeaturedProperties();
+
   return (
     <main>
       <Hero slides={slides} />
       <PropertyCarousel
         title="Find Your Perfect Property"
-        description="Browse top real estate options across Ethiopia . From modern apartments to luxury villas."
-        properties={propertiesData}
+        description="Browse top real estate options across Ethiopia. From modern apartments to luxury villas."
+        properties={properties}
       />
       <DeveloperSection />
       <ExpertiseSection />

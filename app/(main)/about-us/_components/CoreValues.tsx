@@ -33,11 +33,11 @@ export default function CoreValues() {
   ];
 
   const achievements: Achievements[] = [
-    {
-      id: 1,
-      title: 'Satisfied Customers',
-      value: '1,000+',
-    },
+    // {
+    //   id: 1,
+    //   title: 'Satisfied Customers',
+    //   value: '1,000+',
+    // },
     {
       id: 2,
       title: 'Employee',

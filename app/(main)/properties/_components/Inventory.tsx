@@ -66,6 +66,11 @@ function InventoryContent({
 
   // Show skeleton during filter transitions
   if (isLoading || isPending) {
+    if (currentView === 'map') {
+      return (
+        <div className="h-[600px] w-full animate-pulse rounded-xl bg-gray-200" />
+      );
+    }
     return (
       <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {Array.from({ length: PAGE_SIZE }).map((_, idx) => (
@@ -138,11 +143,15 @@ export function Inventory() {
       <Suspense
         key={query}
         fallback={
-          <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: PAGE_SIZE }).map((_, idx) => (
-              <PropertyCardSkeleton key={`skeleton-${idx}`} />
-            ))}
-          </section>
+          currentView === 'map' ? (
+            <div className="h-[600px] w-full animate-pulse rounded-xl bg-gray-200" />
+          ) : (
+            <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: PAGE_SIZE }).map((_, idx) => (
+                <PropertyCardSkeleton key={`skeleton-${idx}`} />
+              ))}
+            </section>
+          )
         }
       >
         <InventoryContent

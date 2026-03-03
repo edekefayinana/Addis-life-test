@@ -22,7 +22,7 @@ export function DeveloperSection() {
 
         <div className="flex flex-col justify-center gap-8 rounded-3xl bg-muted p-4 md:p-8 lg:p-12 md:col-span-6">
           <div className="space-y-4">
-            <span className="text-base font-light uppercase tracking-wider text-foreground ">
+            <span className="text-base font-light uppercase tracking-wider text-foreground">
               • About Us
             </span>
             <p className="text-xl leading-relaxed text-foreground mt-10 font-medium font-instrument">
@@ -34,8 +34,10 @@ export function DeveloperSection() {
 
           <div className="flex items-center gap-8 border-b border-border/50 pb-2 sm:border-0 sm:pb-0">
             <div>
-              <h3 className="text-4xl font-semibold text-foreground">1,000+</h3>
-              <p className="text-sm text-muted-foreground mt-3">Customers</p>
+              <h3 className="text-4xl font-semibold text-foreground">
+                61,000 Hr+
+              </h3>
+              <p className="text-sm text-muted-foreground mt-3">Experience</p>
             </div>
             <div className="h-12 w-px bg-gray-300"></div>
             <div>
@@ -50,7 +52,7 @@ export function DeveloperSection() {
             className="w-fit rounded-full bg-brand-dark px-8 py-6 text-white hover:bg-brand-dark/90"
             size="lg"
           >
-            <Link href="/about" className="flex items-center gap-2">
+            <Link href="/about-us" className="flex items-center gap-2">
               Learn More <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>

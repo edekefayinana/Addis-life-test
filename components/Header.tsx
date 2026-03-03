@@ -4,7 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, User, LogOut, LayoutDashboard, Package } from 'lucide-react';
+import { useSession, signOut } from 'next-auth/react';
 
 import { cn } from '@/lib/utils';
 
@@ -59,13 +60,20 @@ const variantStyles: Record<
 
 export function Header({ variant }: HeaderProps) {
   const pathname = usePathname();
+  const { data: session, status } = useSession();
   const isDarkRoute = pathname === '/' || pathname === '/blogs';
   const resolvedVariant: HeaderVariant =
     variant ?? (isDarkRoute ? 'dark' : 'light');
   const styles = variantStyles[resolvedVariant];
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isPropertiesOpen, setIsPropertiesOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const propertiesRef = useRef<HTMLDivElement | null>(null);
+  const profileRef = useRef<HTMLDivElement | null>(null);
+
+  const isAuthenticated = status === 'authenticated';
+  const isAdmin = session?.user?.role === 'ADMIN';
+  const isAgent = session?.user?.role === 'AGENT';
 
   useEffect(() => {
     if (!isPropertiesOpen) return;
@@ -90,6 +98,34 @@ export function Header({ variant }: HeaderProps) {
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, [isPropertiesOpen]);
+
+  useEffect(() => {
+    if (!isProfileOpen) return;
+
+    const handlePointerDown = (event: MouseEvent) => {
+      const target = event.target as Node | null;
+      if (profileRef.current?.contains(target)) return;
+      setIsProfileOpen(false);
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsProfileOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handlePointerDown);
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('mousedown', handlePointerDown);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isProfileOpen]);
+
+  const handleSignOut = async () => {
+    await signOut({ callbackUrl: '/login' });
+  };
 
   return (
     <header className={cn('z-50 w-full', styles.header)}>
@@ -178,25 +214,112 @@ export function Header({ variant }: HeaderProps) {
 
         {/* Right Actions */}
         <div className="hidden items-center gap-6 md:flex">
-          <Link
-            href="/login"
-            className={cn(
-              'text-base font-medium font-instrument',
-              styles.action
-            )}
-          >
-            Login
-          </Link>
+          {isAuthenticated ? (
+            <div
+              ref={profileRef}
+              className="relative"
+              onMouseEnter={() => setIsProfileOpen(true)}
+              onMouseLeave={() => setIsProfileOpen(false)}
+            >
+              <button
+                type="button"
+                className={cn(
+                  'flex items-center gap-2 rounded-full border px-4 py-2 transition-colors',
+                  resolvedVariant === 'dark'
+                    ? 'border-white/30 hover:bg-white/10'
+                    : 'border-gray-300 hover:bg-gray-100'
+                )}
+                aria-haspopup="menu"
+                aria-expanded={isProfileOpen}
+                onClick={() => setIsProfileOpen((prev) => !prev)}
+              >
+                <div
+                  className={cn(
+                    'flex h-8 w-8 items-center justify-center rounded-full',
+                    resolvedVariant === 'dark' ? 'bg-white/20' : 'bg-gray-200'
+                  )}
+                >
+                  <User className="h-4 w-4" />
+                </div>
+                <span className="text-sm font-medium">
+                  {session?.user?.name || 'Account'}
+                </span>
+              </button>
 
-          <Link
-            href="/signup"
-            className={cn(
-              'rounded-full px-6 py-2.5 text-base font-instrument font-medium transition-colors',
-              styles.cta
-            )}
-          >
-            Sign Up
-          </Link>
+              {isProfileOpen && (
+                <div className="absolute right-0 top-full z-50 mt-2 w-64 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-xl">
+                  <div className="border-b border-gray-100 bg-gradient-to-br from-gray-50 to-white px-4 py-4">
+                    <p className="text-base font-semibold text-gray-900">
+                      {session?.user?.name}
+                    </p>
+                    <p className="mt-0.5 text-sm text-gray-600">
+                      {session?.user?.email}
+                    </p>
+                    {(isAdmin || isAgent) && (
+                      <span className="mt-2 inline-block rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 ring-1 ring-blue-200">
+                        {isAdmin ? 'Admin' : 'Agent'}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="py-2">
+                    {(isAdmin || isAgent) && (
+                      <>
+                        <Link
+                          href="/admin"
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium !text-gray-700 transition hover:bg-gray-50"
+                          onClick={() => setIsProfileOpen(false)}
+                        >
+                          <LayoutDashboard className="h-4 w-4" />
+                          {isAdmin ? 'Admin Dashboard' : 'Dashboard'}
+                        </Link>
+                        <Link
+                          href="/admin/inventory"
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium !text-gray-700 transition hover:bg-gray-50"
+                          onClick={() => setIsProfileOpen(false)}
+                        >
+                          <Package className="h-4 w-4" />
+                          Inventory
+                        </Link>
+                        <div className="my-1 border-t border-gray-100" />
+                      </>
+                    )}
+
+                    <button
+                      type="button"
+                      onClick={handleSignOut}
+                      className="flex w-full items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-600 transition hover:bg-red-50"
+                    >
+                      <LogOut className="h-4 w-4" />
+                      Sign Out
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                className={cn(
+                  'text-base font-medium font-instrument',
+                  styles.action
+                )}
+              >
+                Login
+              </Link>
+
+              <Link
+                href="/signup"
+                className={cn(
+                  'rounded-full px-6 py-2.5 text-base font-instrument font-medium transition-colors',
+                  styles.cta
+                )}
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile toggle */}
@@ -303,20 +426,73 @@ export function Header({ variant }: HeaderProps) {
           })}
 
           <div className="mt-4 flex flex-col gap-2">
-            <Link
-              href="/login"
-              className="rounded-full px-4 py-2 text-center text-sm font-medium text-foreground hover:bg-gray-100"
-              onClick={() => setIsMobileOpen(false)}
-            >
-              Login
-            </Link>
-            <Link
-              href="/signup"
-              className="rounded-full bg-brand-dark px-4 py-2 text-center text-sm font-semibold text-white hover:bg-brand-dark/90"
-              onClick={() => setIsMobileOpen(false)}
-            >
-              Sign Up
-            </Link>
+            {isAuthenticated ? (
+              <>
+                <div className="mb-2 rounded-xl bg-gradient-to-br from-gray-50 to-white px-4 py-4 ring-1 ring-gray-200">
+                  <p className="text-base font-semibold text-gray-900">
+                    {session?.user?.name}
+                  </p>
+                  <p className="mt-0.5 text-sm text-gray-600">
+                    {session?.user?.email}
+                  </p>
+                  {(isAdmin || isAgent) && (
+                    <span className="mt-2 inline-block rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 ring-1 ring-blue-200">
+                      {isAdmin ? 'Admin' : 'Agent'}
+                    </span>
+                  )}
+                </div>
+
+                {(isAdmin || isAgent) && (
+                  <>
+                    <Link
+                      href="/admin"
+                      className="flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700"
+                      onClick={() => setIsMobileOpen(false)}
+                    >
+                      <LayoutDashboard className="h-4 w-4" />
+                      {isAdmin ? 'Admin Dashboard' : 'Dashboard'}
+                    </Link>
+                    <Link
+                      href="/admin/inventory"
+                      className="flex items-center justify-center gap-2 rounded-xl border border-blue-200 bg-white px-4 py-3 text-center text-sm font-semibold text-blue-600 transition hover:bg-blue-50"
+                      onClick={() => setIsMobileOpen(false)}
+                    >
+                      <Package className="h-4 w-4" />
+                      Inventory Management
+                    </Link>
+                  </>
+                )}
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMobileOpen(false);
+                    handleSignOut();
+                  }}
+                  className="flex items-center justify-center gap-2 rounded-xl border border-red-200 bg-white px-4 py-3 text-center text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Sign Out
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="rounded-full px-4 py-2 text-center text-sm font-medium text-foreground hover:bg-gray-100"
+                  onClick={() => setIsMobileOpen(false)}
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/signup"
+                  className="rounded-full bg-brand-dark px-4 py-2 text-center text-sm font-semibold text-white hover:bg-brand-dark/90"
+                  onClick={() => setIsMobileOpen(false)}
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
           </div>
         </nav>
       </aside>
