@@ -83,9 +83,20 @@ export const saveFCMToken = async (token: string, userId: string) => {
       body: JSON.stringify({ token, userId }),
     });
 
+    // Check content type before parsing
+    const contentType = response.headers.get('content-type');
+
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Failed to save FCM token');
+      // Try to parse error as JSON if possible
+      if (contentType && contentType.includes('application/json')) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to save FCM token');
+      } else {
+        // If not JSON, it might be an HTML error page
+        throw new Error(
+          `Failed to save FCM token: ${response.status} ${response.statusText}`
+        );
+      }
     }
 
     const result = await response.json();

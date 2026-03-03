@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -21,6 +22,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    console.log('💾 Saving FCM token for user:', session.user.id);
+
     const db = getFirestore();
 
     // Save or update FCM token for the user
@@ -34,14 +37,21 @@ export async function POST(req: NextRequest) {
       { merge: true }
     );
 
+    console.log('✅ FCM token saved successfully');
+
     return NextResponse.json({
       success: true,
       message: 'FCM token saved successfully',
     });
-  } catch (error) {
-    console.error('Error saving FCM token:', error);
+  } catch (error: any) {
+    console.error('❌ Error saving FCM token:', error);
+    console.error('Error details:', {
+      message: error.message,
+      code: error.code,
+      stack: error.stack,
+    });
     return NextResponse.json(
-      { error: 'Failed to save FCM token' },
+      { error: `Failed to save FCM token: ${error.message}` },
       { status: 500 }
     );
   }

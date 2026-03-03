@@ -4,6 +4,7 @@ import { FieldValue, getFirestore } from 'firebase-admin/firestore';
 import { getMessaging } from 'firebase-admin/messaging';
 
 // let app: App | undefined;
+
 if (!getApps().length) {
   let serviceAccount: any = {};
   if (process.env.FIREBASE_SERVICE_ACCOUNT) {
@@ -25,10 +26,12 @@ if (!getApps().length) {
       privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
     };
   }
+
   // app = initializeApp({
   //   credential: cert(serviceAccount),
   // });
 }
+
 const db = getFirestore();
 const messaging = getMessaging();
 
@@ -51,11 +54,15 @@ export async function sendPushNotification({
   data?: Record<string, string>;
 }) {
   try {
+    console.log('📤 Sending notification to user:', userId);
+    console.log('📝 Notification details:', { title, body, type });
+
     // Get user's FCM token
     const tokenDoc = await db.collection('fcmTokens').doc(userId).get();
+    console.log('🔑 FCM token exists:', tokenDoc.exists);
 
     // Save notification to Firestore (always do this, even if no token)
-    await db.collection('notifications').add({
+    const notificationRef = await db.collection('notifications').add({
       userId,
       title,
       description: body,
@@ -66,12 +73,18 @@ export async function sendPushNotification({
       link: link || null,
       data: data || null,
     });
+    console.log('✅ Notification saved to Firestore:', notificationRef.id);
 
     // If user has FCM token, send push notification
     if (tokenDoc.exists) {
       const fcmToken = tokenDoc.data()?.token;
 
       if (fcmToken) {
+        console.log(
+          '📱 Sending push notification with token:',
+          fcmToken.substring(0, 20) + '...'
+        );
+
         const message = {
           token: fcmToken,
           notification: {
@@ -97,21 +110,29 @@ export async function sendPushNotification({
 
         try {
           const response = await messaging.send(message);
+          console.log('✅ Push notification sent successfully:', response);
           return { success: true, messageId: response };
         } catch (error: any) {
           console.error('❌ Failed to send push notification:', error);
+          console.error('Error code:', error.code);
+          console.error('Error message:', error.message);
 
           // If token is invalid, delete it
           if (
             error.code === 'messaging/registration-token-not-registered' ||
             error.code === 'messaging/invalid-registration-token'
           ) {
+            console.log('🗑️ Deleting invalid FCM token');
             await db.collection('fcmTokens').doc(userId).delete();
           }
 
           return { success: false, error: error.message };
         }
+      } else {
+        console.log('⚠️ FCM token document exists but token is empty');
       }
+    } else {
+      console.log('ℹ️ No FCM token found for user:', userId);
     }
 
     return { success: true, message: 'Notification saved (no push sent)' };

@@ -39,7 +39,10 @@ export function Sidebar() {
     //   label: 'Marketing Assets',
     //   href: '/admin/marketing-assets',
     // },
-    { icon: User, label: 'User Managment', href: '/admin/users' },
+    // Only show User Management for ADMIN role
+    ...(session?.user?.role === 'ADMIN'
+      ? [{ icon: User, label: 'User Managment', href: '/admin/users' }]
+      : []),
   ];
 
   const bottomItems = [

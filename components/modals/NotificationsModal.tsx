@@ -9,6 +9,8 @@ import {
   orderBy,
   onSnapshot,
   where,
+  doc,
+  updateDoc,
 } from 'firebase/firestore';
 import { useSession } from 'next-auth/react';
 import { getFirebaseFirestore } from '@/lib/firebase';
@@ -89,8 +91,10 @@ export function NotificationsModal({ onClose }: NotificationsModalProps) {
       const unsubscribe = onSnapshot(
         q,
         (snapshot) => {
+          console.log('📬 Fetched notifications count:', snapshot.docs.length);
           const notifs: Notification[] = snapshot.docs.map((doc) => {
             const data = doc.data();
+            console.log('📄 Notification data:', { id: doc.id, ...data });
             return {
               id: doc.id,
               type: data.type,
@@ -104,6 +108,7 @@ export function NotificationsModal({ onClose }: NotificationsModalProps) {
               read: data.read || false,
             };
           });
+          console.log('✅ Processed notifications:', notifs.length);
           setNotifications(notifs);
           setLoading(false);
         },
@@ -136,7 +141,7 @@ export function NotificationsModal({ onClose }: NotificationsModalProps) {
   // Request notification permission
   const handleEnableNotifications = async () => {
     if (!session?.user?.id) {
-      alert('Please log in to enable notifications');
+      setError('Please log in to enable notifications');
       return;
     }
 
@@ -153,31 +158,116 @@ export function NotificationsModal({ onClose }: NotificationsModalProps) {
         await saveFCMToken(token, session.user.id);
         setNotificationsEnabled(true);
         console.log('🎉 Notifications enabled successfully!');
+        setError(null);
         alert(
           'Notifications enabled successfully! You will now receive push notifications.'
         );
       } else {
         console.error('❌ Failed to get token');
         setError(
-          'Failed to enable notifications. Please check browser console for details.'
+          'Failed to get notification token. Please check your browser permissions.'
         );
-        // Don't show alert here as requestNotificationPermission already shows one
       }
     } catch (error: any) {
       console.error('❌ Error enabling notifications:', error);
-      setError('Failed to enable notifications: ' + error.message);
-      alert('Failed to enable notifications: ' + error.message);
+      const errorMessage = error.message || 'Unknown error occurred';
+
+      // Provide more specific error messages
+      if (
+        errorMessage.includes('401') ||
+        errorMessage.includes('Unauthorized')
+      ) {
+        setError('Session expired. Please log in again.');
+      } else if (errorMessage.includes('permission')) {
+        setError(
+          'Notification permission denied. Please enable notifications in your browser settings.'
+        );
+      } else {
+        setError(`Failed to enable notifications: ${errorMessage}`);
+      }
     } finally {
       setRequestingPermission(false);
     }
   };
 
-  // Group notifications
-  const groupedNotifications = {
-    recent: notifications.slice(0, 4),
-    lastWeek: notifications.slice(4, 6),
-    lastMonth: notifications.slice(6),
+  // Mark notification as read
+  const markAsRead = async (notificationId: string) => {
+    try {
+      const db = getFirebaseFirestore();
+      await updateDoc(doc(db, 'notifications', notificationId), {
+        read: true,
+      });
+      console.log('✅ Notification marked as read:', notificationId);
+    } catch (error: any) {
+      console.error('❌ Error marking notification as read:', error);
+    }
   };
+
+  // Mark all notifications as read
+  const markAllAsRead = async () => {
+    try {
+      const db = getFirebaseFirestore();
+      const unreadNotifications = notifications.filter((n) => !n.read);
+
+      await Promise.all(
+        unreadNotifications.map((notif) =>
+          updateDoc(doc(db, 'notifications', notif.id), {
+            read: true,
+          })
+        )
+      );
+
+      console.log('✅ All notifications marked as read');
+    } catch (error: any) {
+      console.error('❌ Error marking all notifications as read:', error);
+    }
+  };
+
+  // Group notifications by time
+  const groupedNotifications = (() => {
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const sevenDaysAgo = new Date(today);
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    const thirtyDaysAgo = new Date(today);
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+    const recent: Notification[] = [];
+    const lastWeek: Notification[] = [];
+    const lastMonth: Notification[] = [];
+
+    notifications.forEach((notif) => {
+      // Parse the notification time
+      let notifDate: Date;
+      try {
+        // Try parsing the time string
+        notifDate = new Date(notif.time);
+        // If invalid, use current time
+        if (isNaN(notifDate.getTime())) {
+          notifDate = now;
+        }
+      } catch {
+        notifDate = now;
+      }
+
+      // Categorize based on date
+      if (notifDate >= today) {
+        // Today
+        recent.push(notif);
+      } else if (notifDate >= sevenDaysAgo) {
+        // Last 7 days (but not today)
+        lastWeek.push(notif);
+      } else if (notifDate >= thirtyDaysAgo) {
+        // Last 30 days (but not last 7 days)
+        lastMonth.push(notif);
+      } else {
+        // Older than 30 days - put in last month
+        lastMonth.push(notif);
+      }
+    });
+
+    return { recent, lastWeek, lastMonth };
+  })();
 
   return (
     <div
@@ -190,9 +280,19 @@ export function NotificationsModal({ onClose }: NotificationsModalProps) {
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <h2 className="text-lg font-semibold text-gray-900">Notifications</h2>
-          <button onClick={onClose} className="hover:bg-gray-100 p-1 rounded">
-            <X className="w-5 h-5" />
-          </button>
+          <div className="flex items-center gap-2">
+            {notifications.some((n) => !n.read) && (
+              <button
+                onClick={markAllAsRead}
+                className="text-xs text-blue-600 hover:text-blue-700 font-medium"
+              >
+                Mark all read
+              </button>
+            )}
+            <button onClick={onClose} className="hover:bg-gray-100 p-1 rounded">
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Enable Notifications Banner */}
@@ -268,17 +368,20 @@ export function NotificationsModal({ onClose }: NotificationsModalProps) {
             </div>
           ) : (
             <>
-              {/* Recent */}
+              {/* Today */}
               {groupedNotifications.recent.length > 0 && (
                 <div className="px-6 py-4">
                   <div className="text-sm font-medium text-gray-700 mb-3">
-                    Recent
+                    Today
                   </div>
                   <div className="space-y-4">
                     {groupedNotifications.recent.map((notif) => (
                       <div
                         key={notif.id}
-                        className="flex gap-3 pb-4 border-b last:border-b-0"
+                        onClick={() => !notif.read && markAsRead(notif.id)}
+                        className={`flex gap-3 pb-4 border-b last:border-b-0 ${
+                          !notif.read ? 'cursor-pointer hover:bg-gray-50' : ''
+                        } transition-colors`}
                       >
                         <div
                           className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
@@ -316,7 +419,10 @@ export function NotificationsModal({ onClose }: NotificationsModalProps) {
                     {groupedNotifications.lastWeek.map((notif) => (
                       <div
                         key={notif.id}
-                        className="flex gap-3 pb-4 border-b last:border-b-0"
+                        onClick={() => !notif.read && markAsRead(notif.id)}
+                        className={`flex gap-3 pb-4 border-b last:border-b-0 ${
+                          !notif.read ? 'cursor-pointer hover:bg-gray-50' : ''
+                        } transition-colors`}
                       >
                         <div className="w-2 h-2 bg-gray-400 rounded-full mt-2 flex-shrink-0" />
                         <div className="flex-1">
@@ -348,7 +454,10 @@ export function NotificationsModal({ onClose }: NotificationsModalProps) {
                     {groupedNotifications.lastMonth.map((notif) => (
                       <div
                         key={notif.id}
-                        className="flex gap-3 pb-4 border-b last:border-b-0"
+                        onClick={() => !notif.read && markAsRead(notif.id)}
+                        className={`flex gap-3 pb-4 border-b last:border-b-0 ${
+                          !notif.read ? 'cursor-pointer hover:bg-gray-50' : ''
+                        } transition-colors`}
                       >
                         <div className="w-2 h-2 bg-gray-400 rounded-full mt-2 flex-shrink-0" />
                         <div className="flex-1">
