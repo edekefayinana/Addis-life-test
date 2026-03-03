@@ -58,13 +58,13 @@ export type PropertyCardProps = {
 };
 
 // Generate a random ID from title if not provided
-function slugify(title: string): string {
-  return title
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-}
+// function slugify(title: string): string {
+//   return title
+//     .toLowerCase()
+//     .trim()
+//     .replace(/[^a-z0-9]+/g, '-')
+//     .replace(/^-+|-+$/g, '');
+// }
 
 export function PropertyCard({
   id,
@@ -74,7 +74,7 @@ export function PropertyCard({
   property_details,
   images,
 }: PropertyCardProps) {
-  const propertyId = id || slugify(title);
+  const propertyId = id;
 
   // Use API images if available, otherwise fallback to default
   // Filter out invalid URLs
