@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { getApps } from 'firebase-admin/app';
 import { FieldValue, getFirestore } from 'firebase-admin/firestore';
@@ -27,9 +28,10 @@ if (!getApps().length) {
     };
   }
 
-  // app = initializeApp({
-  //   credential: cert(serviceAccount),
-  // });
+  const { initializeApp, cert } = require('firebase-admin/app');
+  initializeApp({
+    credential: cert(serviceAccount),
+  });
 }
 
 const db = getFirestore();
