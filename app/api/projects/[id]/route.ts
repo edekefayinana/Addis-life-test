@@ -1,5 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import prisma from '@/lib/prisma';
+import { handleApiError, sendResponse } from '@/lib/error-handler';
 
 // Get single Project
 export async function GET(
@@ -13,12 +14,10 @@ export async function GET(
       include: { properties: true },
     });
     if (!project)
-      return NextResponse.json({ error: 'Not found' }, { status: 404 });
-    return NextResponse.json(project);
+      return sendResponse({ error: 'Not found' }, 0, undefined, 404);
+    return sendResponse(project, 1);
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : 'Internal server error';
-    return NextResponse.json({ error: message }, { status: 500 });
+    return handleApiError(error);
   }
 }
 
@@ -34,11 +33,9 @@ export async function PATCH(
       where: { id },
       data: { name },
     });
-    return NextResponse.json(project);
+    return sendResponse(project, 1);
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : 'Internal server error';
-    return NextResponse.json({ error: message }, { status: 500 });
+    return handleApiError(error);
   }
 }
 
@@ -50,10 +47,8 @@ export async function DELETE(
   try {
     const { id } = await context.params;
     await prisma.project.delete({ where: { id } });
-    return NextResponse.json({ success: true });
+    return sendResponse({ success: true }, 1);
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : 'Internal server error';
-    return NextResponse.json({ error: message }, { status: 500 });
+    return handleApiError(error);
   }
 }

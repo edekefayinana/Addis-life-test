@@ -5,27 +5,24 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 interface PaginationProps {
   totalPages: number;
-  currentPage: number;
 }
 
-export function Pagination({ totalPages, currentPage }: PaginationProps) {
-  const { setPage } = usePagination();
+export function Pagination({ totalPages }: PaginationProps) {
+  const { currentPage, setPage } = usePagination();
 
   if (totalPages <= 1) return null;
 
   const createPageRange = () => {
     const pages: (number | 'ellipsis')[] = [];
-    const add = (page: number | 'ellipsis') => pages.push(page);
-
     const window = 1;
     const start = Math.max(2, currentPage - window);
     const end = Math.min(totalPages - 1, currentPage + window);
 
-    add(1);
-    if (start > 2) add('ellipsis');
-    for (let p = start; p <= end; p += 1) add(p);
-    if (end < totalPages - 1) add('ellipsis');
-    if (totalPages > 1) add(totalPages);
+    pages.push(1);
+    if (start > 2) pages.push('ellipsis');
+    for (let p = start; p <= end; p += 1) pages.push(p);
+    if (end < totalPages - 1) pages.push('ellipsis');
+    if (totalPages > 1) pages.push(totalPages);
 
     return pages;
   };
@@ -37,7 +34,7 @@ export function Pagination({ totalPages, currentPage }: PaginationProps) {
   return (
     <div className="mt-8 flex flex-wrap items-center justify-between gap-6">
       <button
-        onClick={() => setPage(Math.max(1, currentPage - 1))}
+        onClick={() => setPage(currentPage - 1)}
         disabled={isFirstPage}
         className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-5 py-3 text-sm font-medium text-gray-900 transition hover:bg-gray-50 disabled:pointer-events-none disabled:opacity-40"
       >
@@ -58,7 +55,7 @@ export function Pagination({ totalPages, currentPage }: PaginationProps) {
               disabled={page === currentPage}
               className={`grid h-10 min-w-10 place-items-center rounded-full px-3 text-sm font-medium transition ${
                 page === currentPage
-                  ? 'border border-gray-900 text-gray-900'
+                  ? 'border border-gray-900 text-gray-900 bg-gray-50'
                   : 'text-gray-800 hover:bg-gray-50 disabled:pointer-events-none'
               }`}
             >
@@ -69,7 +66,7 @@ export function Pagination({ totalPages, currentPage }: PaginationProps) {
       </div>
 
       <button
-        onClick={() => setPage(Math.min(totalPages, currentPage + 1))}
+        onClick={() => setPage(currentPage + 1)}
         disabled={isLastPage}
         className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-5 py-3 text-sm font-medium text-gray-900 transition hover:bg-gray-50 disabled:pointer-events-none disabled:opacity-40"
       >

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NextResponse } from 'next/server';
+import { authOptions } from '@/lib/auth';
+import { handleApiError, sendResponse } from '@/lib/error-handler';
 import prisma from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
 
 export async function GET() {
   try {
@@ -38,7 +38,7 @@ export async function GET() {
           description = `Reservation for ${projectName} - ${r.property?.title || ''} was confirmed.`;
           activityTime = r.confirmedAt || r.createdAt;
           break;
-        case 'PENDDING':
+        case 'PENDING':
           type = title = 'Reservation Pending';
           description = `Reservation for ${projectName} - ${r.property?.title || ''} is pending approval.`;
           activityTime = r.createdAt;
@@ -80,23 +80,20 @@ export async function GET() {
     // Limit to 3 most recent activities
     activities = activities.slice(0, 3);
 
-    // Mock commission activity for demo (if any activity exists)
+    //TODO Mock commission activity for demo (if any activity exists)
     if (activities.length > 0) {
       activities.unshift({
         type: 'Commission Approved',
         title: 'Commission Approved',
         description: `Commission for ${activities[0].description.replace('Reservation for ', '').replace(' was confirmed.', '').replace(' is pending approval.', '').replace(' was cancelled.', '').replace(' has expired.', '').replace(' has been sold.', '')} has been approved.`,
-        createdAt: new Date(),
+        createdAt: new Date('2026-02-25T12:00:00Z'), // Mocked future date for demo
       });
       // Limit to 3 again (commission + 2 activities)
       activities = activities.slice(0, 3);
     }
 
-    return NextResponse.json({ activities });
-  } catch {
-    return NextResponse.json(
-      { error: 'Unable to fetch activities.' },
-      { status: 500 }
-    );
+    return sendResponse({ activities }, activities.length);
+  } catch (error) {
+    return handleApiError(error);
   }
 }

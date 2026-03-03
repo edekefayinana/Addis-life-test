@@ -1,18 +1,17 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import prisma from '@/lib/prisma';
+import { handleApiError, sendResponse } from '@/lib/error-handler';
 
 // Create Project
 export async function POST(req: NextRequest) {
   try {
     const { name } = await req.json();
     if (!name)
-      return NextResponse.json({ error: 'Name is required' }, { status: 400 });
+      return sendResponse({ error: 'Name is required' }, 0, undefined, 400);
     const project = await prisma.project.create({ data: { name } });
-    return NextResponse.json(project, { status: 201 });
+    return sendResponse(project, 1, undefined, 201);
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : 'Internal server error';
-    return NextResponse.json({ error: message }, { status: 500 });
+    return handleApiError(error);
   }
 }
 
@@ -22,10 +21,8 @@ export async function GET() {
     const projects = await prisma.project.findMany({
       orderBy: { createdAt: 'desc' },
     });
-    return NextResponse.json(projects);
+    return sendResponse(projects, projects.length);
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : 'Internal server error';
-    return NextResponse.json({ error: message }, { status: 500 });
+    return handleApiError(error);
   }
 }

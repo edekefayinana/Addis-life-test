@@ -6,7 +6,6 @@ import SearchFilterBar, {
   type SortOrder,
 } from '@/components/SearchFilterBar';
 import DataTable, { StatusBadge } from '@/components/table/DataTable';
-import { PAGE_SIZE } from '@/lib/constants';
 import { usePagination } from '@/lib/hooks/usePagination';
 import { useSorting } from '@/lib/hooks/useSorting';
 import { useSession } from 'next-auth/react';
@@ -34,15 +33,22 @@ export default function Reservation() {
   const userRole = session?.user?.role || 'AGENT';
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [search, setSearch] = useState('');
-  const { currentPage, setPage } = usePagination();
-
+  // const { currentPage, setPage } = usePagination();
+  const { currentPage, currentLimit, setPage, setLimit } = usePagination();
   // Fetch reservations based on role
+  // Build query string using URLSearchParams for clarity and flexibility
+  const queryParams = new URLSearchParams();
+  if (search) queryParams.set('search', search);
+  queryParams.set('page', String(currentPage));
+  queryParams.set('limit', String(currentLimit));
+
   const {
     reservations,
     loading,
     refetch: refetchReservations,
   } = useReservations({
     all: userRole === 'ADMIN',
+    query: queryParams.toString(),
   });
 
   // Sorting
@@ -101,7 +107,7 @@ export default function Reservation() {
           />
         </div>
         {loading ? (
-          <ReservationSkeleton row={8} />
+          <ReservationSkeleton row={currentLimit} />
         ) : (
           <DataTable<ReservationRow>
             columns={[
@@ -156,10 +162,10 @@ export default function Reservation() {
             ]}
             data={sortedData}
             page={currentPage}
-            pageSize={currentPage || PAGE_SIZE}
-            total={reservations.length}
+            pageSize={currentLimit}
+            total={reservations.length} // Change this to a 'totalCount' from API if available
             onPageChange={setPage}
-            onPageSizeChange={setPage}
+            onPageSizeChange={setLimit}
             getRowId={(row) => row.id}
             // onRowClick={(row) => setSelectedId(row.id)}
             actionsMenuItems={(row) => {
@@ -207,44 +213,39 @@ export default function Reservation() {
 }
 
 export function ReservationSkeleton({ row = 8 }: { row?: number }) {
+  const columns = [
+    { width: 12, header: '', align: 'center' },
+    { width: 12, header: 'Unit', align: 'center' },
+    { width: 12, header: 'Project', align: 'center' },
+    { width: 12, header: 'Client Name', align: 'center' },
+    { width: 12, header: 'Bedrooms', align: 'center' },
+    { width: 12, header: 'Reservation Date', align: 'center' },
+    { width: 12, header: 'Status', align: 'center' },
+  ];
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full">
+      <table className="w-full text-sm">
         <thead>
-          <tr>
-            <th className="px-4 py-2"></th>
-            <th className="px-4 py-2">Unit</th>
-            <th className="px-4 py-2">Project</th>
-            <th className="px-4 py-2">Client Name</th>
-            <th className="px-4 py-2">Bedrooms</th>
-            <th className="px-4 py-2">Reservation Date</th>
-            <th className="px-4 py-2">Status</th>
+          <tr className="border-b border-gray-200 bg-gray-50/60">
+            {columns.map((col, i) => (
+              <th
+                key={i}
+                className={`text-left py-3 px-4 font-semibold text-gray-700 ${col.align === 'right' ? 'text-right' : col.align === 'center' ? 'text-center' : 'text-left'}`}
+                style={{ width: col.width }}
+              >
+                {col.header}
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody>
-          {[...Array(row)].map((_, i) => (
-            <tr key={i} className="animate-pulse">
-              <td className="px-4 py-3">
-                <div className="w-5 h-5 bg-gray-200 rounded" />
-              </td>
-              <td className="px-4 py-3">
-                <div className="h-5 w-20 bg-gray-200 rounded" />
-              </td>
-              <td className="px-4 py-3">
-                <div className="h-5 w-24 bg-gray-200 rounded" />
-              </td>
-              <td className="px-4 py-3">
-                <div className="h-5 w-28 bg-gray-200 rounded" />
-              </td>
-              <td className="px-4 py-3">
-                <div className="h-5 w-16 bg-gray-200 rounded" />
-              </td>
-              <td className="px-4 py-3">
-                <div className="h-5 w-24 bg-gray-200 rounded" />
-              </td>
-              <td className="px-4 py-3">
-                <div className="h-5 w-16 bg-gray-200 rounded" />
-              </td>
+          {Array.from({ length: row }).map((_, rowIdx) => (
+            <tr key={rowIdx} className="animate-pulse">
+              {columns.map((col, colIdx) => (
+                <td key={colIdx} className={`py-3 px-4`}>
+                  <div className="h-5 w-full bg-gray-200 rounded" />
+                </td>
+              ))}
             </tr>
           ))}
         </tbody>

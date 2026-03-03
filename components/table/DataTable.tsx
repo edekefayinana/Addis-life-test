@@ -1,6 +1,46 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
+// Skeleton loader for DataTable
+export function DataTableSkeleton<T>({
+  columns,
+  rowCount,
+}: {
+  columns: Column<T>[];
+  rowCount: number;
+}) {
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="border-b border-gray-200 bg-gray-50/60">
+            {columns.map((col, i) => (
+              <th
+                key={i}
+                className={`text-left py-3 px-4 font-semibold text-gray-700 ${col.align === 'right' ? 'text-right' : col.align === 'center' ? 'text-center' : 'text-left'}`}
+                style={{ width: col.width }}
+              >
+                {col.header}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {Array.from({ length: rowCount }).map((_, rowIdx) => (
+            <tr key={rowIdx} className="animate-pulse">
+              {columns.map((col, colIdx) => (
+                <td key={colIdx} className={`py-3 px-4`}>
+                  <div className="h-5 w-full bg-gray-200 rounded" />
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 import {
   AlertCircle,
   CheckCircle2,
@@ -143,19 +183,25 @@ export default function DataTable<T>({
   onRowClick,
   notfoundData,
 }: DataTableProps<T>) {
+  // Calculate total number of pages
   const pageCount = useMemo(
     () => Math.max(1, Math.ceil(total / pageSize)),
     [total, pageSize]
   );
 
+  // Clamp current page to valid range
   const currentPage = Math.min(pageCount, Math.max(1, page));
 
+  // If data.length === total, assume all data is loaded client-side, so slice for pagination
+  // If data.length < total, assume data is already paginated server-side, so just use data as-is
   const paginatedData = useMemo(() => {
-    const start = (currentPage - 1) * pageSize;
-    const end = start + pageSize;
-    return data.slice(start, end);
-  }, [data, currentPage, pageSize]);
-
+    if (data.length === total) {
+      const start = (currentPage - 1) * pageSize;
+      const end = start + pageSize;
+      return data.slice(start, end);
+    }
+    return data;
+  }, [data, currentPage, pageSize, total]);
   // Row actions menu handled by Radix Dropdown; no manual state needed
 
   const goto = (p: number) => {
@@ -283,7 +329,13 @@ export default function DataTable<T>({
                 value={pageSize}
                 onChange={(e) => onPageSizeChange?.(Number(e.target.value))}
               >
-                {[PAGE_SIZE, 8, 16, 24, 32]
+                {[
+                  PAGE_SIZE,
+                  PAGE_SIZE * 2,
+                  PAGE_SIZE * 3,
+                  PAGE_SIZE * 4,
+                  PAGE_SIZE * 5,
+                ]
                   .filter((v, i, arr) => arr.indexOf(v) === i)
                   .map((size) => (
                     <option key={size} value={size}>

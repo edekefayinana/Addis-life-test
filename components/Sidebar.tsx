@@ -1,5 +1,6 @@
 'use client';
 
+import { cn } from '@/lib/utils';
 import {
   Building2,
   Calendar,
@@ -7,11 +8,10 @@ import {
   Home,
   LogOut,
   MoreVertical,
-  Palette,
   Settings,
   User,
-  Zap,
 } from 'lucide-react';
+import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -23,8 +23,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
-import { cn } from '@/lib/utils';
-import { useSession, signOut } from 'next-auth/react';
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -35,12 +33,12 @@ export function Sidebar() {
     { icon: Home, label: 'Dashboard', href: '/admin' },
     { icon: Building2, label: 'Inventory', href: '/admin/inventory' },
     { icon: Calendar, label: 'Reservations', href: '/admin/reservations' },
-    { icon: Zap, label: 'Commissions', href: '/admin/commissions' },
-    {
-      icon: Palette,
-      label: 'Marketing Assets',
-      href: '/admin/marketing-assets',
-    },
+    // { icon: Zap, label: 'Commissions', href: '/admin/commissions' },
+    // {
+    //   icon: Palette,
+    //   label: 'Marketing Assets',
+    //   href: '/admin/marketing-assets',
+    // },
     { icon: User, label: 'User Managment', href: '/admin/users' },
   ];
 

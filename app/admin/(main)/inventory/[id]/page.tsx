@@ -18,5 +18,5 @@ export default async function PropertyPage({
     `${process.env.NEXT_PUBLIC_API_URL}/inventory/${id}`
   );
 
-  return <PropertyClient property={property} />;
+  return <PropertyClient property={property.data} />;
 }

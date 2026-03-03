@@ -1,11 +1,11 @@
 'use client';
-
-import { FilterTabs } from '@/components/FilterTabs';
+// import { FilterTabs } from '@/components/FilterTabs';
 import SearchFilterBar, {
   SortKey,
   SortOrder,
 } from '@/components/SearchFilterBar';
 import DataTable, { Column, StatusBadge } from '@/components/table/DataTable';
+import { usePagination } from '@/lib/hooks/usePagination';
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
@@ -24,68 +24,65 @@ export default function UsersTable() {
 
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
-  // Removed unused setError and variable assignment
   const [refresh, setRefresh] = useState(0);
   const [search, setSearch] = useState('');
   const [sortKey, setSortKey] = useState<SortKey>('email');
   const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
-  const [activeSegment, setActiveSegment] = useState('all');
+  const [activeSegment] = useState('all');
+  const [total, setTotal] = useState(0);
+  const { currentPage, currentLimit, setPage, setLimit } = usePagination();
 
   useEffect(() => {
     queueMicrotask(() => setLoading(true));
-    fetch('/api/agents', { credentials: 'include' })
+    const params = new URLSearchParams();
+    if (search) params.set('search', search);
+    if (activeSegment && activeSegment !== 'all')
+      params.set('segment', activeSegment);
+    params.set('page', String(currentPage));
+    params.set('limit', String(currentLimit));
+    params.set('sortKey', sortKey);
+    params.set('sortOrder', sortOrder);
+    console.log('Params:', params.toString());
+
+    fetch(`/api/agents?${params.toString()}`, { credentials: 'include' })
       .then((res) => res.json())
       .then((data) => {
         setUsers(data.data || []);
+        console.log('Data:', data);
+
+        setTotal(data.meta.totalRecords - 1 || 0);
         setLoading(false);
       })
       .catch(() => {
         setLoading(false);
       });
-  }, [refresh]);
+  }, [
+    refresh,
+    search,
+    activeSegment,
+    currentPage,
+    currentLimit,
+    sortKey,
+    sortOrder,
+  ]);
+  console.log(total);
 
   // Map SortKey to User property
-  const getUserSortValue = (user: User, key: SortKey): string | number => {
-    switch (key) {
-      case 'name':
-        return user.name?.toLowerCase() || '';
-      case 'email':
-        return user.email?.toLowerCase() || '';
-      default:
-        return '';
-    }
-  };
+  // const getUserSortValue = (user: User, key: SortKey): string | number => {
+  //   switch (key) {
+  //     case 'name':
+  //       return user.name?.toLowerCase() || '';
+  //     case 'email':
+  //       return user.email?.toLowerCase() || '';
+  //     default:
+  //       return '';
+  //   }
+  // };
 
-  // Derived filtered and sorted users
-  const filteredUsers = users
-    .filter((u) => {
-      // Exclude current user
-      if (currentUserId && u.id === currentUserId) return false;
-      if (activeSegment !== 'all') {
-        if (activeSegment === 'pending' || activeSegment === 'approved') {
-          if (u.approvalStatus?.toLowerCase() !== activeSegment) return false;
-        } else {
-          if (u.role?.toLowerCase() !== activeSegment) return false;
-        }
-      }
-      if (search.trim()) {
-        const q = search.trim().toLowerCase();
-        return (
-          u.name?.toLowerCase().includes(q) ||
-          '' ||
-          u.email?.toLowerCase().includes(q) ||
-          ''
-        );
-      }
-      return true;
-    })
-    .sort((a, b) => {
-      const aVal = getUserSortValue(a, sortKey);
-      const bVal = getUserSortValue(b, sortKey);
-      if (aVal < bVal) return sortOrder === 'asc' ? -1 : 1;
-      if (aVal > bVal) return sortOrder === 'asc' ? 1 : -1;
-      return 0;
-    });
+  // Exclude current user from users list
+  const filteredUsers = users.filter(
+    (u) => !(currentUserId && u.id === currentUserId)
+  );
 
   const handleToggleApproval = async (user: User) => {
     const newStatus =
@@ -121,13 +118,13 @@ export default function UsersTable() {
       render: (row) => <StatusBadge status={row.approvalStatus || 'pending'} />,
     },
   ];
-  const segments = [
-    { label: 'All', value: 'all' },
-    { label: 'Admins', value: 'admin' },
-    { label: 'Agents', value: 'agent' },
-    { label: 'Pending', value: 'pending' },
-    { label: 'Approved', value: 'approved' },
-  ];
+  // const segments = [
+  //   { label: 'All', value: 'all' },
+  //   { label: 'Admins', value: 'admin' },
+  //   { label: 'Agents', value: 'agent' },
+  //   { label: 'Pending', value: 'pending' },
+  //   { label: 'Approved', value: 'approved' },
+  // ];
   return (
     <div className="mx-auto p-8">
       <h1 className="text-2xl font-bold mb-6">Users</h1>
@@ -143,13 +140,13 @@ export default function UsersTable() {
           </div>
         </div>
 
-        <FilterTabs
+        {/* <FilterTabs
           tabs={segments}
           queryKey="segment"
           defaultValue="all"
           underlineClassName="bg-orange-500"
           onChange={setActiveSegment}
-        />
+        /> */}
 
         <SearchFilterBar
           className="mt-2"
@@ -167,22 +164,21 @@ export default function UsersTable() {
       {loading ? (
         <div className="border rounded-md overflow-hidden animate-pulse">
           <div className="bg-gray-100 h-12 flex items-center px-4">
-            <div className="w-1/5 h-6 bg-gray-200 rounded mr-4"></div>
-            <div className="w-1/5 h-6 bg-gray-200 rounded mr-4"></div>
-            <div className="w-1/5 h-6 bg-gray-200 rounded mr-4"></div>
-            <div className="w-1/5 h-6 bg-gray-200 rounded mr-4"></div>
-            <div className="w-1/5 h-6 bg-gray-200 rounded"></div>
+            {columns.map((col, i) => (
+              <div key={i} className="w-1/5 h-6 bg-gray-200 rounded mr-4"></div>
+            ))}
           </div>
-          {[...Array(4)].map((_, i) => (
+          {Array.from({ length: currentLimit }).map((_, i) => (
             <div
               key={i}
               className="flex items-center px-4 border-t border-gray-100 h-14"
             >
-              <div className="w-1/5 h-6 bg-gray-100 rounded mr-4"></div>
-              <div className="w-1/5 h-6 bg-gray-100 rounded mr-4"></div>
-              <div className="w-1/5 h-6 bg-gray-100 rounded mr-4"></div>
-              <div className="w-1/5 h-6 bg-gray-100 rounded mr-4"></div>
-              <div className="w-1/5 h-8 bg-gray-200 rounded"></div>
+              {columns.map((col, j) => (
+                <div
+                  key={j}
+                  className="w-1/5 h-6 bg-gray-100 rounded mr-4"
+                ></div>
+              ))}
             </div>
           ))}
         </div>
@@ -212,6 +208,11 @@ export default function UsersTable() {
           }
           columns={columns}
           data={filteredUsers}
+          total={total}
+          page={currentPage}
+          pageSize={currentLimit}
+          onPageChange={setPage}
+          onPageSizeChange={setLimit}
           actionsMenuItems={(row) => [
             {
               label: row.approvalStatus === 'APPROVED' ? 'Reject' : 'Approve',

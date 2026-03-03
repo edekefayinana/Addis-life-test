@@ -2,7 +2,7 @@
 
 import { CustomSelect } from '@/components/ui/custom-select';
 import { useDebounce } from '@/lib/hooks/useDebounce';
-import { useFilters } from '@/lib/hooks/useFilters';
+import { useFiltersMock } from '@/lib/hooks/useFilters';
 import { cn } from '@/lib/utils';
 import { Ellipsis, LayoutGrid, MapPin, Search } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
@@ -37,7 +37,7 @@ type FilterField =
     };
 
 export function PropertyFilters() {
-  const { filters, setFilter } = useFilters();
+  const { filters, setFilter } = useFiltersMock();
   const [locationInput, setLocationInput] = useState(filters.location || '');
   const debouncedLocation = useDebounce(locationInput, 300);
   const [showMoreFilters, setShowMoreFilters] = useState(false);

@@ -1,6 +1,7 @@
 import { requireAdmin } from '@/lib/auth-guard';
 import prisma from '@/lib/prisma';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
+import { handleApiError, sendResponse } from '@/lib/error-handler';
 
 export async function PATCH(
   req: NextRequest,
@@ -16,18 +17,15 @@ export async function PATCH(
 
     const { approvalStatus } = await req.json();
     if (!['PENDING', 'APPROVED'].includes(approvalStatus)) {
-      return NextResponse.json({ error: 'Invalid status' }, { status: 400 });
+      return sendResponse({ error: 'Invalid status' }, 0, undefined, 400);
     }
 
     const agent = await prisma.user.update({
       where: { id: id },
       data: { approvalStatus: approvalStatus },
     });
-    return NextResponse.json({ success: true, agent });
-  } catch {
-    return NextResponse.json(
-      { message: 'Agent not found or update failed' },
-      { status: 404 }
-    );
+    return sendResponse({ success: true, agent }, 1);
+  } catch (error) {
+    return handleApiError(error);
   }
 }

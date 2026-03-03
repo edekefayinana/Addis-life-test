@@ -1,38 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { TrendingUp } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useDataFetch } from '@/lib/hooks/usedataFetch';
 
-type Stats = {
-  totalUnits: number;
-  totalReservations: number;
-  totalUsers: number;
-};
+// type Stats = {
+//   totalUnits: number;
+//   totalReservations: number;
+//   totalUsers: number;
+//   totalProjects: number;
+// };
 
 export function StatsCards() {
-  const [stats, setStats] = useState<Stats | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const {
+    data,
+    isLoading: fetchLoading,
+    error: fetchError,
+  } = useDataFetch<any>('/dashboard/stats');
 
-  useEffect(() => {
-    async function fetchStats() {
-      try {
-        setLoading(true);
-        const res = await fetch('/api/dashboard/stats');
-        if (!res.ok) throw new Error('Failed to fetch stats');
-        const data = await res.json();
-        setStats(data);
-      } catch (err: any) {
-        setError(err.message || 'Unknown error');
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchStats();
-  }, []);
-
-  if (loading) {
+  if (fetchLoading) {
     return (
       <div className="grid grid-cols-4 gap-6">
         {[...Array(4)].map((_, idx) => (
@@ -48,7 +33,9 @@ export function StatsCards() {
       </div>
     );
   }
-  if (error || !stats) {
+  console.log(data);
+
+  if (fetchError || !data) {
     return (
       <div className="grid grid-cols-4 gap-6 text-red-500">
         Failed to load stats.
@@ -59,24 +46,34 @@ export function StatsCards() {
   const cards = [
     {
       title: 'Active Reservations',
-      value: stats.totalReservations,
+      value: data?.data?.totalReservations ?? 0,
       description: 'Active unit holds for clients',
     },
     {
-      title: 'Pending Commissions',
-      value: 'ETB 85,914',
-      description: 'Commissions Awaiting Approval',
-      change: 'Up 5% from Previous month',
-      isChange: true,
+      title: 'Total Projects',
+      value: data?.data?.totalProjects ?? 0,
+      description: 'Total number of projects',
     },
+    // {
+    //   title: 'Pending Commissions',
+    //   value: 'ETB 85,914',
+    //   description: 'Commissions Awaiting Approval',
+    //   change: 'Up 5% from Previous month',
+    //   isChange: true,
+    // },
+    // {
+    //   title: 'Paid Commissions',
+    //   value: 'ETB 240,183',
+    //   description: 'Commission value',
+    // },
     {
-      title: 'Paid Commissions',
-      value: 'ETB 240,183',
-      description: 'Commission value',
+      title: 'Total Users',
+      value: data?.data?.totalUsers ?? 0,
+      description: 'Total number of registered users',
     },
     {
       title: 'Available Units',
-      value: stats.totalUnits,
+      value: data?.data?.totalUnits ?? 0,
       description: 'Units you can Reserve',
     },
   ];
@@ -111,12 +108,12 @@ export function StatsCards() {
                 <div className="text-3xl font-bold">{stat.value}</div>
               )}
             </div>
-            {stat.isChange && (
+            {/* {stat.isChange && (
               <div className="flex items-center gap-1 text-green-600 text-sm">
                 <TrendingUp className="w-4 h-4" />
                 <span>5%</span>
               </div>
-            )}
+            )} */}
           </div>
           <p className="text-xs text-gray-500 mt-3">{stat.description}</p>
         </div>

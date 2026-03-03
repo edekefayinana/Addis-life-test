@@ -65,7 +65,7 @@ export default async function PropertyEditPage({ params }: Props) {
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
       <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-1">
-        <PropertyForm initialData={property} mode="edit" />
+        <PropertyForm initialData={property.data} mode="edit" />
       </div>
     </div>
   );

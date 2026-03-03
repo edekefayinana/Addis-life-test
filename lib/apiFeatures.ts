@@ -25,6 +25,10 @@ export class PrismaApiFeatures {
     skip?: number;
     take?: number;
   };
+  public paginationInfo: { page: number; limit: number } = {
+    page: 1,
+    limit: 10,
+  };
 
   constructor(query: QueryParams, config: PrismaApiFeaturesConfig = {}) {
     this.query = query;
@@ -121,11 +125,11 @@ export class PrismaApiFeatures {
     const page = Math.max(Number(this.query.page) || 1, 1);
     const limit = Math.max(Number(this.query.limit) || 10, 1);
 
+    this.paginationInfo = { page, limit }; // Store for meta calculation
     this.prismaOptions.skip = (page - 1) * limit;
     this.prismaOptions.take = limit;
     return this;
   }
-
   /**
    * Search across multiple fields using OR logic
    */
@@ -156,5 +160,17 @@ export class PrismaApiFeatures {
     if (finalOptions.orderBy.length === 0) delete finalOptions.orderBy;
 
     return finalOptions;
+  }
+
+  getMeta(totalCount: number) {
+    const { page, limit } = this.paginationInfo;
+    return {
+      totalRecords: totalCount,
+      totalPages: Math.ceil(totalCount / limit),
+      currentPage: page,
+      limit,
+      hasNextPage: page * limit < totalCount,
+      hasPrevPage: page > 1,
+    };
   }
 }

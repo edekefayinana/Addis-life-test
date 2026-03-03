@@ -103,7 +103,7 @@ export function PropertyForm({
       try {
         const res = await fetch('/api/projects');
         const data = await res.json();
-        setProjects(data);
+        setProjects(data.data || []);
       } catch {
         setProjectError('Failed to load projects');
       } finally {

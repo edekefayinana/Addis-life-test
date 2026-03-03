@@ -18,7 +18,7 @@ model User {
   name          String?
   email         String    @unique
   phone         String?
-  emailVerified DateTime?
+  emailVerified DateTime? 
   image         String?
   password      String
   role          Role      @default(AGENT)
@@ -30,6 +30,10 @@ model User {
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+
+  @@index([role])
+  @@index([approvalStatus])
+  @@index([createdAt])
 }
 
 enum Role {
@@ -59,6 +63,7 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Session {
@@ -68,6 +73,8 @@ model Session {
   expires      DateTime
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model VerificationToken {
@@ -78,6 +85,8 @@ model VerificationToken {
   otp        Int?
 
   @@unique([identifier, token])
+  @@index([identifier])
+  @@index([type])
 }
 
 enum VerificationTokenType {
@@ -152,6 +161,14 @@ model Property {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([propertyType])
+  @@index([listingType])
+  @@index([city])
+  @@index([createdById])
+  @@index([projectId])
+  @@index([createdAt])
+  @@index([propertyType, listingType])
 }
 
 
@@ -160,6 +177,8 @@ model Amenity {
   name       String
   property   Property @relation(fields: [propertyId], references: [id])
   propertyId String
+
+  @@index([propertyId])
 }
 
 model NearbyPlace {
@@ -167,6 +186,8 @@ model NearbyPlace {
   name       String
   property   Property @relation(fields: [propertyId], references: [id])
   propertyId String
+
+  @@index([propertyId])
 }
 
 model PropertyImage {
@@ -174,6 +195,8 @@ model PropertyImage {
   url        String
   property   Property @relation(fields: [propertyId], references: [id])
   propertyId String
+
+  @@index([propertyId])
 }
 
 model Reservation {
@@ -182,16 +205,24 @@ model Reservation {
   userId      String
   property    Property @relation(fields: [propertyId], references: [id])
   propertyId  String
-  status      ReservationStatus @default(PENDDING)
+  status      ReservationStatus @default(PENDING)
   description String?
   createdAt   DateTime @default(now())
   expiresAt   DateTime
   confirmedAt DateTime?
   cancelledAt DateTime?
+
+  @@index([userId])
+  @@index([propertyId])
+  @@index([status])
+  @@index([createdAt])
+  @@index([expiresAt])
+  @@index([propertyId, status])
+  @@index([userId, status])
 }
 
 enum ReservationStatus {
-  PENDDING
+  PENDING
   CONFIRMED
   CANCELLED
   EXPIRED

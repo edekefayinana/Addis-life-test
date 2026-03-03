@@ -51,7 +51,7 @@ export type PropertyListingType =
   (typeof PropertyListingType)[keyof typeof PropertyListingType];
 
 export const ReservationStatus = {
-  PENDDING: 'PENDDING',
+  PENDING: 'PENDING',
   CONFIRMED: 'CONFIRMED',
   CANCELLED: 'CANCELLED',
   EXPIRED: 'EXPIRED',

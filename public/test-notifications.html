@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Push Notifications</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .status {
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        #log {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+            margin-top: 20px;
+        }
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+        }
+        .log-success { color: #28a745; }
+        .log-error { color: #dc3545; }
+        .log-info { color: #17a2b8; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔔 Push Notifications Test</h1>
+        <p>Use this page to test if push notifications are working correctly.</p>
+
+        <div id="status" class="status info">
+            Checking browser support...
+        </div>
+
+        <div>
+            <button id="checkBtn" onclick="checkSupport()">1. Check Support</button>
+            <button id="permissionBtn" onclick="requestPermission()" disabled>2. Request Permission</button>
+            <button id="registerBtn" onclick="registerServiceWorker()" disabled>3. Register Service Worker</button>
+            <button id="tokenBtn" onclick="getToken()" disabled>4. Get FCM Token</button>
+            <button id="testBtn" onclick="testNotification()" disabled>5. Test Notification</button>
+        </div>
+
+        <div>
+            <button onclick="clearLog()">Clear Log</button>
+            <button onclick="resetAll()">Reset Everything</button>
+        </div>
+
+        <div id="log"></div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js';
+        import { getMessaging, getToken } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-messaging.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAW0TuB7k1zG9r2u-vvq-c7GjXQZr7sfJA",
+            authDomain: "copy-ea4e1.firebaseapp.com",
+            projectId: "copy-ea4e1",
+            storageBucket: "copy-ea4e1.firebasestorage.app",
+            messagingSenderId: "173501379821",
+            appId: "1:173501379821:web:924dae746568411ec3c8e4",
+            measurementId: "G-244SZLR3PC"
+        };
+
+        const vapidKey = "BA6794PSnjnM-ruRgV5tLcC1ca8YK2BS_MfKaPv5r3FViX3oaEzKCEuL-Wxd_o3Lg94V7a42CLeX9DGN2BDdXQQ";
+
+        let app, messaging;
+
+        window.log = function(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(message);
+        };
+
+        window.updateStatus = function(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+        };
+
+        window.checkSupport = function() {
+            log('Checking browser support...', 'info');
+            
+            const hasNotifications = 'Notification' in window;
+            const hasServiceWorker = 'serviceWorker' in navigator;
+            const isSecure = location.protocol === 'https:' || location.hostname === 'localhost';
+
+            log(`Notifications API: ${hasNotifications ? '✅' : '❌'}`, hasNotifications ? 'success' : 'error');
+            log(`Service Workers: ${hasServiceWorker ? '✅' : '❌'}`, hasServiceWorker ? 'success' : 'error');
+            log(`Secure Context: ${isSecure ? '✅' : '❌'}`, isSecure ? 'success' : 'error');
+
+            if (hasNotifications && hasServiceWorker && isSecure) {
+                updateStatus('✅ Browser supports push notifications!', 'success');
+                document.getElementById('permissionBtn').disabled = false;
+                
+                // Initialize Firebase
+                try {
+                    app = initializeApp(firebaseConfig);
+                    messaging = getMessaging(app);
+                    log('✅ Firebase initialized', 'success');
+                } catch (e) {
+                    log(`❌ Firebase init error: ${e.message}`, 'error');
+                }
+            } else {
+                updateStatus('❌ Browser does not support push notifications', 'error');
+            }
+        };
+
+        window.requestPermission = async function() {
+            log('Requesting notification permission...', 'info');
+            
+            try {
+                const permission = await Notification.requestPermission();
+                log(`Permission result: ${permission}`, permission === 'granted' ? 'success' : 'error');
+                
+                if (permission === 'granted') {
+                    updateStatus('✅ Permission granted!', 'success');
+                    document.getElementById('registerBtn').disabled = false;
+                } else {
+                    updateStatus('❌ Permission denied', 'error');
+                }
+            } catch (e) {
+                log(`❌ Error: ${e.message}`, 'error');
+                updateStatus('❌ Failed to request permission', 'error');
+            }
+        };
+
+        window.registerServiceWorker = async function() {
+            log('Registering service worker...', 'info');
+            
+            try {
+                const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+                log('✅ Service worker registered', 'success');
+                log(`Scope: ${registration.scope}`, 'info');
+                
+                await navigator.serviceWorker.ready;
+                log('✅ Service worker ready', 'success');
+                
+                updateStatus('✅ Service worker registered!', 'success');
+                document.getElementById('tokenBtn').disabled = false;
+            } catch (e) {
+                log(`❌ Error: ${e.message}`, 'error');
+                updateStatus('❌ Failed to register service worker', 'error');
+            }
+        };
+
+        window.getToken = async function() {
+            log('Getting FCM token...', 'info');
+            
+            try {
+                const registration = await navigator.serviceWorker.ready;
+                const token = await getToken(messaging, {
+                    vapidKey: vapidKey,
+                    serviceWorkerRegistration: registration
+                });
+                
+                if (token) {
+                    log('✅ FCM Token obtained!', 'success');
+                    log(`Token: ${token.substring(0, 50)}...`, 'info');
+                    updateStatus('✅ FCM token obtained!', 'success');
+                    document.getElementById('testBtn').disabled = false;
+                } else {
+                    log('❌ No token available', 'error');
+                    updateStatus('❌ Failed to get token', 'error');
+                }
+            } catch (e) {
+                log(`❌ Error: ${e.message}`, 'error');
+                updateStatus('❌ Failed to get token', 'error');
+            }
+        };
+
+        window.testNotification = function() {
+            log('Sending test notification...', 'info');
+            
+            if (Notification.permission === 'granted') {
+                new Notification('🎉 Test Notification', {
+                    body: 'Push notifications are working correctly!',
+                    icon: '/logo.png',
+                    badge: '/badge.png',
+                    tag: 'test',
+                    vibrate: [200, 100, 200]
+                });
+                log('✅ Test notification sent!', 'success');
+                updateStatus('✅ Test notification sent!', 'success');
+            } else {
+                log('❌ Permission not granted', 'error');
+            }
+        };
+
+        window.clearLog = function() {
+            document.getElementById('log').innerHTML = '';
+        };
+
+        window.resetAll = async function() {
+            log('Resetting everything...', 'info');
+            
+            // Unregister service workers
+            const registrations = await navigator.serviceWorker.getRegistrations();
+            for (const registration of registrations) {
+                await registration.unregister();
+                log('✅ Service worker unregistered', 'success');
+            }
+            
+            // Clear cache
+            if ('caches' in window) {
+                const names = await caches.keys();
+                await Promise.all(names.map(name => caches.delete(name)));
+                log('✅ Cache cleared', 'success');
+            }
+            
+            log('🔄 Please refresh the page', 'info');
+            updateStatus('✅ Reset complete. Refresh the page.', 'success');
+        };
+
+        // Auto-check on load
+        window.addEventListener('load', () => {
+            checkSupport();
+        });
+    </script>
+</body>
+</html>

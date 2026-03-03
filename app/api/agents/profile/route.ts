@@ -1,19 +1,20 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
+import prisma from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import prisma from '@/lib/prisma';
+import { handleApiError, sendResponse } from '@/lib/error-handler';
 
 export async function PATCH(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     if (!session || !session.user || !session.user.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return sendResponse({ error: 'Unauthorized' }, 0, undefined, 401);
     }
 
     const body = await req.json();
     const { name } = body;
     if (!name || typeof name !== 'string' || !name.trim()) {
-      return NextResponse.json({ error: 'Invalid name' }, { status: 400 });
+      return sendResponse({ error: 'Invalid name' }, 0, undefined, 400);
     }
 
     const updatedUser = await prisma.user.update({
@@ -30,26 +31,19 @@ export async function PATCH(req: NextRequest) {
       },
     });
 
-    return NextResponse.json(updatedUser);
+    return sendResponse(updatedUser, 1);
   } catch (error) {
-    console.error('Error updating user profile:', error);
-    return NextResponse.json(
-      { error: 'Internal Server Error' },
-      { status: 500 }
-    );
+    return handleApiError(error);
   }
 }
 
-// req: NextRequest
 export async function GET() {
   try {
-    // Get session from next-auth
     const session = await getServerSession(authOptions);
     if (!session || !session.user || !session.user.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return sendResponse({ error: 'Unauthorized' }, 0, undefined, 401);
     }
 
-    // Fetch user from database using email from session
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
       select: {
@@ -64,15 +58,11 @@ export async function GET() {
     });
 
     if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      return sendResponse({ error: 'User not found' }, 0, undefined, 404);
     }
 
-    return NextResponse.json(user);
+    return sendResponse(user, 1);
   } catch (error) {
-    console.error('Error fetching user profile:', error);
-    return NextResponse.json(
-      { error: 'Internal Server Error' },
-      { status: 500 }
-    );
+    return handleApiError(error);
   }
 }

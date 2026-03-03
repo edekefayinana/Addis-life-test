@@ -78,8 +78,6 @@ export function PropertyCard({
     });
   };
 
-  // console.log(showImage);
-
   return (
     <Link href={`/admin/inventory/${id}`} className="block">
       <Card className="overflow-hidden group cursor-pointer transition-all p-2 hover:shadow-lg border-0 shadow-md rounded-lg">

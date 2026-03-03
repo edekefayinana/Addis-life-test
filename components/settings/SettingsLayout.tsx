@@ -1,18 +1,11 @@
 'use client';
 
-import {
-  User,
-  Bell,
-  Lock,
-  CreditCard,
-  AlertCircle,
-  LogOut,
-} from 'lucide-react';
-import { UpdateProfileSection } from './sections/UpdateProfileSection';
-import { NotificationPreferencesSection } from './sections/NotificationPreferencesSection';
-import { ChangePasswordSection } from './sections/ChangePasswordSection';
-import { PaymentFinanceSection } from './sections/PaymentFinanceSection';
+import { Bell, Lock, LogOut, User } from 'lucide-react';
 import { AccountDeactivationSection } from './sections/AccountDeactivationSection';
+import { ChangePasswordSection } from './sections/ChangePasswordSection';
+import { NotificationPreferencesSection } from './sections/NotificationPreferencesSection';
+import { PaymentFinanceSection } from './sections/PaymentFinanceSection';
+import { UpdateProfileSection } from './sections/UpdateProfileSection';
 
 type ActiveSection =
   | 'profile'
@@ -51,12 +44,12 @@ export function SettingsLayout({
     {
       section: 'Other',
       items: [
-        { id: 'payment', label: 'Payment & Finance', icon: CreditCard },
-        {
-          id: 'deactivation',
-          label: 'Account Deactivation',
-          icon: AlertCircle,
-        },
+        // { id: 'payment', label: 'Payment & Finance', icon: CreditCard },
+        // {
+        //   id: 'deactivation',
+        //   label: 'Account Deactivation',
+        //   icon: AlertCircle,
+        // },
         { id: 'logout', label: 'Logout', icon: LogOut },
       ],
     },

@@ -1,7 +1,8 @@
-import { NextResponse } from 'next/server';
+import { authOptions } from '@/lib/auth';
+import { handleApiError, sendResponse } from '@/lib/error-handler';
 import prisma from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+
 export async function GET() {
   try {
     const session = await getServerSession(authOptions);
@@ -16,16 +17,18 @@ export async function GET() {
     } else {
       totalReservations = 0;
     }
+    const totalProjects = await prisma.project.count();
     const totalUsers = await prisma.user.count();
-    return NextResponse.json({
-      totalUnits,
-      totalReservations,
-      totalUsers,
-    });
-  } catch {
-    return NextResponse.json(
-      { error: 'Unable to fetch stats.' },
-      { status: 500 }
+    return sendResponse(
+      {
+        totalUnits,
+        totalReservations,
+        totalUsers,
+        totalProjects,
+      },
+      1
     );
+  } catch (error) {
+    return handleApiError(error);
   }
 }

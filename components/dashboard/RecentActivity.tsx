@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useDataFetch } from '@/lib/hooks/usedataFetch';
 
 function timeAgo(date: string | Date): string {
   const now = new Date();
@@ -13,27 +13,24 @@ function timeAgo(date: string | Date): string {
   return d.toLocaleDateString();
 }
 
-export function RecentActivity() {
-  const [activities, setActivities] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+type Activity = {
+  title: string;
+  description: string;
+  createdAt: string | Date;
+};
 
-  useEffect(() => {
-    async function fetchActivities() {
-      try {
-        setLoading(true);
-        const res = await fetch('/api/dashboard/activities');
-        if (!res.ok) throw new Error('Failed to fetch activities');
-        const data = await res.json();
-        setActivities(data.activities || []);
-      } catch (err: any) {
-        setError(err.message || 'Unknown error');
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchActivities();
-  }, []);
+// type ActivitiesResponse = {
+//   data: {
+//     activities: Activity[];
+//   };
+// };
+
+export function RecentActivity() {
+  const {
+    data,
+    isLoading: loading,
+    error,
+  } = useDataFetch<any>('/dashboard/activities');
 
   if (loading) {
     return (
@@ -46,9 +43,10 @@ export function RecentActivity() {
           <div className="space-y-6">
             {[...Array(3)].map((_, idx) => (
               <div key={idx} className="flex items-start gap-4">
-                <span className="mt-1 inline-block w-3.5 h-3.5 rounded-full bg-gray-200 animate-pulse z-20" />
+                <span className="mt-3 inline-block w-3.5 h-3.5 rounded-full bg-gray-200 animate-pulse z-20" />
                 <div className="flex-1 min-w-0">
                   <div className="h-5 w-1/3 bg-gray-100 rounded mb-2 animate-pulse" />
+                  <div className="h-4 w-2/3 bg-gray-100 rounded animate-pulse" />
                   <div className="h-4 w-2/3 bg-gray-100 rounded animate-pulse" />
                 </div>
               </div>
@@ -58,6 +56,7 @@ export function RecentActivity() {
       </div>
     );
   }
+
   if (error) {
     return (
       <div className="bg-white rounded-2xl p-6 border border-gray-200 text-red-500">
@@ -74,7 +73,7 @@ export function RecentActivity() {
       <div className="relative pl-6">
         <div className="absolute left-7.5 z-0 top-2 bottom-2 w-px bg-gray-200" />
         <div className="space-y-6">
-          {activities.map((activity, idx) => (
+          {data?.data?.activities.map((activity: Activity, idx: number) => (
             <div key={idx} className="flex items-start gap-4">
               <span className="mt-1 inline-block w-3.5 h-3.5 rounded-full bg-brand-dark z-20" />
               <div className="flex-1 min-w-0">

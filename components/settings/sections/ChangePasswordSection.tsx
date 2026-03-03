@@ -1,25 +1,22 @@
 'use client';
 
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { Eye, EyeOff } from 'lucide-react';
 
 export function ChangePasswordSection() {
   const [saving, setSaving] = useState(false);
-  const [saveSuccess, setSaveSuccess] = useState(false);
-  const [error, setError] = useState('');
 
   async function handleChangePassword(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
-    setSaveSuccess(false);
-    setError('');
     if (formData.newPassword !== formData.confirmPassword) {
-      setError('New passwords do not match.');
+      toast.error('New passwords do not match.');
       setSaving(false);
       return;
     }
     if (!formData.currentPassword || !formData.newPassword) {
-      setError('Please fill all fields.');
+      toast.error('Please fill all fields.');
       setSaving(false);
       return;
     }
@@ -34,19 +31,18 @@ export function ChangePasswordSection() {
         }),
       });
       if (response.ok) {
-        setSaveSuccess(true);
+        toast.success('Password changed successfully!');
         setFormData({
           currentPassword: '',
           newPassword: '',
           confirmPassword: '',
         });
-        setTimeout(() => setSaveSuccess(false), 2000);
       } else {
         const data = await response.json();
-        setError(data.error || 'Failed to change password.');
+        toast.error(data.error || 'Failed to change password.');
       }
     } catch {
-      setError('Failed to change password.');
+      toast.error('Failed to change password.');
     } finally {
       setSaving(false);
     }
@@ -173,13 +169,6 @@ export function ChangePasswordSection() {
             </button>
           </div>
         </div>
-
-        {error && <div className="text-red-600 text-sm">{error}</div>}
-        {saveSuccess && (
-          <div className="text-green-600 text-sm">
-            Password changed successfully!
-          </div>
-        )}
 
         {/* Action Buttons */}
         <div className="flex justify-end gap-3 pt-6">

@@ -1,6 +1,6 @@
 'use client';
 
-import { usePagination } from '@/lib/hooks/usePagination';
+import { usePaginationMock } from '@/lib/hooks/usePagination';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 interface PaginationProps {
@@ -9,7 +9,7 @@ interface PaginationProps {
 }
 
 export function Pagination({ totalPages, currentPage }: PaginationProps) {
-  const { setPage } = usePagination();
+  const { setPage } = usePaginationMock();
 
   if (totalPages <= 1) return null;
 

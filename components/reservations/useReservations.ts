@@ -2,18 +2,22 @@
 import { useEffect, useState } from 'react';
 import { ReservationRow } from './Reservation';
 
-export function useReservations({ all = false } = {}) {
+export function useReservations({ all = false, query = '' } = {}) {
   const [reservations, setReservations] = useState<ReservationRow[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchReservations = async () => {
     setLoading(true);
-    const url = all ? '/api/reservations?all=1' : '/api/reservations';
+    let url = all ? '/api/reservations?all=1' : '/api/reservations';
+    if (query) {
+      url +=
+        (url.includes('?') ? '&' : '?') + `query=${encodeURIComponent(query)}`;
+    }
     const res = await fetch(url);
     const data = await res.json();
     // Map backend data to ReservationRow
     setReservations(
-      data.map((r: any) => ({
+      data.data.map((r: any) => ({
         id: r.id,
         unit: r.property?.title || r.propertyId,
         project: r.property?.project?.name || 'Unknown Project',
@@ -31,7 +35,7 @@ export function useReservations({ all = false } = {}) {
   useEffect(() => {
     fetchReservations();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [all]);
+  }, [all, query]);
 
   return { reservations, loading, refetch: fetchReservations };
 }

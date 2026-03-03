@@ -17,10 +17,6 @@ class SendEmail {
   async send(to: string, subject: string, html: string) {
     const isProd = process.env.NODE_ENV === 'production';
 
-    console.log(
-      `[EmailService] Sending to: ${to} | Mode: ${process.env.NODE_ENV}`
-    );
-
     try {
       if (isProd) {
         return await this.sendViaSendGrid(to, subject, html);
@@ -45,7 +41,6 @@ class SendEmail {
     };
 
     const response = await sgMail.send(msg);
-    console.log('✅ SendGrid: Email sent successfully.');
     return response;
   }
 
@@ -67,7 +62,6 @@ class SendEmail {
       html,
     });
 
-    console.log(`✅ Nodemailer: Email sent. Message ID: ${info.messageId}`);
     return info;
   }
 

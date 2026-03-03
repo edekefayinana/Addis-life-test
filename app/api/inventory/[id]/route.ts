@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { requireAdmin } from '@/lib/auth-guard';
 import prisma from '@/lib/prisma';
-import { NextRequest, NextResponse } from 'next/server';
-
+import { NextRequest } from 'next/server';
+import { handleApiError, sendResponse } from '@/lib/error-handler';
 export async function GET(
   req: NextRequest,
   context: { params: Promise<{ id: string }> }
@@ -26,21 +26,14 @@ export async function GET(
     });
 
     if (!property) {
-      return NextResponse.json(
-        { message: 'Property not found' },
-        { status: 404 }
-      );
+      return sendResponse({ error: 'Property not found' }, 0, undefined, 404);
     }
 
-    return NextResponse.json({ ...property });
-  } catch {
-    return NextResponse.json(
-      { message: 'Error fetching property' },
-      { status: 500 }
-    );
+    return sendResponse(property, 1);
+  } catch (error) {
+    return handleApiError(error);
   }
 }
-
 export async function PATCH(
   req: NextRequest,
   context: { params: Promise<{ id: string }> }
@@ -97,12 +90,9 @@ export async function PATCH(
       },
     });
 
-    return NextResponse.json(updated);
-  } catch {
-    return NextResponse.json(
-      { message: 'Failed to update property' },
-      { status: 500 }
-    );
+    return sendResponse(updated, 1);
+  } catch (error) {
+    return handleApiError(error);
   }
 }
 
@@ -122,11 +112,8 @@ export async function DELETE(
       where: { id: id },
     });
 
-    return NextResponse.json({ message: 'Deleted successfully' });
-  } catch {
-    return NextResponse.json(
-      { message: 'Failed to delete property' },
-      { status: 500 }
-    );
+    return sendResponse({ message: 'Deleted successfully' }, 1);
+  } catch (error) {
+    return handleApiError(error);
   }
 }

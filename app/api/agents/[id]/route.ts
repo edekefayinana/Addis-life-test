@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { requireAdmin, requireUser } from '@/lib/auth-guard';
 import prisma from '@/lib/prisma';
+import { handleApiError, sendResponse } from '@/lib/error-handler';
 
 export async function GET(
   req: NextRequest,
@@ -13,15 +14,12 @@ export async function GET(
     });
 
     if (!property) {
-      return NextResponse.json({ message: 'User not found' }, { status: 404 });
+      return sendResponse({ error: 'User not found' }, 0, undefined, 404);
     }
 
-    return NextResponse.json(property);
-  } catch {
-    return NextResponse.json(
-      { message: 'Error fetching user' },
-      { status: 500 }
-    );
+    return sendResponse(property, 1);
+  } catch (error) {
+    return handleApiError(error);
   }
 }
 
@@ -38,8 +36,6 @@ export async function PATCH(
     }
 
     const body = await req.json();
-
-    // Destructure and prepare nested updates for relations
     const { name, phone } = body;
 
     const updated = await prisma.user.update({
@@ -50,12 +46,9 @@ export async function PATCH(
       },
     });
 
-    return NextResponse.json(updated);
-  } catch {
-    return NextResponse.json(
-      { message: 'Failed to update user' },
-      { status: 500 }
-    );
+    return sendResponse(updated, 1);
+  } catch (error) {
+    return handleApiError(error);
   }
 }
 
@@ -75,11 +68,8 @@ export async function DELETE(
       where: { id: id },
     });
 
-    return NextResponse.json({ message: 'Deleted successfully' });
-  } catch {
-    return NextResponse.json(
-      { message: 'Failed to delete user' },
-      { status: 500 }
-    );
+    return sendResponse({ message: 'Deleted successfully' }, 1);
+  } catch (error) {
+    return handleApiError(error);
   }
 }

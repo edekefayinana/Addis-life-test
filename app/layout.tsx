@@ -1,12 +1,13 @@
-import type { Metadata } from 'next';
-import type { ReactNode } from 'react';
-import { Analytics } from '@vercel/analytics/next';
-import { Geist, Geist_Mono, Instrument_Sans } from 'next/font/google';
-import './globals.css';
-import { cn } from '@/lib/utils';
 import { ScrollToTop } from '@/components/ScrollToTop';
 import { AuthProvider } from '@/components/providers/session-provider';
+import { cn } from '@/lib/utils';
+import { Analytics } from '@vercel/analytics/next';
+import type { Metadata } from 'next';
+import { Geist, Geist_Mono, Instrument_Sans } from 'next/font/google';
+import type { ReactNode } from 'react';
 import { Toaster } from 'sonner';
+import './globals.css';
+import { QueryClientProviderWrapper } from '@/components/providers/query-client-provider';
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -84,32 +85,34 @@ export default function RootLayout({
           instrumentSans.variable
         )}
       >
-        <AuthProvider>
-          {children}
-          <Toaster
-            richColors
-            position="bottom-right"
-            // toastOptions={{
-            //   success: {
-            //     style: { background: '#22c55e', color: '#fff' },
-            //     iconTheme: { primary: '#22c55e', secondary: '#fff' },
-            //   },
-            //   error: {
-            //     style: { background: '#ef4444', color: '#fff' },
-            //     iconTheme: { primary: '#ef4444', secondary: '#fff' },
-            //   },
-            //   info: {
-            //     style: { background: '#0ea5e9', color: '#fff' },
-            //     iconTheme: { primary: '#0ea5e9', secondary: '#fff' },
-            //   },
-            //   warning: {
-            //     style: { background: '#f59e42', color: '#fff' },
-            //     iconTheme: { primary: '#f59e42', secondary: '#fff' },
-            //   },
-            // }}
-          />
-        </AuthProvider>
-        <Analytics />
+        <QueryClientProviderWrapper>
+          <AuthProvider>
+            {children}
+            <Toaster
+              richColors
+              position="bottom-right"
+              // toastOptions={{
+              //   success: {
+              //     style: { background: '#22c55e', color: '#fff' },
+              //     iconTheme: { primary: '#22c55e', secondary: '#fff' },
+              //   },
+              //   error: {
+              //     style: { background: '#ef4444', color: '#fff' },
+              //     iconTheme: { primary: '#ef4444', secondary: '#fff' },
+              //   },
+              //   info: {
+              //     style: { background: '#0ea5e9', color: '#fff' },
+              //     iconTheme: { primary: '#0ea5e9', secondary: '#fff' },
+              //   },
+              //   warning: {
+              //     style: { background: '#f59e42', color: '#fff' },
+              //     iconTheme: { primary: '#f59e42', secondary: '#fff' },
+              //   },
+              // }}
+            />
+          </AuthProvider>
+          <Analytics />
+        </QueryClientProviderWrapper>
 
         <ScrollToTop />
       </body>

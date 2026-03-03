@@ -4,6 +4,15 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { Bell } from 'lucide-react';
 import { NotificationsModal } from './modals/NotificationsModal';
+import { useEffect } from 'react';
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  onSnapshot,
+} from 'firebase/firestore';
+import { getApps, initializeApp } from 'firebase/app';
 import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
@@ -15,9 +24,41 @@ function titleFromPath(pathname: string): string {
 
 export function TopBar({ title }: { title?: string }) {
   const [showNotifications, setShowNotifications] = useState(false);
+  const [hasUnread, setHasUnread] = useState(false);
   const pathname = usePathname();
   const computedTitle = title ?? titleFromPath(pathname);
   const { data: session } = useSession();
+
+  // Firebase config (should match NotificationsModal)
+  const firebaseConfig = {
+    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  };
+
+  // Initialize Firebase app only once
+  if (typeof window !== 'undefined' && getApps().length === 0) {
+    initializeApp(firebaseConfig);
+  }
+
+  // Listen for unread notifications for the current user
+  useEffect(() => {
+    if (typeof window === 'undefined' || !session?.user?.id) return;
+    const db = getFirestore();
+    // Assume notifications have an 'isRead' field (default false)
+    const q = query(
+      collection(db, 'notifications'),
+      where('userId', '==', session.user.id),
+      where('isRead', '==', false)
+    );
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      setHasUnread(snapshot.size > 0);
+    });
+    return () => unsubscribe();
+  }, [session?.user?.id]);
 
   return (
     <div className="px-8 py-4 border-b border-gray-200 bg-white sticky top-0 z-10">
@@ -32,7 +73,9 @@ export function TopBar({ title }: { title?: string }) {
             aria-label="Notifications"
           >
             <Bell className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
+            {hasUnread && (
+              <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-red-600 border-2 border-white rounded-full shadow-lg animate-pulse" />
+            )}
           </button>
           <button
             className="relative w-8 h-8 sm:w-10 sm:h-10"

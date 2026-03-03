@@ -1,19 +1,20 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
+import { handleApiError, sendResponse } from '@/lib/error-handler';
 
 export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     if (!session || !session.user || !session.user.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return sendResponse({ error: 'Unauthorized' }, 0, undefined, 401);
     }
 
     const { currentPassword, newPassword } = await req.json();
     if (!currentPassword || !newPassword) {
-      return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
+      return sendResponse({ error: 'Missing fields' }, 0, undefined, 400);
     }
 
     const user = await prisma.user.findUnique({
@@ -21,17 +22,21 @@ export async function POST(req: NextRequest) {
       select: { password: true },
     });
     if (!user || !user.password) {
-      return NextResponse.json(
+      return sendResponse(
         { error: 'User not found or password not set' },
-        { status: 404 }
+        0,
+        undefined,
+        404
       );
     }
 
     const isMatch = await bcrypt.compare(currentPassword, user.password);
     if (!isMatch) {
-      return NextResponse.json(
+      return sendResponse(
         { error: 'Current password is incorrect' },
-        { status: 400 }
+        0,
+        undefined,
+        400
       );
     }
 
@@ -41,12 +46,8 @@ export async function POST(req: NextRequest) {
       data: { password: hashed },
     });
 
-    return NextResponse.json({ success: true });
+    return sendResponse({ success: true }, 1);
   } catch (error) {
-    console.error('Error changing password:', error);
-    return NextResponse.json(
-      { error: 'Internal Server Error' },
-      { status: 500 }
-    );
+    return handleApiError(error);
   }
 }

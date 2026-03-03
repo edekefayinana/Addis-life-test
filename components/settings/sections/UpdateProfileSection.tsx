@@ -3,6 +3,7 @@
 import { Camera, Check } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 export function UpdateProfileSection() {
   const [saving, setSaving] = useState(false);
@@ -20,12 +21,15 @@ export function UpdateProfileSection() {
         credentials: 'include',
         body: JSON.stringify({ name: formData.fullName }),
       });
+      const resJson = await response.json();
       if (response.ok) {
-        setSaveSuccess(true);
-        setTimeout(() => setSaveSuccess(false), 2000);
+        toast.success('Profile updated successfully!');
+      } else {
+        toast.error(resJson?.error || 'Failed to update profile.');
       }
-    } catch {
-      // Optionally handle error
+    } catch (error) {
+      console.error('Failed to update profile:', error);
+      toast.error('Failed to update profile.');
     } finally {
       setSaving(false);
     }
@@ -57,7 +61,9 @@ export function UpdateProfileSection() {
           credentials: 'include', // Include cookies for authentication
         });
         if (response.ok) {
-          const data = await response.json();
+          const data = (await response.json()).data;
+          console.log('DATA', data);
+
           setFormData({
             fullName: data.name || '',
             agentId: data.id || '',
