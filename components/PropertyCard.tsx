@@ -12,11 +12,11 @@ import {
 } from 'lucide-react';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { cn, truncate } from '@/lib/utils';
-import { buildPublicPaths } from '@/data/au2ImagesManifest';
 
 type PropertyType = 'Residential' | 'Commercial';
 
 export type PropertyCardProps = {
+  id?: string;
   title: string;
   type?: 'rent' | 'sale';
 
@@ -49,7 +49,11 @@ export type PropertyCardProps = {
     longitude: number;
     latitude: number;
   };
-  // Optional images base folder under public for this property
+
+  // Images from API
+  images?: { url: string; id?: string }[];
+
+  // Optional images base folder under public for this property (legacy)
   imagesFolder?: string;
 };
 
@@ -63,34 +67,68 @@ function slugify(title: string): string {
 }
 
 export function PropertyCard({
+  id,
   title,
   type,
   location,
   property_details,
-  imagesFolder,
+  images,
 }: PropertyCardProps) {
-  const propertyId = slugify(title);
-  const images = imagesFolder
-    ? buildPublicPaths(imagesFolder)
-    : ['/property-1.jpg', '/property-2.jpg', '/property-3.jpg'];
+  const propertyId = id || slugify(title);
+
+  // Use API images if available, otherwise fallback to default
+  // Filter out invalid URLs
+  const validImageUrls =
+    images && images.length > 0
+      ? images
+          .map((img) => img.url)
+          .filter((url) => {
+            // Check if URL is valid
+            if (!url || typeof url !== 'string') return false;
+            // Check if it's a valid URL format (starts with http/https or /)
+            return (
+              url.startsWith('http://') ||
+              url.startsWith('https://') ||
+              url.startsWith('/')
+            );
+          })
+      : [];
+
+  const imageUrls =
+    validImageUrls.length > 0
+      ? validImageUrls
+      : ['/property-1.jpg', '/property-2.jpg', '/property-3.jpg'];
+
   const [imgIndex, setImgIndex] = useState(0);
-  const showImage = images[imgIndex] ?? '/property-1.jpg';
+  const showImage = imageUrls[imgIndex] ?? '/property-1.jpg';
+
   const goPrev = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setImgIndex((i) => (i - 1 + images.length) % images.length);
+    setImgIndex((i) => (i - 1 + imageUrls.length) % imageUrls.length);
   };
+
   const goNext = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setImgIndex((i) => (i + 1) % images.length);
+    setImgIndex((i) => (i + 1) % imageUrls.length);
   };
 
   return (
     <Link href={`/properties/${propertyId}`} className="block">
       <Card className="overflow-hidden group cursor-pointer transition-all p-2 hover:shadow-lg border-0 shadow-md rounded-lg">
         <div className="relative aspect-16/10 w-full overflow-hidden rounded-lg bg-gray-100">
-          <Image src={showImage} alt={title} fill className="object-cover" />
+          <Image
+            src={showImage}
+            alt={title}
+            fill
+            className="object-cover"
+            onError={(e) => {
+              // Fallback to default image on error
+              const target = e.target as HTMLImageElement;
+              target.src = '/property-1.jpg';
+            }}
+          />
           {type && (
             <span
               className={cn(
@@ -104,24 +142,28 @@ export function PropertyCard({
             </span>
           )}
           {/* Navigation buttons on image */}
-          <button
-            onClick={goPrev}
-            className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 text-black flex items-center justify-center shadow hover:bg-white opacity-0 group-hover:opacity-100 transition-opacity"
-            aria-label="Previous image"
-          >
-            <ChevronLeft className="w-4 h-4" />
-          </button>
-          <button
-            onClick={goNext}
-            className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 text-black flex items-center justify-center shadow hover:bg-white opacity-0 group-hover:opacity-100 transition-opacity"
-            aria-label="Next image"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </button>
-          {/* Small index indicator */}
-          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs px-2 py-1 rounded-full bg-black/50 text-white">
-            {imgIndex + 1}/{images.length}
-          </div>
+          {imageUrls.length > 1 && (
+            <>
+              <button
+                onClick={goPrev}
+                className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 text-black flex items-center justify-center shadow hover:bg-white opacity-0 group-hover:opacity-100 transition-opacity"
+                aria-label="Previous image"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                onClick={goNext}
+                className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 text-black flex items-center justify-center shadow hover:bg-white opacity-0 group-hover:opacity-100 transition-opacity"
+                aria-label="Next image"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+              {/* Small index indicator */}
+              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs px-2 py-1 rounded-full bg-black/50 text-white">
+                {imgIndex + 1}/{imageUrls.length}
+              </div>
+            </>
+          )}
         </div>
         <CardContent className="p-4 pb-2">
           <h3 className="line-clamp-1 text-lg font-semibold text-black">
@@ -147,10 +189,6 @@ export function PropertyCard({
             </span>
           </div>
 
-          {/* Vertical divider simulated with margin/borders if needed. 
-            The image has vertical lines between items? 
-            Let's look closely... hard to tell if it's a line or just spacing. 
-            Commonly it's a small vertical divider. I'll add a subtle one. */}
           <div className="h-8 w-px bg-gray-200 mx-1" />
 
           <div className="flex items-center gap-1">

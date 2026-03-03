@@ -21,7 +21,11 @@ export function useDataFetch<T>(
   return useQuery<FetchResponse<T>>({
     queryKey: [endpoint, options?.queryString], // Key changes whenever URL changes
     queryFn: async () => {
-      const res = await fetch(`/api/${endpoint}?${options?.queryString}`, {
+      const queryString = options?.queryString || '';
+      const url = queryString
+        ? `/api/${endpoint}?${queryString}`
+        : `/api/${endpoint}`;
+      const res = await fetch(url, {
         cache: 'no-store',
       });
       if (!res.ok) throw new Error('Network response was not ok');

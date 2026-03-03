@@ -1,12 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import type { PropertyCardProps as Listing } from '@/components/PropertyCard';
 import { Bath, Bed, Maximize } from 'lucide-react';
-import { buildPublicPaths } from '@/data/au2ImagesManifest';
 
 import 'leaflet/dist/leaflet.css';
 
@@ -30,42 +29,21 @@ const MapResizeHandler = dynamic(
   { ssr: false }
 );
 
-type PropertiesMapProps = {
-  properties: Listing[];
+type Property = {
+  id: string;
+  title: string;
+  latitude: number;
+  longitude: number;
+  totalBedrooms: number;
+  totalBathrooms: number;
+  areaSizeM2: number;
+  images: { url: string }[];
+  [key: string]: any;
 };
 
-// Helper function to get approximate coordinates based on location
-// In a real app, you'd want to geocode these addresses
-function getCoordinatesForLocation(location: string): [number, number] {
-  // Default center for Addis Ababa
-  const defaultCoords: [number, number] = [9.0108, 38.7546];
-
-  // Simple location-based coordinate mapping
-  const locationMap: Record<string, [number, number]> = {
-    sarbet: [9.005, 38.75],
-    bole: [8.98, 38.78],
-    summit: [9.03, 38.73],
-    kazanchis: [9.02, 38.76],
-    cmc: [9.04, 38.77],
-    lideta: [9.01, 38.74],
-    gullele: [9.05, 38.79],
-    megenagna: [9.06, 38.76],
-    'old airport': [8.99, 38.79],
-    ayat: [9.08, 38.8],
-    bishoftu: [8.75, 38.98],
-  };
-
-  const locationLower = location.toLowerCase();
-  for (const [key, coords] of Object.entries(locationMap)) {
-    if (locationLower.includes(key)) {
-      // Add small random offset to avoid overlapping markers
-      const offset = (Math.random() - 0.5) * 0.01;
-      return [coords[0] + offset, coords[1] + offset];
-    }
-  }
-
-  return defaultCoords;
-}
+type PropertiesMapProps = {
+  properties: Property[];
+};
 
 export function PropertiesMap({ properties }: PropertiesMapProps) {
   const [markerIcon, setMarkerIcon] = useState<L.Icon | null>(null);
@@ -104,12 +82,19 @@ export function PropertiesMap({ properties }: PropertiesMapProps) {
   const center: [number, number] = useMemo(() => {
     if (properties.length === 0) return [9.0108, 38.7546]; // Default Addis Ababa center
 
-    const coords = properties.map((p) =>
-      getCoordinatesForLocation(p.location.address)
+    const validProperties = properties.filter(
+      (p) =>
+        p.latitude && p.longitude && !isNaN(p.latitude) && !isNaN(p.longitude)
     );
-    const avgLat = coords.reduce((sum, [lat]) => sum + lat, 0) / coords.length;
+
+    if (validProperties.length === 0) return [9.0108, 38.7546];
+
+    const avgLat =
+      validProperties.reduce((sum, p) => sum + p.latitude, 0) /
+      validProperties.length;
     const avgLng =
-      coords.reduce((sum, [, lng]) => sum + lng, 0) / coords.length;
+      validProperties.reduce((sum, p) => sum + p.longitude, 0) /
+      validProperties.length;
 
     return [avgLat, avgLng];
   }, [properties]);
@@ -135,53 +120,59 @@ export function PropertiesMap({ properties }: PropertiesMapProps) {
           url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
         />
 
-        {properties.map((property, idx) => {
-          const coords = getCoordinatesForLocation(property.location.address);
-          return (
-            <Marker key={idx} position={coords} icon={markerIcon}>
-              <Popup
-                className="custom-location-popup"
-                maxWidth={380}
-                minWidth={320}
-                closeButton={false} // removes the "x" (close) icon
-              >
-                <div className="w-[380px] p-0">
-                  <PropertyCard {...property} />
-                </div>
-              </Popup>
-            </Marker>
-          );
-        })}
+        {properties
+          .filter(
+            (p) =>
+              p.latitude &&
+              p.longitude &&
+              !isNaN(p.latitude) &&
+              !isNaN(p.longitude)
+          )
+          .map((property) => {
+            const coords: [number, number] = [
+              property.latitude,
+              property.longitude,
+            ];
+            return (
+              <Marker key={property.id} position={coords} icon={markerIcon}>
+                <Popup
+                  className="custom-location-popup"
+                  maxWidth={380}
+                  minWidth={320}
+                  closeButton={false}
+                >
+                  <div className="w-[380px] p-0">
+                    <PropertyCard {...property} />
+                  </div>
+                </Popup>
+              </Marker>
+            );
+          })}
       </MapContainer>
     </div>
   );
 }
 
-// Assuming you have access to a set of icons (like Heroicons, Lucide, or simply Unicode)
-// For this example, I'll use simple Unicode symbols (🛏️, 🛁, 🔲) which can be easily replaced.
-
-// Generate a random ID from title if not provided
-function slugify(title: string): string {
-  // Create a simple hash from the title and add random number
-  return title
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-}
-
 export const PropertyCard = ({
+  id,
   title,
-  property_details,
-  imagesFolder,
-}: Listing) => {
-  const propertyId = slugify(title);
-  const beds = property_details.total_bedrooms;
-  const baths = property_details.total_bathrooms;
-  const area = property_details.area_size_m2;
-  const resolvedImage = imagesFolder
-    ? (buildPublicPaths(imagesFolder)[0] ?? '/property-1.jpg')
-    : '/property-1.jpg';
+  totalBedrooms,
+  totalBathrooms,
+  areaSizeM2,
+  images,
+}: Property) => {
+  const resolvedImage = images?.[0]?.url || '/property-1.jpg';
+
+  // Generate slug from title if id is not provided (same as main PropertyCard)
+  const slugify = (text: string): string => {
+    return text
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  };
+
+  const propertyId = id || slugify(title);
 
   return (
     <Link href={`/properties/${propertyId}`} className="block">
@@ -203,21 +194,21 @@ export const PropertyCard = ({
           <div className="flex items-center justify-between gap-1 text-xs text-gray-600">
             <div className="flex items-center gap-1 min-w-0">
               <Bed className="h-4 w-4 shrink-0" />
-              <span className="font-medium">{beds} Beds</span>
+              <span className="font-medium">{totalBedrooms} Beds</span>
             </div>
 
             <div className="h-4 w-px bg-gray-200 shrink-0" />
 
             <div className="flex items-center gap-1 min-w-0">
               <Bath className="h-4 w-4 shrink-0" />
-              <span className="font-medium">{baths} Baths</span>
+              <span className="font-medium">{totalBathrooms} Baths</span>
             </div>
 
             <div className="h-4 w-px bg-gray-200 shrink-0" />
 
             <div className="flex items-center gap-1 min-w-0">
               <Maximize className="h-4 w-4 shrink-0" />
-              <span className="font-medium">{area} m²</span>
+              <span className="font-medium">{areaSizeM2} m²</span>
             </div>
           </div>
         </div>

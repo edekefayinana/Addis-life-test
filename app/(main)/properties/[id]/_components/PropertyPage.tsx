@@ -710,7 +710,7 @@ export default function PropertyPage() {
             {/* Thumbnails strip */}
             <div className="absolute bottom-3 left-0 right-0 px-4">
               <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
-                {propertyImages.map((src, i) => (
+                {propertyImages.map((src: string, i: number) => (
                   <button
                     key={src + i}
                     onClick={() => setGalleryIndex(i)}

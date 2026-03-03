@@ -1,11 +1,22 @@
-import PropertyPage from './_components/PropertyPage';
+import { PropertyClient } from '@/components/inventory/PropertyClient';
+import { apiFetch } from '@/lib/api';
 
 export const metadata = {
-  title: 'Property Details - Real Estate Listings',
+  title: 'Property Details - Addis Life RE Admin',
   description:
-    'Explore detailed information about this property, including amenities, location, and more. Contact us for inquiries.',
+    'Detailed view of the selected property with images, overview, and amenities.',
 };
 
-export default async function PropertyDetail() {
-  return <PropertyPage />;
+export default async function PropertyPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const { id } = await params;
+
+  const property = await apiFetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/inventory/${id}`
+  );
+
+  return <PropertyClient property={property.data} />;
 }

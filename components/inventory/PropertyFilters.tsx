@@ -4,7 +4,7 @@
 import { CustomSelect } from '@/components/ui/custom-select';
 import { useDebounce } from '@/lib/hooks/useDebounce';
 import { cn } from '@/lib/utils';
-import { Ellipsis, Search, X } from 'lucide-react';
+import { Ellipsis, Search, X, LayoutGrid, MapPin } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 // 1. Define the specific shape for Property Filters
@@ -15,6 +15,7 @@ export type PropertyFilterTypes = {
   price: string;
   bathrooms: string;
   furnishing: string;
+  view: string;
 };
 
 type SelectOption = { value: string; label: string };
@@ -143,14 +144,42 @@ export function PropertyFilters({
           </h1>
         </div>
 
-        {hasActiveFilters && (
-          <button
-            onClick={clearFilters}
-            className="text-sm font-medium text-red-600 hover:text-red-700 flex items-center gap-1"
-          >
-            <X className="h-4 w-4" /> Clear All
-          </button>
-        )}
+        <div className="flex items-center gap-3">
+          {/* View Toggle */}
+          <div className="flex items-center justify-center max-w-[185px] gap-2 bg-gray-100 p-1.5 rounded-full shrink-0">
+            {(['list', 'map'] as const).map((view) => {
+              const isActive = filters.view === view;
+              const Icon = view === 'list' ? LayoutGrid : MapPin;
+              return (
+                <button
+                  key={view}
+                  type="button"
+                  onClick={() => onChange({ ...filters, view })}
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-all duration-200 ${
+                    isActive
+                      ? 'bg-white text-gray-900 shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                  }`}
+                  aria-pressed={isActive}
+                >
+                  <Icon className="h-4 w-4" />
+                  <span className="capitalize">
+                    {view === 'list' ? 'List' : 'Map'}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {hasActiveFilters && (
+            <button
+              onClick={clearFilters}
+              className="text-sm font-medium text-red-600 hover:text-red-700 flex items-center gap-1"
+            >
+              <X className="h-4 w-4" /> Clear All
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="w-full">
