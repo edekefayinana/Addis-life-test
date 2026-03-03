@@ -49,6 +49,8 @@ export function PropertiesMap({ properties }: PropertiesMapProps) {
   const [markerIcon, setMarkerIcon] = useState<L.Icon | null>(null);
   const [isClient, setIsClient] = useState(false);
 
+  console.log(properties);
+
   useEffect(() => {
     setIsClient(true);
 
@@ -80,7 +82,7 @@ export function PropertiesMap({ properties }: PropertiesMapProps) {
 
   // Calculate center based on all properties
   const center: [number, number] = useMemo(() => {
-    if (properties.length === 0) return [9.0108, 38.7546]; // Default Addis Ababa center
+    if (properties.length === 0) return [9.0108, 38.7546];
 
     const validProperties = properties.filter(
       (p) =>
@@ -130,9 +132,11 @@ export function PropertiesMap({ properties }: PropertiesMapProps) {
           )
           .map((property) => {
             const coords: [number, number] = [
-              property.latitude,
               property.longitude,
+              property.latitude,
             ];
+            console.log(coords);
+
             return (
               <Marker key={property.id} position={coords} icon={markerIcon}>
                 <Popup
