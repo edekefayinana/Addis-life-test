@@ -51,17 +51,72 @@ function adaptPropertyData(apiProperty: any) {
   };
 }
 
-export function Inventory() {
-  const { filters, setFilters, clearFilters, hasActiveFilters, isPending } =
-    useFilters<{
-      location: string;
-      propertyType: string;
-      totalBedrooms: string;
-      price: string;
-      view: string;
-      page: string;
-    }>();
+function InventoryContent({
+  query,
+  currentView,
+  isPending,
+}: {
+  query: string;
+  currentView: string;
+  isPending: boolean;
+}) {
+  const { isLoading, data } = useDataFetch<any>('inventory', {
+    queryString: query,
+  });
 
+  // Show skeleton during filter transitions
+  if (isLoading || isPending) {
+    return (
+      <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: PAGE_SIZE }).map((_, idx) => (
+          <PropertyCardSkeleton key={`skeleton-${idx}`} />
+        ))}
+      </section>
+    );
+  }
+
+  const totalPages = data?.meta?.totalPages || 1;
+  const rawProperties = data?.data?.properties || [];
+
+  // Adapt properties to the format PropertyCard expects
+  const properties = rawProperties.map(adaptPropertyData);
+
+  if (currentView === 'map') {
+    return (
+      <PropertiesMapView properties={properties} totalPages={totalPages} />
+    );
+  }
+
+  return (
+    <>
+      <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {properties.map((property: any) => (
+          <PropertyCard key={property.id} {...property} />
+        ))}
+      </section>
+
+      {properties.length === 0 && (
+        <div className="text-center py-12 text-gray-500">
+          No properties found. Try adjusting your filters.
+        </div>
+      )}
+
+      <Pagination totalPages={totalPages} />
+    </>
+  );
+}
+
+export function Inventory() {
+  const { filters, setFilters, isPending } = useFilters<{
+    location: string;
+    propertyType: string;
+    totalBedrooms: string;
+    price: string;
+    view: string;
+    page: string;
+  }>();
+
+  // Default to 'list' view if not specified
   const currentView = filters.view === 'map' ? 'map' : 'list';
 
   // Build query string from filters and page
@@ -76,74 +131,26 @@ export function Inventory() {
     limit: String(PAGE_SIZE),
   }).toString();
 
-  const { isLoading, data } = useDataFetch<any>('inventory', {
-    queryString: query,
-  });
-
-  if (isLoading || isPending) {
-    return (
-      <main className="mx-auto flex min-h-[60vh] max-w-[1312px] flex-col gap-8 pt-12 pb-16">
-        <Suspense
-          fallback={
-            <div className="h-20 w-full animate-pulse rounded-2xl border border-gray-100 bg-white/60" />
-          }
-        >
-          <PropertyFilters
-            filters={filters}
-            onChange={setFilters}
-            clearFilters={clearFilters}
-            hasActiveFilters={hasActiveFilters}
-          />
-        </Suspense>
-        <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: PAGE_SIZE }).map((_, idx) => (
-            <PropertyCardSkeleton key={`skeleton-${idx}`} />
-          ))}
-        </section>
-      </main>
-    );
-  }
-
-  const totalPages = data?.meta?.totalPages || 1;
-  const rawProperties = data?.data?.properties || [];
-
-  // Adapt properties to the format PropertyCard expects
-  const properties = rawProperties.map(adaptPropertyData);
-
   return (
     <main className="mx-auto flex min-h-[60vh] max-w-[1312px] flex-col gap-8 pt-12 pb-16">
-      <Suspense
-        fallback={
-          <div className="h-20 w-full animate-pulse rounded-2xl border border-gray-100 bg-white/60" />
-        }
-      >
-        <PropertyFilters
-          filters={filters}
-          onChange={setFilters}
-          clearFilters={clearFilters}
-          hasActiveFilters={hasActiveFilters}
-        />
-      </Suspense>
+      <PropertyFilters filters={filters} onChange={setFilters} />
 
-      {currentView === 'map' ? (
-        <PropertiesMapView properties={properties} totalPages={totalPages} />
-      ) : (
-        <>
+      <Suspense
+        key={query}
+        fallback={
           <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {properties.map((property: any) => (
-              <PropertyCard key={property.id} {...property} />
+            {Array.from({ length: PAGE_SIZE }).map((_, idx) => (
+              <PropertyCardSkeleton key={`skeleton-${idx}`} />
             ))}
           </section>
-
-          {properties.length === 0 && (
-            <div className="text-center py-12 text-gray-500">
-              No properties found. Try adjusting your filters.
-            </div>
-          )}
-
-          <Pagination totalPages={totalPages} />
-        </>
-      )}
+        }
+      >
+        <InventoryContent
+          query={query}
+          currentView={currentView}
+          isPending={isPending}
+        />
+      </Suspense>
     </main>
   );
 }

@@ -4,7 +4,7 @@
 import { CustomSelect } from '@/components/ui/custom-select';
 import { useDebounce } from '@/lib/hooks/useDebounce';
 import { cn } from '@/lib/utils';
-import { Ellipsis, Search, X, LayoutGrid, MapPin } from 'lucide-react';
+import { Ellipsis, Search, LayoutGrid, MapPin } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 // 1. Define the specific shape for Property Filters
@@ -39,16 +39,9 @@ type FilterField =
 type PropertyFiltersProps = {
   filters: Partial<PropertyFilterTypes>;
   onChange: (filters: Partial<PropertyFilterTypes>) => void;
-  clearFilters?: () => void;
-  hasActiveFilters?: boolean;
 };
 
-export function PropertyFilters({
-  filters,
-  onChange,
-  clearFilters,
-  hasActiveFilters,
-}: PropertyFiltersProps) {
+export function PropertyFilters({ filters, onChange }: PropertyFiltersProps) {
   const [locationInput, setLocationInput] = useState(filters.location || '');
   const debouncedLocation = useDebounce(locationInput, 300);
   const [showMoreFilters, setShowMoreFilters] = useState(false);
@@ -90,26 +83,26 @@ export function PropertyFilters({
       ],
       group: 'primary',
     },
-    {
-      key: 'price',
-      type: 'select',
-      placeholder: 'Max Price',
-      options: [
-        { value: '50000', label: '< 50k' },
-        { value: '100000', label: '< 100k' },
-      ],
-      group: 'more', // This will now automatically show up in the "More" dropdown
-    },
-    {
-      key: 'furnishing',
-      type: 'select',
-      placeholder: 'Furnishing',
-      options: [
-        { value: 'furnished', label: 'Furnished' },
-        { value: 'unfurnished', label: 'Unfurnished' },
-      ],
-      group: 'more',
-    },
+    // {
+    //   key: 'price',
+    //   type: 'select',
+    //   placeholder: 'Max Price',
+    //   options: [
+    //     { value: '50000', label: '< 50k' },
+    //     { value: '100000', label: '< 100k' },
+    //   ],
+    //   group: 'more', // This will now automatically show up in the "More" dropdown
+    // },
+    // {
+    //   key: 'furnishing',
+    //   type: 'select',
+    //   placeholder: 'Furnishing',
+    //   options: [
+    //     { value: 'furnished', label: 'Furnished' },
+    //     { value: 'unfurnished', label: 'Unfurnished' },
+    //   ],
+    //   group: 'more',
+    // },
   ];
 
   const primaryFields = filterFields.filter((f) => f.group === 'primary');
@@ -148,7 +141,7 @@ export function PropertyFilters({
           {/* View Toggle */}
           <div className="flex items-center justify-center max-w-[185px] gap-2 bg-gray-100 p-1.5 rounded-full shrink-0">
             {(['list', 'map'] as const).map((view) => {
-              const isActive = filters.view === view;
+              const isActive = (filters.view || 'list') === view;
               const Icon = view === 'list' ? LayoutGrid : MapPin;
               return (
                 <button
@@ -170,15 +163,6 @@ export function PropertyFilters({
               );
             })}
           </div>
-
-          {hasActiveFilters && (
-            <button
-              onClick={clearFilters}
-              className="text-sm font-medium text-red-600 hover:text-red-700 flex items-center gap-1"
-            >
-              <X className="h-4 w-4" /> Clear All
-            </button>
-          )}
         </div>
       </div>
 
