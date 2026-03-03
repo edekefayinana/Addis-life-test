@@ -39,7 +39,7 @@ export function LeafletMap({
   beds,
   baths,
   area,
-  imagesFolder,
+  // imagesFolder,
 }: LeafletMapProps) {
   const markerIcon = useMemo(() => {
     if (typeof window === 'undefined') return null;
@@ -81,6 +81,7 @@ export function LeafletMap({
             <div className="w-[380px] p-0">
               <PropertyCard
                 {...{
+                  id: 'map-property',
                   title: title || 'Property Location',
                   overview: {
                     built_start_date: '',
@@ -105,7 +106,12 @@ export function LeafletMap({
                     longitude: position[1],
                     latitude: position[0],
                   },
-                  imagesFolder,
+                  images: [],
+                  totalBedrooms: beds || 0,
+                  totalBathrooms: baths || 0,
+                  areaSizeM2: area || 0,
+                  latitude: position[0],
+                  longitude: position[1],
                 }}
               />
             </div>

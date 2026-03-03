@@ -237,7 +237,7 @@ export function AssetsList({ onSelectAsset }: AssetsListProps) {
         </div>
 
         <div className="px-6 pb-6">
-          <Pagination totalPages={totalPages} currentPage={safePage} />
+          <Pagination totalPages={totalPages} />
         </div>
       </div>
     </div>

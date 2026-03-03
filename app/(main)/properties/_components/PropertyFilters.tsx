@@ -10,6 +10,7 @@ type Filters = {
   location?: string;
   propertyType?: string;
   totalBedrooms?: string;
+  price?: string;
   view?: 'list' | 'map';
 };
 
