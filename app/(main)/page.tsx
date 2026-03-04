@@ -108,8 +108,8 @@ const mapHeroSlides = (
 
 async function fetchFeaturedProperties(): Promise<PropertyCardProps[]> {
   try {
-    const baseUrl = process.env.API_BASE_URL || 'http://localhost:3000';
-    const response = await fetch(`${baseUrl}/api/inventory?limit=8`, {
+    const baseUrl = process.env.API_BASE_URL || 'http://localhost:3000/api';
+    const response = await fetch(`${baseUrl}/inventory?limit=8`, {
       cache: 'no-store',
     });
 
