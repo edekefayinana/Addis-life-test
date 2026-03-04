@@ -53,7 +53,18 @@ function getImageUrls(imagesFolder: string, projectName: string): string[] {
       const imageFiles = files.filter((file) =>
         /\.(jpg|jpeg|png|webp|gif)$/i.test(file)
       );
-      return imageFiles.map((file) => `/${basePath}/${imagesFolder}/${file}`);
+      const imageUrls = imageFiles.map(
+        (file) => `/${basePath}/${imagesFolder}/${file}`
+      );
+
+      // Reorder images starting from the middle
+      const middleIndex = Math.floor(imageUrls.length / 2);
+      const reorderedImages = [
+        ...imageUrls.slice(middleIndex),
+        ...imageUrls.slice(0, middleIndex),
+      ];
+
+      return reorderedImages;
     }
   } catch (error) {
     console.warn(`Could not read images from ${fullPath}:`, error);
@@ -763,53 +774,6 @@ async function main() {
 
   console.log('✅ Vatican Project created');
 
-  // Seed African Union Properties
-  for (const prop of africanUnionProperties) {
-    const imageUrls = getImageUrls(prop.imagesFolder, prop.title);
-    const availableFloors = Array.isArray(
-      prop.property_details.available_floors
-    )
-      ? prop.property_details.available_floors
-      : [];
-
-    const property = await prisma.property.create({
-      data: {
-        title: prop.title,
-        builtStartDate: new Date(prop.overview.built_start_date),
-        propertyType: mapPropertyType(prop.overview.property_type),
-        listingType: prop.type?.toUpperCase() === 'SALE' ? 'SALE' : 'RENT',
-        currentStatus: prop.overview.current_status,
-        totalBedrooms: prop.property_details.total_bedrooms,
-        totalBathrooms: prop.property_details.total_bathrooms,
-        parkingSpace: prop.property_details.parking_space,
-        areaSizeM2: prop.property_details.area_size_m2,
-        availableFloors: availableFloors,
-        buildingSize: prop.property_details.building_size,
-        deliveryTime: prop.property_details.delivery_time,
-        address: prop.location.address,
-        city: prop.location.city,
-        country: prop.location.country,
-        longitude: prop.location.longitude,
-        latitude: prop.location.latitude,
-        createdById: adminUser.id,
-        projectId: africanUnionProject.id,
-        amenities: {
-          create: prop.amenities.map((name) => ({ name })),
-        },
-        nearbyPlaces: {
-          create: prop.location_and_surroundings.nearby_places.map((name) => ({
-            name,
-          })),
-        },
-        images: {
-          create: imageUrls.map((url) => ({ url })),
-        },
-      },
-    });
-
-    console.log(`✅ Created property: ${property.title}`);
-  }
-
   // Seed Vatican Properties
   for (const prop of vaticanProperties) {
     const imageUrls = getImageUrls(prop.imagesFolder, prop.title);
@@ -840,6 +804,52 @@ async function main() {
         latitude: prop.location.latitude,
         createdById: adminUser.id,
         projectId: vaticanProject.id,
+        amenities: {
+          create: prop.amenities.map((name) => ({ name })),
+        },
+        nearbyPlaces: {
+          create: prop.location_and_surroundings.nearby_places.map((name) => ({
+            name,
+          })),
+        },
+        images: {
+          create: imageUrls.map((url) => ({ url })),
+        },
+      },
+    });
+
+    console.log(`✅ Created property: ${property.title}`);
+  }
+  // Seed African Union Properties
+  for (const prop of africanUnionProperties) {
+    const imageUrls = getImageUrls(prop.imagesFolder, prop.title);
+    const availableFloors = Array.isArray(
+      prop.property_details.available_floors
+    )
+      ? prop.property_details.available_floors
+      : [];
+
+    const property = await prisma.property.create({
+      data: {
+        title: prop.title,
+        builtStartDate: new Date(prop.overview.built_start_date),
+        propertyType: mapPropertyType(prop.overview.property_type),
+        listingType: prop.type?.toUpperCase() === 'SALE' ? 'SALE' : 'RENT',
+        currentStatus: prop.overview.current_status,
+        totalBedrooms: prop.property_details.total_bedrooms,
+        totalBathrooms: prop.property_details.total_bathrooms,
+        parkingSpace: prop.property_details.parking_space,
+        areaSizeM2: prop.property_details.area_size_m2,
+        availableFloors: availableFloors,
+        buildingSize: prop.property_details.building_size,
+        deliveryTime: prop.property_details.delivery_time,
+        address: prop.location.address,
+        city: prop.location.city,
+        country: prop.location.country,
+        longitude: prop.location.longitude,
+        latitude: prop.location.latitude,
+        createdById: adminUser.id,
+        projectId: africanUnionProject.id,
         amenities: {
           create: prop.amenities.map((name) => ({ name })),
         },
