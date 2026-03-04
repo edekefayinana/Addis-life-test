@@ -11,7 +11,7 @@ export const generateMetadata = async ({ params }: Props) => {
   const { id } = await params;
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL || ''}/inventory/${id}`,
+      `${process.env.API_BASE_URL || ''}/inventory/${id}`,
       {
         cache: 'no-store',
       }
@@ -52,12 +52,9 @@ export default async function PropertyEditPage({ params }: Props) {
 
   const { id } = await params; // Ensure params is properly destructured
   // Replace with your actual API endpoint or DB call
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL || ''}/inventory/${id}`,
-    {
-      cache: 'no-store',
-    }
-  );
+  const res = await fetch(`${process.env.API_BASE_URL || ''}/inventory/${id}`, {
+    cache: 'no-store',
+  });
   if (!res.ok) return notFound();
   const property = await res.json();
 

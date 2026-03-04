@@ -22,7 +22,7 @@ interface BroadcastNotificationParams {
 export async function sendNotification(params: SendNotificationParams) {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL || ''}/api/notifications/send`,
+      `${process.env.API_BASE_URL || ''}/api/notifications/send`,
       {
         method: 'POST',
         headers: {
@@ -49,7 +49,7 @@ export async function broadcastNotification(
 ) {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL || ''}/api/notifications/send`,
+      `${process.env.API_BASE_URL || ''}/api/notifications/send`,
       {
         method: 'PUT',
         headers: {

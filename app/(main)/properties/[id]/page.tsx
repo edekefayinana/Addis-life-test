@@ -15,7 +15,7 @@ export default async function PropertyPage({
   const { id } = await params;
 
   const property = await apiFetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/inventory/${id}`
+    `${process.env.API_BASE_URL}/inventory/${id}`
   );
 
   return <PropertyClient property={property.data} />;

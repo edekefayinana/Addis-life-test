@@ -205,7 +205,7 @@ export function PropertyForm({
 
     const method = mode === 'edit' ? 'PATCH' : 'POST';
     const url = mode === 'edit' ? `/inventory/${initialData.id}` : '/inventory';
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}${url}`, {
+    const res = await fetch(`${process.env.API_BASE_URL || ''}${url}`, {
       method,
       body: JSON.stringify(payload),
     });
