@@ -12,12 +12,14 @@ interface ReserveUnitPanelProps {
   isOpen: boolean;
   onClose: () => void;
   propertyId: string;
+  onReservationSuccess?: () => void;
 }
 
 export default function ReserveUnitPanel({
   isOpen,
   onClose,
   propertyId,
+  // onReservationSuccess,
 }: ReserveUnitPanelProps) {
   const [loading, setLoading] = useState(false);
   // Removed unused setError and variable assignment
@@ -121,8 +123,10 @@ export default function ReserveUnitPanel({
                 });
                 if (!res.ok) {
                   const data = await res.json();
-                  toast.error(data.error || 'Reservation failed');
-                  throw new Error(data.error || 'Reservation failed');
+                  console.log(data.data.error);
+
+                  toast.error(data.data.error || 'Reservation failed');
+                  throw new Error(data.data.error || 'Reservation failed');
                 }
                 toast.success('Reservation successful!');
                 setSuccess(true);

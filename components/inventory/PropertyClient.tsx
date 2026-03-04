@@ -70,6 +70,8 @@ export function PropertyClient({ property }: { property: Property }) {
   const [overviewExpanded, setOverviewExpanded] = useState(false);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [galleryIndex, setGalleryIndex] = useState(0);
+  const [hasReservation, setHasReservation] = useState(false);
+  const [checkingReservation, setCheckingReservation] = useState(true);
 
   const virtualTourImages = [
     { src: '/property-1.jpg', label: 'Living Room' },
@@ -118,6 +120,35 @@ export function PropertyClient({ property }: { property: Property }) {
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [isGalleryOpen, propertyImages.length]);
+
+  // Check if user has already reserved this property
+  useEffect(() => {
+    const checkReservation = async () => {
+      if (!session?.user?.id || isAdmin) {
+        setCheckingReservation(false);
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/reservations');
+        if (res.ok) {
+          const data = await res.json();
+          const userReservation = data.data?.find(
+            (r: any) =>
+              r.propertyId === property.id &&
+              ['PENDING', 'CONFIRMED'].includes(r.status)
+          );
+          setHasReservation(!!userReservation);
+        }
+      } catch (error) {
+        console.error('Failed to check reservation:', error);
+      } finally {
+        setCheckingReservation(false);
+      }
+    };
+
+    checkReservation();
+  }, [session, property.id, isAdmin]);
 
   const openGallery = (index = 0) => {
     setGalleryIndex(index);
@@ -606,22 +637,34 @@ export function PropertyClient({ property }: { property: Property }) {
           {/* Right Column - Pricing & Contact */}
           <div className="lg:col-span-1">
             <div className="space-y-6 lg:sticky lg:top-24">
-              <div className="border rounded-2xl p-4 sm:p-6 bg-white">
-                <p className="text-xs sm:text-sm text-muted-foreground mb-1">
-                  Total Down Payment
-                </p>
-                <p className="text-2xl sm:text-3xl font-semibold mb-6 sm:mb-8">
-                  ETB 3,300,000
-                </p>
-                <div className="flex justify-center w-full">
-                  <Button
-                    onClick={() => setShowReservePanel(true)}
-                    className="px-6 sm:px-8 py-5 sm:py-6 bg-brand-dark hover:bg-brand-dark/90 text-white rounded-full w-full text-sm sm:text-base font-semibold"
-                  >
-                    Reserve Unit
-                  </Button>
+              {!isAdmin && (
+                <div className="border rounded-2xl p-4 sm:p-6 bg-white">
+                  <div className="flex justify-center w-full">
+                    {checkingReservation ? (
+                      <Button
+                        disabled
+                        className="px-6 sm:px-8 py-5 sm:py-6 bg-brand-dark/50 text-white rounded-full w-full text-sm sm:text-base font-semibold"
+                      >
+                        Loading...
+                      </Button>
+                    ) : hasReservation ? (
+                      <Button
+                        disabled
+                        className="px-6 sm:px-8 py-5 sm:py-6 bg-green-600 text-white rounded-full w-full text-sm sm:text-base font-semibold cursor-not-allowed"
+                      >
+                        Already Reserved
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={() => setShowReservePanel(true)}
+                        className="px-6 sm:px-8 py-5 sm:py-6 bg-brand-dark hover:bg-brand-dark/90 text-white rounded-full w-full text-sm sm:text-base font-semibold"
+                      >
+                        Reserve Unit
+                      </Button>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
@@ -631,6 +674,10 @@ export function PropertyClient({ property }: { property: Property }) {
         isOpen={showReservePanel}
         onClose={() => setShowReservePanel(false)}
         propertyId={property.id}
+        onReservationSuccess={() => {
+          setHasReservation(true);
+          setShowReservePanel(false);
+        }}
       />
       {/* Other Latest Listings - full width */}
       {/* You can fetch and display other listings here if needed, or remove this section if not applicable */}

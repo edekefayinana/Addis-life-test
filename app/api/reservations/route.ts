@@ -18,10 +18,15 @@ export async function POST(req: NextRequest) {
       return sendResponse({ error: 'Unauthorized' }, 0, undefined, 401);
     }
     // Only allow AGENT role with APPROVED status to create reservation
-    if (
-      session.user.role !== 'AGENT' ||
-      session.user.approvalStatus !== 'APPROVED'
-    ) {
+    if (session.user.role !== 'AGENT') {
+      return sendResponse(
+        { error: 'Only agents can create reservations' },
+        0,
+        undefined,
+        403
+      );
+    }
+    if (session.user.approvalStatus !== 'APPROVED') {
       return sendResponse(
         { error: 'Only approved agents can create reservations' },
         0,
