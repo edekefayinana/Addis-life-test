@@ -8,25 +8,28 @@ import { FeatureCard } from './FeatureCard';
 
 const features = [
   {
-    icon: CircleUserRound,
-    title: 'Trusted Expertise',
-    description: 'Years of experience to guide your property decisions.',
-  },
-  {
-    icon: HandCoins,
-    title: 'Affordable Wide Selection',
-    description: 'Homes, apartments, and commercial spaces to suit every need.',
-  },
-  {
     icon: ShieldCheck,
-    title: 'Quality First',
+    title: 'Quality Excellence',
     description:
-      'Durable, well-inspected properties in secure, welcoming communities.',
+      'Deliver strong, safe, and long-lasting buildings using strict quality standards.',
   },
   {
     icon: UserCheck,
-    title: 'Experienced agents',
-    description: 'Find an experienced agent who knows your market best.',
+    title: 'Trust & Transparency',
+    description:
+      'Maintain clear communication, honest pricing, and realistic commitments.',
+  },
+  {
+    icon: CircleUserRound,
+    title: 'Customer Confidence',
+    description:
+      'Ensure every client feels secure, informed, and proud of their investment.',
+  },
+  {
+    icon: HandCoins,
+    title: 'Sustainable Growth',
+    description:
+      'Expand responsibly while maintaining high construction and service standards.',
   },
 ];
 

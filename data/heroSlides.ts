@@ -20,10 +20,10 @@ export const heroVideoSlide: HeroSlide = {
   id: 'intro-video',
   type: 'video',
   src: '/video/vid.mp4',
-  eyebrow: 'Addis Life Signature Collection',
-  headline: 'Experience Addis Life in Motion',
+  eyebrow: 'Beyond Promises, We Deliver.',
+  headline: 'Where Quality Meets Integrity',
   subhead:
-    'Take a cinematic look at our flagship communities and the lifestyle they unlock.',
+    'Experience real estate built on trust and delivered with excellence.',
   highlights: [
     { label: 'Communities', value: '12+' },
     { label: 'Verified units', value: '480+' },

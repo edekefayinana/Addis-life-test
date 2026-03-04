@@ -39,7 +39,7 @@ type HeroProps = {
 
 export function Hero({ slides }: HeroProps) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isAutoPlay, setIsAutoPlay] = useState(true);
+  const [isAutoPlay, setIsAutoPlay] = useState(false);
   const [progress, setProgress] = useState(0);
   const pointerStartX = useRef<number | null>(null);
   const resumeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -290,30 +290,32 @@ export function Hero({ slides }: HeroProps) {
         </div>
       )}
 
-      <div
-        className="absolute inset-x-0 bottom-35 z-10 flex justify-center gap-2 px-6"
-        data-hero-interactive="true"
-      >
-        {slides.map((slide, index) => (
-          <button
-            key={slide.id}
-            type="button"
-            onClick={() => {
-              pauseAutoPlay();
-              setActiveIndex(index);
-            }}
-            className="relative h-1 w-8 overflow-hidden rounded-full bg-white/40 transition hover:bg-white/60"
-            aria-label={`Go to slide ${index + 1}`}
-          >
-            {index === activeIndex && (
-              <span
-                className="absolute inset-y-0 left-0 rounded-full bg-white"
-                style={{ width: `${progress * 100}%` }}
-              />
-            )}
-          </button>
-        ))}
-      </div>
+      {slides.length > 1 && (
+        <div
+          className="absolute inset-x-0 bottom-35 z-10 flex justify-center gap-2 px-6"
+          data-hero-interactive="true"
+        >
+          {slides.map((slide, index) => (
+            <button
+              key={slide.id}
+              type="button"
+              onClick={() => {
+                pauseAutoPlay();
+                setActiveIndex(index);
+              }}
+              className="relative h-1 w-8 overflow-hidden rounded-full bg-white/40 transition hover:bg-white/60"
+              aria-label={`Go to slide ${index + 1}`}
+            >
+              {index === activeIndex && (
+                <span
+                  className="absolute inset-y-0 left-0 rounded-full bg-white"
+                  style={{ width: `${progress * 100}%` }}
+                />
+              )}
+            </button>
+          ))}
+        </div>
+      )}
       {activeIndex === 0 && (
         <div className="mt-8 flex justify-center">
           <Button

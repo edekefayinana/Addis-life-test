@@ -13,6 +13,7 @@ const testimonials = [
   },
   {
     img: '/AU2 site Building Renders/2_13 - Photo.jpg',
+
     quote:
       'From the first walkthrough to the final handover, the Addis Life team was attentive, honest, and on schedule. They made buying my home effortless.',
     name: 'Liya Tesfaye',
@@ -100,7 +101,7 @@ export function Testimonials() {
               <div className="flex items-center gap-3">
                 <div className="relative h-12 w-12 rounded-full overflow-hidden">
                   <Image
-                    src="/testem-profile.png"
+                    src="/default-profile.png"
                     alt={activeTestimonial.name}
                     fill
                     className="object-cover"

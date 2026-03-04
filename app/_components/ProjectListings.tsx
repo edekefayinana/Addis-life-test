@@ -27,7 +27,6 @@ const projects = [
   },
   {
     title: 'Upcoming Around East of Addis Ababa',
-    // subtitle: '14 properties',
     imageUrl: '/AU2 site Building Renders/1_5 - Photo.jpg',
     className: 'md:col-span-2',
   },
