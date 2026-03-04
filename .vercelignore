@@ -1,0 +1,10 @@
+# Vercel ignore file
+.env*
+!.env.example
+node_modules
+.next
+.git
+.husky
+*.log
+coverage
+.DS_Store

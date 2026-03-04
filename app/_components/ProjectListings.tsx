@@ -3,32 +3,32 @@ import Image from 'next/image';
 const projects = [
   {
     title: 'Africa Union One',
-    subtitle: '14 properties',
+    // subtitle: '14 properties',
     imageUrl: '/AU2 site Building Renders/1_1 - Photo.jpg',
     className: 'md:col-span-2',
   },
   {
     title: 'Africa Union Two',
-    subtitle: '14 properties',
+    // subtitle: '14 properties',
     imageUrl: '/AU2 site Building Renders/1_2 - Photo.jpg',
     className: 'md:col-span-1',
   },
   {
     title: 'Vatican Site',
-    subtitle: '14 properties',
+    // subtitle: '14 properties',
     imageUrl: '/AU2 site Building Renders/1_3 - Photo.jpg',
     className: 'md:col-span-1',
   },
   {
     title: 'Bulgaria Site',
-    subtitle: '14 properties',
-    imageUrl: '/AU2 site Building Renders/1_4 - Photo.jpg',
-    className: 'md:col-span-1',
+    // subtitle: '14 properties',
+    imageUrl: '/bulgaria_Addis_life/Scene_1.png',
+    className: 'md:col-span-2',
   },
   {
     title: 'Upcoming Around East of Addis Ababa',
-    imageUrl: '/AU2 site Building Renders/1_5 - Photo.jpg',
-    className: 'md:col-span-2',
+    imageUrl: '/upcoming.jpg',
+    className: 'md:col-span-1',
   },
 ];
 
@@ -66,9 +66,9 @@ export function ProjectListings() {
               <h3 className="text-xl font-bold text-white mb-1">
                 {project.title}
               </h3>
-              <p className="text-sm font-medium text-white/80">
+              {/* <p className="text-sm font-medium text-white/80">
                 {project.subtitle}
-              </p>
+              </p> */}
             </div>
           </div>
         ))}
