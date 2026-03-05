@@ -4,7 +4,6 @@ import { cn } from '@/lib/utils';
 import {
   Building2,
   Calendar,
-  HelpCircle,
   Home,
   LogOut,
   MoreVertical,
@@ -51,8 +50,16 @@ export function Sidebar() {
       label: 'Settings',
       href: '#',
       onClick: () => setShowSettings(true),
+      isLogout: false,
     },
-    { icon: HelpCircle, label: 'Get Help', href: '#' },
+    // { icon: HelpCircle, label: 'Get Help', href: '#', isLogout: false },
+    {
+      icon: LogOut,
+      label: 'Log Out',
+      href: '#',
+      onClick: () => signOut({ callbackUrl: '/login' }),
+      isLogout: true,
+    },
   ];
 
   const isActive = (href: string) => {
@@ -123,11 +130,25 @@ export function Sidebar() {
             <div className="space-y-2">
               {bottomItems.map((item, idx) => {
                 const IconComponent = item.icon;
+
+                if (item.isLogout) {
+                  return (
+                    <button
+                      key={idx}
+                      onClick={item.onClick}
+                      className="w-full flex items-center gap-3 px-4 py-2 rounded-full text-white hover:text-red-400 hover:bg-red-500/10 transition-colors text-left"
+                    >
+                      <IconComponent className="w-5 h-5" />
+                      <span className="text-sm">{item.label}</span>
+                    </button>
+                  );
+                }
+
                 return (
                   <button
                     key={idx}
                     onClick={item.onClick}
-                    className={`flex items-center gap-3 px-4 py-2 rounded-full transition-colors hover:bg-sidebar-accent text-white`}
+                    className="flex items-center gap-3 px-4 py-2 rounded-full transition-colors hover:bg-sidebar-accent text-white"
                   >
                     <IconComponent className="w-5 h-5" />
                     <span className="text-sm">{item.label}</span>

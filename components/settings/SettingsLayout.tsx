@@ -1,6 +1,7 @@
 'use client';
 
-import { Bell, Lock, LogOut, User } from 'lucide-react';
+import { Lock, LogOut, User } from 'lucide-react';
+import { signOut } from 'next-auth/react';
 import { AccountDeactivationSection } from './sections/AccountDeactivationSection';
 import { ChangePasswordSection } from './sections/ChangePasswordSection';
 import { NotificationPreferencesSection } from './sections/NotificationPreferencesSection';
@@ -37,7 +38,7 @@ export function SettingsLayout({
       section: 'Account Settings',
       items: [
         { id: 'profile', label: 'Update profile', icon: User },
-        { id: 'notifications', label: 'Notification preferences', icon: Bell },
+        // { id: 'notifications', label: 'Notification preferences', icon: Bell },
         { id: 'password', label: 'Password Update', icon: Lock },
       ],
     },
@@ -72,7 +73,7 @@ export function SettingsLayout({
       case 'deactivation':
         return <AccountDeactivationSection />;
       default:
-        return <AccountDeactivationSection />;
+        return <UpdateProfileSection />;
     }
   };
 
@@ -106,10 +107,12 @@ export function SettingsLayout({
                       return (
                         <button
                           key={item.id}
-                          className="w-full flex items-center gap-3 px-4 py-2.5 rounded-sm text-[13px] text-gray-700 hover:text-red-600 hover:bg-red-50 transition-colors text-left"
+                          onClick={() => signOut({ callbackUrl: '/login' })}
+                          className="w-full flex items-center gap-2 pl-0 pr-4 py-2.5 rounded-sm text-[13px] text-gray-700 hover:text-red-600 hover:bg-red-50 transition-colors text-left"
                         >
+                          <span className="h-8 w-1 rounded-l-full bg-transparent" />
                           <IconComponent className="w-4 h-4" />
-                          <span className="font-medium">{item.label}</span>
+                          <span className="truncate">{item.label}</span>
                         </button>
                       );
                     }

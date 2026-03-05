@@ -19,8 +19,8 @@ const navItems = [
 ];
 
 const propertyMenuItems = [
-  { href: '/properties?type=rent', label: 'Rent' },
-  { href: '/properties?type=sale', label: 'Sale' },
+  { href: '/properties?listingType=RENT', label: 'Rent' },
+  { href: '/properties?listingType=SALE', label: 'Sale' },
 ];
 
 type HeaderVariant = 'dark' | 'light';

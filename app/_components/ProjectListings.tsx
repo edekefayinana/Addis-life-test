@@ -1,34 +1,36 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 const projects = [
   {
     title: 'Africa Union One',
-    // subtitle: '14 properties',
     imageUrl: '/AU2 site Building Renders/1_1 - Photo.jpg',
-    className: 'md:col-span-2',
+    className: 'md:col-span-2 md:row-span-2',
+    searchQuery: 'African',
   },
   {
     title: 'Africa Union Two',
-    // subtitle: '14 properties',
-    imageUrl: '/AU2 site Building Renders/1_2 - Photo.jpg',
-    className: 'md:col-span-1',
-  },
-  {
-    title: 'Vatican Site',
-    // subtitle: '14 properties',
-    imageUrl: '/AU2 site Building Renders/1_3 - Photo.jpg',
-    className: 'md:col-span-1',
+    imageUrl: '/AU2 site Building Renders/1_4 - Photo.jpg',
+    className: 'md:col-span-2 md:row-span-1',
+    searchQuery: 'African',
   },
   {
     title: 'Bulgaria Site',
-    // subtitle: '14 properties',
     imageUrl: '/bulgaria_Addis_life/Scene_1.png',
-    className: 'md:col-span-2',
+    className: 'md:col-span-1 md:row-span-2',
+    searchQuery: 'Bulgaria',
+  },
+  {
+    title: 'Vatican Site',
+    imageUrl: '/AU2 site Building Renders/1_2 - Photo.jpg',
+    className: 'md:col-span-1 md:row-span-2',
+    searchQuery: 'Vatican',
   },
   {
     title: 'Upcoming Around East of Addis Ababa',
     imageUrl: '/upcoming.jpg',
-    className: 'md:col-span-1',
+    className: 'md:col-span-2 md:row-span-1',
+    searchQuery: 'East',
   },
 ];
 
@@ -46,32 +48,38 @@ export function ProjectListings() {
         </p>
       </div>
 
-      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4 auto-rows-[300px]">
-        {projects.map((project, idx) => (
-          <div
-            key={idx}
-            className={`group relative overflow-hidden rounded-lg ${project.className || ''}`}
-          >
-            <Image
-              src={project.imageUrl}
-              alt={project.title}
-              fill
-              className="object-cover"
-            />
-            {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/0 to-black/0" />
+      <div className="grid gap-5 grid-cols-1 md:grid-cols-4 md:auto-rows-[200px]">
+        {projects.map((project, idx) => {
+          const searchUrl = `/properties?search=${encodeURIComponent(project.searchQuery)}&page=1`;
 
-            {/* Content */}
-            <div className="absolute left-6 top-6">
-              <h3 className="text-xl font-bold text-white mb-1">
-                {project.title}
-              </h3>
-              {/* <p className="text-sm font-medium text-white/80">
-                {project.subtitle}
-              </p> */}
-            </div>
-          </div>
-        ))}
+          return (
+            <Link
+              key={idx}
+              href={searchUrl}
+              className={`group relative overflow-hidden rounded-lg min-h-[250px] md:min-h-0 cursor-pointer ${project.className || ''}`}
+            >
+              <Image
+                src={project.imageUrl}
+                alt={project.title}
+                fill
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              />
+              {/* Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/10 to-black/30 group-hover:from-black/50 group-hover:to-black/40 transition-colors duration-300" />
+
+              {/* Content */}
+              <div className="absolute left-6 top-6 z-10">
+                <h3 className="text-xl font-bold text-white mb-1 drop-shadow-lg group-hover:underline">
+                  {project.title}
+                </h3>
+                <p className="text-sm text-white/90 drop-shadow-md">
+                  View Properties →
+                </p>
+              </div>
+            </Link>
+          );
+        })}
       </div>
     </section>
   );

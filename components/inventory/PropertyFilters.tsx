@@ -9,9 +9,10 @@ import { useEffect, useRef, useState } from 'react';
 
 // 1. Define the specific shape for Property Filters
 export type PropertyFilterTypes = {
-  location: string;
+  search: string;
   propertyType: string;
   totalBedrooms: string;
+  listingType: string;
   price: string;
   bathrooms: string;
   furnishing: string;
@@ -22,14 +23,14 @@ type SelectOption = { value: string; label: string };
 
 type FilterField =
   | {
-      key: 'location';
+      key: 'search';
       type: 'search';
       placeholder: string;
       className: string;
       group: 'primary' | 'more';
     }
   | {
-      key: keyof Omit<PropertyFilterTypes, 'location'>;
+      key: keyof Omit<PropertyFilterTypes, 'search' | 'view'>;
       type: 'select';
       placeholder: string;
       options: SelectOption[];
@@ -42,17 +43,33 @@ type PropertyFiltersProps = {
 };
 
 export function PropertyFilters({ filters, onChange }: PropertyFiltersProps) {
-  const [locationInput, setLocationInput] = useState(filters.location || '');
-  const debouncedLocation = useDebounce(locationInput, 300);
+  const [searchInput, setSearchInput] = useState(filters.search || '');
+  const debouncedSearch = useDebounce(searchInput, 300);
   const [showMoreFilters, setShowMoreFilters] = useState(false);
   const moreFiltersRef = useRef<HTMLDivElement | null>(null);
 
+  // Sync local search input with URL parameter when it changes
+  useEffect(() => {
+    setSearchInput(filters.search || '');
+  }, [filters.search]);
+
   const filterFields: FilterField[] = [
     {
-      key: 'location',
+      key: 'search',
       type: 'search',
-      placeholder: 'Search location, area',
-      className: 'sm:col-span-2 lg:col-span-3',
+      placeholder: 'Search by title, location, city...',
+      className: 'sm:col-span-2 lg:col-span-2',
+      group: 'primary',
+    },
+    {
+      key: 'listingType',
+      type: 'select',
+      placeholder: 'Listing Type',
+      options: [
+        { value: '', label: 'All' },
+        { value: 'SALE', label: 'For Sale' },
+        { value: 'RENT', label: 'For Rent' },
+      ],
       group: 'primary',
     },
     {
@@ -60,13 +77,12 @@ export function PropertyFilters({ filters, onChange }: PropertyFiltersProps) {
       type: 'select',
       placeholder: 'Property Type',
       options: [
+        { value: '', label: 'All' },
         { value: 'APARTMENT', label: 'Apartment' },
         { value: 'HOUSE', label: 'House' },
         { value: 'VILLA', label: 'Villa' },
         { value: 'CONDO', label: 'Condo' },
         { value: 'COMMERCIAL', label: 'Commercial' },
-        // { value: 'rent', label: 'Rent' },
-        // { value: 'sale', label: 'Sale' },
       ],
       group: 'primary',
     },
@@ -75,6 +91,7 @@ export function PropertyFilters({ filters, onChange }: PropertyFiltersProps) {
       type: 'select',
       placeholder: 'Bedrooms',
       options: [
+        { value: '', label: 'All' },
         { value: '1', label: '1 Bedroom' },
         { value: '2', label: '2 Bedrooms' },
         { value: '3', label: '3 Bedrooms' },
@@ -83,26 +100,6 @@ export function PropertyFilters({ filters, onChange }: PropertyFiltersProps) {
       ],
       group: 'primary',
     },
-    // {
-    //   key: 'price',
-    //   type: 'select',
-    //   placeholder: 'Max Price',
-    //   options: [
-    //     { value: '50000', label: '< 50k' },
-    //     { value: '100000', label: '< 100k' },
-    //   ],
-    //   group: 'more', // This will now automatically show up in the "More" dropdown
-    // },
-    // {
-    //   key: 'furnishing',
-    //   type: 'select',
-    //   placeholder: 'Furnishing',
-    //   options: [
-    //     { value: 'furnished', label: 'Furnished' },
-    //     { value: 'unfurnished', label: 'Unfurnished' },
-    //   ],
-    //   group: 'more',
-    // },
   ];
 
   const primaryFields = filterFields.filter((f) => f.group === 'primary');
@@ -111,11 +108,11 @@ export function PropertyFilters({ filters, onChange }: PropertyFiltersProps) {
 
   // Sync debounced search to parent
   useEffect(() => {
-    if (debouncedLocation !== (filters.location || '')) {
-      onChange({ ...filters, location: debouncedLocation });
+    if (debouncedSearch !== (filters.search || '')) {
+      onChange({ ...filters, search: debouncedSearch });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedLocation]);
+  }, [debouncedSearch]);
 
   // Click outside listener for "More" menu
   useEffect(() => {
@@ -178,8 +175,8 @@ export function PropertyFilters({ filters, onChange }: PropertyFiltersProps) {
                   <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
                   <input
                     type="text"
-                    value={locationInput}
-                    onChange={(e) => setLocationInput(e.target.value)}
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
                     placeholder={field.placeholder}
                     className="h-12 w-full rounded-full border border-gray-200 pl-11 pr-4 text-sm font-medium outline-none transition-all focus:border-gray-900 focus:ring-4 focus:ring-gray-100"
                   />

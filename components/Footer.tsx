@@ -11,11 +11,26 @@ const listClass = 'space-y-4 text-base font-normal text-footer-text';
 const socialLinkClass = 'hover:text-white transition-colors';
 
 const services = [
-  'Africa Union One',
-  'Africa Union Two',
-  'Vatican Site',
-  'Bulgaria Site',
-  'Upcoming Around East of Addis Ababa',
+  {
+    label: 'Africa Union One',
+    href: `/properties?&search=Africa&page=1`,
+  },
+  {
+    label: 'Africa Union Two',
+    href: `/properties?&search=Africa&page=1`,
+  },
+  {
+    label: 'Vatican Site',
+    href: `/properties?&search=Vatican&page=1`,
+  },
+  {
+    label: 'Bulgaria Site',
+    href: `/properties?&search=Bulgaria&page=1`,
+  },
+  {
+    label: 'Upcoming Around East of Addis Ababa',
+    href: `/properties?&search=Upcoming&page=1`,
+  },
 ];
 
 const links = [
@@ -23,9 +38,9 @@ const links = [
   { href: '/blogs', label: 'Blogs' },
   // { href: '/projects', label: 'Projects' },
   { href: '/properties', label: 'Properties' },
-  { href: '#', label: 'Privacy Policy' },
-  { href: '#', label: 'Terms & Conditions' },
-  { href: '#', label: 'Disclaimer' },
+  // { href: '#', label: 'Privacy Policy' },
+  // { href: '#', label: 'Terms & Conditions' },
+  // { href: '#', label: 'Disclaimer' },
 ];
 
 const socialLinks = [
@@ -223,7 +238,10 @@ export function Footer() {
 
           <FooterList
             title="Services"
-            items={services.map((label) => ({ href: '#', label }))}
+            items={services.map((service) => ({
+              href: service.href,
+              label: service.label,
+            }))}
           />
 
           <FooterList title="Links" items={links} />

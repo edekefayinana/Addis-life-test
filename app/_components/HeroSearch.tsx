@@ -15,14 +15,14 @@ export function HeroSearch() {
   // Array of select fields for filter modal
   const selectFields = [
     {
-      key: 'propertyType',
-      label: 'Property type',
+      key: 'listingType',
+      label: 'Listing Type',
       value: propertyType,
       onChange: setPropertyType,
       placeholder: 'Any',
       options: [
-        { label: 'Rent', value: 'rent' },
-        { label: 'Sale', value: 'sale' },
+        { label: 'For Rent', value: 'RENT' },
+        { label: 'For Sale', value: 'SALE' },
       ],
     },
     {
@@ -32,11 +32,11 @@ export function HeroSearch() {
       onChange: setBedrooms,
       placeholder: 'Any',
       options: [
-        { label: 'Studio', value: 'studio' },
-        { label: '1', value: '1' },
-        { label: '2', value: '2' },
-        { label: '3', value: '3' },
-        { label: '4+', value: '4-plus' },
+        { label: '1 Bedroom', value: '1' },
+        { label: '2 Bedrooms', value: '2' },
+        { label: '3 Bedrooms', value: '3' },
+        { label: '4 Bedrooms', value: '4' },
+        { label: '5+ Bedrooms', value: '5' },
       ],
     },
   ];
@@ -70,10 +70,10 @@ export function HeroSearch() {
   const searchParams = useMemo(
     () =>
       new URLSearchParams({
-        ...(location ? { location } : {}),
-        ...(propertyType ? { type: propertyType } : {}),
+        ...(location ? { search: location } : {}),
+        ...(propertyType ? { listingType: propertyType } : {}),
         ...(status ? { status } : {}),
-        ...(bedrooms ? { bedrooms } : {}),
+        ...(bedrooms ? { totalBedrooms: bedrooms } : {}),
       }),
     [bedrooms, location, propertyType, status]
   );

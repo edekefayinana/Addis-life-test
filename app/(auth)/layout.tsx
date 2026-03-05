@@ -1,11 +1,21 @@
 import type { ReactNode } from 'react';
+import { redirect } from 'next/navigation';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 import { AuthLayout as Shell } from '@/components/AuthLayout';
 
 interface AuthLayoutProps {
   children: ReactNode;
 }
 
-export default function AuthLayout({ children }: AuthLayoutProps) {
+export default async function AuthLayout({ children }: AuthLayoutProps) {
+  const session = await getServerSession(authOptions);
+
+  // If user is already logged in, redirect to home page
+  if (session) {
+    redirect('/');
+  }
+
   return (
     <Shell
       rightPanelContent={{

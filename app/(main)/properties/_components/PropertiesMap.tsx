@@ -80,25 +80,22 @@ export function PropertiesMap({ properties }: PropertiesMapProps) {
     };
   }, []);
 
-  // Calculate center based on all properties
+  // Calculate center based on first property or default to Addis Ababa
   const center: [number, number] = useMemo(() => {
-    if (properties.length === 0) return [9.0108, 38.7546];
+    // Default center: Addis Ababa
+    const addisAbabaCenter: [number, number] = [38.7546, 9.0108];
 
-    const validProperties = properties.filter(
+    if (properties.length === 0) return addisAbabaCenter;
+
+    // Find first valid property with coordinates
+    const firstValidProperty = properties.find(
       (p) =>
         p.latitude && p.longitude && !isNaN(p.latitude) && !isNaN(p.longitude)
     );
 
-    if (validProperties.length === 0) return [9.0108, 38.7546];
+    if (!firstValidProperty) return addisAbabaCenter;
 
-    const avgLat =
-      validProperties.reduce((sum, p) => sum + p.latitude, 0) /
-      validProperties.length;
-    const avgLng =
-      validProperties.reduce((sum, p) => sum + p.longitude, 0) /
-      validProperties.length;
-
-    return [avgLat, avgLng];
+    return [firstValidProperty.longitude, firstValidProperty.latitude];
   }, [properties]);
 
   if (!isClient || !markerIcon) {
@@ -111,7 +108,7 @@ export function PropertiesMap({ properties }: PropertiesMapProps) {
     <div className="rounded-xl overflow-hidden border bg-white h-full w-full relative">
       <MapContainer
         center={center}
-        zoom={properties.length === 1 ? 19 : 14}
+        zoom={properties.length === 0 ? 12 : properties.length === 1 ? 15 : 13}
         style={{ height: '100%', width: '100%', zIndex: 0 }}
         scrollWheelZoom={true}
         className="z-0"

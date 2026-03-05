@@ -113,9 +113,10 @@ function InventoryContent({
 
 export function Inventory() {
   const { filters, setFilters, isPending } = useFilters<{
-    location: string;
+    search: string;
     propertyType: string;
     totalBedrooms: string;
+    listingType: string;
     price: string;
     view: string;
     page: string;
@@ -126,7 +127,8 @@ export function Inventory() {
 
   // Build query string from filters and page
   const query = new URLSearchParams({
-    ...(filters.location ? { search: filters.location } : {}),
+    ...(filters.search ? { search: filters.search } : {}),
+    ...(filters.listingType ? { listingType: filters.listingType } : {}),
     ...(filters.propertyType ? { propertyType: filters.propertyType } : {}),
     ...(filters.totalBedrooms && !isNaN(Number(filters.totalBedrooms))
       ? { totalBedrooms: String(Number(filters.totalBedrooms)) }

@@ -27,6 +27,7 @@ type PrismicHeroSlide = {
 };
 
 type DbProperty = {
+  id: string;
   title: string;
   listingType?: string;
   builtStartDate?: string;
@@ -137,6 +138,7 @@ async function fetchFeaturedProperties(): Promise<PropertyCardProps[]> {
           property.country
       )
       .map((property) => ({
+        id: property.id,
         title: property.title,
         type: (property.listingType?.toLowerCase() || 'sale') as
           | 'rent'

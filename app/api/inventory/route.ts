@@ -8,8 +8,23 @@ import { handleApiError, sendResponse } from '@/lib/error-handler';
 export async function GET(req: NextRequest) {
   try {
     const config: PrismaApiFeaturesConfig = {
-      allowedFields: ['propertyType', 'currentStatus', 'city', 'totalBedrooms'],
-      searchFields: ['title', 'location', 'description'],
+      allowedFields: [
+        'propertyType',
+        'listingType',
+        'currentStatus',
+        'city',
+        'totalBedrooms',
+        'country',
+      ],
+      searchFields: [
+        'title',
+        'address',
+        'city',
+        'country',
+        'currentStatus',
+        'buildingSize',
+        'deliveryTime',
+      ],
       defaultSort: { field: 'createdAt', order: 'desc' },
     } as const;
 

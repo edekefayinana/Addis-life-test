@@ -21,7 +21,7 @@ export function AuthLayout({ children, rightPanelContent }: AuthLayoutProps) {
       <div className="relative hidden lg:flex lg:w-3/8">
         <div className="relative w-full">
           <Image
-            src="/side-img.jpg"
+            src="/AU2 site Building Renders/2_12 - Photo.jpg"
             alt="Cityscape"
             fill
             className="object-cover"
