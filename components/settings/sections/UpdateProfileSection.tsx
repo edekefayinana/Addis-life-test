@@ -1,7 +1,6 @@
 'use client';
 
-import { Camera, Check } from 'lucide-react';
-import Image from 'next/image';
+import { Check } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -92,13 +91,14 @@ export function UpdateProfileSection() {
       <div className="w-full space-y-8">
         <div className="flex-1 space-y-8">
           {/* Profile Photo Skeleton */}
+          {/*
           <div className="flex flex-col items-center gap-3 pb-6 border-b border-gray-200">
             <div className="relative w-24 h-24">
               <div className="w-24 h-24 rounded-full bg-gray-200 animate-pulse flex items-center justify-center overflow-hidden" />
               <div className="absolute -bottom-1 right-2 h-7 w-7 rounded-full bg-gray-300 animate-pulse border-2 border-white" />
             </div>
             <div className="h-4 w-20 bg-gray-200 rounded animate-pulse" />
-          </div>
+          </div> */}
           {/* Basic Info Skeleton */}
           <div className="space-y-4">
             <div className="h-4 w-24 bg-gray-200 rounded animate-pulse mb-2" />
@@ -135,7 +135,7 @@ export function UpdateProfileSection() {
     <div className="w-full space-y-8">
       <div className="flex-1 space-y-8">
         {/* Profile Photo */}
-        <div className="flex flex-col items-center gap-3 pb-6 border-b border-gray-200">
+        {/* <div className="flex flex-col items-center gap-3 pb-6 border-b border-gray-200">
           <div className="relative w-24 h-24">
             <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
               {formData.image ? (
@@ -166,7 +166,7 @@ export function UpdateProfileSection() {
           <button className="text-xs font-medium text-teal-900 hover:text-teal-800">
             Edit photo
           </button>
-        </div>
+        </div> */}
         {/* Basic Info */}
         <div className="space-y-4">
           <h2 className="text-sm font-semibold text-gray-900">Basic Info.</h2>
@@ -238,15 +238,6 @@ export function UpdateProfileSection() {
               className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm bg-gray-100 cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-teal-500"
             />
           </div>
-        </div>
-        {/* Action Buttons */}
-        <div className="flex justify-end gap-3 pt-6">
-          <button className="rounded-full border border-gray-300 px-8 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-50 transition-colors">
-            Cancel
-          </button>
-          <button className="rounded-full bg-teal-900 px-8 py-2.5 text-sm font-medium text-white hover:bg-teal-800 transition-colors">
-            Done!
-          </button>
         </div>
       </div>
     </div>

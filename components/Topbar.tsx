@@ -15,9 +15,19 @@ import {
 import { getApps, initializeApp } from 'firebase/app';
 import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import { SettingsModal } from './modals/SettingsModal';
 
-function titleFromPath(pathname: string): string {
+function titleFromPath(pathname: string, userRole?: string): string {
   if (!pathname || pathname === '/') return 'Welcome Back!';
+
+  // Check if we're on the admin dashboard
+  if (
+    pathname.includes('/admin') &&
+    pathname.split('/').filter(Boolean).length <= 2
+  ) {
+    return userRole === 'ADMIN' ? 'Admin' : 'Agent';
+  }
+
   const seg = pathname.split('/').filter(Boolean)[0] || '';
   return seg.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 }
@@ -25,9 +35,10 @@ function titleFromPath(pathname: string): string {
 export function TopBar({ title }: { title?: string }) {
   const [showNotifications, setShowNotifications] = useState(false);
   const [hasUnread, setHasUnread] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
   const pathname = usePathname();
-  const computedTitle = title ?? titleFromPath(pathname);
   const { data: session } = useSession();
+  const computedTitle = title ?? titleFromPath(pathname, session?.user?.role);
 
   // Firebase config (should match NotificationsModal)
   const firebaseConfig = {
@@ -93,6 +104,7 @@ export function TopBar({ title }: { title?: string }) {
           <button
             className="relative w-8 h-8 sm:w-10 sm:h-10"
             aria-label="Open profile"
+            onClick={() => setShowSettings(true)}
           >
             <Image
               src={session?.user?.image || '/default-profile.png'}
@@ -151,6 +163,12 @@ export function TopBar({ title }: { title?: string }) {
       </div>
       {showNotifications && (
         <NotificationsModal onClose={() => setShowNotifications(false)} />
+      )}
+      {showSettings && (
+        <SettingsModal
+          isOpen={showSettings}
+          onClose={() => setShowSettings(false)}
+        />
       )}
     </div>
   );

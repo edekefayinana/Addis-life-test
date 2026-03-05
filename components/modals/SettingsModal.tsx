@@ -45,6 +45,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
         <SettingsLayout
           activeSection={activeSection}
           onSectionChange={setActiveSection}
+          onClose={onClose}
         />
       </div>
     </div>

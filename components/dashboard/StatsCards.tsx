@@ -2,15 +2,10 @@
 'use client';
 
 import { useDataFetch } from '@/lib/hooks/usedataFetch';
-
-// type Stats = {
-//   totalUnits: number;
-//   totalReservations: number;
-//   totalUsers: number;
-//   totalProjects: number;
-// };
+import { useSession } from 'next-auth/react';
 
 export function StatsCards() {
+  const { data: session } = useSession();
   const {
     data,
     isLoading: fetchLoading,
@@ -18,9 +13,10 @@ export function StatsCards() {
   } = useDataFetch<any>('/dashboard/stats');
 
   if (fetchLoading) {
+    const cardCount = session?.user?.role === 'ADMIN' ? 4 : 3;
     return (
-      <div className="grid grid-cols-4 gap-6">
-        {[...Array(4)].map((_, idx) => (
+      <div className={`grid grid-cols-${cardCount} gap-6`}>
+        {[...Array(cardCount)].map((_, idx) => (
           <div
             key={idx}
             className="bg-white rounded-lg p-6 border border-gray-200 animate-pulse"
@@ -33,15 +29,16 @@ export function StatsCards() {
       </div>
     );
   }
-  console.log(data);
 
   if (fetchError || !data) {
     return (
-      <div className="grid grid-cols-4 gap-6 text-red-500">
+      <div className="grid grid-cols-3 gap-6 text-red-500">
         Failed to load stats.
       </div>
     );
   }
+
+  const isAdmin = session?.user?.role === 'ADMIN';
 
   const cards = [
     {
@@ -54,23 +51,6 @@ export function StatsCards() {
       value: data?.data?.totalProjects ?? 0,
       description: 'Total number of projects',
     },
-    // {
-    //   title: 'Pending Commissions',
-    //   value: 'ETB 85,914',
-    //   description: 'Commissions Awaiting Approval',
-    //   change: 'Up 5% from Previous month',
-    //   isChange: true,
-    // },
-    // {
-    //   title: 'Paid Commissions',
-    //   value: 'ETB 240,183',
-    //   description: 'Commission value',
-    // },
-    {
-      title: 'Total Users',
-      value: data?.data?.totalUsers ?? 0,
-      description: 'Total number of registered users',
-    },
     {
       title: 'Available Units',
       value: data?.data?.totalUnits ?? 0,
@@ -78,8 +58,19 @@ export function StatsCards() {
     },
   ];
 
+  // Only add Total Users card for admins
+  if (isAdmin && data?.data?.totalUsers !== undefined) {
+    cards.splice(2, 0, {
+      title: 'Total Users',
+      value: data.data.totalUsers,
+      description: 'Total number of registered users',
+    });
+  }
+
+  const gridCols = isAdmin ? 'grid-cols-4' : 'grid-cols-3';
+
   return (
-    <div className="grid grid-cols-4 gap-6">
+    <div className={`grid ${gridCols} gap-6`}>
       {cards.map((stat, idx) => (
         <div
           key={idx}
@@ -108,12 +99,6 @@ export function StatsCards() {
                 <div className="text-3xl font-bold">{stat.value}</div>
               )}
             </div>
-            {/* {stat.isChange && (
-              <div className="flex items-center gap-1 text-green-600 text-sm">
-                <TrendingUp className="w-4 h-4" />
-                <span>5%</span>
-              </div>
-            )} */}
           </div>
           <p className="text-xs text-gray-500 mt-3">{stat.description}</p>
         </div>

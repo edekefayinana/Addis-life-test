@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { Eye, EyeOff } from 'lucide-react';
 
-export function ChangePasswordSection() {
+export function ChangePasswordSection({ onClose }: { onClose?: () => void }) {
   const [saving, setSaving] = useState(false);
 
   async function handleChangePassword(e: React.FormEvent) {
@@ -176,13 +176,7 @@ export function ChangePasswordSection() {
             type="button"
             className="rounded-full border border-gray-300 px-8 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-50 transition-colors"
             disabled={saving}
-            onClick={() =>
-              setFormData({
-                currentPassword: '',
-                newPassword: '',
-                confirmPassword: '',
-              })
-            }
+            onClick={onClose}
           >
             Cancel
           </button>

@@ -19,11 +19,13 @@ type ActiveSection =
 interface SettingsLayoutProps {
   activeSection: ActiveSection;
   onSectionChange: (section: ActiveSection) => void;
+  onClose: () => void;
 }
 
 export function SettingsLayout({
   activeSection,
   onSectionChange,
+  onClose,
 }: SettingsLayoutProps) {
   const sectionTitles: Record<Exclude<ActiveSection, null>, string> = {
     profile: 'Update Profile',
@@ -67,7 +69,7 @@ export function SettingsLayout({
       case 'notifications':
         return <NotificationPreferencesSection />;
       case 'password':
-        return <ChangePasswordSection />;
+        return <ChangePasswordSection onClose={onClose} />;
       case 'payment':
         return <PaymentFinanceSection />;
       case 'deactivation':
