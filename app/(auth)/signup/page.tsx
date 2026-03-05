@@ -26,23 +26,67 @@ export default function ApplyPage() {
     setErrorMessage('');
     setIsSubmitting(true);
 
-    const name = `${firstName} ${lastName}`.trim();
-
-    const response = await fetch('/api/auth/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, phone, password }),
-    });
-
-    if (!response.ok) {
-      const data = await response.json().catch(() => ({}));
-      setErrorMessage(data.error || 'Unable to create account.');
+    // Client-side validation
+    if (!firstName.trim() || !lastName.trim()) {
+      setErrorMessage('Please enter both first and last name.');
       setIsSubmitting(false);
       return;
     }
 
-    setIsSubmitting(false);
-    router.push(`/otp?email=${encodeURIComponent(email)}`);
+    if (!email.trim()) {
+      setErrorMessage('Email address is required.');
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!password.trim()) {
+      setErrorMessage('Password is required.');
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (password.length < 6) {
+      setErrorMessage('Password must be at least 6 characters long.');
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setErrorMessage('Please enter a valid email address.');
+      setIsSubmitting(false);
+      return;
+    }
+
+    const name = `${firstName} ${lastName}`.trim();
+
+    try {
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, phone, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setErrorMessage(
+          data.error || 'Unable to create account. Please try again.'
+        );
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Success - redirect to OTP page
+      router.push(`/otp?email=${encodeURIComponent(email)}`);
+    } catch (error) {
+      console.error('Registration error:', error);
+      setErrorMessage(
+        'Network error. Please check your connection and try again.'
+      );
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -180,9 +224,11 @@ export default function ApplyPage() {
           {isSubmitting ? 'Creating account...' : 'Submit for Application'}
         </Button>
 
-        {errorMessage ? (
-          <p className="text-sm text-red-600 text-center">{errorMessage}</p>
-        ) : null}
+        {errorMessage && (
+          <div className="p-4 rounded-lg bg-red-50 border border-red-200">
+            <p className="text-sm text-red-700 text-center">{errorMessage}</p>
+          </div>
+        )}
 
         <div className="text-center text-base">
           <span className="text-gray-600">Already have agent account? </span>
