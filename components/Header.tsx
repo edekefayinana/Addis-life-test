@@ -486,7 +486,7 @@ export function Header({ variant }: HeaderProps) {
                 </Link>
                 <Link
                   href="/signup"
-                  className="rounded-full bg-brand-dark px-4 py-2 text-center text-sm font-semibold text-white hover:bg-brand-dark/90"
+                  className="rounded-full bg-brand-dark px-4 py-2 text-center text-sm font-semibold !text-white hover:bg-brand-dark/90"
                   onClick={() => setIsMobileOpen(false)}
                 >
                   Sign Up

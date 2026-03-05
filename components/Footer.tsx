@@ -184,25 +184,25 @@ function ContactList() {
   );
 }
 
-function SubscribeForm() {
-  return (
-    <div className="space-y-4">
-      <div className="flex items-center border-b border-footer-border/10 pb-2">
-        <input
-          type="email"
-          placeholder="Your e-mail"
-          className="bg-transparent border-none text-sm w-full focus:ring-0 placeholder:text-footer-title focus:outline-none"
-        />
-        <button className="bg-footer-button hover:bg-footer-button-hover text-white text-xs px-6 py-3 rounded-full transition-colors">
-          Subscribe
-        </button>
-      </div>
-      <p className="text-footer-white text-base font-normal">
-        Subscribe to our newsletter to receive our weekly feed.
-      </p>
-    </div>
-  );
-}
+// function SubscribeForm() {
+//   return (
+//     <div className="space-y-4">
+//       <div className="flex items-center border-b border-footer-border/10 pb-2">
+//         <input
+//           type="email"
+//           placeholder="Your e-mail"
+//           className="bg-transparent border-none text-sm w-full focus:ring-0 placeholder:text-footer-title focus:outline-none"
+//         />
+//         <button className="bg-footer-button hover:bg-footer-button-hover text-white text-xs px-6 py-3 rounded-full transition-colors">
+//           Subscribe
+//         </button>
+//       </div>
+//       <p className="text-footer-white text-base font-normal">
+//         Subscribe to our newsletter to receive our weekly feed.
+//       </p>
+//     </div>
+//   );
+// }
 
 export function Footer() {
   return (
@@ -233,7 +233,7 @@ export function Footer() {
               experience.
             </p>
 
-            <SubscribeForm />
+            {/* <SubscribeForm /> */}
           </div>
 
           <FooterList
@@ -250,9 +250,20 @@ export function Footer() {
         </div>
 
         {/* Footer Bottom */}
-        <div className="border-t border-footer-border/10 pt-12 pb-4 flex flex-col md:flex-row justify-center items-center relative">
-          <p className="text-footer-white text-base text-center">
+        <div className="border-t border-footer-border/10 pt-12 pb-4 flex flex-col md:flex-row justify-between items-center relative">
+          <p className="text-footer-white text-base text-center md:text-left">
             Copyright &copy; 2025. Addis Life Real Estate
+          </p>
+          <p className="text-footer-white text-base text-center md:text-right mt-2 md:mt-0">
+            Developed by{' '}
+            <Link
+              href="https://www.venastechnology.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400 hover:text-blue-300 hover:underline transition-colors"
+            >
+              Venas Technology
+            </Link>
           </p>
         </div>
       </div>

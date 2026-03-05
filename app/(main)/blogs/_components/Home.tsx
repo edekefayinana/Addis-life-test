@@ -13,7 +13,7 @@ export default function Home() {
           Stay updated with new listings, market trends, and investment
           opportunities delivered directly to your inbox.
         </p>
-        <div className="flex w-full max-w-[587px] bg-white rounded-full overflow-hidden items-center pl-4 pr-1 py-1 h-[56px]">
+        {/* <div className="flex w-full max-w-[587px] bg-white rounded-full overflow-hidden items-center pl-4 pr-1 py-1 h-[56px]">
           <input
             placeholder="Enter your Email"
             className=" w-full text-black pl-4 placeholder:text-black/80 border-0 outline-none shadow-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 bg-transparent"
@@ -21,7 +21,7 @@ export default function Home() {
           <button className="rounded-full h-full text-base bg-[#003246] font-medium text-white px-8 py-2 shrink-0">
             Subscribe
           </button>
-        </div>
+        </div> */}
       </div>
       <Image
         src={'/images/blogs-hero-bg.svg'}
