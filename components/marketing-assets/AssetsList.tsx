@@ -4,16 +4,12 @@ import { useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { Download, FileText, Folder, FileArchive } from 'lucide-react';
-import SearchFilterBar, {
-  type SortKey,
-  type SortOrder,
-} from '@/components/SearchFilterBar';
+import { AssetsFilters } from './AssetsFilters';
 import { FilterTabs } from '@/components/FilterTabs';
 import { usePagination } from '@/lib/hooks/usePagination';
 import { PAGE_SIZE } from '@/lib/constants';
 import { buildPaginationQuery } from '@/lib/utils/filters';
 import { Pagination } from '@/components/inventory/Pagination';
-import { useSorting } from '@/lib/hooks/useSorting';
 
 type AssetCategory = 'all' | 'flyer' | 'brochure' | 'image' | 'floor-plan';
 
@@ -93,14 +89,18 @@ interface AssetsListProps {
 }
 
 export function AssetsList({ onSelectAsset }: AssetsListProps) {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [filters, setFilters] = useState({
+    search: '',
+    sortBy: 'name',
+    sortOrder: 'asc',
+  });
   const searchParams = useSearchParams();
   const activeCategory =
     (searchParams.get('category') as AssetCategory) ?? 'all';
   const { currentPage } = usePagination();
 
   const filteredAssets = useMemo(() => {
-    const q = searchTerm.trim().toLowerCase();
+    const q = filters.search.trim().toLowerCase();
     return assets.filter((asset) => {
       const matchesCategory =
         activeCategory === 'all' ? true : asset.category === activeCategory;
@@ -112,7 +112,7 @@ export function AssetsList({ onSelectAsset }: AssetsListProps) {
         asset.fileType.toLowerCase().includes(q)
       );
     });
-  }, [activeCategory, searchTerm]);
+  }, [activeCategory, filters.search]);
 
   const parseRelativeAge = (label: string): number => {
     const lower = label.toLowerCase().trim();
@@ -124,19 +124,40 @@ export function AssetsList({ onSelectAsset }: AssetsListProps) {
     return days;
   };
 
-  const {
-    sortedData: sortedAssets,
-    sortKey,
-    sortOrder,
-    setSort,
-  } = useSorting(filteredAssets, {
-    defaultKey: 'name',
-    defaultOrder: 'asc',
-    sorters: {
-      name: (asset) => asset.name,
-      date: (asset) => parseRelativeAge(asset.lastUpdated),
-    },
-  });
+  const sortedAssets = useMemo(() => {
+    const sorted = [...filteredAssets];
+    const isDesc = filters.sortOrder === 'desc';
+
+    sorted.sort((a, b) => {
+      let aVal: string | number;
+      let bVal: string | number;
+
+      switch (filters.sortBy) {
+        case 'name':
+          aVal = a.name;
+          bVal = b.name;
+          break;
+        case 'date':
+          aVal = parseRelativeAge(a.lastUpdated);
+          bVal = parseRelativeAge(b.lastUpdated);
+          break;
+        default:
+          return 0;
+      }
+
+      if (typeof aVal === 'string' && typeof bVal === 'string') {
+        return isDesc ? bVal.localeCompare(aVal) : aVal.localeCompare(bVal);
+      }
+
+      if (typeof aVal === 'number' && typeof bVal === 'number') {
+        return isDesc ? bVal - aVal : aVal - bVal;
+      }
+
+      return 0;
+    });
+
+    return sorted;
+  }, [filteredAssets, filters.sortBy, filters.sortOrder]);
 
   const totalPages = Math.max(1, Math.ceil(sortedAssets.length / PAGE_SIZE));
   const safePage = Math.min(currentPage, totalPages);
@@ -178,14 +199,7 @@ export function AssetsList({ onSelectAsset }: AssetsListProps) {
         </div>
 
         <div className="px-6 pb-4 pt-3">
-          <SearchFilterBar
-            value={searchTerm}
-            onChange={setSearchTerm}
-            placeholder="Search by Project Name, File name or File Type"
-            sortKey={sortKey as SortKey}
-            sortOrder={sortOrder as SortOrder}
-            onSortChange={({ key, order }) => setSort(key, order)}
-          />
+          <AssetsFilters filters={filters} onChange={setFilters} />
         </div>
 
         <div className="px-6 pb-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">

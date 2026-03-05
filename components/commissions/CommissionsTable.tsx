@@ -2,14 +2,10 @@
 
 import { useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import SearchFilterBar, {
-  type SortKey,
-  type SortOrder,
-} from '@/components/SearchFilterBar';
+import { CommissionsFilters } from './CommissionsFilters';
 import DataTable, { StatusBadge } from '@/components/table/DataTable';
 import { FilterTabs } from '@/components/FilterTabs';
 import { usePagination } from '@/lib/hooks/usePagination';
-import { useSorting } from '@/lib/hooks/useSorting';
 import { PAGE_SIZE } from '@/lib/constants';
 
 type Status = 'all' | 'pending' | 'approved' | 'paid';
@@ -113,7 +109,11 @@ interface CommissionsTableProps {
 export function CommissionsTable({
   onSelectCommission,
 }: CommissionsTableProps) {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [filters, setFilters] = useState({
+    search: '',
+    sortBy: 'date',
+    sortOrder: 'desc',
+  });
   const searchParams = useSearchParams();
   const activeStatus = (searchParams.get('status') as Status) ?? 'all';
   const { currentPage, setPage } = usePagination();
@@ -124,7 +124,7 @@ export function CommissionsTable({
   };
 
   const filtered = useMemo(() => {
-    const query = searchTerm.trim().toLowerCase();
+    const query = filters.search.trim().toLowerCase();
     return COMMISSIONS.filter((row) => {
       const matchesStatus =
         activeStatus === 'all' ? true : row.status === activeStatus;
@@ -134,43 +134,61 @@ export function CommissionsTable({
         f.toLowerCase().includes(query)
       );
     });
-  }, [activeStatus, searchTerm]);
+  }, [activeStatus, filters.search]);
 
-  const { sortedData, sortKey, sortOrder, setSort } = useSorting<CommissionRow>(
-    filtered,
-    {
-      defaultKey: 'date',
-      sorters: {
-        name: (row) => row.clientName,
-        date: (row) => row.reservationDate,
-      },
-    }
-  );
+  const parseAmount = (amount: string): number => {
+    return parseFloat(amount.replace(/[^\d.]/g, ''));
+  };
+
+  const sortedData = useMemo(() => {
+    const sorted = [...filtered];
+    const isDesc = filters.sortOrder === 'desc';
+
+    sorted.sort((a, b) => {
+      let aVal: string | number;
+      let bVal: string | number;
+
+      switch (filters.sortBy) {
+        case 'name':
+          aVal = a.clientName;
+          bVal = b.clientName;
+          break;
+        case 'date':
+          aVal = new Date(a.reservationDate).getTime();
+          bVal = new Date(b.reservationDate).getTime();
+          break;
+        case 'amount':
+          aVal = parseAmount(a.amount);
+          bVal = parseAmount(b.amount);
+          break;
+        default:
+          return 0;
+      }
+
+      if (typeof aVal === 'string' && typeof bVal === 'string') {
+        return isDesc ? bVal.localeCompare(aVal) : aVal.localeCompare(bVal);
+      }
+
+      if (typeof aVal === 'number' && typeof bVal === 'number') {
+        return isDesc ? bVal - aVal : aVal - bVal;
+      }
+
+      return 0;
+    });
+
+    return sorted;
+  }, [filtered, filters.sortBy, filters.sortOrder]);
 
   return (
     <div className="bg-white rounded-2xl shadow-sm p-6">
       <div className="p-6 space-y-4">
-        <div>
-          <h1 className="text-2xl font-semibold text-gray-900">Commissions</h1>
-          <p className="text-sm text-gray-600">
-            Track payout status across reservations.
-          </p>
-        </div>
+        <CommissionsFilters filters={filters} onChange={setFilters} />
 
         <FilterTabs
           tabs={STATUS_TABS}
           queryKey="status"
           defaultValue="all"
           underlineClassName="bg-orange-500"
-        />
-
-        <SearchFilterBar
-          value={searchTerm}
-          onChange={setSearchTerm}
-          placeholder="Search by Unit, Project, or Client Name"
-          sortKey={sortKey as SortKey}
-          sortOrder={sortOrder as SortOrder}
-          onSortChange={({ key, order }) => setSort(key, order)}
         />
       </div>
 

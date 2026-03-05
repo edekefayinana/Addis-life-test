@@ -4,11 +4,86 @@ import prisma from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { handleApiError, sendResponse } from '@/lib/error-handler';
+import { PrismaApiFeatures, PrismaApiFeaturesConfig } from '@/lib/apiFeatures';
 import {
   notifyPropertyOwner,
   notifyReservationConfirmed,
   notifyReservationCancelled,
 } from '@/lib/firebase-admin';
+
+// GET /api/reservations - List reservations with filtering, sorting, and pagination
+export async function GET(req: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) {
+      return sendResponse({ error: 'Unauthorized' }, 0, undefined, 401);
+    }
+
+    const isAdmin = session.user.role === 'ADMIN';
+
+    const config: PrismaApiFeaturesConfig = {
+      allowedFields: ['status'],
+      searchFields: [], // We'll handle search manually for related fields
+      defaultSort: { field: 'createdAt', order: 'desc' },
+    };
+
+    const features = new PrismaApiFeatures(
+      Object.fromEntries(req.nextUrl.searchParams),
+      config
+    )
+      .filter()
+      .sort()
+      .paginate();
+
+    // Build where clause
+    const where: any = features.build().where || {};
+
+    // Add role-based filtering
+    if (!isAdmin) {
+      where.userId = session.user.id;
+    }
+
+    // Handle search across related fields
+    const searchParam = req.nextUrl.searchParams.get('search');
+    if (searchParam) {
+      where.OR = [
+        { property: { title: { contains: searchParam, mode: 'insensitive' } } },
+        {
+          property: {
+            project: { name: { contains: searchParam, mode: 'insensitive' } },
+          },
+        },
+        { user: { name: { contains: searchParam, mode: 'insensitive' } } },
+        { user: { email: { contains: searchParam, mode: 'insensitive' } } },
+      ];
+    }
+
+    // Get total count for pagination
+    const totalCount = await prisma.reservation.count({ where });
+
+    // Fetch reservations
+    const reservations = await prisma.reservation.findMany({
+      where,
+      include: {
+        property: {
+          include: { project: true },
+        },
+        user: true,
+      },
+      orderBy: features.build().orderBy,
+      skip: features.build().skip,
+      take: features.build().take,
+    });
+
+    return sendResponse(
+      reservations,
+      reservations.length,
+      features.getMeta(totalCount)
+    );
+  } catch (error) {
+    return handleApiError(error);
+  }
+}
 
 // POST /api/reservations - Create a reservation/hold
 export async function POST(req: NextRequest) {
@@ -175,37 +250,6 @@ export async function PATCH(req: NextRequest) {
     }
 
     return sendResponse(updated, 1);
-  } catch (error) {
-    return handleApiError(error);
-  }
-}
-
-// GET /api/reservations?propertyId=... - List reservations for a property
-// req: NextRequest
-export async function GET() {
-  try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
-      return sendResponse({ error: 'Unauthorized' }, 0, undefined, 401);
-    }
-    // const { searchParams } = new URL(req.url);
-    const isAdmin = session.user.role === 'ADMIN';
-    const where: any = {};
-    if (!isAdmin) {
-      where.userId = session.user.id;
-    }
-    // Optionally filter by propertyId or other params here
-    const reservations = await prisma.reservation.findMany({
-      where,
-      include: {
-        property: {
-          include: { project: true },
-        },
-        user: true,
-      },
-      orderBy: { createdAt: 'desc' },
-    });
-    return sendResponse(reservations, reservations.length);
   } catch (error) {
     return handleApiError(error);
   }

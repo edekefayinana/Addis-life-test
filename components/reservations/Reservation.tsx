@@ -1,22 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { ReservationDetailPanel } from '@/components/panels/ReservationDetailPanel';
-import SearchFilterBar, {
-  type SortKey,
-  type SortOrder,
-} from '@/components/SearchFilterBar';
 import DataTable, { StatusBadge } from '@/components/table/DataTable';
-import { usePagination } from '@/lib/hooks/usePagination';
-import { useSorting } from '@/lib/hooks/useSorting';
 import { useSession } from 'next-auth/react';
-import { useState } from 'react';
-import { useReservations } from './useReservations';
-
-// const SEGMENTS = [
-//   { label: "Clients", value: "clients" },
-//   { label: "Service Provider", value: "service-provider" },
-//   { label: "Admin", value: "admin" },
-// ]
+import { Suspense, useState } from 'react';
+import { ReservationFilters } from './ReservationFilters';
+import { useFilters } from '@/lib/hooks/useFilters';
+import { PAGE_SIZE } from '@/lib/constants';
+import { useDataFetch } from '@/lib/hooks/usedataFetch';
 
 export type ReservationRow = {
   id: string;
@@ -28,38 +20,54 @@ export type ReservationRow = {
   status: string;
   segment: 'clients' | 'service-provider' | 'admin';
 };
-export default function Reservation() {
-  const { data: session } = useSession();
-  const userRole = session?.user?.role || 'AGENT';
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [search, setSearch] = useState('');
-  // const { currentPage, setPage } = usePagination();
-  const { currentPage, currentLimit, setPage, setLimit } = usePagination();
-  // Fetch reservations based on role
-  // Build query string using URLSearchParams for clarity and flexibility
-  const queryParams = new URLSearchParams();
-  if (search) queryParams.set('search', search);
-  queryParams.set('page', String(currentPage));
-  queryParams.set('limit', String(currentLimit));
 
-  const {
-    reservations,
-    loading,
-    refetch: refetchReservations,
-  } = useReservations({
-    all: userRole === 'ADMIN',
-    query: queryParams.toString(),
+// Adapter function to convert API data to ReservationRow format
+function adaptReservationData(apiReservation: any): ReservationRow {
+  return {
+    id: apiReservation.id,
+    unit: apiReservation.property?.title || apiReservation.propertyId,
+    project: apiReservation.property?.project?.name || 'Unknown Project',
+    clientName: apiReservation.user?.name || apiReservation.userId,
+    bedrooms: apiReservation.property?.totalBedrooms?.toString() ?? '-',
+    date: new Date(apiReservation.createdAt).toLocaleDateString(),
+    status:
+      apiReservation.status.charAt(0) +
+      apiReservation.status.slice(1).toLowerCase(),
+    segment: 'clients',
+  };
+}
+
+function ReservationContent({
+  query,
+  isPending,
+  userRole,
+  onRefetch,
+}: {
+  query: string;
+  isPending: boolean;
+  userRole: string;
+  onRefetch: () => void;
+}) {
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  const { isLoading, data, refetch } = useDataFetch<any>('reservations', {
+    queryString: query,
   });
 
-  // Sorting
-  const { sortedData, sortKey, sortOrder, setSort } =
-    useSorting<ReservationRow>(reservations, {
-      defaultKey: 'date',
-      sorters: {
-        name: (row) => row.clientName,
-        date: (row) => row.date,
-      },
-    });
+  // Show skeleton during filter transitions
+  if (isLoading || isPending) {
+    return (
+      <section>
+        <ReservationSkeleton row={PAGE_SIZE} />
+      </section>
+    );
+  }
+
+  // Get pagination metadata from API response
+  const rawReservations = data?.data || [];
+
+  // Adapt reservations to the format ReservationRow expects
+  const reservations = rawReservations.map(adaptReservationData);
 
   // Reservation actions
   const handleCancel = async (id: string) => {
@@ -68,132 +76,102 @@ export default function Reservation() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id, action: 'CANCEL' }),
     });
-    refetchReservations();
+    refetch();
+    onRefetch();
   };
+
   const handleConfirm = async (id: string) => {
     await fetch(`/api/reservations`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id, action: 'CONFIRM' }),
     });
-    refetchReservations();
+    refetch();
+    onRefetch();
   };
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
-      <div className="mx-auto space-y-6 bg-white rounded-2xl p-6 border border-gray-200">
-        <div className="rounded-2xl p-6 space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-semibold text-gray-900">
-                Reservations
-              </h1>
-              <p className="text-sm text-gray-600">
-                View and manage all reservations across channels.
-              </p>
-            </div>
-          </div>
-
-          {/* <FilterTabs tabs={segments} queryKey="segment" defaultValue="clients" underlineClassName="bg-orange-500" /> */}
-
-          <SearchFilterBar
-            className="mt-2"
-            value={search}
-            onChange={setSearch}
-            placeholder="Search by Unit, Project, or Client Name"
-            sortKey={sortKey as SortKey}
-            sortOrder={sortOrder as SortOrder}
-            onSortChange={({ key, order }) => setSort(key, order)}
-          />
-        </div>
-        {loading ? (
-          <ReservationSkeleton row={currentLimit} />
-        ) : (
-          <DataTable<ReservationRow>
-            columns={[
+    <>
+      <DataTable<ReservationRow>
+        columns={[
+          {
+            key: 'checkbox',
+            header: '',
+            width: '48px',
+            render: () => (
+              <input type="checkbox" className="rounded border-gray-300" />
+            ),
+          },
+          {
+            key: 'unit',
+            header: 'Unit',
+            render: (r) => (
+              <span className="font-medium text-gray-900">{r.unit}</span>
+            ),
+          },
+          {
+            key: 'project',
+            header: 'Project',
+            render: (r) => <span className="text-gray-600">{r.project}</span>,
+          },
+          {
+            key: 'clientName',
+            header: 'Client Name',
+            render: (r) => (
+              <span className="text-gray-800 font-semibold">
+                {r.clientName}
+              </span>
+            ),
+          },
+          {
+            key: 'bedrooms',
+            header: 'Bedrooms',
+            render: (r) => <span className="text-gray-600">{r.bedrooms}</span>,
+          },
+          {
+            key: 'date',
+            header: 'Reservation Date',
+            render: (r) => <span className="text-gray-700">{r.date}</span>,
+          },
+          {
+            key: 'status',
+            header: 'Status',
+            render: (r) => <StatusBadge status={r.status} />,
+          },
+        ]}
+        data={reservations}
+        total={data?.meta?.totalRecords || reservations.length}
+        getRowId={(row) => row.id}
+        actionsMenuItems={(row) => {
+          const actions = [
+            { label: 'View Detail', onClick: () => setSelectedId(row.id) },
+          ];
+          if (userRole === 'ADMIN') {
+            actions.push(
               {
-                key: 'checkbox',
-                header: '',
-                width: '48px',
-                render: () => (
-                  <input type="checkbox" className="rounded border-gray-300" />
-                ),
+                label: 'Confirm Reservation',
+                onClick: () => handleConfirm(row.id),
               },
               {
-                key: 'unit',
-                header: 'Unit',
-                render: (r) => (
-                  <span className="font-medium text-gray-900">{r.unit}</span>
-                ),
-              },
-              {
-                key: 'project',
-                header: 'Project',
-                render: (r) => (
-                  <span className="text-gray-600">{r.project}</span>
-                ),
-              },
-              {
-                key: 'clientName',
-                header: 'Client Name',
-                render: (r) => (
-                  <span className="text-gray-800 font-semibold">
-                    {r.clientName}
-                  </span>
-                ),
-              },
-              {
-                key: 'bedrooms',
-                header: 'Bedrooms',
-                render: (r) => (
-                  <span className="text-gray-600">{r.bedrooms}</span>
-                ),
-              },
-              {
-                key: 'date',
-                header: 'Reservation Date',
-                render: (r) => <span className="text-gray-700">{r.date}</span>,
-              },
-              {
-                key: 'status',
-                header: 'Status',
-                render: (r) => <StatusBadge status={r.status} />,
-              },
-            ]}
-            data={sortedData}
-            page={currentPage}
-            pageSize={currentLimit}
-            total={reservations.length} // Change this to a 'totalCount' from API if available
-            onPageChange={setPage}
-            onPageSizeChange={setLimit}
-            getRowId={(row) => row.id}
-            // onRowClick={(row) => setSelectedId(row.id)}
-            actionsMenuItems={(row) => {
-              const actions = [
-                { label: 'View Detail', onClick: () => setSelectedId(row.id) },
-              ];
-              if (userRole === 'ADMIN') {
-                actions.push(
-                  {
-                    label: 'Confirm Reservation',
-                    onClick: () => handleConfirm(row.id),
-                  },
-                  {
-                    label: 'Cancel Reservation',
-                    onClick: () => handleCancel(row.id),
-                  }
-                );
-              } else if (userRole === 'AGENT') {
-                actions.push({
-                  label: 'Cancel Reservation',
-                  onClick: () => handleCancel(row.id),
-                });
+                label: 'Cancel Reservation',
+                onClick: () => handleCancel(row.id),
               }
-              return actions;
-            }}
-          />
-        )}
-      </div>
+            );
+          } else if (userRole === 'AGENT') {
+            actions.push({
+              label: 'Cancel Reservation',
+              onClick: () => handleCancel(row.id),
+            });
+          }
+          return actions;
+        }}
+      />
+
+      {reservations.length === 0 && (
+        <div className="text-center py-12 text-gray-500">
+          No reservations found. Try adjusting your filters.
+        </div>
+      )}
 
       {selectedId && (
         <div
@@ -203,11 +181,58 @@ export default function Reservation() {
           }}
         >
           <ReservationDetailPanel
-            reservation={reservations.find((r) => r.id === selectedId)}
+            reservation={rawReservations.find((r: any) => r.id === selectedId)}
             onClose={() => setSelectedId(null)}
           />
         </div>
       )}
+    </>
+  );
+}
+
+export default function Reservation() {
+  const { data: session } = useSession();
+  const userRole = session?.user?.role || 'AGENT';
+  const [refetchKey, setRefetchKey] = useState(0);
+
+  const { filters, setFilters, isPending } = useFilters<{
+    search: string;
+    status: string;
+    sortBy: string;
+    sortOrder: string;
+    page: string;
+  }>();
+
+  // Build query string from filters and page
+  const query = new URLSearchParams({
+    ...(filters.search ? { search: filters.search } : {}),
+    ...(filters.status ? { status: filters.status } : {}),
+    ...(filters.sortBy && filters.sortOrder
+      ? { sort: `${filters.sortOrder === 'desc' ? '-' : ''}${filters.sortBy}` }
+      : {}),
+    page: String(filters.page ?? '1'),
+    limit: String(PAGE_SIZE),
+  }).toString();
+
+  return (
+    <div className="p-8 bg-gray-50 min-h-screen">
+      <div className="mx-auto space-y-6">
+        <ReservationFilters filters={filters} onChange={setFilters} />
+
+        <div className="bg-white rounded-2xl p-6 border border-gray-200">
+          <Suspense
+            key={`${query}-${refetchKey}`}
+            fallback={<ReservationSkeleton row={PAGE_SIZE} />}
+          >
+            <ReservationContent
+              query={query}
+              isPending={isPending}
+              userRole={userRole}
+              onRefetch={() => setRefetchKey((k) => k + 1)}
+            />
+          </Suspense>
+        </div>
+      </div>
     </div>
   );
 }

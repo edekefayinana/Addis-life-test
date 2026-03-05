@@ -1,14 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
-// import { FilterTabs } from '@/components/FilterTabs';
-import SearchFilterBar, {
-  SortKey,
-  SortOrder,
-} from '@/components/SearchFilterBar';
+
 import DataTable, { Column, StatusBadge } from '@/components/table/DataTable';
-import { usePagination } from '@/lib/hooks/usePagination';
-import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
+import { UserFilters } from './UserFilters';
+import { useFilters } from '@/lib/hooks/useFilters';
+import { PAGE_SIZE } from '@/lib/constants';
+import { useDataFetch } from '@/lib/hooks/usedataFetch';
+import { Suspense, useState } from 'react';
 
 interface User {
   id: string;
@@ -18,70 +18,33 @@ interface User {
   approvalStatus?: 'PENDING' | 'APPROVED';
   propertyCount?: number;
 }
-export default function UsersTable() {
-  const { data: session } = useSession();
-  const currentUserId = session?.user?.id;
 
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refresh, setRefresh] = useState(0);
-  const [search, setSearch] = useState('');
-  const [sortKey, setSortKey] = useState<SortKey>('email');
-  const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
-  const [activeSegment] = useState('all');
-  const [total, setTotal] = useState(0);
-  const { currentPage, currentLimit, setPage, setLimit } = usePagination();
+function UsersContent({
+  query,
+  isPending,
+  currentUserId,
+  onRefetch,
+}: {
+  query: string;
+  isPending: boolean;
+  currentUserId?: string;
+  onRefetch: () => void;
+}) {
+  const { isLoading, data, refetch } = useDataFetch<any>('agents', {
+    queryString: query,
+  });
 
-  useEffect(() => {
-    queueMicrotask(() => setLoading(true));
-    const params = new URLSearchParams();
-    if (search) params.set('search', search);
-    if (activeSegment && activeSegment !== 'all')
-      params.set('segment', activeSegment);
-    params.set('page', String(currentPage));
-    params.set('limit', String(currentLimit));
-    params.set('sortKey', sortKey);
-    params.set('sortOrder', sortOrder);
-    console.log('Params:', params.toString());
+  // Show skeleton during filter transitions
+  if (isLoading || isPending) {
+    return <UsersSkeleton row={PAGE_SIZE} />;
+  }
 
-    fetch(`/api/agents?${params.toString()}`, { credentials: 'include' })
-      .then((res) => res.json())
-      .then((data) => {
-        setUsers(data.data || []);
-        console.log('Data:', data);
-
-        setTotal(data.meta.totalRecords - 1 || 0);
-        setLoading(false);
-      })
-      .catch(() => {
-        setLoading(false);
-      });
-  }, [
-    refresh,
-    search,
-    activeSegment,
-    currentPage,
-    currentLimit,
-    sortKey,
-    sortOrder,
-  ]);
-  console.log(total);
-
-  // Map SortKey to User property
-  // const getUserSortValue = (user: User, key: SortKey): string | number => {
-  //   switch (key) {
-  //     case 'name':
-  //       return user.name?.toLowerCase() || '';
-  //     case 'email':
-  //       return user.email?.toLowerCase() || '';
-  //     default:
-  //       return '';
-  //   }
-  // };
+  const rawUsers = data?.data || [];
+  const totalRecords = data?.meta?.totalRecords || 0;
 
   // Exclude current user from users list
-  const filteredUsers = users.filter(
-    (u) => !(currentUserId && u.id === currentUserId)
+  const filteredUsers = rawUsers.filter(
+    (u: User) => !(currentUserId && u.id === currentUserId)
   );
 
   const handleToggleApproval = async (user: User) => {
@@ -94,12 +57,13 @@ export default function UsersTable() {
         body: JSON.stringify({ approvalStatus: newStatus }),
         credentials: 'include',
       });
-      setRefresh((r) => r + 1);
+      refetch();
+      onRefetch();
       toast.success(
         `User ${newStatus === 'APPROVED' ? 'approved' : 'rejected'} successfully`
       );
     } catch {
-      alert('Failed to update user status');
+      toast.error('Failed to update user status');
     }
   };
 
@@ -118,109 +82,133 @@ export default function UsersTable() {
       render: (row) => <StatusBadge status={row.approvalStatus || 'pending'} />,
     },
   ];
-  // const segments = [
-  //   { label: 'All', value: 'all' },
-  //   { label: 'Admins', value: 'admin' },
-  //   { label: 'Agents', value: 'agent' },
-  //   { label: 'Pending', value: 'pending' },
-  //   { label: 'Approved', value: 'approved' },
-  // ];
+
   return (
-    <div className="mx-auto p-8">
-      <h1 className="text-2xl font-bold mb-6">Users</h1>
-      <div className="rounded-2xl p-6 space-y-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-semibold text-gray-900">
-              Reservations
-            </h1>
-            <p className="text-sm text-gray-600">
-              View and manage all reservations across channels.
-            </p>
-          </div>
-        </div>
-
-        {/* <FilterTabs
-          tabs={segments}
-          queryKey="segment"
-          defaultValue="all"
-          underlineClassName="bg-orange-500"
-          onChange={setActiveSegment}
-        /> */}
-
-        <SearchFilterBar
-          className="mt-2"
-          value={search}
-          onChange={setSearch}
-          placeholder="Search by Name or Email"
-          sortKey={sortKey as SortKey}
-          sortOrder={sortOrder as SortOrder}
-          onSortChange={({ key, order }) => {
-            setSortKey(key);
-            setSortOrder(order);
-          }}
-        />
-      </div>
-      {loading ? (
-        <div className="border rounded-md overflow-hidden animate-pulse">
-          <div className="bg-gray-100 h-12 flex items-center px-4">
-            {columns.map((col, i) => (
-              <div key={i} className="w-1/5 h-6 bg-gray-200 rounded mr-4"></div>
-            ))}
-          </div>
-          {Array.from({ length: currentLimit }).map((_, i) => (
-            <div
-              key={i}
-              className="flex items-center px-4 border-t border-gray-100 h-14"
+    <>
+      <DataTable
+        notfoundData={
+          <div className="py-12 text-center text-gray-500 text-base flex flex-col items-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="mx-auto h-12 w-12 text-gray-300"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
             >
-              {columns.map((col, j) => (
-                <div
-                  key={j}
-                  className="w-1/5 h-6 bg-gray-100 rounded mr-4"
-                ></div>
-              ))}
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 14l9-5-9-5-9 5 9 5zm0 7v-7m0 0L3 9m9 5l9-5"
+              />
+            </svg>
+            <div>No users found.</div>
+            <div className="text-sm text-gray-400">
+              Try adjusting your search or filters.
             </div>
-          ))}
+          </div>
+        }
+        columns={columns}
+        data={filteredUsers}
+        total={totalRecords - 1} // Subtract 1 for current user
+        actionsMenuItems={(row) => [
+          {
+            label: row.approvalStatus === 'APPROVED' ? 'Reject' : 'Approve',
+            onClick: () => handleToggleApproval(row),
+          },
+        ]}
+      />
+    </>
+  );
+}
+
+export default function UsersTable() {
+  const { data: session } = useSession();
+  const currentUserId = session?.user?.id;
+  const [refetchKey, setRefetchKey] = useState(0);
+
+  const { filters, setFilters, isPending } = useFilters<{
+    search: string;
+    role: string;
+    approvalStatus: string;
+    sortBy: string;
+    sortOrder: string;
+    page: string;
+  }>();
+
+  // Build query string from filters and page
+  const query = new URLSearchParams({
+    ...(filters.search ? { search: filters.search } : {}),
+    ...(filters.role ? { role: filters.role } : {}),
+    ...(filters.approvalStatus
+      ? { approvalStatus: filters.approvalStatus }
+      : {}),
+    ...(filters.sortBy && filters.sortOrder
+      ? { sort: `${filters.sortOrder === 'desc' ? '-' : ''}${filters.sortBy}` }
+      : {}),
+    page: String(filters.page ?? '1'),
+    limit: String(PAGE_SIZE),
+  }).toString();
+
+  return (
+    <div className="mx-auto p-8 bg-gray-50 min-h-screen">
+      <div className="space-y-6">
+        <UserFilters filters={filters} onChange={setFilters} />
+
+        <div className="bg-white rounded-2xl p-6 border border-gray-200">
+          <Suspense
+            key={`${query}-${refetchKey}`}
+            fallback={<UsersSkeleton row={PAGE_SIZE} />}
+          >
+            <UsersContent
+              query={query}
+              isPending={isPending}
+              currentUserId={currentUserId}
+              onRefetch={() => setRefetchKey((k) => k + 1)}
+            />
+          </Suspense>
         </div>
-      ) : (
-        <DataTable
-          notfoundData={
-            <div className="py-12 text-center text-gray-500 text-base flex flex-col items-center gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="mx-auto h-12 w-12 text-gray-300"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+      </div>
+    </div>
+  );
+}
+
+function UsersSkeleton({ row = 8 }: { row?: number }) {
+  const columns = [
+    { header: 'Name' },
+    { header: 'Email' },
+    { header: 'Role' },
+    { header: 'Properties' },
+    { header: 'Status' },
+  ];
+
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="border-b border-gray-200 bg-gray-50/60">
+            {columns.map((col, i) => (
+              <th
+                key={i}
+                className="text-left py-3 px-4 font-semibold text-gray-700"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 14l9-5-9-5-9 5 9 5zm0 7v-7m0 0L3 9m9 5l9-5"
-                />
-              </svg>
-              <div>No users found.</div>
-              <div className="text-sm text-gray-400">
-                Try adjusting your search or filters.
-              </div>
-            </div>
-          }
-          columns={columns}
-          data={filteredUsers}
-          total={total}
-          page={currentPage}
-          pageSize={currentLimit}
-          onPageChange={setPage}
-          onPageSizeChange={setLimit}
-          actionsMenuItems={(row) => [
-            {
-              label: row.approvalStatus === 'APPROVED' ? 'Reject' : 'Approve',
-              onClick: () => handleToggleApproval(row),
-            },
-          ]}
-        />
-      )}
+                {col.header}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {Array.from({ length: row }).map((_, rowIdx) => (
+            <tr key={rowIdx} className="animate-pulse border-b border-gray-100">
+              {columns.map((_, colIdx) => (
+                <td key={colIdx} className="py-3 px-4">
+                  <div className="h-5 w-full bg-gray-200 rounded" />
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
