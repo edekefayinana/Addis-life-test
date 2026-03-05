@@ -8,7 +8,10 @@ import {
   ReservationSkeleton,
 } from '../reservations/Reservation';
 import { useReservations } from '../reservations/useReservations';
-import { RecentReservationsFilters } from './RecentReservationsFilters';
+import {
+  RecentReservationsFilters,
+  RecentReservationFilterTypes,
+} from './RecentReservationsFilters';
 import DataTable, { StatusBadge } from '../table/DataTable';
 
 export function RecentReservations() {
@@ -70,11 +73,20 @@ export function RecentReservations() {
     return sorted;
   }, [filteredReservations, filters.sortBy, filters.sortOrder]);
 
+  const handleFiltersChange = (
+    newFilters: Partial<RecentReservationFilterTypes>
+  ) => {
+    setFilters((prev) => ({ ...prev, ...newFilters }));
+  };
+
   const visibleReservations = sortedReservations.slice(0, 5);
 
   return (
     <div className="bg-white rounded-2xl p-6 border border-gray-200">
-      <RecentReservationsFilters filters={filters} onChange={setFilters} />
+      <RecentReservationsFilters
+        filters={filters}
+        onChange={handleFiltersChange}
+      />
 
       <div className="mt-6">
         {loading ? (

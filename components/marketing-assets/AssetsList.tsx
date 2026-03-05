@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { Download, FileText, Folder, FileArchive } from 'lucide-react';
-import { AssetsFilters } from './AssetsFilters';
+import { AssetsFilters, AssetFilterTypes } from './AssetsFilters';
 import { FilterTabs } from '@/components/FilterTabs';
 import { usePagination } from '@/lib/hooks/usePagination';
 import { PAGE_SIZE } from '@/lib/constants';
@@ -98,6 +98,10 @@ export function AssetsList({ onSelectAsset }: AssetsListProps) {
   const activeCategory =
     (searchParams.get('category') as AssetCategory) ?? 'all';
   const { currentPage } = usePagination();
+
+  const handleFiltersChange = (newFilters: Partial<AssetFilterTypes>) => {
+    setFilters((prev) => ({ ...prev, ...newFilters }));
+  };
 
   const filteredAssets = useMemo(() => {
     const q = filters.search.trim().toLowerCase();
@@ -199,7 +203,7 @@ export function AssetsList({ onSelectAsset }: AssetsListProps) {
         </div>
 
         <div className="px-6 pb-4 pt-3">
-          <AssetsFilters filters={filters} onChange={setFilters} />
+          <AssetsFilters filters={filters} onChange={handleFiltersChange} />
         </div>
 
         <div className="px-6 pb-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">

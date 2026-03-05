@@ -129,7 +129,6 @@
             entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
             logDiv.appendChild(entry);
             logDiv.scrollTop = logDiv.scrollHeight;
-            console.log(message);
         };
 
         window.updateStatus = function(message, type = 'info') {

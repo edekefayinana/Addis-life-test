@@ -61,16 +61,15 @@ export function TopBar({ title }: { title?: string }) {
         q,
         (snapshot) => {
           setHasUnread(snapshot.size > 0);
-          console.log('📊 Unread notifications count:', snapshot.size);
         },
-        (error) => {
-          console.error('Error listening to unread notifications:', error);
+        () => {
+          // Error listening to unread notifications
         }
       );
 
       return () => unsubscribe();
-    } catch (error) {
-      console.error('Error setting up unread notifications listener:', error);
+    } catch {
+      // Error setting up unread notifications listener
     }
   }, [session?.user?.id]);
 

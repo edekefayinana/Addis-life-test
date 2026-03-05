@@ -55,8 +55,6 @@ export function NotificationsModal({ onClose }: NotificationsModalProps) {
     if (!notificationsEnabled) return;
 
     const unsubscribe = onMessageListener((payload) => {
-      console.log('Received foreground message:', payload);
-
       // Show browser notification
       showNotification(payload.notification?.title || 'New Notification', {
         body: payload.notification?.body || '',
@@ -67,7 +65,7 @@ export function NotificationsModal({ onClose }: NotificationsModalProps) {
 
       // Optionally play a sound
       const audio = new Audio('/notification-sound.mp3');
-      audio.play().catch((e) => console.log('Could not play sound:', e));
+      audio.play().catch(() => {});
     });
 
     return unsubscribe;
@@ -91,10 +89,8 @@ export function NotificationsModal({ onClose }: NotificationsModalProps) {
       const unsubscribe = onSnapshot(
         q,
         (snapshot) => {
-          console.log('📬 Fetched notifications count:', snapshot.docs.length);
           const notifs: Notification[] = snapshot.docs.map((doc) => {
             const data = doc.data();
-            console.log('📄 Notification data:', { id: doc.id, ...data });
             return {
               id: doc.id,
               type: data.type,
@@ -108,20 +104,14 @@ export function NotificationsModal({ onClose }: NotificationsModalProps) {
               read: data.read || false,
             };
           });
-          console.log('✅ Processed notifications:', notifs.length);
           setNotifications(notifs);
           setLoading(false);
         },
         (err) => {
-          console.error('Error fetching notifications:', err);
-
           // Check if it's a permission error
           if (err.code === 'permission-denied') {
             setError(
               'Permission denied. Please update Firestore rules in Firebase Console.'
-            );
-            console.error(
-              '📋 Copy the rules from firestore.rules file to Firebase Console → Firestore → Rules'
             );
           } else {
             setError('Failed to fetch notifications: ' + err.message);
@@ -132,7 +122,6 @@ export function NotificationsModal({ onClose }: NotificationsModalProps) {
 
       return () => unsubscribe();
     } catch (e: any) {
-      console.error('Error initializing notifications:', e);
       setError('Failed to initialize notifications: ' + e.message);
       setLoading(false);
     }
@@ -149,27 +138,22 @@ export function NotificationsModal({ onClose }: NotificationsModalProps) {
     setError(null);
 
     try {
-      console.log('🚀 Starting notification enable process...');
       const token = await requestNotificationPermission();
 
       if (token) {
-        console.log('✅ Token received, saving to backend...');
         // Save token to backend
         await saveFCMToken(token, session.user.id);
         setNotificationsEnabled(true);
-        console.log('🎉 Notifications enabled successfully!');
         setError(null);
         alert(
           'Notifications enabled successfully! You will now receive push notifications.'
         );
       } else {
-        console.error('❌ Failed to get token');
         setError(
           'Failed to get notification token. Please check your browser permissions.'
         );
       }
     } catch (error: any) {
-      console.error('❌ Error enabling notifications:', error);
       const errorMessage = error.message || 'Unknown error occurred';
 
       // Provide more specific error messages
@@ -197,10 +181,7 @@ export function NotificationsModal({ onClose }: NotificationsModalProps) {
       await updateDoc(doc(db, 'notifications', notificationId), {
         read: true,
       });
-      console.log('✅ Notification marked as read:', notificationId);
-    } catch (error: any) {
-      console.error('❌ Error marking notification as read:', error);
-    }
+    } catch {}
   };
 
   // Mark all notifications as read
@@ -216,11 +197,7 @@ export function NotificationsModal({ onClose }: NotificationsModalProps) {
           })
         )
       );
-
-      console.log('✅ All notifications marked as read');
-    } catch (error: any) {
-      console.error('❌ Error marking all notifications as read:', error);
-    }
+    } catch {}
   };
 
   // Group notifications by time

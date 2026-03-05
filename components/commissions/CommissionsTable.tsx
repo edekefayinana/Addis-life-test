@@ -2,7 +2,10 @@
 
 import { useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { CommissionsFilters } from './CommissionsFilters';
+import {
+  CommissionsFilters,
+  CommissionFilterTypes,
+} from './CommissionsFilters';
 import DataTable, { StatusBadge } from '@/components/table/DataTable';
 import { FilterTabs } from '@/components/FilterTabs';
 import { usePagination } from '@/lib/hooks/usePagination';
@@ -119,8 +122,9 @@ export function CommissionsTable({
   const { currentPage, setPage } = usePagination();
 
   const handleDownload = (id: string) => {
+    console.log(id);
+
     // TODO: Replace with real receipt download
-    console.log('Download receipt for', id);
   };
 
   const filtered = useMemo(() => {
@@ -179,10 +183,14 @@ export function CommissionsTable({
     return sorted;
   }, [filtered, filters.sortBy, filters.sortOrder]);
 
+  const handleFiltersChange = (newFilters: Partial<CommissionFilterTypes>) => {
+    setFilters((prev) => ({ ...prev, ...newFilters }));
+  };
+
   return (
     <div className="bg-white rounded-2xl shadow-sm p-6">
       <div className="p-6 space-y-4">
-        <CommissionsFilters filters={filters} onChange={setFilters} />
+        <CommissionsFilters filters={filters} onChange={handleFiltersChange} />
 
         <FilterTabs
           tabs={STATUS_TABS}
