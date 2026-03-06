@@ -64,6 +64,7 @@ export const ModelName = {
   NearbyPlace: 'NearbyPlace',
   PropertyImage: 'PropertyImage',
   Reservation: 'Reservation',
+  Notification: 'Notification',
 } as const;
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
@@ -218,6 +219,22 @@ export const ReservationScalarFieldEnum = {
 export type ReservationScalarFieldEnum =
   (typeof ReservationScalarFieldEnum)[keyof typeof ReservationScalarFieldEnum];
 
+export const NotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  title: 'title',
+  body: 'body',
+  type: 'type',
+  read: 'read',
+  link: 'link',
+  data: 'data',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type NotificationScalarFieldEnum =
+  (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum];
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc',
@@ -231,6 +248,14 @@ export const JsonNullValueInput = {
 
 export type JsonNullValueInput =
   (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput];
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+} as const;
+
+export type NullableJsonNullValueInput =
+  (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput];
 
 export const QueryMode = {
   default: 'default',

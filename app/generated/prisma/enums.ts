@@ -60,3 +60,14 @@ export const ReservationStatus = {
 
 export type ReservationStatus =
   (typeof ReservationStatus)[keyof typeof ReservationStatus];
+
+export const NotificationType = {
+  COMMISSION: 'COMMISSION',
+  RESERVATION: 'RESERVATION',
+  ASSET: 'ASSET',
+  SYSTEM: 'SYSTEM',
+  PROFILE: 'PROFILE',
+} as const;
+
+export type NotificationType =
+  (typeof NotificationType)[keyof typeof NotificationType];

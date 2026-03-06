@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import prisma from '@/lib/prisma';
 import { randomInt } from 'crypto';
 import { sendEmail } from '@/lib/email';
+import { notifyAdminsNewAgentRegistration } from '@/lib/notification-service-new';
 
 export async function POST(request: Request) {
   try {
@@ -100,6 +101,18 @@ export async function POST(request: Request) {
       console.error('Failed to send verification email:', emailError);
       // Don't fail the registration if email sending fails
       // User can request a new OTP later
+    }
+
+    // Notify all admins about new agent registration
+    try {
+      await notifyAdminsNewAgentRegistration(
+        result.user.name || result.user.email,
+        result.user.email,
+        result.user.id
+      );
+    } catch (notificationError) {
+      console.error('Failed to send admin notification:', notificationError);
+      // Don't fail registration if notification fails
     }
 
     return NextResponse.json(
