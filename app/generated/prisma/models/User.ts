@@ -239,6 +239,7 @@ export type UserWhereInput = {
   sessions?: Prisma.SessionListRelationFilter;
   properties?: Prisma.PropertyListRelationFilter;
   reservations?: Prisma.ReservationListRelationFilter;
+  notifications?: Prisma.NotificationListRelationFilter;
 };
 
 export type UserOrderByWithRelationInput = {
@@ -257,6 +258,7 @@ export type UserOrderByWithRelationInput = {
   sessions?: Prisma.SessionOrderByRelationAggregateInput;
   properties?: Prisma.PropertyOrderByRelationAggregateInput;
   reservations?: Prisma.ReservationOrderByRelationAggregateInput;
+  notifications?: Prisma.NotificationOrderByRelationAggregateInput;
 };
 
 export type UserWhereUniqueInput = Prisma.AtLeast<
@@ -285,6 +287,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<
     sessions?: Prisma.SessionListRelationFilter;
     properties?: Prisma.PropertyListRelationFilter;
     reservations?: Prisma.ReservationListRelationFilter;
+    notifications?: Prisma.NotificationListRelationFilter;
   },
   'id' | 'email'
 >;
@@ -349,6 +352,7 @@ export type UserCreateInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
   properties?: Prisma.PropertyCreateNestedManyWithoutCreatedByInput;
   reservations?: Prisma.ReservationCreateNestedManyWithoutUserInput;
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
 };
 
 export type UserUncheckedCreateInput = {
@@ -367,6 +371,7 @@ export type UserUncheckedCreateInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatedByInput;
   reservations?: Prisma.ReservationUncheckedCreateNestedManyWithoutUserInput;
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
 };
 
 export type UserUpdateInput = {
@@ -391,6 +396,7 @@ export type UserUpdateInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
   properties?: Prisma.PropertyUpdateManyWithoutCreatedByNestedInput;
   reservations?: Prisma.ReservationUpdateManyWithoutUserNestedInput;
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
 };
 
 export type UserUncheckedUpdateInput = {
@@ -415,6 +421,7 @@ export type UserUncheckedUpdateInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatedByNestedInput;
   reservations?: Prisma.ReservationUncheckedUpdateManyWithoutUserNestedInput;
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
 };
 
 export type UserCreateManyInput = {
@@ -646,6 +653,32 @@ export type UserUpdateOneRequiredWithoutReservationsNestedInput = {
   >;
 };
 
+export type UserCreateNestedOneWithoutNotificationsInput = {
+  create?: Prisma.XOR<
+    Prisma.UserCreateWithoutNotificationsInput,
+    Prisma.UserUncheckedCreateWithoutNotificationsInput
+  >;
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationsInput;
+  connect?: Prisma.UserWhereUniqueInput;
+};
+
+export type UserUpdateOneRequiredWithoutNotificationsNestedInput = {
+  create?: Prisma.XOR<
+    Prisma.UserCreateWithoutNotificationsInput,
+    Prisma.UserUncheckedCreateWithoutNotificationsInput
+  >;
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationsInput;
+  upsert?: Prisma.UserUpsertWithoutNotificationsInput;
+  connect?: Prisma.UserWhereUniqueInput;
+  update?: Prisma.XOR<
+    Prisma.XOR<
+      Prisma.UserUpdateToOneWithWhereWithoutNotificationsInput,
+      Prisma.UserUpdateWithoutNotificationsInput
+    >,
+    Prisma.UserUncheckedUpdateWithoutNotificationsInput
+  >;
+};
+
 export type UserCreateWithoutAccountsInput = {
   id?: string;
   name?: string | null;
@@ -661,6 +694,7 @@ export type UserCreateWithoutAccountsInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
   properties?: Prisma.PropertyCreateNestedManyWithoutCreatedByInput;
   reservations?: Prisma.ReservationCreateNestedManyWithoutUserInput;
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
 };
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -678,6 +712,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatedByInput;
   reservations?: Prisma.ReservationUncheckedCreateNestedManyWithoutUserInput;
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
 };
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -729,6 +764,7 @@ export type UserUpdateWithoutAccountsInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
   properties?: Prisma.PropertyUpdateManyWithoutCreatedByNestedInput;
   reservations?: Prisma.ReservationUpdateManyWithoutUserNestedInput;
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
 };
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -752,6 +788,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatedByNestedInput;
   reservations?: Prisma.ReservationUncheckedUpdateManyWithoutUserNestedInput;
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
 };
 
 export type UserCreateWithoutSessionsInput = {
@@ -769,6 +806,7 @@ export type UserCreateWithoutSessionsInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
   properties?: Prisma.PropertyCreateNestedManyWithoutCreatedByInput;
   reservations?: Prisma.ReservationCreateNestedManyWithoutUserInput;
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
 };
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -786,6 +824,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput;
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatedByInput;
   reservations?: Prisma.ReservationUncheckedCreateNestedManyWithoutUserInput;
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
 };
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -837,6 +876,7 @@ export type UserUpdateWithoutSessionsInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput;
   properties?: Prisma.PropertyUpdateManyWithoutCreatedByNestedInput;
   reservations?: Prisma.ReservationUpdateManyWithoutUserNestedInput;
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
 };
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -860,6 +900,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput;
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatedByNestedInput;
   reservations?: Prisma.ReservationUncheckedUpdateManyWithoutUserNestedInput;
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
 };
 
 export type UserCreateWithoutPropertiesInput = {
@@ -877,6 +918,7 @@ export type UserCreateWithoutPropertiesInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
   reservations?: Prisma.ReservationCreateNestedManyWithoutUserInput;
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
 };
 
 export type UserUncheckedCreateWithoutPropertiesInput = {
@@ -894,6 +936,7 @@ export type UserUncheckedCreateWithoutPropertiesInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput;
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
   reservations?: Prisma.ReservationUncheckedCreateNestedManyWithoutUserInput;
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
 };
 
 export type UserCreateOrConnectWithoutPropertiesInput = {
@@ -945,6 +988,7 @@ export type UserUpdateWithoutPropertiesInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput;
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
   reservations?: Prisma.ReservationUpdateManyWithoutUserNestedInput;
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
 };
 
 export type UserUncheckedUpdateWithoutPropertiesInput = {
@@ -968,6 +1012,7 @@ export type UserUncheckedUpdateWithoutPropertiesInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput;
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
   reservations?: Prisma.ReservationUncheckedUpdateManyWithoutUserNestedInput;
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
 };
 
 export type UserCreateWithoutReservationsInput = {
@@ -985,6 +1030,7 @@ export type UserCreateWithoutReservationsInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
   properties?: Prisma.PropertyCreateNestedManyWithoutCreatedByInput;
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
 };
 
 export type UserUncheckedCreateWithoutReservationsInput = {
@@ -1002,6 +1048,7 @@ export type UserUncheckedCreateWithoutReservationsInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput;
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatedByInput;
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
 };
 
 export type UserCreateOrConnectWithoutReservationsInput = {
@@ -1053,6 +1100,7 @@ export type UserUpdateWithoutReservationsInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput;
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
   properties?: Prisma.PropertyUpdateManyWithoutCreatedByNestedInput;
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
 };
 
 export type UserUncheckedUpdateWithoutReservationsInput = {
@@ -1076,6 +1124,119 @@ export type UserUncheckedUpdateWithoutReservationsInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput;
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatedByNestedInput;
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
+};
+
+export type UserCreateWithoutNotificationsInput = {
+  id?: string;
+  name?: string | null;
+  email: string;
+  phone?: string | null;
+  emailVerified?: Date | string | null;
+  image?: string | null;
+  password: string;
+  role?: $Enums.Role;
+  approvalStatus?: $Enums.ApprovalStatus;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
+  properties?: Prisma.PropertyCreateNestedManyWithoutCreatedByInput;
+  reservations?: Prisma.ReservationCreateNestedManyWithoutUserInput;
+};
+
+export type UserUncheckedCreateWithoutNotificationsInput = {
+  id?: string;
+  name?: string | null;
+  email: string;
+  phone?: string | null;
+  emailVerified?: Date | string | null;
+  image?: string | null;
+  password: string;
+  role?: $Enums.Role;
+  approvalStatus?: $Enums.ApprovalStatus;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput;
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatedByInput;
+  reservations?: Prisma.ReservationUncheckedCreateNestedManyWithoutUserInput;
+};
+
+export type UserCreateOrConnectWithoutNotificationsInput = {
+  where: Prisma.UserWhereUniqueInput;
+  create: Prisma.XOR<
+    Prisma.UserCreateWithoutNotificationsInput,
+    Prisma.UserUncheckedCreateWithoutNotificationsInput
+  >;
+};
+
+export type UserUpsertWithoutNotificationsInput = {
+  update: Prisma.XOR<
+    Prisma.UserUpdateWithoutNotificationsInput,
+    Prisma.UserUncheckedUpdateWithoutNotificationsInput
+  >;
+  create: Prisma.XOR<
+    Prisma.UserCreateWithoutNotificationsInput,
+    Prisma.UserUncheckedCreateWithoutNotificationsInput
+  >;
+  where?: Prisma.UserWhereInput;
+};
+
+export type UserUpdateToOneWithWhereWithoutNotificationsInput = {
+  where?: Prisma.UserWhereInput;
+  data: Prisma.XOR<
+    Prisma.UserUpdateWithoutNotificationsInput,
+    Prisma.UserUncheckedUpdateWithoutNotificationsInput
+  >;
+};
+
+export type UserUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  email?: Prisma.StringFieldUpdateOperationsInput | string;
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  emailVerified?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  password?: Prisma.StringFieldUpdateOperationsInput | string;
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+  approvalStatus?:
+    | Prisma.EnumApprovalStatusFieldUpdateOperationsInput
+    | $Enums.ApprovalStatus;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput;
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
+  properties?: Prisma.PropertyUpdateManyWithoutCreatedByNestedInput;
+  reservations?: Prisma.ReservationUpdateManyWithoutUserNestedInput;
+};
+
+export type UserUncheckedUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  email?: Prisma.StringFieldUpdateOperationsInput | string;
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  emailVerified?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  password?: Prisma.StringFieldUpdateOperationsInput | string;
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+  approvalStatus?:
+    | Prisma.EnumApprovalStatusFieldUpdateOperationsInput
+    | $Enums.ApprovalStatus;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput;
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatedByNestedInput;
+  reservations?: Prisma.ReservationUncheckedUpdateManyWithoutUserNestedInput;
 };
 
 /**
@@ -1087,6 +1248,7 @@ export type UserCountOutputType = {
   sessions: number;
   properties: number;
   reservations: number;
+  notifications: number;
 };
 
 export type UserCountOutputTypeSelect<
@@ -1097,6 +1259,7 @@ export type UserCountOutputTypeSelect<
   sessions?: boolean | UserCountOutputTypeCountSessionsArgs;
   properties?: boolean | UserCountOutputTypeCountPropertiesArgs;
   reservations?: boolean | UserCountOutputTypeCountReservationsArgs;
+  notifications?: boolean | UserCountOutputTypeCountNotificationsArgs;
 };
 
 /**
@@ -1152,6 +1315,16 @@ export type UserCountOutputTypeCountReservationsArgs<
   where?: Prisma.ReservationWhereInput;
 };
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountNotificationsArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  where?: Prisma.NotificationWhereInput;
+};
+
 export type UserSelect<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
@@ -1172,6 +1345,7 @@ export type UserSelect<
     sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>;
     properties?: boolean | Prisma.User$propertiesArgs<ExtArgs>;
     reservations?: boolean | Prisma.User$reservationsArgs<ExtArgs>;
+    notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>;
     _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
   },
   ExtArgs['result']['user']
@@ -1256,6 +1430,7 @@ export type UserInclude<
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>;
   properties?: boolean | Prisma.User$propertiesArgs<ExtArgs>;
   reservations?: boolean | Prisma.User$reservationsArgs<ExtArgs>;
+  notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>;
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type UserIncludeCreateManyAndReturn<
@@ -1277,6 +1452,7 @@ export type $UserPayload<
     sessions: Prisma.$SessionPayload<ExtArgs>[];
     properties: Prisma.$PropertyPayload<ExtArgs>[];
     reservations: Prisma.$ReservationPayload<ExtArgs>[];
+    notifications: Prisma.$NotificationPayload<ExtArgs>[];
   };
   scalars: runtime.Types.Extensions.GetPayloadResult<
     {
@@ -1879,6 +2055,17 @@ export interface Prisma__UserClient<
   ): Prisma.PrismaPromise<
     | runtime.Types.Result.GetResult<
         Prisma.$ReservationPayload<ExtArgs>,
+        T,
+        'findMany',
+        GlobalOmitOptions
+      >
+    | Null
+  >;
+  notifications<T extends Prisma.User$notificationsArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.User$notificationsArgs<ExtArgs>>
+  ): Prisma.PrismaPromise<
+    | runtime.Types.Result.GetResult<
+        Prisma.$NotificationPayload<ExtArgs>,
         T,
         'findMany',
         GlobalOmitOptions
@@ -2494,6 +2681,37 @@ export type User$reservationsArgs<
   distinct?:
     | Prisma.ReservationScalarFieldEnum
     | Prisma.ReservationScalarFieldEnum[];
+};
+
+/**
+ * User.notifications
+ */
+export type User$notificationsArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the Notification
+   */
+  select?: Prisma.NotificationSelect<ExtArgs> | null;
+  /**
+   * Omit specific fields from the Notification
+   */
+  omit?: Prisma.NotificationOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NotificationInclude<ExtArgs> | null;
+  where?: Prisma.NotificationWhereInput;
+  orderBy?:
+    | Prisma.NotificationOrderByWithRelationInput
+    | Prisma.NotificationOrderByWithRelationInput[];
+  cursor?: Prisma.NotificationWhereUniqueInput;
+  take?: number;
+  skip?: number;
+  distinct?:
+    | Prisma.NotificationScalarFieldEnum
+    | Prisma.NotificationScalarFieldEnum[];
 };
 
 /**

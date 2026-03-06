@@ -6,10 +6,10 @@ import { authOptions } from '@/lib/auth';
 import { handleApiError, sendResponse } from '@/lib/error-handler';
 import { PrismaApiFeatures, PrismaApiFeaturesConfig } from '@/lib/apiFeatures';
 import {
-  notifyPropertyOwner,
-  notifyReservationConfirmed,
-  notifyReservationCancelled,
-} from '@/lib/firebase-admin';
+  notifyAdminsNewReservation,
+  notifyAgentReservationConfirmed,
+  createSmartNotification,
+} from '@/lib/notification-service-new';
 
 // GET /api/reservations - List reservations with filtering, sorting, and pagination
 export async function GET(req: NextRequest) {
@@ -168,14 +168,13 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Send push notification to property owner
+    // Send notification to all admins about new reservation
     try {
-      await notifyPropertyOwner({
-        ownerId: reservation.property.createdById,
-        propertyTitle: reservation.property.title,
-        reservationId: reservation.id,
-        agentName: reservation.user.name || reservation.user.email,
-      });
+      await notifyAdminsNewReservation(
+        reservation.user.name || reservation.user.email,
+        reservation.property.title,
+        reservation.id
+      );
     } catch (e) {
       // Log but don't block reservation creation
       console.error('❌ Failed to send notification:', e);
@@ -228,22 +227,52 @@ export async function PATCH(req: NextRequest) {
     try {
       if (action === 'CONFIRM') {
         // Notify agent that reservation is confirmed
-        await notifyReservationConfirmed({
-          agentId: reservation.userId,
-          propertyTitle: reservation.property.title,
-          reservationId: reservation.id,
-        });
+        await notifyAgentReservationConfirmed(
+          reservation.userId,
+          reservation.property.title,
+          reservation.id
+        );
       } else if (action === 'CANCEL') {
         // Notify the affected user about cancellation
-        const notifyUserId = isAdmin
-          ? reservation.userId
-          : reservation.property.createdById;
-        await notifyReservationCancelled({
-          userId: notifyUserId,
-          propertyTitle: reservation.property.title,
-          reservationId: reservation.id,
-          reason,
-        });
+        if (isAdmin) {
+          // Admin cancelled - notify the agent
+          await createSmartNotification({
+            title: 'Reservation Cancelled',
+            body: `Your reservation for "${reservation.property.title}" has been cancelled by admin.${reason ? ` Reason: ${reason}` : ''}`,
+            type: 'RESERVATION',
+            link: `/reservations/${reservation.id}`,
+            targetAudience: 'SPECIFIC_USER',
+            userId: reservation.userId,
+            context: { agentId: reservation.userId },
+            data: {
+              reservationId: reservation.id,
+              propertyId: reservation.propertyId,
+              propertyTitle: reservation.property.title,
+              status: 'CANCELLED',
+              reason: reason || null,
+              cancelledBy: 'ADMIN',
+            },
+          });
+        } else {
+          // Agent cancelled - notify all admins
+          await createSmartNotification({
+            title: 'Reservation Cancelled by Agent',
+            body: `${reservation.user.name || reservation.user.email} has cancelled their reservation for "${reservation.property.title}".${reason ? ` Reason: ${reason}` : ''}`,
+            type: 'RESERVATION',
+            link: `/admin/reservations/${reservation.id}`,
+            targetAudience: 'ALL_ADMINS',
+            context: { adminAction: true },
+            data: {
+              reservationId: reservation.id,
+              propertyId: reservation.propertyId,
+              propertyTitle: reservation.property.title,
+              status: 'CANCELLED',
+              reason: reason || null,
+              cancelledBy: 'AGENT',
+              agentName: reservation.user.name || reservation.user.email,
+            },
+          });
+        }
       }
     } catch (e) {
       console.error('❌ Failed to send notification:', e);

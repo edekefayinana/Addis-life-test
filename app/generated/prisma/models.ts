@@ -17,4 +17,5 @@ export type * from './models/Amenity';
 export type * from './models/NearbyPlace';
 export type * from './models/PropertyImage';
 export type * from './models/Reservation';
+export type * from './models/Notification';
 export type * from './commonInputTypes';

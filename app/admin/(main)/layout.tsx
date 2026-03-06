@@ -5,10 +5,17 @@ import { authOptions } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { TopBar } from '@/components/Topbar';
 
-export const metadata: Metadata = {
-  title: 'Agent Dashboard',
-  description: 'A dashboard to monitor and manage your agents.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const session = await getServerSession(authOptions);
+  const title =
+    session?.user?.role === 'ADMIN' ? 'Admin Dashboard' : 'Agent Dashboard';
+
+  return {
+    title,
+    description:
+      'A dashboard to monitor and manage your real estate activities.',
+  };
+}
 
 export default async function RootLayout({
   children,

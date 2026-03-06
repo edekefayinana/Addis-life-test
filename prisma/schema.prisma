@@ -27,6 +27,7 @@ model User {
   sessions      Session[]
   properties    Property[]
   reservations  Reservation[]
+  notifications Notification[]
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -227,4 +228,33 @@ enum ReservationStatus {
   CANCELLED
   EXPIRED
   SELLED
+}
+
+model Notification {
+  id          String           @id @default(uuid())
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  title       String
+  body        String
+  type        NotificationType @default(SYSTEM)
+  read        Boolean          @default(false)
+  link        String?
+  data        Json?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@index([userId])
+  @@index([read])
+  @@index([type])
+  @@index([createdAt])
+  @@index([userId, read])
+  @@index([userId, createdAt])
+}
+
+enum NotificationType {
+  COMMISSION
+  RESERVATION
+  ASSET
+  SYSTEM
+  PROFILE
 }

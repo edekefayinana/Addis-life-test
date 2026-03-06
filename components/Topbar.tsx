@@ -3,75 +3,42 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { Bell } from 'lucide-react';
-import { NotificationsModal } from './modals/NotificationsModal';
-import { useEffect } from 'react';
-import {
-  getFirestore,
-  collection,
-  query,
-  where,
-  onSnapshot,
-} from 'firebase/firestore';
-import { getApps, initializeApp } from 'firebase/app';
+import { NotificationsModalNew } from './modals/NotificationsModalNew';
 import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import { useNotifications } from '@/lib/hooks/useNotificationsNew';
+import { SettingsModal } from './modals/SettingsModal';
 
-function titleFromPath(pathname: string): string {
+function titleFromPath(pathname: string, userRole?: string): string {
   if (!pathname || pathname === '/') return 'Welcome Back!';
+
+  // Check if we're on the admin dashboard
+  if (
+    pathname.includes('/admin') &&
+    pathname.split('/').filter(Boolean).length <= 2
+  ) {
+    return userRole === 'ADMIN' ? 'Admin' : 'Agent';
+  }
+
   const seg = pathname.split('/').filter(Boolean)[0] || '';
   return seg.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
 export function TopBar({ title }: { title?: string }) {
   const [showNotifications, setShowNotifications] = useState(false);
-  const [hasUnread, setHasUnread] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
   const pathname = usePathname();
-  const computedTitle = title ?? titleFromPath(pathname);
   const { data: session } = useSession();
+  const computedTitle = title ?? titleFromPath(pathname, session?.user?.role);
 
-  // Firebase config (should match NotificationsModal)
-  const firebaseConfig = {
-    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  };
+  // Use the new notification hook to get unread count
+  const { stats } = useNotifications({
+    autoRefresh: true,
+    refreshInterval: 5000, // Refresh every 5 seconds for more responsive updates
+  });
 
-  // Initialize Firebase app only once
-  if (typeof window !== 'undefined' && getApps().length === 0) {
-    initializeApp(firebaseConfig);
-  }
-
-  // Listen for unread notifications for the current user
-  useEffect(() => {
-    if (typeof window === 'undefined' || !session?.user?.id) return;
-
-    try {
-      const db = getFirestore();
-      // Query for unread notifications (read field is false)
-      const q = query(
-        collection(db, 'notifications'),
-        where('userId', '==', session.user.id),
-        where('read', '==', false)
-      );
-
-      const unsubscribe = onSnapshot(
-        q,
-        (snapshot) => {
-          setHasUnread(snapshot.size > 0);
-        },
-        () => {
-          // Error listening to unread notifications
-        }
-      );
-
-      return () => unsubscribe();
-    } catch {
-      // Error setting up unread notifications listener
-    }
-  }, [session?.user?.id]);
+  const hasUnread = (stats?.unread || 0) > 0;
+  const unreadCount = stats?.unread || 0;
 
   return (
     <div className="px-8 py-4 border-b border-gray-200 bg-white sticky top-0 z-10">
@@ -87,12 +54,20 @@ export function TopBar({ title }: { title?: string }) {
           >
             <Bell className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" />
             {hasUnread && (
-              <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-red-600 border-2 border-white rounded-full shadow-lg animate-pulse" />
+              <>
+                <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-red-600 border-2 border-white rounded-full shadow-lg animate-pulse" />
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-red-600 text-white text-xs font-medium rounded-full flex items-center justify-center px-1">
+                    {unreadCount > 99 ? '99+' : unreadCount}
+                  </span>
+                )}
+              </>
             )}
           </button>
           <button
             className="relative w-8 h-8 sm:w-10 sm:h-10"
             aria-label="Open profile"
+            onClick={() => setShowSettings(true)}
           >
             <Image
               src={session?.user?.image || '/default-profile.png'}
@@ -150,7 +125,14 @@ export function TopBar({ title }: { title?: string }) {
         </div>
       </div>
       {showNotifications && (
-        <NotificationsModal onClose={() => setShowNotifications(false)} />
+        <NotificationsModalNew onClose={() => setShowNotifications(false)} />
+      )}
+
+      {showSettings && (
+        <SettingsModal
+          isOpen={showSettings}
+          onClose={() => setShowSettings(false)}
+        />
       )}
     </div>
   );

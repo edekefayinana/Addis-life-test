@@ -82,12 +82,6 @@ export async function GET() {
 
     //TODO Mock commission activity for demo (if any activity exists)
     if (activities.length > 0) {
-      activities.unshift({
-        type: 'Commission Approved',
-        title: 'Commission Approved',
-        description: `Commission for ${activities[0].description.replace('Reservation for ', '').replace(' was confirmed.', '').replace(' is pending approval.', '').replace(' was cancelled.', '').replace(' has expired.', '').replace(' has been sold.', '')} has been approved.`,
-        createdAt: new Date('2026-02-25T12:00:00Z'), // Mocked future date for demo
-      });
       // Limit to 3 again (commission + 2 activities)
       activities = activities.slice(0, 3);
     }

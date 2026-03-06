@@ -66,3 +66,8 @@ export type PropertyImage = Prisma.PropertyImageModel;
  *
  */
 export type Reservation = Prisma.ReservationModel;
+/**
+ * Model Notification
+ *
+ */
+export type Notification = Prisma.NotificationModel;
