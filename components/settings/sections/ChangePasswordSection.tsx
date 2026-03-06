@@ -3,9 +3,12 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { Eye, EyeOff } from 'lucide-react';
+import { signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 export function ChangePasswordSection({ onClose }: { onClose?: () => void }) {
   const [saving, setSaving] = useState(false);
+  const router = useRouter();
 
   async function handleChangePassword(e: React.FormEvent) {
     e.preventDefault();
@@ -31,12 +34,18 @@ export function ChangePasswordSection({ onClose }: { onClose?: () => void }) {
         }),
       });
       if (response.ok) {
-        toast.success('Password changed successfully!');
+        toast.success('Password changed successfully! You will be logged out.');
         setFormData({
           currentPassword: '',
           newPassword: '',
           confirmPassword: '',
         });
+
+        // Log out the user and redirect to login page
+        setTimeout(async () => {
+          await signOut({ redirect: false });
+          router.push('/login');
+        }, 1500); // Give time for the success message to be seen
       } else {
         const data = await response.json();
         toast.error(data.error || 'Failed to change password.');
