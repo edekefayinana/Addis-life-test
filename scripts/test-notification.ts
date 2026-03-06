@@ -13,9 +13,6 @@ async function testNotification() {
   // Replace with actual user ID who has enabled notifications
   const userId = 'cmm3crqnq0000ywuzu4swg9dn';
 
-  console.log('🧪 Testing push notification...');
-  console.log('📧 Sending to user:', userId);
-
   try {
     const result = await sendPushNotification({
       userId,
@@ -29,23 +26,13 @@ async function testNotification() {
       },
     });
 
-    console.log('\n✅ Result:', result);
-
     if (result.success) {
       if (result.messageId) {
-        console.log('🎉 Push notification sent successfully!');
-        console.log('📱 Message ID:', result.messageId);
       } else {
-        console.log(
-          '💾 Notification saved to Firestore (no push sent - user needs to enable notifications)'
-        );
       }
     } else {
-      console.log('❌ Failed:', result.error);
     }
-  } catch (error) {
-    console.error('❌ Error:', error);
-  }
+  } catch {}
 }
 
 testNotification();

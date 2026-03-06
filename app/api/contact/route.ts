@@ -45,9 +45,6 @@ export async function POST(request: NextRequest) {
       html: generateUserConfirmationEmail(validatedData),
     });
 
-    console.log('Admin email result:', adminEmailResult);
-    console.log('User email result:', userEmailResult);
-
     return NextResponse.json(
       {
         message: 'Contact form submitted successfully',

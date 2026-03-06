@@ -123,8 +123,6 @@ export default function ReserveUnitPanel({
                 });
                 if (!res.ok) {
                   const data = await res.json();
-                  console.log(data.data.error);
-
                   toast.error(data.data.error || 'Reservation failed');
                   throw new Error(data.data.error || 'Reservation failed');
                 }

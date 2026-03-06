@@ -61,8 +61,6 @@ export function UpdateProfileSection() {
         });
         if (response.ok) {
           const data = (await response.json()).data;
-          console.log('DATA', data);
-
           setFormData({
             fullName: data.name || '',
             agentId: data.id || '',
@@ -75,7 +73,6 @@ export function UpdateProfileSection() {
             image: data.image,
             phone: data.phone,
           });
-          console.log(data);
         }
       } catch (error) {
         console.error('Failed to fetch user data:', error);

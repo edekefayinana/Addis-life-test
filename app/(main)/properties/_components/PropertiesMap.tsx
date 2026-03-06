@@ -49,8 +49,6 @@ export function PropertiesMap({ properties }: PropertiesMapProps) {
   const [markerIcon, setMarkerIcon] = useState<L.Icon | null>(null);
   const [isClient, setIsClient] = useState(false);
 
-  console.log(properties);
-
   useEffect(() => {
     setIsClient(true);
 
@@ -132,7 +130,6 @@ export function PropertiesMap({ properties }: PropertiesMapProps) {
               property.longitude,
               property.latitude,
             ];
-            console.log(coords);
 
             return (
               <Marker key={property.id} position={coords} icon={markerIcon}>

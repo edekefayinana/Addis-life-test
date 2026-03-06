@@ -153,8 +153,6 @@ export function PropertyForm({
   const [imageInput, setImageInput] = useState('');
 
   async function submitProperty(values: any) {
-    console.log(values);
-
     // Convert array fields to comma-separated strings for schema validation
     const fixedValues = {
       ...values,
@@ -200,8 +198,6 @@ export function PropertyForm({
           : [],
       projectId: fixedValues.projectId,
     };
-
-    console.log('PAYLOAD', payload);
 
     const method = mode === 'edit' ? 'PATCH' : 'POST';
     const url = mode === 'edit' ? `/inventory/${initialData.id}` : '/inventory';
