@@ -1,11 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { PropertyCard } from '@/components/PropertyCard';
 import { Button } from '@/components/ui/button';
-import propertiesData from '@/data/african Union 2 site-all units';
-import { buildPublicPaths } from '@/data/au2ImagesManifest';
 import { cn, truncate } from '@/lib/utils';
 import {
+  ArrowLeft,
   Bath,
   Bed,
   Calendar,
@@ -13,44 +12,71 @@ import {
   ChevronLeft,
   ChevronRight,
   Clock,
-  ExternalLink,
+  DollarSign,
   Grid3x3,
-  Heart,
   HomeIcon,
   MapPin,
   Maximize2,
   Play,
-  Share2,
   Sparkles,
-  Video,
   X,
 } from 'lucide-react';
-import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import { useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
-const LeafletMap = dynamic(
-  () => import('./LeafletMap').then((m) => m.LeafletMap),
-  { ssr: false }
-);
+// Property type based on provided structure
+export type Property = {
+  id: string;
+  title: string;
+  builtStartDate?: string;
+  propertyType?: string;
+  listingType?: string;
+  currentStatus?: string;
+  totalBedrooms?: number;
+  totalBathrooms?: number;
+  parkingSpace?: number;
+  areaSizeM2?: number;
+  availableFloors?: string[];
+  buildingSize?: string;
+  deliveryTime?: string;
+  address?: string;
+  city?: string;
+  country?: string;
+  longitude?: number;
+  latitude?: number;
+  createdById?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  amenities?: { id: string; name: string; propertyId: string }[];
+  nearbyPlaces?: { id: string; name: string; propertyId: string }[];
+  images?: { id: string; url: string; propertyId: string }[];
+  createdBy?: { id: string; name: string; email: string };
+};
 
-export default function PropertyPage() {
-  const params = useParams() as { id?: string };
-  function slugify(title: string): string {
-    return title
-      .toLowerCase()
-      .trim()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '');
-  }
+export default function PropertyClient({ property }: { property: Property }) {
   const [activeTab, setActiveTab] = useState<'overview' | 'video' | 'virtual'>(
     'overview'
   );
+  const router = useRouter();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [overviewExpanded, setOverviewExpanded] = useState(false);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [galleryIndex, setGalleryIndex] = useState(0);
+
+  // Contact form state
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: '',
+  });
+  const [formErrors, setFormErrors] = useState<{
+    name?: string;
+    email?: string;
+    message?: string;
+  }>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const virtualTourImages = [
     { src: '/property-1.jpg', label: 'Living Room' },
@@ -61,19 +87,23 @@ export default function PropertyPage() {
 
   // propertyImages will be derived after resolving currentProperty
 
-  const currentProperty =
-    propertiesData.find((p) =>
-      params.id ? slugify(p.title) === params.id : false
-    ) || propertiesData[0];
-
-  const propertyImages = currentProperty.imagesFolder
-    ? buildPublicPaths(currentProperty.imagesFolder)
-    : [
-        '/property-1.jpg',
-        '/property-2.jpg',
-        '/property-3.jpg',
-        '/hero-image.jpg',
-      ];
+  const currentProperty = property;
+  // Use images from property.images (array of { url })
+  const propertyImages =
+    Array.isArray(currentProperty.images) && currentProperty.images.length > 0
+      ? currentProperty.images.map((img: any) => {
+          if (!img.url) return '/property-1.jpg';
+          if (img.url.startsWith('http') || img.url.startsWith('/')) {
+            return img.url;
+          }
+          return '/' + img.url;
+        })
+      : [
+          '/property-1.jpg',
+          '/property-2.jpg',
+          '/property-3.jpg',
+          '/hero-image.jpg',
+        ];
 
   // Keyboard navigation for gallery: Escape to close, arrows to navigate
   useEffect(() => {
@@ -108,96 +138,207 @@ export default function PropertyPage() {
       (i) => (i - 1 + propertyImages.length) % propertyImages.length
     );
 
-  const amenities = currentProperty.amenities.map((name) => ({
-    name,
-    icon: true,
-  }));
+  // Contact form handlers
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
 
-  const locations = currentProperty.location_and_surroundings.nearby_places.map(
-    (place) => ({
-      distance: place,
-      icon: true,
-    })
-  );
+    // Clear error when user starts typing
+    if (formErrors[name as keyof typeof formErrors]) {
+      setFormErrors((prev) => ({ ...prev, [name]: undefined }));
+    }
+  };
+
+  const validateForm = (): boolean => {
+    const newErrors: typeof formErrors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = 'Name is required';
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+
+    if (!formData.message.trim()) {
+      newErrors.message = 'Message is required';
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = 'Message must be at least 10 characters';
+    }
+
+    setFormErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!validateForm()) {
+      toast.error('Please fix the errors in the form');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('/api/property-inquiry', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          propertyId: property.id,
+          propertyTitle: property.title,
+          type: 'property_inquiry',
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        toast.success('Your inquiry has been sent successfully!');
+
+        // Reset form
+        setFormData({
+          name: '',
+          email: '',
+          message: '',
+        });
+        setFormErrors({});
+      } else {
+        if (result.errors) {
+          const serverErrors: typeof formErrors = {};
+          result.errors.forEach((error: { field: string; message: string }) => {
+            serverErrors[error.field as keyof typeof formErrors] =
+              error.message;
+          });
+          setFormErrors(serverErrors);
+          toast.error('Please fix the errors in the form');
+        } else {
+          toast.error(
+            result.message || 'Failed to send inquiry. Please try again.'
+          );
+        }
+      }
+    } catch (error) {
+      console.error('Property inquiry error:', error);
+      toast.error('Network error. Please check your connection and try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // amenities: array of { name }
+  const amenities = Array.isArray(currentProperty.amenities)
+    ? currentProperty.amenities.map((a: any) => ({ name: a.name, icon: true }))
+    : [];
+
+  // nearbyPlaces: array of { name }
+  const locations = Array.isArray(currentProperty.nearbyPlaces)
+    ? currentProperty.nearbyPlaces.map((p: any) => ({
+        distance: p.name,
+        icon: true,
+      }))
+    : [];
 
   const propertyDetails = [
     {
       label: 'Built from',
-      value: currentProperty.overview.built_start_date,
+      value: currentProperty.builtStartDate
+        ? new Date(currentProperty.builtStartDate).toLocaleDateString()
+        : 'N/A',
       icon: Calendar,
     },
     {
       label: 'Property Type',
-      value: currentProperty.overview.property_type,
+      value: currentProperty.propertyType || 'N/A',
       icon: HomeIcon,
     },
-    // { label: 'Price Per M²', value: 'N/A', icon: DollarSign },
+    {
+      label: 'Listing Type',
+      value: currentProperty.listingType || 'N/A',
+      icon: DollarSign,
+    },
     {
       label: 'Work Level',
-      value: currentProperty.overview.current_status,
+      value: currentProperty.currentStatus || 'N/A',
       icon: Clock,
     },
   ];
 
   // Using shared properties dataset for "Other Latest Listings"
 
-  const availableFloors = Array.isArray(
-    currentProperty.property_details.available_floors
-  )
-    ? currentProperty.property_details.available_floors.join(', ')
-    : currentProperty.property_details.available_floors;
+  const availableFloors = Array.isArray(currentProperty.availableFloors)
+    ? currentProperty.availableFloors.join(', ')
+    : currentProperty.availableFloors || 'N/A';
 
   const propertySpecs = [
     {
       label: 'Total Bedroom',
-      value: `${currentProperty.property_details.total_bedrooms} Bedroom`,
+      value: `${currentProperty.totalBedrooms ?? 0} Bedroom`,
     },
     {
       label: 'Total Bathroom',
-      value: `${currentProperty.property_details.total_bathrooms} Bathroom`,
+      value: `${currentProperty.totalBathrooms ?? 0} Bathroom`,
     },
     {
       label: 'Carport/Parking Space',
-      value: `${currentProperty.property_details.parking_space} Parking`,
+      value: `${currentProperty.parkingSpace ?? 0} Parking`,
     },
     { label: 'Available Floors', value: `${availableFloors}` },
     {
       label: 'Building Size',
-      value: currentProperty.property_details.building_size,
+      value: currentProperty.buildingSize || 'N/A',
     },
     {
       label: 'Area Size',
-      value: `${currentProperty.property_details.area_size_m2} m²`,
+      value: `${currentProperty.areaSizeM2 ?? 0} m²`,
     },
     {
       label: 'Delivery Time',
-      value: currentProperty.property_details.delivery_time,
+      value: currentProperty.deliveryTime || 'N/A',
     },
   ];
 
   const propertyLocation = {
-    coords: [
-      currentProperty.location.longitude,
-      currentProperty.location.latitude,
-    ] as [number, number],
-    address: `${currentProperty.location.address}, ${currentProperty.location.city}, ${currentProperty.location.country}`,
+    coords: [currentProperty.latitude, currentProperty.longitude] as [
+      number,
+      number,
+    ],
+    address: `${currentProperty.address || ''}, ${currentProperty.city || ''}, ${currentProperty.country || ''}`,
   };
 
-  const nearbySummary = currentProperty.location_and_surroundings.nearby_places
-    .slice(0, 4)
-    .join(', ');
-  const overviewTextFull = `${currentProperty.title} is a ${currentProperty.overview.property_type.toLowerCase()} property featuring ${currentProperty.property_details.total_bedrooms} bedrooms, ${currentProperty.property_details.total_bathrooms} bathrooms, and ${currentProperty.property_details.area_size_m2} m² of space. Building size: ${currentProperty.property_details.building_size}. Current status: ${currentProperty.overview.current_status}. Estimated delivery: ${currentProperty.property_details.delivery_time}. Located at ${currentProperty.location.address}, ${currentProperty.location.city}. Nearby: ${nearbySummary}.`;
+  const nearbySummary = Array.isArray(currentProperty.nearbyPlaces)
+    ? currentProperty.nearbyPlaces
+        .slice(0, 4)
+        .map((p: any) => p.name)
+        .join(', ')
+    : '';
+  const overviewTextFull = `${currentProperty.title} is a ${currentProperty.propertyType?.toLowerCase() || ''} property featuring ${currentProperty.totalBedrooms ?? 0} bedrooms, ${currentProperty.totalBathrooms ?? 0} bathrooms, and ${currentProperty.areaSizeM2 ?? 0} m² of space. Building size: ${currentProperty.buildingSize || 'N/A'}. Current status: ${currentProperty.currentStatus || 'N/A'}. Estimated delivery: ${currentProperty.deliveryTime || 'N/A'}. Located at ${currentProperty.address || ''}, ${currentProperty.city || ''}. Nearby: ${nearbySummary}.`;
   const displayedOverview = overviewExpanded
     ? overviewTextFull
     : truncate(overviewTextFull, 240);
 
   return (
-    <div className="min-h-screen bg-background mt-[70px]">
+    <div className="min-h-screen bg-background mt-[70px] relative">
       {/* Main Content */}
       <main className="max-w-[1400px] mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {/* Property Title Section */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <div className="flex-1 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+            <Button
+              variant="ghost"
+              onClick={() => router.back()}
+              className="flex items-center gap-2 px-4 py-2 text-sm font-medium"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back
+            </Button>
             <h1 className="text-2xl sm:text-3xl font-semibold text-foreground mb-0">
               {truncate(currentProperty.title, 40)}
             </h1>
@@ -205,37 +346,22 @@ export default function PropertyPage() {
               <div className="flex items-center gap-2 bg-accent py-2 sm:py-3 px-4 sm:px-5 rounded-full">
                 <Bed className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
                 <span className="text-xs sm:text-sm font-medium">
-                  {currentProperty.property_details.total_bedrooms} Beds
+                  {currentProperty.totalBedrooms ?? 0} Beds
                 </span>
               </div>
               <div className="flex items-center gap-2 bg-accent py-2 sm:py-3 px-4 sm:px-5 rounded-full">
                 <Bath className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
                 <span className="text-xs sm:text-sm font-medium">
-                  {currentProperty.property_details.total_bathrooms} Baths
+                  {currentProperty.totalBathrooms ?? 0} Baths
                 </span>
               </div>
               <div className="flex items-center gap-2 bg-accent py-2 sm:py-3 px-4 sm:px-5 rounded-full">
                 <Maximize2 className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
                 <span className="text-xs sm:text-sm font-medium">
-                  {currentProperty.property_details.area_size_m2} m²
+                  {currentProperty.areaSizeM2} m²
                 </span>
               </div>
             </div>
-          </div>
-
-          <div className="flex items-center gap-2 sm:gap-3">
-            <button className="flex items-center gap-2 px-3 sm:px-4 py-3 rounded-full hover:bg-accent transition-colors">
-              <Share2 className="w-4 h-4" />
-              <span className="text-xs sm:text-sm font-medium hidden sm:inline">
-                Share
-              </span>
-            </button>
-            <button className="flex items-center gap-2 px-3 sm:px-4 py-3 rounded-full hover:bg-accent transition-colors">
-              <Heart className="w-4 h-4" />
-              <span className="text-xs sm:text-sm font-medium hidden sm:inline">
-                Save
-              </span>
-            </button>
           </div>
         </div>
 
@@ -255,7 +381,7 @@ export default function PropertyPage() {
               <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-cta-bg" />
             )}
           </button>
-          <button
+          {/* <button
             onClick={() => setActiveTab('video')}
             className={`flex items-center gap-2 px-1 py-4 text-xs sm:text-sm font-medium transition-colors relative whitespace-nowrap ${
               activeTab === 'video'
@@ -268,8 +394,8 @@ export default function PropertyPage() {
             {activeTab === 'video' && (
               <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-cta-bg" />
             )}
-          </button>
-          <button
+          </button> */}
+          {/* <button
             onClick={() => setActiveTab('virtual')}
             className={`flex items-center gap-2 px-1 py-4 text-xs sm:text-sm font-medium transition-colors relative whitespace-nowrap ${
               activeTab === 'virtual'
@@ -282,7 +408,7 @@ export default function PropertyPage() {
             {activeTab === 'virtual' && (
               <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-cta-bg" />
             )}
-          </button>
+          </button> */}
         </div>
 
         {/* Media Section */}
@@ -428,7 +554,7 @@ export default function PropertyPage() {
 
             {/* Property Details Bar */}
             <section className="p-4 sm:p-6 bg-white border rounded-2xl">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {propertyDetails.map(({ label, value, icon: Icon }) => (
                   <div key={label} className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-cta-bg/10 flex items-center justify-center shrink-0">
@@ -531,19 +657,10 @@ export default function PropertyPage() {
                   {propertyLocation.address}
                 </span>
               </div>
-              <LeafletMap
-                position={propertyLocation.coords}
-                address={propertyLocation.address}
-                title={currentProperty.title}
-                beds={currentProperty.property_details.total_bedrooms}
-                baths={currentProperty.property_details.total_bathrooms}
-                area={currentProperty.property_details.area_size_m2}
-                imagesFolder={currentProperty.imagesFolder}
-              />
             </section>
 
             {/* Amenities Download */}
-            <section>
+            {/* <section>
               <h3 className="text-xl font-bold mb-4">Amenities</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <button className="flex items-center justify-between p-4 border rounded-lg hover:bg-accent transition-colors">
@@ -570,80 +687,90 @@ export default function PropertyPage() {
                   <ExternalLink className="w-4 h-4 text-muted-foreground shrink-0 ml-2" />
                 </button>
               </div>
-            </section>
+            </section> */}
           </div>
 
-          {/* Right Column - Pricing & Contact */}
+          {/* Right Column - Contact Form Only (public) */}
           <div className="lg:col-span-1">
             <div className="space-y-6 lg:sticky lg:top-24">
-              {/* <div className="border rounded-2xl p-4 sm:p-6 bg-white">
-                <p className="text-xs sm:text-sm text-muted-foreground mb-1">
-                  Total Down Payment
-                </p>
-                <p className="text-2xl sm:text-3xl font-semibold mb-6 sm:mb-8">
-                  ETB 3,300,000
-                </p>
-                <div className="flex justify-center w-full">
-                  <Button className="px-6 sm:px-8 py-5 sm:py-6 bg-brand-dark hover:bg-brand-dark/90 text-white rounded-full w-full text-sm sm:text-base font-semibold">
-                    Call to Invest
-                  </Button>
-                </div>
-              </div> */}
-
               <div className="border rounded-2xl p-4 sm:p-6 bg-white">
                 <h3 className="text-base sm:text-lg font-bold mb-4">
                   Ask About This Home
                 </h3>
-                <form className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <label className="text-xs sm:text-sm font-medium mb-2 block">
-                      Full Name <span className="text-red-500">*</span>
+                    <label className="block text-xs sm:text-sm font-medium mb-1">
+                      Name *
                     </label>
                     <input
                       type="text"
-                      placeholder="Biruk Solomon"
-                      className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-dark"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      placeholder="Your Name"
+                      className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-dark ${
+                        formErrors.name
+                          ? 'border-red-500 focus:border-red-500'
+                          : ''
+                      }`}
                     />
+                    {formErrors.name && (
+                      <span className="text-xs text-red-500 mt-1 block">
+                        {formErrors.name}
+                      </span>
+                    )}
                   </div>
-
                   <div>
-                    <label className="text-xs sm:text-sm font-medium mb-2 block">
-                      Email <span className="text-red-500">*</span>
+                    <label className="block text-xs sm:text-sm font-medium mb-1">
+                      Email *
                     </label>
                     <input
                       type="email"
-                      placeholder="Example1@gmail.com"
-                      className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-dark"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      placeholder="you@email.com"
+                      className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-dark ${
+                        formErrors.email
+                          ? 'border-red-500 focus:border-red-500'
+                          : ''
+                      }`}
                     />
+                    {formErrors.email && (
+                      <span className="text-xs text-red-500 mt-1 block">
+                        {formErrors.email}
+                      </span>
+                    )}
                   </div>
-
                   <div>
-                    <label className="text-xs sm:text-sm font-medium mb-2 block">
-                      Phone Number <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="tel"
-                      placeholder="(+251)-911-201096"
-                      className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-dark"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-xs sm:text-sm font-medium mb-2 block">
-                      Description <span className="text-red-500">*</span>
+                    <label className="block text-xs sm:text-sm font-medium mb-1">
+                      Message *
                     </label>
                     <textarea
-                      placeholder="Write Your questions in detail..."
+                      name="message"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      placeholder={`I'm interested in ${property.title}...`}
+                      className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-dark ${
+                        formErrors.message
+                          ? 'border-red-500 focus:border-red-500'
+                          : ''
+                      }`}
                       rows={4}
-                      className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-dark resize-none"
                     />
+                    {formErrors.message && (
+                      <span className="text-xs text-red-500 mt-1 block">
+                        {formErrors.message}
+                      </span>
+                    )}
                   </div>
-
-                  <div className="flex justify-center w-full">
-                    <Button className="px-6 sm:px-8 py-5 sm:py-6 bg-brand-dark hover:bg-brand-dark/90 text-white rounded-full w-full text-sm sm:text-base font-semibold">
-                      Send
-                    </Button>
-                  </div>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full bg-brand-dark hover:bg-brand-dark/90 text-white rounded-full px-6 py-3 text-sm sm:text-base font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isSubmitting ? 'Sending...' : 'Send Inquiry'}
+                  </button>
                 </form>
               </div>
             </div>
@@ -652,19 +779,7 @@ export default function PropertyPage() {
       </main>
 
       {/* Other Latest Listings - full width */}
-      <section className="max-w-[1400px] mx-auto px-4 sm:px-6 pb-8 sm:pb-12 mb-8 sm:mb-12">
-        <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">
-          Other Latest Listings
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {propertiesData
-            .filter((p) => slugify(p.title) !== slugify(currentProperty.title))
-            .slice(0, 3)
-            .map((prop, idx) => (
-              <PropertyCard key={idx} {...prop} />
-            ))}
-        </div>
-      </section>
+      {/* You can fetch and display other listings here if needed, or remove this section if not applicable */}
       {isGalleryOpen && (
         <div
           className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center"
@@ -710,7 +825,7 @@ export default function PropertyPage() {
             {/* Thumbnails strip */}
             <div className="absolute bottom-3 left-0 right-0 px-4">
               <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
-                {propertyImages.map((src: string, i: number) => (
+                {propertyImages.map((src, i) => (
                   <button
                     key={src + i}
                     onClick={() => setGalleryIndex(i)}

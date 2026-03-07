@@ -1,5 +1,6 @@
-import { PropertyClient } from '@/components/inventory/PropertyClient';
+// import { PropertyClient } from '@/components/inventory/PropertyClient';
 import { apiFetch } from '@/lib/api';
+import PropertyDitail from './_components/PropertyPage';
 
 export const metadata = {
   title: 'Property Details - Addis Life RE Admin',
@@ -18,5 +19,5 @@ export default async function PropertyPage({
     `${process.env.API_BASE_URL}/inventory/${id}`
   );
 
-  return <PropertyClient property={property.data} />;
+  return <PropertyDitail property={property.data} />;
 }
