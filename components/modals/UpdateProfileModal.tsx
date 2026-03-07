@@ -47,7 +47,7 @@ export function UpdateProfileModal({ onClose }: UpdateProfileModalProps) {
               </div>
               <div className="flex items-center gap-3 px-3 py-2 hover:bg-gray-100 rounded-lg cursor-pointer">
                 <LogOut size={20} />
-                <span className="text-sm text-gray-900">Logout</span>
+                <span className="text-sm text-gray-900">Log Out</span>
               </div>
             </div>
           </div>

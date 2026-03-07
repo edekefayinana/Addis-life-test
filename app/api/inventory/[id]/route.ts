@@ -108,11 +108,80 @@ export async function DELETE(
       return authResult.error;
     }
 
-    await prisma.property.delete({
-      where: { id: id },
+    // Check if property exists and get related data
+    const property = await prisma.property.findUnique({
+      where: { id },
+      include: {
+        reservations: true,
+        images: true,
+        amenities: true,
+        nearbyPlaces: true,
+      },
     });
 
-    return sendResponse({ message: 'Deleted successfully' }, 1);
+    if (!property) {
+      return sendResponse({ error: 'Property not found' }, 0, undefined, 404);
+    }
+
+    // Check for active reservations
+    const activeReservations = property.reservations.filter(
+      (reservation) =>
+        reservation.status === 'PENDING' || reservation.status === 'CONFIRMED'
+    );
+
+    if (activeReservations.length > 0) {
+      return sendResponse(
+        {
+          error: 'Cannot delete property with active reservations',
+          activeReservations: activeReservations.length,
+        },
+        0,
+        undefined,
+        400
+      );
+    }
+
+    // Perform cascade deletion in transaction
+    await prisma.$transaction(async (tx) => {
+      // Delete all reservations (including cancelled/expired ones)
+      await tx.reservation.deleteMany({
+        where: { propertyId: id },
+      });
+
+      // Delete all images
+      await tx.propertyImage.deleteMany({
+        where: { propertyId: id },
+      });
+
+      // Delete all amenities
+      await tx.amenity.deleteMany({
+        where: { propertyId: id },
+      });
+
+      // Delete all nearby places
+      await tx.nearbyPlace.deleteMany({
+        where: { propertyId: id },
+      });
+
+      // Finally delete the property
+      await tx.property.delete({
+        where: { id },
+      });
+    });
+
+    return sendResponse(
+      {
+        message: 'Property and all related data deleted successfully',
+        deletedItems: {
+          property: 1,
+          reservations: property.reservations.length,
+          images: property.images.length,
+          amenities: property.amenities.length,
+          nearbyPlaces: property.nearbyPlaces.length,
+        },
+      },
+      1
+    );
   } catch (error) {
     return handleApiError(error);
   }

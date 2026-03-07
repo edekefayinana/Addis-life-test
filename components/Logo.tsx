@@ -5,7 +5,7 @@ export function Logo() {
   return (
     <Link href="/" className="flex items-center gap-2 justify-center">
       <Image
-        src="/logo.svg"
+        src="/logo.png"
         alt="Addis Life Logo"
         width={100}
         height={30}

@@ -22,11 +22,26 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
+function titleFromPath(pathname: string, userRole?: string): string {
+  if (!pathname || pathname === '/') return 'Welcome Back!';
+
+  // Check if we're on the admin dashboard
+  if (
+    pathname.includes('/admin') &&
+    pathname.split('/').filter(Boolean).length <= 2
+  ) {
+    return userRole === 'ADMIN' ? 'Admin' : 'Agent';
+  }
+
+  const seg = pathname.split('/').filter(Boolean)[0] || '';
+  return seg.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+}
 
 export function Sidebar() {
   const pathname = usePathname();
   const [showSettings, setShowSettings] = useState(false);
   const { data: session } = useSession();
+  const computedTitle = titleFromPath(pathname, session?.user?.role);
 
   const menuItems = [
     { icon: Home, label: 'Dashboard', href: '/admin' },
@@ -86,7 +101,7 @@ export function Sidebar() {
               />
             </div>
             <div className="text-white font-semibold text-sm">
-              Addis Life RE
+              {computedTitle}
             </div>
           </div>
         </div>

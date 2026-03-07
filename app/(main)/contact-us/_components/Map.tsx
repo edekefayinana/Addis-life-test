@@ -159,7 +159,7 @@ export default function Map() {
       zoom={15}
       scrollWheelZoom={true}
       className="h-full w-full"
-      style={{ height: '100%', width: '100%' }}
+      style={{ height: '100%', width: '100%', zIndex: 1 }}
     >
       <MapContent />
     </MapContainer>

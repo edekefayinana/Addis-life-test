@@ -53,7 +53,7 @@ export function SettingsLayout({
         //   label: 'Account Deactivation',
         //   icon: AlertCircle,
         // },
-        { id: 'logout', label: 'Logout', icon: LogOut },
+        { id: 'logout', label: 'Log Out', icon: LogOut },
       ],
     },
   ];

@@ -306,7 +306,7 @@ export function Header({ variant }: HeaderProps) {
                   styles.action
                 )}
               >
-                Login
+                Log In
               </Link>
 
               <Link
@@ -482,7 +482,7 @@ export function Header({ variant }: HeaderProps) {
                   className="rounded-full px-4 py-2 text-center text-sm font-medium text-foreground hover:bg-gray-100"
                   onClick={() => setIsMobileOpen(false)}
                 >
-                  Login
+                  Log In
                 </Link>
                 <Link
                   href="/signup"

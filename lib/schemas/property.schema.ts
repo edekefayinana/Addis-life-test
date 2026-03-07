@@ -26,6 +26,14 @@ export const propertyFormSchema = z.object({
   availableFloors: z.string().describe('Comma separated floors'),
   amenities: z.string().describe('Comma separated amenities'),
   nearbyPlaces: z.string().default(''), // FIX: Added default
-  images: z.string().describe('Comma separated URLs'),
+  images: z
+    .array(
+      z.object({
+        id: z.string().optional(),
+        url: z.string().url('Invalid image URL'),
+      })
+    )
+    .optional()
+    .default([]),
   projectId: z.string(),
 });
