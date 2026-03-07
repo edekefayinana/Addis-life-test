@@ -51,7 +51,7 @@ export function SettingsPanel({ onOpenModal }: SettingsPanelProps) {
           onClick: () => onOpenModal('deactivation'),
         },
         {
-          label: 'Logout',
+          label: 'Log Out',
           icon: LogOut,
           onClick: () => {},
         },

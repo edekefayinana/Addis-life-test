@@ -19,43 +19,31 @@ import { useFilters } from '@/lib/hooks/useFilters';
 import { PropertiesMapView } from '@/app/(main)/properties/_components/PropertiesMapView';
 
 // Adapter function to convert API data to PropertyCard format
-function adaptPropertyData(apiProperty: any) {
+function adaptPropertyData(apiProperty: any): PropertyCardProps {
   return {
-    title: apiProperty.title,
-    type: apiProperty.listingType?.toLowerCase() as 'rent' | 'sale',
-    overview: {
-      built_start_date: apiProperty.builtStartDate,
-      property_type: apiProperty.propertyType,
-      current_status: apiProperty.currentStatus,
-    },
-    property_details: {
-      total_bedrooms: apiProperty.totalBedrooms,
-      total_bathrooms: apiProperty.totalBathrooms,
-      parking_space: apiProperty.parkingSpace,
-      area_size_m2: apiProperty.areaSizeM2,
-      available_floors: apiProperty.availableFloors,
-      building_size: apiProperty.buildingSize,
-      delivery_time: apiProperty.deliveryTime,
-    },
-    amenities: apiProperty.amenities?.map((a: any) => a.name) || [],
-    location_and_surroundings: {
-      nearby_places: apiProperty.nearbyPlaces?.map((p: any) => p.name) || [],
-    },
-    location: {
-      address: apiProperty.address,
-      city: apiProperty.city,
-      country: apiProperty.country,
-      longitude: apiProperty.longitude,
-      latitude: apiProperty.latitude,
-    },
-    images: apiProperty.images || [],
-    // Keep original data for map view
+    // Direct mapping to match PropertyCardProps interface
     id: apiProperty.id,
+    title: apiProperty.title,
+    builtStartDate: apiProperty.builtStartDate,
+    propertyType: apiProperty.propertyType,
+    listingType: apiProperty.listingType,
+    currentStatus: apiProperty.currentStatus,
     totalBedrooms: apiProperty.totalBedrooms,
     totalBathrooms: apiProperty.totalBathrooms,
+    parkingSpace: apiProperty.parkingSpace,
     areaSizeM2: apiProperty.areaSizeM2,
-    latitude: apiProperty.latitude,
+    availableFloors: apiProperty.availableFloors,
+    buildingSize: apiProperty.buildingSize,
+    deliveryTime: apiProperty.deliveryTime,
+    address: apiProperty.address,
+    city: apiProperty.city,
+    country: apiProperty.country,
     longitude: apiProperty.longitude,
+    latitude: apiProperty.latitude,
+    createdById: apiProperty.createdById,
+    createdAt: apiProperty.createdAt,
+    updatedAt: apiProperty.updatedAt,
+    images: apiProperty.images || [],
   };
 }
 
@@ -63,12 +51,14 @@ function InventoryContent({
   query,
   currentView,
   isPending,
+  onPropertyDeleted,
 }: {
   query: string;
   currentView: string;
   isPending: boolean;
+  onPropertyDeleted?: () => void;
 }) {
-  const { isLoading, data } = useDataFetch<any>('inventory', {
+  const { isLoading, data, refetch } = useDataFetch<any>('inventory', {
     queryString: query,
   });
 
@@ -94,6 +84,12 @@ function InventoryContent({
 
   // Adapt properties to the format PropertyCard expects
   const properties = rawProperties.map(adaptPropertyData);
+  console.log(properties);
+
+  const handlePropertyDeleted = () => {
+    refetch();
+    onPropertyDeleted?.();
+  };
 
   if (currentView === 'map') {
     return (
@@ -105,7 +101,11 @@ function InventoryContent({
     <>
       <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {properties.map((property: Listing, idx: number) => (
-          <PropertyCard key={`${property.id}-${idx}`} {...property} />
+          <PropertyCard
+            key={`${property.id}-${idx}`}
+            {...property}
+            onDeleted={handlePropertyDeleted}
+          />
         ))}
       </section>
       {properties.length === 0 && (
@@ -172,6 +172,9 @@ export default function Inventory() {
           query={query}
           currentView={currentView}
           isPending={isPending}
+          onPropertyDeleted={() => {
+            // Could add additional logic here if needed
+          }}
         />
       </Suspense>
 

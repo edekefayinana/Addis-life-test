@@ -1,35 +1,18 @@
 'use client';
 
-import { useState } from 'react';
-import Image from 'next/image';
-import { Bell } from 'lucide-react';
-import { NotificationsModalNew } from './modals/NotificationsModalNew';
-import { usePathname } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 import { useNotifications } from '@/lib/hooks/useNotificationsNew';
+import { ArrowLeftCircle, Bell } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useState } from 'react';
+import { NotificationsModalNew } from './modals/NotificationsModalNew';
 import { SettingsModal } from './modals/SettingsModal';
 
-function titleFromPath(pathname: string, userRole?: string): string {
-  if (!pathname || pathname === '/') return 'Welcome Back!';
-
-  // Check if we're on the admin dashboard
-  if (
-    pathname.includes('/admin') &&
-    pathname.split('/').filter(Boolean).length <= 2
-  ) {
-    return userRole === 'ADMIN' ? 'Admin' : 'Agent';
-  }
-
-  const seg = pathname.split('/').filter(Boolean)[0] || '';
-  return seg.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
-}
-
-export function TopBar({ title }: { title?: string }) {
+export function TopBar() {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  const pathname = usePathname();
   const { data: session } = useSession();
-  const computedTitle = title ?? titleFromPath(pathname, session?.user?.role);
 
   // Use the new notification hook to get unread count
   const { stats } = useNotifications({
@@ -43,10 +26,22 @@ export function TopBar({ title }: { title?: string }) {
   return (
     <div className="px-8 py-4 border-b border-gray-200 bg-white sticky top-0 z-10">
       <div className="flex justify-between items-center">
-        <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
-          {computedTitle}
-        </h1>
         <div className="flex items-center gap-4">
+          <Link
+            href="/"
+            className="flex items-center gap-1 px-3 py-2 rounded-lg  text-sm font-medium"
+            title="Back to public page"
+          >
+            <ArrowLeftCircle className="w-5 h-5" />
+            <span>Home</span>
+          </Link>
+          {/* <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
+          {computedTitle}
+        </h1> */}
+        </div>
+        <div className="flex items-center gap-4">
+          {/* Back to Public Page button */}
+
           <button
             onClick={() => setShowNotifications(true)}
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors relative"

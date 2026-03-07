@@ -1,4 +1,3 @@
-import bcrypt from 'bcryptjs';
 import * as readline from 'readline';
 
 const rl = readline.createInterface({
@@ -14,15 +13,7 @@ async function generatePassword() {
       return;
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    console.log('\n✅ Password hashed successfully!');
-    console.log('\nCopy this hashed password to your seed.ts file:');
-    console.log('─'.repeat(80));
-    console.log(hashedPassword);
-    console.log('─'.repeat(80));
-    console.log('\nUpdate prisma/seed.ts with:');
-    console.log(`password: '${hashedPassword}',`);
+    // const hashedPassword = await bcrypt.hash(password, 10);
 
     rl.close();
   });

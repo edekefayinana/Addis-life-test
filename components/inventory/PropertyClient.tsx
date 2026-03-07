@@ -13,22 +13,21 @@ import {
   ChevronRight,
   Clock,
   DollarSign,
-  ExternalLink,
   Grid3x3,
-  Heart,
   HomeIcon,
   MapPin,
   Maximize2,
   Play,
-  Share2,
   Sparkles,
-  Video,
   X,
+  ArrowLeft,
 } from 'lucide-react';
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { DeletePropertyDialog } from '@/components/inventory/DeletePropertyDialog';
+import { useRouter } from 'next/navigation';
 
 // Property type based on provided structure
 export type Property = {
@@ -64,6 +63,7 @@ export function PropertyClient({ property }: { property: Property }) {
     'overview'
   );
   const { data: session } = useSession();
+  const router = useRouter();
   const isAdmin = session?.user?.role === 'ADMIN';
   const [showReservePanel, setShowReservePanel] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -255,19 +255,19 @@ export function PropertyClient({ property }: { property: Property }) {
 
   return (
     <div className="min-h-screen bg-background mt-[70px] relative">
-      {isAdmin && (
-        <button
-          className="fixed bottom-8 right-8 z-50 bg-primary text-white rounded-full shadow-lg px-6 py-3 text-lg font-bold hover:bg-primary/90 transition-all"
-          aria-label="Create Property"
-        >
-          <Link href={`/admin/inventory/${property.id}/edit`}>Edit</Link>
-        </button>
-      )}
       {/* Main Content */}
       <main className="max-w-[1400px] mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {/* Property Title Section */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <div className="flex-1 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+            <Button
+              variant="ghost"
+              onClick={() => router.back()}
+              className="flex items-center gap-2 px-4 py-2 text-sm font-medium"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back
+            </Button>
             <h1 className="text-2xl sm:text-3xl font-semibold text-foreground mb-0">
               {truncate(currentProperty.title, 40)}
             </h1>
@@ -294,18 +294,25 @@ export function PropertyClient({ property }: { property: Property }) {
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
-            <button className="flex items-center gap-2 px-3 sm:px-4 py-3 rounded-full hover:bg-accent transition-colors">
-              <Share2 className="w-4 h-4" />
-              <span className="text-xs sm:text-sm font-medium hidden sm:inline">
-                Share
-              </span>
-            </button>
-            <button className="flex items-center gap-2 px-3 sm:px-4 py-3 rounded-full hover:bg-accent transition-colors">
-              <Heart className="w-4 h-4" />
-              <span className="text-xs sm:text-sm font-medium hidden sm:inline">
-                Save
-              </span>
-            </button>
+            {isAdmin && (
+              <>
+                <Link href={`/admin/inventory/${property.id}/edit`}>
+                  <Button
+                    variant="primary"
+                    className="px-4 py-2 text-sm font-medium"
+                  >
+                    Edit Property
+                  </Button>
+                </Link>
+                <DeletePropertyDialog
+                  propertyId={property.id}
+                  propertyTitle={property.title}
+                  onDeleted={() => {
+                    router.push('/admin/inventory');
+                  }}
+                />
+              </>
+            )}
           </div>
         </div>
 
@@ -325,7 +332,7 @@ export function PropertyClient({ property }: { property: Property }) {
               <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-cta-bg" />
             )}
           </button>
-          <button
+          {/* <button
             onClick={() => setActiveTab('video')}
             className={`flex items-center gap-2 px-1 py-4 text-xs sm:text-sm font-medium transition-colors relative whitespace-nowrap ${
               activeTab === 'video'
@@ -338,8 +345,8 @@ export function PropertyClient({ property }: { property: Property }) {
             {activeTab === 'video' && (
               <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-cta-bg" />
             )}
-          </button>
-          <button
+          </button> */}
+          {/* <button
             onClick={() => setActiveTab('virtual')}
             className={`flex items-center gap-2 px-1 py-4 text-xs sm:text-sm font-medium transition-colors relative whitespace-nowrap ${
               activeTab === 'virtual'
@@ -352,7 +359,7 @@ export function PropertyClient({ property }: { property: Property }) {
             {activeTab === 'virtual' && (
               <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-cta-bg" />
             )}
-          </button>
+          </button> */}
         </div>
 
         {/* Media Section */}
@@ -604,7 +611,7 @@ export function PropertyClient({ property }: { property: Property }) {
             </section>
 
             {/* Amenities Download */}
-            <section>
+            {/* <section>
               <h3 className="text-xl font-bold mb-4">Amenities</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <button className="flex items-center justify-between p-4 border rounded-lg hover:bg-accent transition-colors">
@@ -631,7 +638,7 @@ export function PropertyClient({ property }: { property: Property }) {
                   <ExternalLink className="w-4 h-4 text-muted-foreground shrink-0 ml-2" />
                 </button>
               </div>
-            </section>
+            </section> */}
           </div>
 
           {/* Right Column - Pricing & Contact */}

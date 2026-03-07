@@ -164,6 +164,19 @@ a {
   display: block !important;
 }
 
+/* Fix z-index issues with mobile navigation */
+.leaflet-container {
+  z-index: 1 !important;
+}
+
+.leaflet-control-container {
+  z-index: 2 !important;
+}
+
+.leaflet-popup-pane {
+  z-index: 3 !important;
+}
+
 /* Hide scrollbar utility */
 .scrollbar-hide {
   -ms-overflow-style: none; /* IE and Edge */

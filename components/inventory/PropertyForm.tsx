@@ -22,33 +22,35 @@ import {
 } from '@/components/ui/select';
 import { propertyFormSchema as formSchema } from '@/lib/schemas/property.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Plus, X } from 'lucide-react';
+import { Plus, X, Upload, ArrowLeft } from 'lucide-react';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
 import { useTransition } from 'react';
+import { useRouter } from 'next/navigation';
 
 type PropertyFormMode = 'create' | 'edit';
 
 interface PropertyFormProps {
   initialData?: any;
   mode?: PropertyFormMode;
+  onDeleted?: () => void;
 }
 
 import { useEffect } from 'react';
 import { ProjectModal } from '@/components/inventory/ProjectModal';
+import { PropertyImage, Amenity, NearbyPlace } from '@/types/property';
+import { DeletePropertyDialog } from '@/components/inventory/DeletePropertyDialog';
+import Image from 'next/image';
 
 export function PropertyForm({
   initialData,
   mode = 'create',
+  onDeleted,
 }: PropertyFormProps) {
+  const router = useRouter();
   // Transform initialData for array fields if present
-  // Explicit types for DB schema
-  type Amenity = { id?: string; name: string };
-  type NearbyPlace = { id?: string; name: string };
-  type PropertyImage = { id?: string; url: string };
-
   const transformedInitialData = initialData
     ? {
         ...initialData,
@@ -76,14 +78,11 @@ export function PropertyForm({
             ? initialData.nearbyPlaces
             : '',
         images: Array.isArray(initialData.images)
-          ? initialData.images
-              .map((a: PropertyImage) =>
-                typeof a === 'object' && a !== null ? a.url : a
-              )
-              .join(',')
-          : typeof initialData.images === 'string'
-            ? initialData.images
-            : '',
+          ? initialData.images.map((img: PropertyImage) => ({
+              id: img.id,
+              url: img.url,
+            }))
+          : [],
       }
     : undefined;
 
@@ -117,7 +116,7 @@ export function PropertyForm({
     z.infer<typeof formSchema> & {
       amenities: string[];
       nearbyPlaces: string[];
-      images: string[];
+      images: { id?: string; url: string }[];
     }
   >({
     resolver: zodResolver(formSchema),
@@ -150,61 +149,75 @@ export function PropertyForm({
   const [isPending, startTransition] = useTransition();
   const isLoading = isPending;
   const [floorInput, setFloorInput] = useState('');
-  const [imageInput, setImageInput] = useState('');
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  const [uploadingImages, setUploadingImages] = useState(false);
 
   async function submitProperty(values: any) {
-    console.log(values);
+    let uploadedImageUrls: string[] = [];
 
-    // Convert array fields to comma-separated strings for schema validation
-    const fixedValues = {
-      ...values,
-      amenities: Array.isArray(values.amenities)
-        ? values.amenities.join(',')
-        : values.amenities,
-      nearbyPlaces: Array.isArray(values.nearbyPlaces)
-        ? values.nearbyPlaces.join(',')
-        : values.nearbyPlaces,
-      images: Array.isArray(values.images)
-        ? values.images.join(',')
-        : values.images,
-    };
+    // Upload images to Cloudinary if there are selected files
+    if (selectedImages.length > 0) {
+      setUploadingImages(true);
+      try {
+        const formData = new FormData();
+        selectedImages.forEach((file) => {
+          formData.append('files', file);
+        });
 
-    // Now build the payload for backend (with availableFloors as array, and amenities, nearbyPlaces, images as arrays of objects)
+        const uploadResponse = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!uploadResponse.ok) {
+          throw new Error('Failed to upload images');
+        }
+
+        const uploadData = await uploadResponse.json();
+        uploadedImageUrls = uploadData.urls;
+      } catch (error) {
+        console.error('Image upload error:', error);
+        toast.error('Failed to upload images');
+        return;
+      } finally {
+        setUploadingImages(false);
+      }
+    }
+
+    // Combine existing images with newly uploaded ones
+    const existingImages = Array.isArray(values.images) ? values.images : [];
+    const newImages = uploadedImageUrls.map((url) => ({ url }));
+    const allImages = [...existingImages, ...newImages];
+
+    // Convert array fields to proper format for backend
     const payload = {
-      ...fixedValues,
-      builtStartDate: new Date(fixedValues.builtStartDate).toISOString(),
+      ...values,
+      builtStartDate: new Date(values.builtStartDate).toISOString(),
       availableFloors:
-        typeof fixedValues.availableFloors === 'string'
-          ? fixedValues.availableFloors.split(',').map((s: string) => s.trim())
-          : fixedValues.availableFloors,
+        typeof values.availableFloors === 'string'
+          ? values.availableFloors.split(',').map((s: string) => s.trim())
+          : values.availableFloors,
       amenities:
-        typeof fixedValues.amenities === 'string'
-          ? fixedValues.amenities
+        typeof values.amenities === 'string'
+          ? values.amenities
               .split(',')
               .map((name: string): Amenity => ({ name: name.trim() }))
               .filter((a: Amenity) => a.name)
           : [],
       nearbyPlaces:
-        typeof fixedValues.nearbyPlaces === 'string'
-          ? fixedValues.nearbyPlaces
+        typeof values.nearbyPlaces === 'string'
+          ? values.nearbyPlaces
               .split(',')
               .map((name: string): NearbyPlace => ({ name: name.trim() }))
               .filter((a: NearbyPlace) => a.name)
           : [],
-      images:
-        typeof fixedValues.images === 'string'
-          ? fixedValues.images
-              .split(',')
-              .map((url: string): PropertyImage => ({ url: url.trim() }))
-              .filter((a: PropertyImage) => a.url)
-          : [],
-      projectId: fixedValues.projectId,
+      images: allImages,
+      projectId: values.projectId,
     };
 
-    console.log('PAYLOAD', payload);
-
     const method = mode === 'edit' ? 'PATCH' : 'POST';
-    const url = mode === 'edit' ? `/inventory/${initialData.id}` : '/inventory';
+    const url =
+      mode === 'edit' ? `/api/inventory/${initialData.id}` : '/api/inventory';
     const res = await fetch(`${process.env.API_BASE_URL || ''}${url}`, {
       method,
       body: JSON.stringify(payload),
@@ -222,25 +235,21 @@ export function PropertyForm({
   }
 
   const isEdit = mode === 'edit';
-  // Wrapper to convert array fields to strings before validation
-  function handleFormSubmit(values: any) {
-    const fixedValues = {
-      ...values,
-      amenities: Array.isArray(values.amenities)
-        ? values.amenities.join(',')
-        : values.amenities,
-      nearbyPlaces: Array.isArray(values.nearbyPlaces)
-        ? values.nearbyPlaces.join(',')
-        : values.nearbyPlaces,
-      images: Array.isArray(values.images)
-        ? values.images.join(',')
-        : values.images,
-    };
-    return onSubmit(fixedValues);
-  }
 
   return (
     <div className="max-w-5xl mx-auto p-6 md:p-10 bg-gradient-to-br from-white to-slate-50 border border-slate-200 rounded-2xl">
+      {/* Back Button */}
+      <div className="mb-6">
+        <Button
+          variant="ghost"
+          onClick={() => router.back()}
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back
+        </Button>
+      </div>
+
       {/* Project Modal and Button */}
       <div className="flex justify-end mb-4">
         <button
@@ -257,20 +266,28 @@ export function PropertyForm({
         onProjectCreated={handleProjectCreated}
       />
       <div className="mb-8">
-        <h1 className="text-4xl font-extrabold tracking-tight text-primary mb-2">
-          {isEdit ? 'Edit Property' : 'Create New Property'}
-        </h1>
-        <p className="text-lg text-muted-foreground">
-          {isEdit
-            ? 'Update the details for this property.'
-            : 'Fill in all details to list this property in the inventory.'}
-        </p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl font-extrabold tracking-tight text-primary mb-2">
+              {isEdit ? 'Edit Property' : 'Create New Property'}
+            </h1>
+            <p className="text-lg text-muted-foreground">
+              {isEdit
+                ? 'Update the details for this property.'
+                : 'Fill in all details to list this property in the inventory.'}
+            </p>
+          </div>
+          {isEdit && initialData && (
+            <DeletePropertyDialog
+              propertyId={initialData.id}
+              propertyTitle={initialData.title}
+              onDeleted={onDeleted}
+            />
+          )}
+        </div>
       </div>
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(handleFormSubmit)}
-          className="space-y-8"
-        >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           {/* Project Select */}
           {/* {projects && projects.length > 0 ? null : ( */}
           <div className="bg-white rounded-xl border border-slate-100 p-6 md:p-8 space-y-6">
@@ -853,95 +870,177 @@ export function PropertyForm({
                   }}
                 />
               </div>
-              {/* Images (keep as comma separated for now) */}
-              <Controller
-                name="images"
-                control={form.control}
-                render={({ field }) => {
-                  const imagesArr =
-                    typeof field.value === 'string'
+              {/* Images File Upload */}
+              <div>
+                <Label className="text-base font-semibold">
+                  Property Images
+                </Label>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Upload high-quality images of the property
+                </p>
+
+                <Controller
+                  name="images"
+                  control={form.control}
+                  render={({ field }) => {
+                    const handleFileSelect = (
+                      e: React.ChangeEvent<HTMLInputElement>
+                    ) => {
+                      const files = Array.from(e.target.files || []);
+                      if (files.length > 0) {
+                        setSelectedImages((prev) => [...prev, ...files]);
+                      }
+                    };
+
+                    const handleRemoveImage = (index: number) => {
+                      setSelectedImages((prev) =>
+                        prev.filter((_, i) => i !== index)
+                      );
+                    };
+
+                    const handleRemoveExistingImage = (index: number) => {
+                      const currentImages = Array.isArray(field.value)
+                        ? field.value
+                        : [];
+                      const updatedImages = currentImages.filter(
+                        (_, i) => i !== index
+                      );
+                      field.onChange(updatedImages);
+                    };
+
+                    const existingImages = Array.isArray(field.value)
                       ? field.value
-                          .split(',')
-                          .map((s) => s.trim())
-                          .filter(Boolean)
                       : [];
-                  const handleAddImage = () => {
-                    if (imageInput.trim()) {
-                      const newArr = [...imagesArr, imageInput.trim()];
-                      field.onChange(newArr.join(','));
-                      setImageInput('');
-                    }
-                  };
-                  const handleRemoveImage = (index: number) => {
-                    const newArr = imagesArr.filter((_, i) => i !== index);
-                    field.onChange(newArr.join(','));
-                  };
-                  return (
-                    <>
-                      <FormLabel className="font-semibold">
-                        Image URLs
-                      </FormLabel>
-                      <div className="flex gap-2 mb-4 mt-2">
-                        <Input
-                          value={imageInput}
-                          onChange={(e) => setImageInput(e.target.value)}
-                          onKeyPress={(e) => {
-                            if (e.key === 'Enter') {
-                              e.preventDefault();
-                              handleAddImage();
-                            }
-                          }}
-                          placeholder="https://image1.jpg, https://image2.jpg"
-                          className="flex-1 h-12 shadow-none"
-                        />
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={handleAddImage}
-                          size="icon"
-                        >
-                          <Plus className="w-4 h-4" />
-                        </Button>
-                      </div>
-                      {imagesArr.length > 0 && (
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          {imagesArr.map((img, index) => (
-                            <div
-                              key={index}
-                              className="bg-slate-100 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 border border-slate-200"
-                            >
-                              {img}
-                              <button
-                                type="button"
-                                onClick={() => handleRemoveImage(index)}
-                                className="hover:bg-slate-200 rounded-full p-0.5 ml-2 -mr-1"
-                                title="Remove image"
-                              >
-                                <X className="w-4 h-4" />
-                              </button>
+
+                    return (
+                      <>
+                        {/* File Upload Area */}
+                        <div className="border-2 border-dashed border-slate-300 rounded-lg p-8 text-center hover:border-primary/50 transition-colors">
+                          <input
+                            type="file"
+                            multiple
+                            accept="image/*"
+                            onChange={handleFileSelect}
+                            className="hidden"
+                            id="image-upload"
+                          />
+                          <label
+                            htmlFor="image-upload"
+                            className="cursor-pointer flex flex-col items-center gap-3"
+                          >
+                            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                              <Upload className="w-6 h-6 text-primary" />
                             </div>
-                          ))}
+                            <div>
+                              <p className="text-lg font-medium text-slate-700">
+                                Click to upload images
+                              </p>
+                              <p className="text-sm text-slate-500">
+                                PNG, JPG, JPEG up to 10MB each
+                              </p>
+                            </div>
+                          </label>
                         </div>
-                      )}
-                      {form.formState.errors.images && (
-                        <p className="text-sm text-destructive font-medium">
-                          {form.formState.errors.images.message as string}
-                        </p>
-                      )}
-                    </>
-                  );
-                }}
-              />
+
+                        {/* Selected Images Preview */}
+                        {selectedImages.length > 0 && (
+                          <div className="mt-4">
+                            <h4 className="font-medium mb-3">
+                              Selected Images ({selectedImages.length})
+                            </h4>
+                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                              {selectedImages.map((file, index) => (
+                                <div key={index} className="relative group">
+                                  <div className="aspect-square rounded-lg overflow-hidden bg-slate-100 border border-slate-200">
+                                    <Image
+                                      src={URL.createObjectURL(file)}
+                                      alt={`Preview ${index + 1}`}
+                                      className="w-full h-full object-cover"
+                                    />
+                                  </div>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleRemoveImage(index)}
+                                    className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                    title="Remove image"
+                                  >
+                                    <X className="w-4 h-4" />
+                                  </button>
+                                  <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-xs p-1 truncate">
+                                    {file.name}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Existing Images (for edit mode) */}
+                        {existingImages.length > 0 && (
+                          <div className="mt-4">
+                            <h4 className="font-medium mb-3">
+                              Current Images ({existingImages.length})
+                            </h4>
+                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                              {existingImages.map((image, index) => (
+                                <div
+                                  key={image.id || index}
+                                  className="relative group"
+                                >
+                                  <div className="aspect-square rounded-lg overflow-hidden bg-slate-100 border border-slate-200">
+                                    <Image
+                                      src={image.url}
+                                      alt={`Current ${index + 1}`}
+                                      className="w-full h-full object-cover"
+                                    />
+                                  </div>
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      handleRemoveExistingImage(index)
+                                    }
+                                    className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                    title="Remove image"
+                                  >
+                                    <X className="w-4 h-4" />
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {form.formState.errors.images && (
+                          <p className="text-sm text-destructive font-medium mt-2">
+                            {form.formState.errors.images.message as string}
+                          </p>
+                        )}
+                      </>
+                    );
+                  }}
+                />
+              </div>
             </div>
           </div>
           <div className="pt-2">
             <Button
               type="submit"
-              disabled={isLoading}
+              disabled={isLoading || uploadingImages}
               className="w-full h-14 text-lg font-bold border border-primary bg-primary text-white hover:bg-primary/90 transition-none"
             >
-              {isLoading && <Spinner size="sm" className="mr-2" />}
-              {isEdit ? 'Update Listing' : 'Create Listing'}
+              {uploadingImages && <Spinner size="sm" className="mr-2" />}
+              {isLoading && !uploadingImages && (
+                <Spinner size="sm" className="mr-2" />
+              )}
+              {uploadingImages
+                ? 'Uploading Images...'
+                : isLoading
+                  ? isEdit
+                    ? 'Updating...'
+                    : 'Creating...'
+                  : isEdit
+                    ? 'Update Listing'
+                    : 'Create Listing'}
             </Button>
           </div>
         </form>

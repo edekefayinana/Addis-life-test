@@ -119,6 +119,7 @@ export function PropertyCard({
       <Card className="overflow-hidden group cursor-pointer transition-all p-2 hover:shadow-lg border-0 shadow-md rounded-lg">
         <div className="relative aspect-16/10 w-full overflow-hidden rounded-lg bg-gray-100">
           <Image
+            key={showImage}
             src={showImage}
             alt={title}
             fill

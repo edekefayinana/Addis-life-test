@@ -51,7 +51,7 @@ export default function LoginPage() {
       <Logo />
 
       <div className="space-y-2 text-center">
-        <h1 className="text-4xl font-semibold text-gray-900">Agent Login</h1>
+        <h1 className="text-4xl font-semibold text-gray-900">Agent Log In</h1>
         <p className="text-base text-gray-600 leading-relaxed">
           Access your agent dashboard to manage property reservations and
           commissions.
@@ -132,7 +132,7 @@ export default function LoginPage() {
           className="h-14 w-full rounded-full bg-primary text-base font-medium text-white hover:bg-primary/90"
           disabled={isSubmitting}
         >
-          {isSubmitting ? 'Logging in...' : 'Login'}
+          {isSubmitting ? 'Logging in...' : 'Log In'}
         </Button>
 
         {errorMessage ? (
@@ -140,12 +140,14 @@ export default function LoginPage() {
         ) : null}
 
         <div className="text-center text-sm">
-          <span className="text-gray-600">{"Don't have agent account? "}</span>
+          <span className="text-gray-600">
+            {"Don't have an agent account? "}
+          </span>
           <Link
             href="/signup"
             className="font-medium !text-blue-600 hover:text-blue-700 underline text-[18px]"
           >
-            Apply for Access
+            Apply for access
           </Link>
         </div>
 
