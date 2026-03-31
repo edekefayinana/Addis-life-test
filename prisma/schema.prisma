@@ -8,29 +8,30 @@ generator client {
   provider = "prisma-client"
   output   = "../app/generated/prisma"
 }
+
 datasource db {
   provider = "postgresql"
 }
 
-
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String    @unique
-  phone         String?
-  emailVerified DateTime? 
-  image         String?
-  password      String
-  role          Role      @default(AGENT)
-  approvalStatus ApprovalStatus @default(PENDING)
-  accounts      Account[]
-  sessions      Session[]
-  properties    Property[]
-  reservations  Reservation[]
-  notifications Notification[]
+  id              String         @id @default(cuid())
+  name            String?
+  email           String         @unique
+  phone           String?
+  emailVerified   DateTime?
+  image           String?
+  password        String
+  role            Role           @default(AGENT)
+  approvalStatus  ApprovalStatus @default(APPROVED)
+  governmentIdUrl String?
+  accounts        Account[]
+  sessions        Session[]
+  properties      Property[]
+  reservations    Reservation[]
+  notifications   Notification[]
 
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([role])
   @@index([approvalStatus])
@@ -48,7 +49,7 @@ enum ApprovalStatus {
 }
 
 model Account {
-  id                String   @id @default(cuid())
+  id                String  @id @default(cuid())
   userId            String
   type              String
   provider          String
@@ -80,7 +81,7 @@ model Session {
 
 model VerificationToken {
   identifier String
-  token      String   @unique
+  token      String                @unique
   expires    DateTime
   type       VerificationTokenType @default(EMAIL)
   otp        Int?
@@ -96,8 +97,6 @@ enum VerificationTokenType {
   OTP
 }
 
-
-
 enum PropertyType {
   APARTMENT
   HOUSE
@@ -106,23 +105,22 @@ enum PropertyType {
   COMMERCIAL
 }
 
-
 enum PropertyListingType {
   RENT
   SALE
 }
 
 model Project {
-  id          String     @id @default(uuid())
-  name        String
-  properties  Property[]
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  id         String     @id @default(uuid())
+  name       String
+  properties Property[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
 }
 
 model Property {
-  id        String   @id @default(uuid())
-  title     String
+  id    String @id @default(uuid())
+  title String
 
   // Overview
   builtStartDate DateTime
@@ -131,13 +129,13 @@ model Property {
   currentStatus  String
 
   // Property Details
-  totalBedrooms    Int
-  totalBathrooms   Int
-  parkingSpace     Int
-  areaSizeM2       Float
-  availableFloors  Json
-  buildingSize     String
-  deliveryTime     String
+  totalBedrooms   Int
+  totalBathrooms  Int
+  parkingSpace    Int
+  areaSizeM2      Float
+  availableFloors Json
+  buildingSize    String
+  deliveryTime    String
 
   // Location
   address   String
@@ -151,14 +149,14 @@ model Property {
   createdById String
 
   // 🔗 Relation to Project
-  project     Project @relation(fields: [projectId], references: [id])
-  projectId   String
+  project   Project @relation(fields: [projectId], references: [id])
+  projectId String
 
   // Relations
-  amenities        Amenity[]
-  nearbyPlaces     NearbyPlace[]
-  images           PropertyImage[]
-  reservations     Reservation[]
+  amenities    Amenity[]
+  nearbyPlaces NearbyPlace[]
+  images       PropertyImage[]
+  reservations Reservation[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -171,7 +169,6 @@ model Property {
   @@index([createdAt])
   @@index([propertyType, listingType])
 }
-
 
 model Amenity {
   id         String   @id @default(uuid())
@@ -201,14 +198,14 @@ model PropertyImage {
 }
 
 model Reservation {
-  id          String   @id @default(uuid())
-  user        User     @relation(fields: [userId], references: [id])
+  id          String            @id @default(uuid())
+  user        User              @relation(fields: [userId], references: [id])
   userId      String
-  property    Property @relation(fields: [propertyId], references: [id])
+  property    Property          @relation(fields: [propertyId], references: [id])
   propertyId  String
   status      ReservationStatus @default(PENDING)
   description String?
-  createdAt   DateTime @default(now())
+  createdAt   DateTime          @default(now())
   expiresAt   DateTime
   confirmedAt DateTime?
   cancelledAt DateTime?
@@ -231,17 +228,17 @@ enum ReservationStatus {
 }
 
 model Notification {
-  id          String           @id @default(uuid())
-  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      String
-  title       String
-  body        String
-  type        NotificationType @default(SYSTEM)
-  read        Boolean          @default(false)
-  link        String?
-  data        Json?
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
+  id        String           @id @default(uuid())
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  title     String
+  body      String
+  type      NotificationType @default(SYSTEM)
+  read      Boolean          @default(false)
+  link      String?
+  data      Json?
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
 
   @@index([userId])
   @@index([read])

@@ -92,8 +92,8 @@ export default function ForgotPasswordPage() {
         <div className="text-center text-base">
           <span className="text-gray-600">{"Don't have agent account? "}</span>
           <Link
-            href="/signup"
-            className="font-medium !text-blue-600 hover:text-blue-700 underline text-[18px]"
+            href="/apply"
+            className="font-medium text-blue-600! hover:text-blue-700 underline text-[18px]"
           >
             Apply for Access
           </Link>

@@ -34,6 +34,7 @@ export type UserMinAggregateOutputType = {
   password: string | null;
   role: $Enums.Role | null;
   approvalStatus: $Enums.ApprovalStatus | null;
+  governmentIdUrl: string | null;
   createdAt: Date | null;
   updatedAt: Date | null;
 };
@@ -48,6 +49,7 @@ export type UserMaxAggregateOutputType = {
   password: string | null;
   role: $Enums.Role | null;
   approvalStatus: $Enums.ApprovalStatus | null;
+  governmentIdUrl: string | null;
   createdAt: Date | null;
   updatedAt: Date | null;
 };
@@ -62,6 +64,7 @@ export type UserCountAggregateOutputType = {
   password: number;
   role: number;
   approvalStatus: number;
+  governmentIdUrl: number;
   createdAt: number;
   updatedAt: number;
   _all: number;
@@ -77,6 +80,7 @@ export type UserMinAggregateInputType = {
   password?: true;
   role?: true;
   approvalStatus?: true;
+  governmentIdUrl?: true;
   createdAt?: true;
   updatedAt?: true;
 };
@@ -91,6 +95,7 @@ export type UserMaxAggregateInputType = {
   password?: true;
   role?: true;
   approvalStatus?: true;
+  governmentIdUrl?: true;
   createdAt?: true;
   updatedAt?: true;
 };
@@ -105,6 +110,7 @@ export type UserCountAggregateInputType = {
   password?: true;
   role?: true;
   approvalStatus?: true;
+  governmentIdUrl?: true;
   createdAt?: true;
   updatedAt?: true;
   _all?: true;
@@ -199,6 +205,7 @@ export type UserGroupByOutputType = {
   password: string;
   role: $Enums.Role;
   approvalStatus: $Enums.ApprovalStatus;
+  governmentIdUrl: string | null;
   createdAt: Date;
   updatedAt: Date;
   _count: UserCountAggregateOutputType | null;
@@ -233,6 +240,7 @@ export type UserWhereInput = {
   approvalStatus?:
     | Prisma.EnumApprovalStatusFilter<'User'>
     | $Enums.ApprovalStatus;
+  governmentIdUrl?: Prisma.StringNullableFilter<'User'> | string | null;
   createdAt?: Prisma.DateTimeFilter<'User'> | Date | string;
   updatedAt?: Prisma.DateTimeFilter<'User'> | Date | string;
   accounts?: Prisma.AccountListRelationFilter;
@@ -252,6 +260,7 @@ export type UserOrderByWithRelationInput = {
   password?: Prisma.SortOrder;
   role?: Prisma.SortOrder;
   approvalStatus?: Prisma.SortOrder;
+  governmentIdUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
   accounts?: Prisma.AccountOrderByRelationAggregateInput;
@@ -281,6 +290,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<
     approvalStatus?:
       | Prisma.EnumApprovalStatusFilter<'User'>
       | $Enums.ApprovalStatus;
+    governmentIdUrl?: Prisma.StringNullableFilter<'User'> | string | null;
     createdAt?: Prisma.DateTimeFilter<'User'> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<'User'> | Date | string;
     accounts?: Prisma.AccountListRelationFilter;
@@ -302,6 +312,7 @@ export type UserOrderByWithAggregationInput = {
   password?: Prisma.SortOrder;
   role?: Prisma.SortOrder;
   approvalStatus?: Prisma.SortOrder;
+  governmentIdUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
   _count?: Prisma.UserCountOrderByAggregateInput;
@@ -332,6 +343,10 @@ export type UserScalarWhereWithAggregatesInput = {
   approvalStatus?:
     | Prisma.EnumApprovalStatusWithAggregatesFilter<'User'>
     | $Enums.ApprovalStatus;
+  governmentIdUrl?:
+    | Prisma.StringNullableWithAggregatesFilter<'User'>
+    | string
+    | null;
   createdAt?: Prisma.DateTimeWithAggregatesFilter<'User'> | Date | string;
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<'User'> | Date | string;
 };
@@ -346,6 +361,7 @@ export type UserCreateInput = {
   password: string;
   role?: $Enums.Role;
   approvalStatus?: $Enums.ApprovalStatus;
+  governmentIdUrl?: string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
@@ -365,6 +381,7 @@ export type UserUncheckedCreateInput = {
   password: string;
   role?: $Enums.Role;
   approvalStatus?: $Enums.ApprovalStatus;
+  governmentIdUrl?: string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput;
@@ -390,6 +407,10 @@ export type UserUpdateInput = {
   approvalStatus?:
     | Prisma.EnumApprovalStatusFieldUpdateOperationsInput
     | $Enums.ApprovalStatus;
+  governmentIdUrl?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput;
@@ -415,6 +436,10 @@ export type UserUncheckedUpdateInput = {
   approvalStatus?:
     | Prisma.EnumApprovalStatusFieldUpdateOperationsInput
     | $Enums.ApprovalStatus;
+  governmentIdUrl?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput;
@@ -434,6 +459,7 @@ export type UserCreateManyInput = {
   password: string;
   role?: $Enums.Role;
   approvalStatus?: $Enums.ApprovalStatus;
+  governmentIdUrl?: string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
 };
@@ -454,6 +480,10 @@ export type UserUpdateManyMutationInput = {
   approvalStatus?:
     | Prisma.EnumApprovalStatusFieldUpdateOperationsInput
     | $Enums.ApprovalStatus;
+  governmentIdUrl?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -474,6 +504,10 @@ export type UserUncheckedUpdateManyInput = {
   approvalStatus?:
     | Prisma.EnumApprovalStatusFieldUpdateOperationsInput
     | $Enums.ApprovalStatus;
+  governmentIdUrl?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -488,6 +522,7 @@ export type UserCountOrderByAggregateInput = {
   password?: Prisma.SortOrder;
   role?: Prisma.SortOrder;
   approvalStatus?: Prisma.SortOrder;
+  governmentIdUrl?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
 };
@@ -502,6 +537,7 @@ export type UserMaxOrderByAggregateInput = {
   password?: Prisma.SortOrder;
   role?: Prisma.SortOrder;
   approvalStatus?: Prisma.SortOrder;
+  governmentIdUrl?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
 };
@@ -516,6 +552,7 @@ export type UserMinOrderByAggregateInput = {
   password?: Prisma.SortOrder;
   role?: Prisma.SortOrder;
   approvalStatus?: Prisma.SortOrder;
+  governmentIdUrl?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
 };
@@ -689,6 +726,7 @@ export type UserCreateWithoutAccountsInput = {
   password: string;
   role?: $Enums.Role;
   approvalStatus?: $Enums.ApprovalStatus;
+  governmentIdUrl?: string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
@@ -707,6 +745,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   password: string;
   role?: $Enums.Role;
   approvalStatus?: $Enums.ApprovalStatus;
+  governmentIdUrl?: string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
@@ -759,6 +798,10 @@ export type UserUpdateWithoutAccountsInput = {
   approvalStatus?:
     | Prisma.EnumApprovalStatusFieldUpdateOperationsInput
     | $Enums.ApprovalStatus;
+  governmentIdUrl?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
@@ -783,6 +826,10 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   approvalStatus?:
     | Prisma.EnumApprovalStatusFieldUpdateOperationsInput
     | $Enums.ApprovalStatus;
+  governmentIdUrl?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
@@ -801,6 +848,7 @@ export type UserCreateWithoutSessionsInput = {
   password: string;
   role?: $Enums.Role;
   approvalStatus?: $Enums.ApprovalStatus;
+  governmentIdUrl?: string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
@@ -819,6 +867,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   password: string;
   role?: $Enums.Role;
   approvalStatus?: $Enums.ApprovalStatus;
+  governmentIdUrl?: string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput;
@@ -871,6 +920,10 @@ export type UserUpdateWithoutSessionsInput = {
   approvalStatus?:
     | Prisma.EnumApprovalStatusFieldUpdateOperationsInput
     | $Enums.ApprovalStatus;
+  governmentIdUrl?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput;
@@ -895,6 +948,10 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   approvalStatus?:
     | Prisma.EnumApprovalStatusFieldUpdateOperationsInput
     | $Enums.ApprovalStatus;
+  governmentIdUrl?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput;
@@ -913,6 +970,7 @@ export type UserCreateWithoutPropertiesInput = {
   password: string;
   role?: $Enums.Role;
   approvalStatus?: $Enums.ApprovalStatus;
+  governmentIdUrl?: string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
@@ -931,6 +989,7 @@ export type UserUncheckedCreateWithoutPropertiesInput = {
   password: string;
   role?: $Enums.Role;
   approvalStatus?: $Enums.ApprovalStatus;
+  governmentIdUrl?: string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput;
@@ -983,6 +1042,10 @@ export type UserUpdateWithoutPropertiesInput = {
   approvalStatus?:
     | Prisma.EnumApprovalStatusFieldUpdateOperationsInput
     | $Enums.ApprovalStatus;
+  governmentIdUrl?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput;
@@ -1007,6 +1070,10 @@ export type UserUncheckedUpdateWithoutPropertiesInput = {
   approvalStatus?:
     | Prisma.EnumApprovalStatusFieldUpdateOperationsInput
     | $Enums.ApprovalStatus;
+  governmentIdUrl?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput;
@@ -1025,6 +1092,7 @@ export type UserCreateWithoutReservationsInput = {
   password: string;
   role?: $Enums.Role;
   approvalStatus?: $Enums.ApprovalStatus;
+  governmentIdUrl?: string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
@@ -1043,6 +1111,7 @@ export type UserUncheckedCreateWithoutReservationsInput = {
   password: string;
   role?: $Enums.Role;
   approvalStatus?: $Enums.ApprovalStatus;
+  governmentIdUrl?: string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput;
@@ -1095,6 +1164,10 @@ export type UserUpdateWithoutReservationsInput = {
   approvalStatus?:
     | Prisma.EnumApprovalStatusFieldUpdateOperationsInput
     | $Enums.ApprovalStatus;
+  governmentIdUrl?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput;
@@ -1119,6 +1192,10 @@ export type UserUncheckedUpdateWithoutReservationsInput = {
   approvalStatus?:
     | Prisma.EnumApprovalStatusFieldUpdateOperationsInput
     | $Enums.ApprovalStatus;
+  governmentIdUrl?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput;
@@ -1137,6 +1214,7 @@ export type UserCreateWithoutNotificationsInput = {
   password: string;
   role?: $Enums.Role;
   approvalStatus?: $Enums.ApprovalStatus;
+  governmentIdUrl?: string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
@@ -1155,6 +1233,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   password: string;
   role?: $Enums.Role;
   approvalStatus?: $Enums.ApprovalStatus;
+  governmentIdUrl?: string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput;
@@ -1207,6 +1286,10 @@ export type UserUpdateWithoutNotificationsInput = {
   approvalStatus?:
     | Prisma.EnumApprovalStatusFieldUpdateOperationsInput
     | $Enums.ApprovalStatus;
+  governmentIdUrl?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput;
@@ -1231,6 +1314,10 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   approvalStatus?:
     | Prisma.EnumApprovalStatusFieldUpdateOperationsInput
     | $Enums.ApprovalStatus;
+  governmentIdUrl?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput;
@@ -1339,6 +1426,7 @@ export type UserSelect<
     password?: boolean;
     role?: boolean;
     approvalStatus?: boolean;
+    governmentIdUrl?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
     accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>;
@@ -1365,6 +1453,7 @@ export type UserSelectCreateManyAndReturn<
     password?: boolean;
     role?: boolean;
     approvalStatus?: boolean;
+    governmentIdUrl?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
   },
@@ -1385,6 +1474,7 @@ export type UserSelectUpdateManyAndReturn<
     password?: boolean;
     role?: boolean;
     approvalStatus?: boolean;
+    governmentIdUrl?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
   },
@@ -1401,6 +1491,7 @@ export type UserSelectScalar = {
   password?: boolean;
   role?: boolean;
   approvalStatus?: boolean;
+  governmentIdUrl?: boolean;
   createdAt?: boolean;
   updatedAt?: boolean;
 };
@@ -1418,6 +1509,7 @@ export type UserOmit<
   | 'password'
   | 'role'
   | 'approvalStatus'
+  | 'governmentIdUrl'
   | 'createdAt'
   | 'updatedAt',
   ExtArgs['result']['user']
@@ -1465,6 +1557,7 @@ export type $UserPayload<
       password: string;
       role: $Enums.Role;
       approvalStatus: $Enums.ApprovalStatus;
+      governmentIdUrl: string | null;
       createdAt: Date;
       updatedAt: Date;
     },
@@ -2123,6 +2216,7 @@ export interface UserFieldRefs {
   readonly password: Prisma.FieldRef<'User', 'String'>;
   readonly role: Prisma.FieldRef<'User', 'Role'>;
   readonly approvalStatus: Prisma.FieldRef<'User', 'ApprovalStatus'>;
+  readonly governmentIdUrl: Prisma.FieldRef<'User', 'String'>;
   readonly createdAt: Prisma.FieldRef<'User', 'DateTime'>;
   readonly updatedAt: Prisma.FieldRef<'User', 'DateTime'>;
 }

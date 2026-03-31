@@ -310,7 +310,7 @@ export function Header({ variant }: HeaderProps) {
               </Link>
 
               <Link
-                href="/signup"
+                href="/apply"
                 className={cn(
                   'rounded-full px-6 py-2.5 text-base font-instrument font-medium transition-colors',
                   styles.cta
@@ -485,7 +485,7 @@ export function Header({ variant }: HeaderProps) {
                   Log In
                 </Link>
                 <Link
-                  href="/signup"
+                  href="/apply"
                   className="rounded-full bg-brand-dark px-4 py-2 text-center text-sm font-semibold !text-white hover:bg-brand-dark/90"
                   onClick={() => setIsMobileOpen(false)}
                 >

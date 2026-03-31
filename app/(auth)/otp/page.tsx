@@ -7,6 +7,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Logo } from '@/components/Logo';
+
 export default function OtpVerificationPage() {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const searchParams = useSearchParams();
@@ -14,10 +15,9 @@ export default function OtpVerificationPage() {
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isResending, setIsResending] = useState(false);
   const [verified, setVerified] = useState(false);
   const router = useRouter();
-
-  // No need for useEffect to set email from searchParams; handled by useMemo/useState above
 
   const handleOtpChange = (index: number, value: string) => {
     if (value.length <= 1 && /^\d*$/.test(value)) {
@@ -43,24 +43,65 @@ export default function OtpVerificationPage() {
     }
   };
 
+  const handleResendOtp = async () => {
+    setErrorMessage('');
+    setSuccessMessage('');
+    setIsResending(true);
+
+    if (!email) {
+      setErrorMessage('Email not found. Please register again.');
+      setIsResending(false);
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/auth/resend-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setErrorMessage(data.error || 'Failed to resend OTP.');
+      } else {
+        setSuccessMessage('OTP has been resent to your email.');
+        // Clear OTP inputs
+        setOtp(['', '', '', '', '', '']);
+        // Focus first input
+        document.getElementById('otp-0')?.focus();
+      }
+    } catch {
+      setErrorMessage('Failed to resend OTP. Please try again.');
+    }
+
+    setIsResending(false);
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrorMessage('');
     setSuccessMessage('');
     setIsSubmitting(true);
+
     const otpValue = otp.join('');
+
     if (!email || otpValue.length !== 6) {
       setErrorMessage('Please enter the 6-digit OTP.');
       setIsSubmitting(false);
       return;
     }
+
     try {
       const response = await fetch('/api/auth/verify-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, otp: otpValue }),
       });
+
       const data = await response.json();
+
       if (!response.ok) {
         setErrorMessage(data.error || 'Verification failed.');
       } else {
@@ -73,6 +114,7 @@ export default function OtpVerificationPage() {
     } catch {
       setErrorMessage('Verification failed.');
     }
+
     setIsSubmitting(false);
   };
 
@@ -88,7 +130,6 @@ export default function OtpVerificationPage() {
       </div>
 
       <form className="space-y-6" onSubmit={handleSubmit}>
-        {/* Email is auto-filled from query param, not shown */}
         <div className="flex justify-center gap-3">
           {otp.map((digit, index) => (
             <Input
@@ -110,10 +151,11 @@ export default function OtpVerificationPage() {
           <span className="text-gray-700">{"Didn't get OTP? "}</span>
           <button
             type="button"
+            onClick={handleResendOtp}
             className="font-medium text-gray-800 hover:text-black underline text-[18px]"
-            disabled={verified}
+            disabled={verified || isResending}
           >
-            Resend OTP
+            {isResending ? 'Resending...' : 'Resend OTP'}
           </button>
         </div>
 
@@ -124,6 +166,7 @@ export default function OtpVerificationPage() {
         >
           {isSubmitting ? 'Verifying...' : 'Verify'}
         </Button>
+
         {errorMessage && (
           <p className="text-sm text-red-600 text-center">{errorMessage}</p>
         )}
