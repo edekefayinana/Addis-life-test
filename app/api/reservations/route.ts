@@ -109,9 +109,54 @@ export async function POST(req: NextRequest) {
         403
       );
     }
-    const { propertyId, expiresInMinutes = 20 } = await req.json();
+
+    const {
+      propertyId,
+      expiresInMinutes = 20,
+      clientName,
+      clientPhone,
+      clientEmail,
+      clientGovernmentId,
+      reservationAmount,
+      bankSlipUrl,
+      description,
+    } = await req.json();
+
+    // Validation
     if (!propertyId) {
       return sendResponse({ error: 'Missing propertyId' }, 0, undefined, 400);
+    }
+    if (!clientName || !clientPhone) {
+      return sendResponse(
+        { error: 'Client name and phone are required' },
+        0,
+        undefined,
+        400
+      );
+    }
+    if (!reservationAmount || reservationAmount <= 0) {
+      return sendResponse(
+        { error: 'Valid reservation amount is required' },
+        0,
+        undefined,
+        400
+      );
+    }
+    if (!clientGovernmentId) {
+      return sendResponse(
+        { error: 'Client government ID is required' },
+        0,
+        undefined,
+        400
+      );
+    }
+    if (!bankSlipUrl) {
+      return sendResponse(
+        { error: 'Bank slip/payment proof is required' },
+        0,
+        undefined,
+        400
+      );
     }
 
     // Check if this agent already has a reservation for this property (any status except CANCELLED/EXPIRED)
@@ -157,6 +202,13 @@ export async function POST(req: NextRequest) {
         propertyId,
         expiresAt,
         status: 'PENDING',
+        clientName,
+        clientPhone,
+        clientEmail: clientEmail || null,
+        clientGovernmentId,
+        reservationAmount,
+        bankSlipUrl,
+        description: description || null,
       },
       include: {
         property: {

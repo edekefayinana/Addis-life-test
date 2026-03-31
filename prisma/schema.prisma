@@ -205,7 +205,18 @@ model Reservation {
   propertyId  String
   status      ReservationStatus @default(PENDING)
   description String?
-  createdAt   DateTime          @default(now())
+
+  // Client Information
+  clientName         String
+  clientPhone        String
+  clientEmail        String?
+  clientGovernmentId String? // URL to uploaded government ID
+
+  // Payment Information
+  reservationAmount Float
+  bankSlipUrl       String? // URL to uploaded bank slip/payment proof
+
+  createdAt   DateTime  @default(now())
   expiresAt   DateTime
   confirmedAt DateTime?
   cancelledAt DateTime?
@@ -217,6 +228,8 @@ model Reservation {
   @@index([expiresAt])
   @@index([propertyId, status])
   @@index([userId, status])
+  @@index([clientPhone])
+  @@index([clientEmail])
 }
 
 enum ReservationStatus {

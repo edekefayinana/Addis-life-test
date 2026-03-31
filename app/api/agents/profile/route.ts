@@ -54,6 +54,7 @@ export async function GET() {
         approvalStatus: true,
         image: true,
         phone: true,
+        governmentIdUrl: true,
       },
     });
 

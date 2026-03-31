@@ -20,8 +20,18 @@ export type ReservationModel =
 
 export type AggregateReservation = {
   _count: ReservationCountAggregateOutputType | null;
+  _avg: ReservationAvgAggregateOutputType | null;
+  _sum: ReservationSumAggregateOutputType | null;
   _min: ReservationMinAggregateOutputType | null;
   _max: ReservationMaxAggregateOutputType | null;
+};
+
+export type ReservationAvgAggregateOutputType = {
+  reservationAmount: number | null;
+};
+
+export type ReservationSumAggregateOutputType = {
+  reservationAmount: number | null;
 };
 
 export type ReservationMinAggregateOutputType = {
@@ -30,6 +40,12 @@ export type ReservationMinAggregateOutputType = {
   propertyId: string | null;
   status: $Enums.ReservationStatus | null;
   description: string | null;
+  clientName: string | null;
+  clientPhone: string | null;
+  clientEmail: string | null;
+  clientGovernmentId: string | null;
+  reservationAmount: number | null;
+  bankSlipUrl: string | null;
   createdAt: Date | null;
   expiresAt: Date | null;
   confirmedAt: Date | null;
@@ -42,6 +58,12 @@ export type ReservationMaxAggregateOutputType = {
   propertyId: string | null;
   status: $Enums.ReservationStatus | null;
   description: string | null;
+  clientName: string | null;
+  clientPhone: string | null;
+  clientEmail: string | null;
+  clientGovernmentId: string | null;
+  reservationAmount: number | null;
+  bankSlipUrl: string | null;
   createdAt: Date | null;
   expiresAt: Date | null;
   confirmedAt: Date | null;
@@ -54,11 +76,25 @@ export type ReservationCountAggregateOutputType = {
   propertyId: number;
   status: number;
   description: number;
+  clientName: number;
+  clientPhone: number;
+  clientEmail: number;
+  clientGovernmentId: number;
+  reservationAmount: number;
+  bankSlipUrl: number;
   createdAt: number;
   expiresAt: number;
   confirmedAt: number;
   cancelledAt: number;
   _all: number;
+};
+
+export type ReservationAvgAggregateInputType = {
+  reservationAmount?: true;
+};
+
+export type ReservationSumAggregateInputType = {
+  reservationAmount?: true;
 };
 
 export type ReservationMinAggregateInputType = {
@@ -67,6 +103,12 @@ export type ReservationMinAggregateInputType = {
   propertyId?: true;
   status?: true;
   description?: true;
+  clientName?: true;
+  clientPhone?: true;
+  clientEmail?: true;
+  clientGovernmentId?: true;
+  reservationAmount?: true;
+  bankSlipUrl?: true;
   createdAt?: true;
   expiresAt?: true;
   confirmedAt?: true;
@@ -79,6 +121,12 @@ export type ReservationMaxAggregateInputType = {
   propertyId?: true;
   status?: true;
   description?: true;
+  clientName?: true;
+  clientPhone?: true;
+  clientEmail?: true;
+  clientGovernmentId?: true;
+  reservationAmount?: true;
+  bankSlipUrl?: true;
   createdAt?: true;
   expiresAt?: true;
   confirmedAt?: true;
@@ -91,6 +139,12 @@ export type ReservationCountAggregateInputType = {
   propertyId?: true;
   status?: true;
   description?: true;
+  clientName?: true;
+  clientPhone?: true;
+  clientEmail?: true;
+  clientGovernmentId?: true;
+  reservationAmount?: true;
+  bankSlipUrl?: true;
   createdAt?: true;
   expiresAt?: true;
   confirmedAt?: true;
@@ -141,6 +195,18 @@ export type ReservationAggregateArgs<
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    *
+   * Select which fields to average
+   **/
+  _avg?: ReservationAvgAggregateInputType;
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   *
+   * Select which fields to sum
+   **/
+  _sum?: ReservationSumAggregateInputType;
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   *
    * Select which fields to find the minimum value
    **/
   _min?: ReservationMinAggregateInputType;
@@ -173,6 +239,8 @@ export type ReservationGroupByArgs<
   take?: number;
   skip?: number;
   _count?: ReservationCountAggregateInputType | true;
+  _avg?: ReservationAvgAggregateInputType;
+  _sum?: ReservationSumAggregateInputType;
   _min?: ReservationMinAggregateInputType;
   _max?: ReservationMaxAggregateInputType;
 };
@@ -183,11 +251,19 @@ export type ReservationGroupByOutputType = {
   propertyId: string;
   status: $Enums.ReservationStatus;
   description: string | null;
+  clientName: string;
+  clientPhone: string;
+  clientEmail: string | null;
+  clientGovernmentId: string | null;
+  reservationAmount: number;
+  bankSlipUrl: string | null;
   createdAt: Date;
   expiresAt: Date;
   confirmedAt: Date | null;
   cancelledAt: Date | null;
   _count: ReservationCountAggregateOutputType | null;
+  _avg: ReservationAvgAggregateOutputType | null;
+  _sum: ReservationSumAggregateOutputType | null;
   _min: ReservationMinAggregateOutputType | null;
   _max: ReservationMaxAggregateOutputType | null;
 };
@@ -216,6 +292,15 @@ export type ReservationWhereInput = {
     | Prisma.EnumReservationStatusFilter<'Reservation'>
     | $Enums.ReservationStatus;
   description?: Prisma.StringNullableFilter<'Reservation'> | string | null;
+  clientName?: Prisma.StringFilter<'Reservation'> | string;
+  clientPhone?: Prisma.StringFilter<'Reservation'> | string;
+  clientEmail?: Prisma.StringNullableFilter<'Reservation'> | string | null;
+  clientGovernmentId?:
+    | Prisma.StringNullableFilter<'Reservation'>
+    | string
+    | null;
+  reservationAmount?: Prisma.FloatFilter<'Reservation'> | number;
+  bankSlipUrl?: Prisma.StringNullableFilter<'Reservation'> | string | null;
   createdAt?: Prisma.DateTimeFilter<'Reservation'> | Date | string;
   expiresAt?: Prisma.DateTimeFilter<'Reservation'> | Date | string;
   confirmedAt?:
@@ -241,6 +326,12 @@ export type ReservationOrderByWithRelationInput = {
   propertyId?: Prisma.SortOrder;
   status?: Prisma.SortOrder;
   description?: Prisma.SortOrderInput | Prisma.SortOrder;
+  clientName?: Prisma.SortOrder;
+  clientPhone?: Prisma.SortOrder;
+  clientEmail?: Prisma.SortOrderInput | Prisma.SortOrder;
+  clientGovernmentId?: Prisma.SortOrderInput | Prisma.SortOrder;
+  reservationAmount?: Prisma.SortOrder;
+  bankSlipUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   expiresAt?: Prisma.SortOrder;
   confirmedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -261,6 +352,15 @@ export type ReservationWhereUniqueInput = Prisma.AtLeast<
       | Prisma.EnumReservationStatusFilter<'Reservation'>
       | $Enums.ReservationStatus;
     description?: Prisma.StringNullableFilter<'Reservation'> | string | null;
+    clientName?: Prisma.StringFilter<'Reservation'> | string;
+    clientPhone?: Prisma.StringFilter<'Reservation'> | string;
+    clientEmail?: Prisma.StringNullableFilter<'Reservation'> | string | null;
+    clientGovernmentId?:
+      | Prisma.StringNullableFilter<'Reservation'>
+      | string
+      | null;
+    reservationAmount?: Prisma.FloatFilter<'Reservation'> | number;
+    bankSlipUrl?: Prisma.StringNullableFilter<'Reservation'> | string | null;
     createdAt?: Prisma.DateTimeFilter<'Reservation'> | Date | string;
     expiresAt?: Prisma.DateTimeFilter<'Reservation'> | Date | string;
     confirmedAt?:
@@ -288,13 +388,21 @@ export type ReservationOrderByWithAggregationInput = {
   propertyId?: Prisma.SortOrder;
   status?: Prisma.SortOrder;
   description?: Prisma.SortOrderInput | Prisma.SortOrder;
+  clientName?: Prisma.SortOrder;
+  clientPhone?: Prisma.SortOrder;
+  clientEmail?: Prisma.SortOrderInput | Prisma.SortOrder;
+  clientGovernmentId?: Prisma.SortOrderInput | Prisma.SortOrder;
+  reservationAmount?: Prisma.SortOrder;
+  bankSlipUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   expiresAt?: Prisma.SortOrder;
   confirmedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
   cancelledAt?: Prisma.SortOrderInput | Prisma.SortOrder;
   _count?: Prisma.ReservationCountOrderByAggregateInput;
+  _avg?: Prisma.ReservationAvgOrderByAggregateInput;
   _max?: Prisma.ReservationMaxOrderByAggregateInput;
   _min?: Prisma.ReservationMinOrderByAggregateInput;
+  _sum?: Prisma.ReservationSumOrderByAggregateInput;
 };
 
 export type ReservationScalarWhereWithAggregatesInput = {
@@ -312,6 +420,21 @@ export type ReservationScalarWhereWithAggregatesInput = {
     | Prisma.EnumReservationStatusWithAggregatesFilter<'Reservation'>
     | $Enums.ReservationStatus;
   description?:
+    | Prisma.StringNullableWithAggregatesFilter<'Reservation'>
+    | string
+    | null;
+  clientName?: Prisma.StringWithAggregatesFilter<'Reservation'> | string;
+  clientPhone?: Prisma.StringWithAggregatesFilter<'Reservation'> | string;
+  clientEmail?:
+    | Prisma.StringNullableWithAggregatesFilter<'Reservation'>
+    | string
+    | null;
+  clientGovernmentId?:
+    | Prisma.StringNullableWithAggregatesFilter<'Reservation'>
+    | string
+    | null;
+  reservationAmount?: Prisma.FloatWithAggregatesFilter<'Reservation'> | number;
+  bankSlipUrl?:
     | Prisma.StringNullableWithAggregatesFilter<'Reservation'>
     | string
     | null;
@@ -339,6 +462,12 @@ export type ReservationCreateInput = {
   id?: string;
   status?: $Enums.ReservationStatus;
   description?: string | null;
+  clientName: string;
+  clientPhone: string;
+  clientEmail?: string | null;
+  clientGovernmentId?: string | null;
+  reservationAmount: number;
+  bankSlipUrl?: string | null;
   createdAt?: Date | string;
   expiresAt: Date | string;
   confirmedAt?: Date | string | null;
@@ -353,6 +482,12 @@ export type ReservationUncheckedCreateInput = {
   propertyId: string;
   status?: $Enums.ReservationStatus;
   description?: string | null;
+  clientName: string;
+  clientPhone: string;
+  clientEmail?: string | null;
+  clientGovernmentId?: string | null;
+  reservationAmount: number;
+  bankSlipUrl?: string | null;
   createdAt?: Date | string;
   expiresAt: Date | string;
   confirmedAt?: Date | string | null;
@@ -365,6 +500,15 @@ export type ReservationUpdateInput = {
     | Prisma.EnumReservationStatusFieldUpdateOperationsInput
     | $Enums.ReservationStatus;
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  clientName?: Prisma.StringFieldUpdateOperationsInput | string;
+  clientPhone?: Prisma.StringFieldUpdateOperationsInput | string;
+  clientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  clientGovernmentId?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  reservationAmount?: Prisma.FloatFieldUpdateOperationsInput | number;
+  bankSlipUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   confirmedAt?:
@@ -389,6 +533,15 @@ export type ReservationUncheckedUpdateInput = {
     | Prisma.EnumReservationStatusFieldUpdateOperationsInput
     | $Enums.ReservationStatus;
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  clientName?: Prisma.StringFieldUpdateOperationsInput | string;
+  clientPhone?: Prisma.StringFieldUpdateOperationsInput | string;
+  clientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  clientGovernmentId?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  reservationAmount?: Prisma.FloatFieldUpdateOperationsInput | number;
+  bankSlipUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   confirmedAt?:
@@ -409,6 +562,12 @@ export type ReservationCreateManyInput = {
   propertyId: string;
   status?: $Enums.ReservationStatus;
   description?: string | null;
+  clientName: string;
+  clientPhone: string;
+  clientEmail?: string | null;
+  clientGovernmentId?: string | null;
+  reservationAmount: number;
+  bankSlipUrl?: string | null;
   createdAt?: Date | string;
   expiresAt: Date | string;
   confirmedAt?: Date | string | null;
@@ -421,6 +580,15 @@ export type ReservationUpdateManyMutationInput = {
     | Prisma.EnumReservationStatusFieldUpdateOperationsInput
     | $Enums.ReservationStatus;
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  clientName?: Prisma.StringFieldUpdateOperationsInput | string;
+  clientPhone?: Prisma.StringFieldUpdateOperationsInput | string;
+  clientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  clientGovernmentId?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  reservationAmount?: Prisma.FloatFieldUpdateOperationsInput | number;
+  bankSlipUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   confirmedAt?:
@@ -443,6 +611,15 @@ export type ReservationUncheckedUpdateManyInput = {
     | Prisma.EnumReservationStatusFieldUpdateOperationsInput
     | $Enums.ReservationStatus;
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  clientName?: Prisma.StringFieldUpdateOperationsInput | string;
+  clientPhone?: Prisma.StringFieldUpdateOperationsInput | string;
+  clientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  clientGovernmentId?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  reservationAmount?: Prisma.FloatFieldUpdateOperationsInput | number;
+  bankSlipUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   confirmedAt?:
@@ -473,10 +650,20 @@ export type ReservationCountOrderByAggregateInput = {
   propertyId?: Prisma.SortOrder;
   status?: Prisma.SortOrder;
   description?: Prisma.SortOrder;
+  clientName?: Prisma.SortOrder;
+  clientPhone?: Prisma.SortOrder;
+  clientEmail?: Prisma.SortOrder;
+  clientGovernmentId?: Prisma.SortOrder;
+  reservationAmount?: Prisma.SortOrder;
+  bankSlipUrl?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   expiresAt?: Prisma.SortOrder;
   confirmedAt?: Prisma.SortOrder;
   cancelledAt?: Prisma.SortOrder;
+};
+
+export type ReservationAvgOrderByAggregateInput = {
+  reservationAmount?: Prisma.SortOrder;
 };
 
 export type ReservationMaxOrderByAggregateInput = {
@@ -485,6 +672,12 @@ export type ReservationMaxOrderByAggregateInput = {
   propertyId?: Prisma.SortOrder;
   status?: Prisma.SortOrder;
   description?: Prisma.SortOrder;
+  clientName?: Prisma.SortOrder;
+  clientPhone?: Prisma.SortOrder;
+  clientEmail?: Prisma.SortOrder;
+  clientGovernmentId?: Prisma.SortOrder;
+  reservationAmount?: Prisma.SortOrder;
+  bankSlipUrl?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   expiresAt?: Prisma.SortOrder;
   confirmedAt?: Prisma.SortOrder;
@@ -497,10 +690,20 @@ export type ReservationMinOrderByAggregateInput = {
   propertyId?: Prisma.SortOrder;
   status?: Prisma.SortOrder;
   description?: Prisma.SortOrder;
+  clientName?: Prisma.SortOrder;
+  clientPhone?: Prisma.SortOrder;
+  clientEmail?: Prisma.SortOrder;
+  clientGovernmentId?: Prisma.SortOrder;
+  reservationAmount?: Prisma.SortOrder;
+  bankSlipUrl?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   expiresAt?: Prisma.SortOrder;
   confirmedAt?: Prisma.SortOrder;
   cancelledAt?: Prisma.SortOrder;
+};
+
+export type ReservationSumOrderByAggregateInput = {
+  reservationAmount?: Prisma.SortOrder;
 };
 
 export type ReservationCreateNestedManyWithoutUserInput = {
@@ -731,6 +934,12 @@ export type ReservationCreateWithoutUserInput = {
   id?: string;
   status?: $Enums.ReservationStatus;
   description?: string | null;
+  clientName: string;
+  clientPhone: string;
+  clientEmail?: string | null;
+  clientGovernmentId?: string | null;
+  reservationAmount: number;
+  bankSlipUrl?: string | null;
   createdAt?: Date | string;
   expiresAt: Date | string;
   confirmedAt?: Date | string | null;
@@ -743,6 +952,12 @@ export type ReservationUncheckedCreateWithoutUserInput = {
   propertyId: string;
   status?: $Enums.ReservationStatus;
   description?: string | null;
+  clientName: string;
+  clientPhone: string;
+  clientEmail?: string | null;
+  clientGovernmentId?: string | null;
+  reservationAmount: number;
+  bankSlipUrl?: string | null;
   createdAt?: Date | string;
   expiresAt: Date | string;
   confirmedAt?: Date | string | null;
@@ -807,6 +1022,15 @@ export type ReservationScalarWhereInput = {
     | Prisma.EnumReservationStatusFilter<'Reservation'>
     | $Enums.ReservationStatus;
   description?: Prisma.StringNullableFilter<'Reservation'> | string | null;
+  clientName?: Prisma.StringFilter<'Reservation'> | string;
+  clientPhone?: Prisma.StringFilter<'Reservation'> | string;
+  clientEmail?: Prisma.StringNullableFilter<'Reservation'> | string | null;
+  clientGovernmentId?:
+    | Prisma.StringNullableFilter<'Reservation'>
+    | string
+    | null;
+  reservationAmount?: Prisma.FloatFilter<'Reservation'> | number;
+  bankSlipUrl?: Prisma.StringNullableFilter<'Reservation'> | string | null;
   createdAt?: Prisma.DateTimeFilter<'Reservation'> | Date | string;
   expiresAt?: Prisma.DateTimeFilter<'Reservation'> | Date | string;
   confirmedAt?:
@@ -825,6 +1049,12 @@ export type ReservationCreateWithoutPropertyInput = {
   id?: string;
   status?: $Enums.ReservationStatus;
   description?: string | null;
+  clientName: string;
+  clientPhone: string;
+  clientEmail?: string | null;
+  clientGovernmentId?: string | null;
+  reservationAmount: number;
+  bankSlipUrl?: string | null;
   createdAt?: Date | string;
   expiresAt: Date | string;
   confirmedAt?: Date | string | null;
@@ -837,6 +1067,12 @@ export type ReservationUncheckedCreateWithoutPropertyInput = {
   userId: string;
   status?: $Enums.ReservationStatus;
   description?: string | null;
+  clientName: string;
+  clientPhone: string;
+  clientEmail?: string | null;
+  clientGovernmentId?: string | null;
+  reservationAmount: number;
+  bankSlipUrl?: string | null;
   createdAt?: Date | string;
   expiresAt: Date | string;
   confirmedAt?: Date | string | null;
@@ -891,6 +1127,12 @@ export type ReservationCreateManyUserInput = {
   propertyId: string;
   status?: $Enums.ReservationStatus;
   description?: string | null;
+  clientName: string;
+  clientPhone: string;
+  clientEmail?: string | null;
+  clientGovernmentId?: string | null;
+  reservationAmount: number;
+  bankSlipUrl?: string | null;
   createdAt?: Date | string;
   expiresAt: Date | string;
   confirmedAt?: Date | string | null;
@@ -903,6 +1145,15 @@ export type ReservationUpdateWithoutUserInput = {
     | Prisma.EnumReservationStatusFieldUpdateOperationsInput
     | $Enums.ReservationStatus;
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  clientName?: Prisma.StringFieldUpdateOperationsInput | string;
+  clientPhone?: Prisma.StringFieldUpdateOperationsInput | string;
+  clientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  clientGovernmentId?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  reservationAmount?: Prisma.FloatFieldUpdateOperationsInput | number;
+  bankSlipUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   confirmedAt?:
@@ -925,6 +1176,15 @@ export type ReservationUncheckedUpdateWithoutUserInput = {
     | Prisma.EnumReservationStatusFieldUpdateOperationsInput
     | $Enums.ReservationStatus;
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  clientName?: Prisma.StringFieldUpdateOperationsInput | string;
+  clientPhone?: Prisma.StringFieldUpdateOperationsInput | string;
+  clientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  clientGovernmentId?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  reservationAmount?: Prisma.FloatFieldUpdateOperationsInput | number;
+  bankSlipUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   confirmedAt?:
@@ -946,6 +1206,15 @@ export type ReservationUncheckedUpdateManyWithoutUserInput = {
     | Prisma.EnumReservationStatusFieldUpdateOperationsInput
     | $Enums.ReservationStatus;
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  clientName?: Prisma.StringFieldUpdateOperationsInput | string;
+  clientPhone?: Prisma.StringFieldUpdateOperationsInput | string;
+  clientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  clientGovernmentId?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  reservationAmount?: Prisma.FloatFieldUpdateOperationsInput | number;
+  bankSlipUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   confirmedAt?:
@@ -965,6 +1234,12 @@ export type ReservationCreateManyPropertyInput = {
   userId: string;
   status?: $Enums.ReservationStatus;
   description?: string | null;
+  clientName: string;
+  clientPhone: string;
+  clientEmail?: string | null;
+  clientGovernmentId?: string | null;
+  reservationAmount: number;
+  bankSlipUrl?: string | null;
   createdAt?: Date | string;
   expiresAt: Date | string;
   confirmedAt?: Date | string | null;
@@ -977,6 +1252,15 @@ export type ReservationUpdateWithoutPropertyInput = {
     | Prisma.EnumReservationStatusFieldUpdateOperationsInput
     | $Enums.ReservationStatus;
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  clientName?: Prisma.StringFieldUpdateOperationsInput | string;
+  clientPhone?: Prisma.StringFieldUpdateOperationsInput | string;
+  clientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  clientGovernmentId?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  reservationAmount?: Prisma.FloatFieldUpdateOperationsInput | number;
+  bankSlipUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   confirmedAt?:
@@ -999,6 +1283,15 @@ export type ReservationUncheckedUpdateWithoutPropertyInput = {
     | Prisma.EnumReservationStatusFieldUpdateOperationsInput
     | $Enums.ReservationStatus;
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  clientName?: Prisma.StringFieldUpdateOperationsInput | string;
+  clientPhone?: Prisma.StringFieldUpdateOperationsInput | string;
+  clientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  clientGovernmentId?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  reservationAmount?: Prisma.FloatFieldUpdateOperationsInput | number;
+  bankSlipUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   confirmedAt?:
@@ -1020,6 +1313,15 @@ export type ReservationUncheckedUpdateManyWithoutPropertyInput = {
     | Prisma.EnumReservationStatusFieldUpdateOperationsInput
     | $Enums.ReservationStatus;
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  clientName?: Prisma.StringFieldUpdateOperationsInput | string;
+  clientPhone?: Prisma.StringFieldUpdateOperationsInput | string;
+  clientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  clientGovernmentId?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  reservationAmount?: Prisma.FloatFieldUpdateOperationsInput | number;
+  bankSlipUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   confirmedAt?:
@@ -1044,6 +1346,12 @@ export type ReservationSelect<
     propertyId?: boolean;
     status?: boolean;
     description?: boolean;
+    clientName?: boolean;
+    clientPhone?: boolean;
+    clientEmail?: boolean;
+    clientGovernmentId?: boolean;
+    reservationAmount?: boolean;
+    bankSlipUrl?: boolean;
     createdAt?: boolean;
     expiresAt?: boolean;
     confirmedAt?: boolean;
@@ -1064,6 +1372,12 @@ export type ReservationSelectCreateManyAndReturn<
     propertyId?: boolean;
     status?: boolean;
     description?: boolean;
+    clientName?: boolean;
+    clientPhone?: boolean;
+    clientEmail?: boolean;
+    clientGovernmentId?: boolean;
+    reservationAmount?: boolean;
+    bankSlipUrl?: boolean;
     createdAt?: boolean;
     expiresAt?: boolean;
     confirmedAt?: boolean;
@@ -1084,6 +1398,12 @@ export type ReservationSelectUpdateManyAndReturn<
     propertyId?: boolean;
     status?: boolean;
     description?: boolean;
+    clientName?: boolean;
+    clientPhone?: boolean;
+    clientEmail?: boolean;
+    clientGovernmentId?: boolean;
+    reservationAmount?: boolean;
+    bankSlipUrl?: boolean;
     createdAt?: boolean;
     expiresAt?: boolean;
     confirmedAt?: boolean;
@@ -1100,6 +1420,12 @@ export type ReservationSelectScalar = {
   propertyId?: boolean;
   status?: boolean;
   description?: boolean;
+  clientName?: boolean;
+  clientPhone?: boolean;
+  clientEmail?: boolean;
+  clientGovernmentId?: boolean;
+  reservationAmount?: boolean;
+  bankSlipUrl?: boolean;
   createdAt?: boolean;
   expiresAt?: boolean;
   confirmedAt?: boolean;
@@ -1115,6 +1441,12 @@ export type ReservationOmit<
   | 'propertyId'
   | 'status'
   | 'description'
+  | 'clientName'
+  | 'clientPhone'
+  | 'clientEmail'
+  | 'clientGovernmentId'
+  | 'reservationAmount'
+  | 'bankSlipUrl'
   | 'createdAt'
   | 'expiresAt'
   | 'confirmedAt'
@@ -1159,6 +1491,12 @@ export type $ReservationPayload<
       propertyId: string;
       status: $Enums.ReservationStatus;
       description: string | null;
+      clientName: string;
+      clientPhone: string;
+      clientEmail: string | null;
+      clientGovernmentId: string | null;
+      reservationAmount: number;
+      bankSlipUrl: string | null;
       createdAt: Date;
       expiresAt: Date;
       confirmedAt: Date | null;
@@ -1791,6 +2129,12 @@ export interface ReservationFieldRefs {
   readonly propertyId: Prisma.FieldRef<'Reservation', 'String'>;
   readonly status: Prisma.FieldRef<'Reservation', 'ReservationStatus'>;
   readonly description: Prisma.FieldRef<'Reservation', 'String'>;
+  readonly clientName: Prisma.FieldRef<'Reservation', 'String'>;
+  readonly clientPhone: Prisma.FieldRef<'Reservation', 'String'>;
+  readonly clientEmail: Prisma.FieldRef<'Reservation', 'String'>;
+  readonly clientGovernmentId: Prisma.FieldRef<'Reservation', 'String'>;
+  readonly reservationAmount: Prisma.FieldRef<'Reservation', 'Float'>;
+  readonly bankSlipUrl: Prisma.FieldRef<'Reservation', 'String'>;
   readonly createdAt: Prisma.FieldRef<'Reservation', 'DateTime'>;
   readonly expiresAt: Prisma.FieldRef<'Reservation', 'DateTime'>;
   readonly confirmedAt: Prisma.FieldRef<'Reservation', 'DateTime'>;
