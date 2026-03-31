@@ -54,6 +54,9 @@ export function PropertyForm({
   const transformedInitialData = initialData
     ? {
         ...initialData,
+        builtStartDate: initialData.builtStartDate
+          ? new Date(initialData.builtStartDate).toISOString().split('T')[0]
+          : new Date().toISOString().split('T')[0],
         availableFloors: Array.isArray(initialData.availableFloors)
           ? initialData.availableFloors.join(',')
           : typeof initialData.availableFloors === 'string'
@@ -222,12 +225,21 @@ export function PropertyForm({
       method,
       body: JSON.stringify(payload),
     });
-    if (res.ok)
+    if (res.ok) {
+      const data = await res.json();
       toast.success(
         isEdit
           ? 'Property Updated Successfully'
           : 'Property Created Successfully'
       );
+      // Navigate to property detail page with cache invalidation
+      const propertyId = isEdit ? initialData.id : data.data.id;
+      router.push(`/admin/inventory/${propertyId}`);
+      router.refresh();
+    } else {
+      const errorData = await res.json();
+      toast.error(errorData.error || 'Failed to save property');
+    }
   }
 
   function onSubmit(values: any) {
@@ -448,15 +460,17 @@ export function PropertyForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold">
-                      Construction Date
+                      Construction Date <span className="text-red-500">*</span>
                     </FormLabel>
                     <FormControl>
                       <Input
                         type="date"
                         {...field}
                         className="h-12 shadow-none"
+                        required
                       />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -533,6 +547,44 @@ export function PropertyForm({
                         className="h-12 shadow-none"
                       />
                     </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="buildingSize"
+                render={({ field }) => (
+                  <FormItem className="col-span-2">
+                    <FormLabel className="font-semibold">
+                      Building Size
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="e.g., G+5, 10 floors"
+                        {...field}
+                        className="h-12 shadow-none"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="deliveryTime"
+                render={({ field }) => (
+                  <FormItem className="col-span-2">
+                    <FormLabel className="font-semibold">
+                      Delivery Time
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="e.g., 6 months, Q4 2026"
+                        {...field}
+                        className="h-12 shadow-none"
+                      />
+                    </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -955,6 +1007,8 @@ export function PropertyForm({
                                     <Image
                                       src={URL.createObjectURL(file)}
                                       alt={`Preview ${index + 1}`}
+                                      width={300}
+                                      height={300}
                                       className="w-full h-full object-cover"
                                     />
                                   </div>
@@ -991,6 +1045,8 @@ export function PropertyForm({
                                     <Image
                                       src={image.url}
                                       alt={`Current ${index + 1}`}
+                                      width={300}
+                                      height={300}
                                       className="w-full h-full object-cover"
                                     />
                                   </div>

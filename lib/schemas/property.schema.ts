@@ -2,7 +2,7 @@ import * as z from 'zod';
 
 export const propertyFormSchema = z.object({
   title: z.string().min(3, 'Required'),
-  builtStartDate: z.string(),
+  builtStartDate: z.string().min(1, 'Construction date is required'),
   propertyType: z.enum(['APARTMENT', 'HOUSE', 'VILLA', 'CONDO', 'COMMERCIAL']),
 
   // FIX: Added .default or .optional

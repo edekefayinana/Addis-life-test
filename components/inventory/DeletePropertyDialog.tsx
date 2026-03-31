@@ -5,6 +5,7 @@ import { Trash2, AlertTriangle, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
+import { useRouter } from 'next/navigation';
 
 interface DeletePropertyDialogProps {
   propertyId: string;
@@ -22,6 +23,7 @@ export function DeletePropertyDialog({
   const [showModal, setShowModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const { isAdmin } = useAuth();
+  const router = useRouter();
 
   // Don't render if user is not admin
   if (!isAdmin) {
@@ -44,6 +46,10 @@ export function DeletePropertyDialog({
       toast.success('Property deleted successfully');
       setShowModal(false);
       onDeleted?.();
+
+      // Navigate to inventory list with cache invalidation
+      router.push('/admin/inventory');
+      router.refresh();
     } catch (error) {
       console.error('Delete error:', error);
       toast.error(
@@ -56,8 +62,14 @@ export function DeletePropertyDialog({
 
   if (showModal) {
     return (
-      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
+      <div
+        className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+        onClick={() => !isDeleting && setShowModal(false)}
+      >
+        <div
+          className="bg-white rounded-lg shadow-xl max-w-md w-full"
+          onClick={(e) => e.stopPropagation()}
+        >
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b">
             <div className="flex items-center gap-2 text-red-600">
