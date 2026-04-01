@@ -25,6 +25,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 
 // Property type based on provided structure
 export type Property = {
@@ -56,6 +57,7 @@ export type Property = {
 };
 
 export default function PropertyClient({ property }: { property: Property }) {
+  const t = useTranslations('properties.details');
   const [activeTab, setActiveTab] = useState<'overview' | 'video' | 'virtual'>(
     'overview'
   );
@@ -155,19 +157,19 @@ export default function PropertyClient({ property }: { property: Property }) {
     const newErrors: typeof formErrors = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = 'Name is required';
+      newErrors.name = t('errors.nameRequired');
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
+      newErrors.email = t('errors.emailRequired');
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
+      newErrors.email = t('errors.emailInvalid');
     }
 
     if (!formData.message.trim()) {
-      newErrors.message = 'Message is required';
+      newErrors.message = t('errors.messageRequired');
     } else if (formData.message.trim().length < 10) {
-      newErrors.message = 'Message must be at least 10 characters';
+      newErrors.message = t('errors.messageMinLength');
     }
 
     setFormErrors(newErrors);
@@ -178,7 +180,7 @@ export default function PropertyClient({ property }: { property: Property }) {
     e.preventDefault();
 
     if (!validateForm()) {
-      toast.error('Please fix the errors in the form');
+      toast.error(t('errors.fixErrors'));
       return;
     }
 
@@ -201,7 +203,7 @@ export default function PropertyClient({ property }: { property: Property }) {
       const result = await response.json();
 
       if (response.ok) {
-        toast.success('Your inquiry has been sent successfully!');
+        toast.success(t('success.inquirySent'));
 
         // Reset form
         setFormData({
@@ -218,16 +220,14 @@ export default function PropertyClient({ property }: { property: Property }) {
               error.message;
           });
           setFormErrors(serverErrors);
-          toast.error('Please fix the errors in the form');
+          toast.error(t('errors.fixErrors'));
         } else {
-          toast.error(
-            result.message || 'Failed to send inquiry. Please try again.'
-          );
+          toast.error(result.message || t('errors.sendFailed'));
         }
       }
     } catch (error) {
       console.error('Property inquiry error:', error);
-      toast.error('Network error. Please check your connection and try again.');
+      toast.error(t('errors.networkError'));
     } finally {
       setIsSubmitting(false);
     }
@@ -248,24 +248,24 @@ export default function PropertyClient({ property }: { property: Property }) {
 
   const propertyDetails = [
     {
-      label: 'Built from',
+      label: t('builtFrom'),
       value: currentProperty.builtStartDate
         ? new Date(currentProperty.builtStartDate).toLocaleDateString()
         : 'N/A',
       icon: Calendar,
     },
     {
-      label: 'Property Type',
+      label: t('propertyType'),
       value: currentProperty.propertyType || 'N/A',
       icon: HomeIcon,
     },
     {
-      label: 'Listing Type',
+      label: t('listingType'),
       value: currentProperty.listingType || 'N/A',
       icon: DollarSign,
     },
     {
-      label: 'Work Level',
+      label: t('workLevel'),
       value: currentProperty.currentStatus || 'N/A',
       icon: Clock,
     },
@@ -279,28 +279,28 @@ export default function PropertyClient({ property }: { property: Property }) {
 
   const propertySpecs = [
     {
-      label: 'Total Bedroom',
-      value: `${currentProperty.totalBedrooms ?? 0} Bedroom`,
+      label: t('totalBedroom'),
+      value: `${currentProperty.totalBedrooms ?? 0} ${t('bedroom')}`,
     },
     {
-      label: 'Total Bathroom',
-      value: `${currentProperty.totalBathrooms ?? 0} Bathroom`,
+      label: t('totalBathroom'),
+      value: `${currentProperty.totalBathrooms ?? 0} ${t('bathroom')}`,
     },
     {
-      label: 'Carport/Parking Space',
-      value: `${currentProperty.parkingSpace ?? 0} Parking`,
+      label: t('parkingSpace'),
+      value: `${currentProperty.parkingSpace ?? 0} ${t('parking')}`,
     },
-    { label: 'Available Floors', value: `${availableFloors}` },
+    { label: t('availableFloors'), value: `${availableFloors}` },
     {
-      label: 'Building Size',
+      label: t('buildingSize'),
       value: currentProperty.buildingSize || 'N/A',
     },
     {
-      label: 'Area Size',
+      label: t('areaSize'),
       value: `${currentProperty.areaSizeM2 ?? 0} m²`,
     },
     {
-      label: 'Delivery Time',
+      label: t('deliveryTime'),
       value: currentProperty.deliveryTime || 'N/A',
     },
   ];
@@ -337,7 +337,7 @@ export default function PropertyClient({ property }: { property: Property }) {
               className="flex items-center gap-2 px-4 py-2 text-sm font-medium"
             >
               <ArrowLeft className="w-4 h-4" />
-              Back
+              {t('back')}
             </Button>
             <h1 className="text-2xl sm:text-3xl font-semibold text-foreground mb-0">
               {truncate(currentProperty.title, 40)}
@@ -346,13 +346,13 @@ export default function PropertyClient({ property }: { property: Property }) {
               <div className="flex items-center gap-2 bg-accent py-2 sm:py-3 px-4 sm:px-5 rounded-full">
                 <Bed className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
                 <span className="text-xs sm:text-sm font-medium">
-                  {currentProperty.totalBedrooms ?? 0} Beds
+                  {currentProperty.totalBedrooms ?? 0} {t('beds')}
                 </span>
               </div>
               <div className="flex items-center gap-2 bg-accent py-2 sm:py-3 px-4 sm:px-5 rounded-full">
                 <Bath className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
                 <span className="text-xs sm:text-sm font-medium">
-                  {currentProperty.totalBathrooms ?? 0} Baths
+                  {currentProperty.totalBathrooms ?? 0} {t('baths')}
                 </span>
               </div>
               <div className="flex items-center gap-2 bg-accent py-2 sm:py-3 px-4 sm:px-5 rounded-full">
@@ -376,7 +376,7 @@ export default function PropertyClient({ property }: { property: Property }) {
             }`}
           >
             <Grid3x3 className="w-4 h-4 shrink-0" />
-            Overview
+            {t('overview')}
             {activeTab === 'overview' && (
               <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-cta-bg" />
             )}
@@ -538,7 +538,7 @@ export default function PropertyClient({ property }: { property: Property }) {
             {/* Overview Section */}
             <section>
               <h2 className="text-xl sm:text-2xl font-semibold mb-4">
-                Overview
+                {t('overview')}
               </h2>
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-4">
                 {displayedOverview}
@@ -547,7 +547,7 @@ export default function PropertyClient({ property }: { property: Property }) {
                 onClick={() => setOverviewExpanded((prev) => !prev)}
                 className="text-primary font-medium text-xs sm:text-sm flex items-center gap-1"
               >
-                {overviewExpanded ? 'Show less' : 'Show more'}
+                {overviewExpanded ? t('showLess') : t('showMore')}
                 <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
               </button>
             </section>
@@ -576,7 +576,7 @@ export default function PropertyClient({ property }: { property: Property }) {
             {/* Property Details Table */}
             <section>
               <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">
-                Property Details
+                {t('propertyDetails')}
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 {propertySpecs.map((item) => (
@@ -598,7 +598,7 @@ export default function PropertyClient({ property }: { property: Property }) {
             {/* Amenities */}
             <section>
               <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">
-                Amenities
+                {t('amenities')}
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                 {amenities.map((amenity, idx) => (
@@ -622,12 +622,10 @@ export default function PropertyClient({ property }: { property: Property }) {
             {/* Location & Surroundings */}
             <section>
               <h2 className="text-xl sm:text-2xl font-semibold mb-4">
-                Location & Surroundings
+                {t('locationSurroundings')}
               </h2>
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-4 sm:mb-6">
-                Located minutes from supermarket, highways, schools, and
-                clinics, this property guarantees both primary and
-                accessibility. A growing area with increasing residential value.
+                {t('locationDescription')}
               </p>
 
               <div className="flex flex-col gap-3 mb-4 sm:mb-6">
@@ -647,7 +645,7 @@ export default function PropertyClient({ property }: { property: Property }) {
             {/* Location Map */}
             <section>
               <h3 className="text-lg sm:text-xl font-semibold mb-4">
-                Location
+                {t('location')}
               </h3>
               <div className="flex items-start gap-3 mb-4">
                 <div className="w-10 h-10 rounded-full bg-cta-bg/10 flex items-center justify-center shrink-0">
@@ -695,19 +693,19 @@ export default function PropertyClient({ property }: { property: Property }) {
             <div className="space-y-6 lg:sticky lg:top-24">
               <div className="border rounded-2xl p-4 sm:p-6 bg-white">
                 <h3 className="text-base sm:text-lg font-bold mb-4">
-                  Ask About This Home
+                  {t('askAboutHome')}
                 </h3>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
                     <label className="block text-xs sm:text-sm font-medium mb-1">
-                      Name *
+                      {t('name')} {t('required')}
                     </label>
                     <input
                       type="text"
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
-                      placeholder="Your Name"
+                      placeholder={t('namePlaceholder')}
                       className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-dark ${
                         formErrors.name
                           ? 'border-red-500 focus:border-red-500'
@@ -722,14 +720,14 @@ export default function PropertyClient({ property }: { property: Property }) {
                   </div>
                   <div>
                     <label className="block text-xs sm:text-sm font-medium mb-1">
-                      Email *
+                      {t('email')} {t('required')}
                     </label>
                     <input
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      placeholder="you@email.com"
+                      placeholder={t('emailPlaceholder')}
                       className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-dark ${
                         formErrors.email
                           ? 'border-red-500 focus:border-red-500'
@@ -744,13 +742,15 @@ export default function PropertyClient({ property }: { property: Property }) {
                   </div>
                   <div>
                     <label className="block text-xs sm:text-sm font-medium mb-1">
-                      Message *
+                      {t('message')} {t('required')}
                     </label>
                     <textarea
                       name="message"
                       value={formData.message}
                       onChange={handleInputChange}
-                      placeholder={`I'm interested in ${property.title}...`}
+                      placeholder={t('messagePlaceholder', {
+                        title: property.title,
+                      })}
                       className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-dark ${
                         formErrors.message
                           ? 'border-red-500 focus:border-red-500'
@@ -769,7 +769,7 @@ export default function PropertyClient({ property }: { property: Property }) {
                     disabled={isSubmitting}
                     className="w-full bg-brand-dark hover:bg-brand-dark/90 text-white rounded-full px-6 py-3 text-sm sm:text-base font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {isSubmitting ? 'Sending...' : 'Send Inquiry'}
+                    {isSubmitting ? t('sending') : t('sendInquiry')}
                   </button>
                 </form>
               </div>
@@ -792,21 +792,21 @@ export default function PropertyClient({ property }: { property: Property }) {
             <button
               onClick={closeGallery}
               className="absolute top-3 right-3 p-2 rounded-full bg-white/90 text-black hover:bg-white z-10"
-              aria-label="Close"
+              aria-label={t('gallery.close')}
             >
               <X className="w-3 h-3" />
             </button>
             <button
               onClick={prevGalleryImage}
               className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform z-10"
-              aria-label="Previous image"
+              aria-label={t('gallery.previous')}
             >
               <ChevronLeft className="w-5 h-5 text-foreground" />
             </button>
             <button
               onClick={nextGalleryImage}
               className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform z-10"
-              aria-label="Next image"
+              aria-label={t('gallery.next')}
             >
               <ChevronRight className="w-5 h-5 text-foreground" />
             </button>
@@ -832,7 +832,7 @@ export default function PropertyClient({ property }: { property: Property }) {
                     className={`relative w-20 h-14 rounded-md overflow-hidden border ${
                       i === galleryIndex ? 'border-white' : 'border-white/40'
                     }`}
-                    aria-label={`View image ${i + 1}`}
+                    aria-label={t('gallery.viewImage', { number: i + 1 })}
                   >
                     <Image
                       src={src}

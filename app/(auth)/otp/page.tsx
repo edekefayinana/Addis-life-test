@@ -7,8 +7,10 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Logo } from '@/components/Logo';
+import { useTranslations } from 'next-intl';
 
 export default function OtpVerificationPage() {
+  const t = useTranslations('auth.otp');
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const searchParams = useSearchParams();
   const email = useMemo(() => searchParams.get('email') || '', [searchParams]);
@@ -49,7 +51,7 @@ export default function OtpVerificationPage() {
     setIsResending(true);
 
     if (!email) {
-      setErrorMessage('Email not found. Please register again.');
+      setErrorMessage(t('errors.emailNotFound'));
       setIsResending(false);
       return;
     }
@@ -64,16 +66,16 @@ export default function OtpVerificationPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        setErrorMessage(data.error || 'Failed to resend OTP.');
+        setErrorMessage(data.error || t('errors.resendFailed'));
       } else {
-        setSuccessMessage('OTP has been resent to your email.');
+        setSuccessMessage(t('success.resent'));
         // Clear OTP inputs
         setOtp(['', '', '', '', '', '']);
         // Focus first input
         document.getElementById('otp-0')?.focus();
       }
     } catch {
-      setErrorMessage('Failed to resend OTP. Please try again.');
+      setErrorMessage(t('errors.resendFailed'));
     }
 
     setIsResending(false);
@@ -88,7 +90,7 @@ export default function OtpVerificationPage() {
     const otpValue = otp.join('');
 
     if (!email || otpValue.length !== 6) {
-      setErrorMessage('Please enter the 6-digit OTP.');
+      setErrorMessage(t('errors.enterOtp'));
       setIsSubmitting(false);
       return;
     }
@@ -103,16 +105,16 @@ export default function OtpVerificationPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        setErrorMessage(data.error || 'Verification failed.');
+        setErrorMessage(data.error || t('errors.verificationFailed'));
       } else {
-        setSuccessMessage('Email verified successfully! You can now log in.');
+        setSuccessMessage(t('success.verified'));
         setVerified(true);
         setTimeout(() => {
           if (router) router.push('/login');
         }, 2000);
       }
     } catch {
-      setErrorMessage('Verification failed.');
+      setErrorMessage(t('errors.verificationFailed'));
     }
 
     setIsSubmitting(false);
@@ -123,9 +125,9 @@ export default function OtpVerificationPage() {
       <Logo />
 
       <div className="space-y-2 text-center">
-        <h1 className="text-4xl font-semibold text-gray-900">Enter OTP</h1>
+        <h1 className="text-4xl font-semibold text-gray-900">{t('title')}</h1>
         <p className="text-base text-gray-600 leading-relaxed">
-          Enter the 6-digit code sent to your email.
+          {t('subtitle')}
         </p>
       </div>
 
@@ -148,14 +150,14 @@ export default function OtpVerificationPage() {
         </div>
 
         <div className="text-center text-base">
-          <span className="text-gray-700">{"Didn't get OTP? "}</span>
+          <span className="text-gray-700">{t('didntGetOtp')} </span>
           <button
             type="button"
             onClick={handleResendOtp}
             className="font-medium text-gray-800 hover:text-black underline text-[18px]"
             disabled={verified || isResending}
           >
-            {isResending ? 'Resending...' : 'Resend OTP'}
+            {isResending ? t('resending') : t('resendOtp')}
           </button>
         </div>
 
@@ -164,7 +166,7 @@ export default function OtpVerificationPage() {
           className="h-14 w-full rounded-full bg-primary text-base font-medium text-white hover:bg-primary/90"
           disabled={isSubmitting || verified}
         >
-          {isSubmitting ? 'Verifying...' : 'Verify'}
+          {isSubmitting ? t('verifying') : t('verify')}
         </Button>
 
         {errorMessage && (

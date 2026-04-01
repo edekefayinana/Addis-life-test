@@ -140,13 +140,132 @@
       "errorEmailNotVerified": "ኢሜይልዎ አልተረጋገጠም። እባክዎ የማረጋገጫ ኮድ ለማግኘት የገቢ መልእክትዎን ይመልከቱ።"
     },
     "signup": {
-      "title": "የወኪል መለያ ይፍጠሩ",
-      "subtitle": "የእኛን ባለሙያ የሪል እስቴት ወኪሎች አውታረ መረብ ይቀላቀሉ።"
+      "title": "እንደ ወኪል ያመልክቱ",
+      "subtitle": "ወደ ወኪል ፖርታል ለመድረስ ዝርዝሮችዎን ያስገቡ። ሁሉም ማመልከቻዎች ከማጽደቅ በፊት ይገመገማሉ።",
+      "firstName": "የመጀመሪያ ስም",
+      "lastName": "የአባት ስም",
+      "phone": "ስልክ ቁጥር",
+      "email": "ኢሜይል",
+      "password": "የይለፍ ቃል",
+      "firstNamePlaceholder": "ብሩክ",
+      "lastNamePlaceholder": "ሰለሞን",
+      "phonePlaceholder": "+(251)-900-000-000",
+      "phoneRequired": "(ያስፈልጋል)",
+      "emailOptional": "(አማራጭ ነገር ግን የሚመከር)",
+      "emailPlaceholder": "ምሳሌ1@gmail.com",
+      "passwordPlaceholder": "•••••3",
+      "submitButton": "ለማመልከት ያስገቡ",
+      "submitting": "መለያ በመፍጠር ላይ...",
+      "alreadyHaveAccount": "ቀድሞውኑ የወኪል መለያ አለዎት?",
+      "logIn": "ግባ",
+      "errors": {
+        "bothNames": "እባክዎ የመጀመሪያ እና የአባት ስም ያስገቡ።",
+        "emailRequired": "የኢሜይል አድራሻ ያስፈልጋል።",
+        "passwordRequired": "የይለፍ ቃል ያስፈልጋል።",
+        "passwordMinLength": "የይለፍ ቃል ቢያንስ 6 ቁምፊዎች መሆን አለበት።",
+        "emailInvalid": "እባክዎ ትክክለኛ የኢሜይል አድራሻ ያስገቡ።",
+        "createAccountFailed": "መለያ መፍጠር አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
+        "networkError": "የአውታረ መረብ ስህተት። እባክዎ ግንኙነትዎን ያረጋግጡ እና እንደገና ይሞክሩ።"
+      }
+    },
+    "apply": {
+      "title": "እንደ ወኪል ያመልክቱ",
+      "subtitle": "ወደ ወኪል መግቢያ ለመድረስ ዝርዝሮችዎን ያስገቡ።",
+      "firstName": "የመጀመሪያ ስም",
+      "lastName": "የአባት ስም",
+      "phone": "ስልክ ቁጥር",
+      "email": "ኢሜይል",
+      "password": "የይለፍ ቃል",
+      "governmentId": "የመንግስት መታወቂያ (ፓስፖርት/መታወቂያ)",
+      "required": "*",
+      "firstNamePlaceholder": "ብሩክ",
+      "lastNamePlaceholder": "ሰለሞን",
+      "phonePlaceholder": "+(251)-900-000-000",
+      "emailPlaceholder": "ምሳሌ1@gmail.com",
+      "passwordPlaceholder": "•••••3",
+      "uploadFile": "ለመስቀል ጠቅ ያድርጉ",
+      "dragDrop": "ወይም ይጎትቱ እና ይጣሉ",
+      "fileTypes": "PDF፣ JPG፣ ወይም PNG (ከ 5MB በታች)",
+      "submitButton": "ማመልከቻ አስገባ",
+      "submitting": "መለያ በመፍጠር ላይ...",
+      "alreadyHaveAccount": "ቀድሞውኑ የወኪል መለያ አለዎት?",
+      "logIn": "ግባ",
+      "errors": {
+        "bothNames": "እባክዎ የመጀመሪያ እና የአባት ስም ያስገቡ።",
+        "emailRequired": "የኢሜይል አድራሻ ያስፈልጋል።",
+        "passwordRequired": "የይለፍ ቃል ያስፈልጋል።",
+        "passwordMinLength": "የይለፍ ቃል ቢያንስ 6 ቁምፊዎች መሆን አለበት።",
+        "governmentIdRequired": "የመንግስት መታወቂያ ያስፈልጋል።",
+        "emailInvalid": "እባክዎ ትክክለኛ የኢሜይል አድራሻ ያስገቡ።",
+        "invalidFileType": "እባክዎ PDF፣ JPG፣ ወይም PNG ፋይል ይስቀሉ።",
+        "fileSizeLimit": "የፋይል መጠን ከ 5MB በታች መሆን አለበት።",
+        "uploadFailed": "የመንግስት መታወቂያ መስቀል አልተሳካም። እባክዎ እንደገና ይሞክሩ።",
+        "createAccountFailed": "መለያ መፍጠር አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
+        "networkError": "የአውታረ መረብ ስህተት። እባክዎ ግንኙነትዎን ያረጋግጡ እና እንደገና ይሞክሩ።"
+      }
+    },
+    "otp": {
+      "title": "OTP ያስገቡ",
+      "subtitle": "ወደ ኢሜይልዎ የተላከውን 6-አሃዝ ኮድ ያስገቡ።",
+      "didntGetOtp": "OTP አላገኙም?",
+      "resendOtp": "OTP እንደገና ላክ",
+      "resending": "እንደገና በመላክ ላይ...",
+      "verify": "አረጋግጥ",
+      "verifying": "በማረጋገጥ ላይ...",
+      "errors": {
+        "enterOtp": "እባክዎ 6-አሃዝ OTP ያስገቡ።",
+        "emailNotFound": "ኢሜይል አልተገኘም። እባክዎ እንደገና ይመዝገቡ።",
+        "resendFailed": "OTP እንደገና መላክ አልተሳካም።",
+        "verificationFailed": "ማረጋገጥ አልተሳካም።"
+      },
+      "success": {
+        "resent": "OTP ወደ ኢሜይልዎ እንደገና ተልኳል።",
+        "verified": "ኢሜይል በተሳካ ሁኔታ ተረጋግጧል! አሁን መግባት ይችላሉ።"
+      }
     },
     "forgotPassword": {
       "title": "የይለፍ ቃል ረሱ",
-      "subtitle": "የይለፍ ቃል ዳግም ማስጀመሪያ አገናኝ ለመቀበል ኢሜይልዎን ያስገቡ።"
+      "subtitle": "ኢሜይልዎን ያስገቡ፣ እና የይለፍ ቃልዎን ለመቀየር OTP እንልክልዎታለን።",
+      "email": "ኢሜይል",
+      "emailPlaceholder": "johndue@email.com",
+      "sendOtp": "OTP ላክ",
+      "sending": "በመላክ ላይ...",
+      "dontHaveAccount": "የወኪል መለያ የለዎትም?",
+      "applyForAccess": "ለመድረስ ያመልክቱ",
+      "errors": {
+        "sendFailed": "OTP መላክ አልተሳካም።"
+      },
+      "success": {
+        "otpSent": "OTP ተልኳል! እባክዎ ኢሜይልዎን ያረጋግጡ።"
+      }
+    },
+    "resetPassword": {
+      "title": "የይለፍ ቃል ይቀይሩ",
+      "subtitleOtp": "ወደ ኢሜይልዎ የተላከውን 6-አሃዝ ኮድ ያስገቡ።",
+      "subtitlePassword": "መለያዎን ደህንነቱ የተጠበቀ እና ጥብቅ ለማድረግ አዲስ ጠንካራ የይለፍ ቃል ያዘጋጁ።",
+      "newPassword": "አዲስ የይለፍ ቃል",
+      "confirmPassword": "የይለፍ ቃል ያረጋግጡ",
+      "passwordPlaceholder": "•••••3",
+      "verifyOtp": "OTP ያረጋግጡ",
+      "verifying": "በማረጋገጥ ላይ...",
+      "resetPassword": "የይለፍ ቃል ይቀይሩ",
+      "resetting": "በመቀየር ላይ...",
+      "errors": {
+        "enterOtp": "እባክዎ 6-አሃዝ OTP ያስገቡ።",
+        "verificationFailed": "ማረጋገጥ አልተሳካም።",
+        "fillAllFields": "እባክዎ ሁሉንም መስኮች ይሙሉ።",
+        "passwordsNotMatch": "የይለፍ ቃሎች አይዛመዱም።",
+        "resetFailed": "የይለፍ ቃል መቀየር አልተሳካም።"
+      },
+      "success": {
+        "otpVerified": "OTP ተረጋግጧል! እባክዎ አዲስ የይለፍ ቃልዎን ያዘጋጁ።",
+        "passwordReset": "የይለፍ ቃል በተሳካ ሁኔታ ተቀይሯል! አሁን መግባት ይችላሉ።"
+      }
     }
+  },
+  "authLayout": {
+    "title": "ለባለሙያ የሪል እስቴት ወኪሎች በኢትዮጵያ የተገነባ",
+    "description": "የተረጋገጡ የሚገኙ ክፍሎችን ያግኙ፣ ንብረቶችን በቅጽበት ያስያዙ እና ኮሚሽኖችዎን ይከታተሉ—ሁሉም ከአንድ ደህንነቱ የተጠበቀ መድረክ።"
   },
   "properties": {
     "title": "ንብረቶች",
@@ -180,18 +299,62 @@
     },
     "noResults": "ምንም ንብረቶች አልተገኙም። ማጣሪያዎችዎን ማስተካከል ይሞክሩ።",
     "details": {
+      "back": "ተመለስ",
+      "beds": "መኝታ ቤቶች",
+      "baths": "መታጠቢያ ቤቶች",
       "overview": "አጠቃላይ እይታ",
-      "features": "ባህሪያት",
-      "location": "አካባቢ",
-      "amenities": "አገልግሎቶች",
-      "nearbyPlaces": "በአቅራቢያ ያሉ ቦታዎች",
-      "bedrooms": "መኝታ ቤቶች",
-      "bathrooms": "መታጠቢያ ቤቶች",
+      "videoTour": "የቪዲዮ ጉብኝት",
+      "virtualTour": "ምናባዊ ጉብኝት",
+      "showMore": "ተጨማሪ አሳይ",
+      "showLess": "ያነሰ አሳይ",
+      "builtFrom": "የተገነባው ከ",
+      "propertyType": "የንብረት አይነት",
+      "listingType": "የዝርዝር አይነት",
+      "workLevel": "የስራ ደረጃ",
+      "propertyDetails": "የንብረት ዝርዝሮች",
+      "totalBedroom": "ጠቅላላ መኝታ ቤት",
+      "totalBathroom": "ጠቅላላ መታጠቢያ ቤት",
       "parkingSpace": "የመኪና ማቆሚያ",
-      "areaSize": "የቦታ መጠን",
-      "floors": "ፎቆች",
+      "availableFloors": "የሚገኙ ፎቆች",
       "buildingSize": "የህንፃ መጠን",
-      "deliveryTime": "የማድረስ ጊዜ"
+      "areaSize": "የቦታ መጠን",
+      "deliveryTime": "የማድረስ ጊዜ",
+      "amenities": "አገልግሎቶች",
+      "locationSurroundings": "አካባቢ እና አካባቢዎች",
+      "locationDescription": "ከሱፐርማርኬት፣ ከመንገዶች፣ ከትምህርት ቤቶች እና ከክሊኒኮች በደቂቃዎች ርቀት ላይ የሚገኝ ይህ ንብረት ሁለቱንም ቀዳሚነት እና ተደራሽነት ያረጋግጣል። እያደገ ያለ እና የመኖሪያ ዋጋ እየጨመረ ያለ አካባቢ።",
+      "location": "አካባቢ",
+      "askAboutHome": "ስለዚህ ቤት ይጠይቁ",
+      "name": "ስም",
+      "email": "ኢሜይል",
+      "message": "መልእክት",
+      "required": "*",
+      "namePlaceholder": "የእርስዎ ስም",
+      "emailPlaceholder": "you@email.com",
+      "messagePlaceholder": "በ{title} ላይ ፍላጎት አለኝ...",
+      "sendInquiry": "ጥያቄ ላክ",
+      "sending": "በመላክ ላይ...",
+      "bedroom": "መኝታ ቤት",
+      "bathroom": "መታጠቢያ ቤት",
+      "parking": "ማቆሚያ",
+      "errors": {
+        "nameRequired": "ስም ያስፈልጋል",
+        "emailRequired": "ኢሜይል ያስፈልጋል",
+        "emailInvalid": "እባክዎ ትክክለኛ የኢሜይል አድራሻ ያስገቡ",
+        "messageRequired": "መልእክት ያስፈልጋል",
+        "messageMinLength": "መልእክት ቢያንስ 10 ቁምፊዎች መሆን አለበት",
+        "fixErrors": "እባክዎ በቅጹ ውስጥ ያሉትን ስህተቶች ያስተካክሉ",
+        "sendFailed": "ጥያቄ መላክ አልተሳካም። እባክዎ እንደገና ይሞክሩ።",
+        "networkError": "የአውታረ መረብ ስህተት። እባክዎ ግንኙነትዎን ያረጋግጡ እና እንደገና ይሞክሩ።"
+      },
+      "success": {
+        "inquirySent": "ጥያቄዎ በተሳካ ሁኔታ ተልኳል!"
+      },
+      "gallery": {
+        "close": "ዝጋ",
+        "previous": "ቀዳሚ ምስል",
+        "next": "ቀጣይ ምስል",
+        "viewImage": "ምስል {number} ይመልከቱ"
+      }
     }
   },
   "progress": {

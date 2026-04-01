@@ -143,13 +143,132 @@
       "errorEmailNotVerified": "Your email is not verified. Please check your inbox for the verification code."
     },
     "signup": {
-      "title": "Create Agent Account",
-      "subtitle": "Join our network of professional real estate agents."
+      "title": "Apply as an Agent",
+      "subtitle": "Submit your details to apply for access to the agent portal. All applications are reviewed before approval.",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "phone": "Phone Number",
+      "email": "Email",
+      "password": "Password",
+      "firstNamePlaceholder": "Biruk",
+      "lastNamePlaceholder": "Solomon",
+      "phonePlaceholder": "+(251)-900-000-000",
+      "phoneRequired": "(required)",
+      "emailOptional": "(optional but recommended)",
+      "emailPlaceholder": "Example1@gmail.com",
+      "passwordPlaceholder": "•••••3",
+      "submitButton": "Submit for Application",
+      "submitting": "Creating account...",
+      "alreadyHaveAccount": "Already have agent account?",
+      "logIn": "Log In",
+      "errors": {
+        "bothNames": "Please enter both first and last name.",
+        "emailRequired": "Email address is required.",
+        "passwordRequired": "Password is required.",
+        "passwordMinLength": "Password must be at least 6 characters long.",
+        "emailInvalid": "Please enter a valid email address.",
+        "createAccountFailed": "Unable to create account. Please try again.",
+        "networkError": "Network error. Please check your connection and try again."
+      }
+    },
+    "apply": {
+      "title": "Apply as an Agent",
+      "subtitle": "Submit your details to apply for access to the agent portal.",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "phone": "Phone Number",
+      "email": "Email",
+      "password": "Password",
+      "governmentId": "Government ID (Passport/ID)",
+      "required": "*",
+      "firstNamePlaceholder": "Biruk",
+      "lastNamePlaceholder": "Solomon",
+      "phonePlaceholder": "+(251)-900-000-000",
+      "emailPlaceholder": "Example1@gmail.com",
+      "passwordPlaceholder": "•••••3",
+      "uploadFile": "Click to upload",
+      "dragDrop": "or drag and drop",
+      "fileTypes": "PDF, JPG, or PNG (max 5MB)",
+      "submitButton": "Submit Application",
+      "submitting": "Creating account...",
+      "alreadyHaveAccount": "Already have agent account?",
+      "logIn": "Log In",
+      "errors": {
+        "bothNames": "Please enter both first and last name.",
+        "emailRequired": "Email address is required.",
+        "passwordRequired": "Password is required.",
+        "passwordMinLength": "Password must be at least 6 characters long.",
+        "governmentIdRequired": "Government ID is required.",
+        "emailInvalid": "Please enter a valid email address.",
+        "invalidFileType": "Please upload a PDF, JPG, or PNG file.",
+        "fileSizeLimit": "File size must be less than 5MB.",
+        "uploadFailed": "Failed to upload Government ID. Please try again.",
+        "createAccountFailed": "Unable to create account. Please try again.",
+        "networkError": "Network error. Please check your connection and try again."
+      }
+    },
+    "otp": {
+      "title": "Enter OTP",
+      "subtitle": "Enter the 6-digit code sent to your email.",
+      "didntGetOtp": "Didn't get OTP?",
+      "resendOtp": "Resend OTP",
+      "resending": "Resending...",
+      "verify": "Verify",
+      "verifying": "Verifying...",
+      "errors": {
+        "enterOtp": "Please enter the 6-digit OTP.",
+        "emailNotFound": "Email not found. Please register again.",
+        "resendFailed": "Failed to resend OTP. Please try again.",
+        "verificationFailed": "Verification failed."
+      },
+      "success": {
+        "resent": "OTP has been resent to your email.",
+        "verified": "Email verified successfully! You can now log in."
+      }
     },
     "forgotPassword": {
-      "title": "Forgot Password",
-      "subtitle": "Enter your email to receive a password reset link."
+      "title": "Forget Password",
+      "subtitle": "Enter your Email, and we'll send you an OTP to reset your password.",
+      "email": "Email",
+      "emailPlaceholder": "johndue@email.com",
+      "sendOtp": "Send OTP",
+      "sending": "Sending...",
+      "dontHaveAccount": "Don't have agent account?",
+      "applyForAccess": "Apply for Access",
+      "errors": {
+        "sendFailed": "Failed to send OTP."
+      },
+      "success": {
+        "otpSent": "OTP sent! Please check your email."
+      }
+    },
+    "resetPassword": {
+      "title": "Reset Password",
+      "subtitleOtp": "Enter the 6-digit code sent to your email.",
+      "subtitlePassword": "Set a new strong password to keep your account safe and secure.",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm Password",
+      "passwordPlaceholder": "•••••3",
+      "verifyOtp": "Verify OTP",
+      "verifying": "Verifying...",
+      "resetPassword": "Reset Password",
+      "resetting": "Resetting...",
+      "errors": {
+        "enterOtp": "Please enter the 6-digit OTP.",
+        "verificationFailed": "Verification failed.",
+        "fillAllFields": "Please fill all fields.",
+        "passwordsNotMatch": "Passwords do not match.",
+        "resetFailed": "Failed to reset password."
+      },
+      "success": {
+        "otpVerified": "OTP verified! Please set your new password.",
+        "passwordReset": "Password reset successfully! You can now log in."
+      }
     }
+  },
+  "authLayout": {
+    "title": "Built for Professional Real Estate Agents in Ethiopia",
+    "description": "Access verified available units, reserve properties in real time, and track your commissions—all from one secure platform."
   },
   "properties": {
     "title": "Properties",
@@ -183,18 +302,62 @@
     },
     "noResults": "No properties found. Try adjusting your filters.",
     "details": {
+      "back": "Back",
+      "beds": "Beds",
+      "baths": "Baths",
       "overview": "Overview",
-      "features": "Features",
-      "location": "Location",
-      "amenities": "Amenities",
-      "nearbyPlaces": "Nearby Places",
-      "bedrooms": "Bedrooms",
-      "bathrooms": "Bathrooms",
-      "parkingSpace": "Parking Space",
-      "areaSize": "Area Size",
-      "floors": "Floors",
+      "videoTour": "Video Tour",
+      "virtualTour": "Virtual Tour",
+      "showMore": "Show more",
+      "showLess": "Show less",
+      "builtFrom": "Built from",
+      "propertyType": "Property Type",
+      "listingType": "Listing Type",
+      "workLevel": "Work Level",
+      "propertyDetails": "Property Details",
+      "totalBedroom": "Total Bedroom",
+      "totalBathroom": "Total Bathroom",
+      "parkingSpace": "Carport/Parking Space",
+      "availableFloors": "Available Floors",
       "buildingSize": "Building Size",
-      "deliveryTime": "Delivery Time"
+      "areaSize": "Area Size",
+      "deliveryTime": "Delivery Time",
+      "amenities": "Amenities",
+      "locationSurroundings": "Location & Surroundings",
+      "locationDescription": "Located minutes from supermarket, highways, schools, and clinics, this property guarantees both primary and accessibility. A growing area with increasing residential value.",
+      "location": "Location",
+      "askAboutHome": "Ask About This Home",
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "required": "*",
+      "namePlaceholder": "Your Name",
+      "emailPlaceholder": "you@email.com",
+      "messagePlaceholder": "I'm interested in {title}...",
+      "sendInquiry": "Send Inquiry",
+      "sending": "Sending...",
+      "bedroom": "Bedroom",
+      "bathroom": "Bathroom",
+      "parking": "Parking",
+      "errors": {
+        "nameRequired": "Name is required",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Please enter a valid email address",
+        "messageRequired": "Message is required",
+        "messageMinLength": "Message must be at least 10 characters",
+        "fixErrors": "Please fix the errors in the form",
+        "sendFailed": "Failed to send inquiry. Please try again.",
+        "networkError": "Network error. Please check your connection and try again."
+      },
+      "success": {
+        "inquirySent": "Your inquiry has been sent successfully!"
+      },
+      "gallery": {
+        "close": "Close",
+        "previous": "Previous image",
+        "next": "Next image",
+        "viewImage": "View image {number}"
+      }
     }
   },
   "progress": {

@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { AuthLayout as Shell } from '@/components/AuthLayout';
+import { getTranslations } from 'next-intl/server';
 
 interface AuthLayoutProps {
   children: ReactNode;
@@ -16,12 +17,13 @@ export default async function AuthLayout({ children }: AuthLayoutProps) {
     redirect('/');
   }
 
+  const t = await getTranslations('authLayout');
+
   return (
     <Shell
       rightPanelContent={{
-        title: 'Built for Professional Real Estate Agents in Ethiopia',
-        description:
-          'Access verified available units, reserve properties in real time, and track your commissions—all from one secure platform.',
+        title: t('title'),
+        description: t('description'),
       }}
     >
       {children}

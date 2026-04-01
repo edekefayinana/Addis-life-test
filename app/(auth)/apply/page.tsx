@@ -8,8 +8,10 @@ import { Eye, EyeOff, UploadCloud } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState, useRef } from 'react';
+import { useTranslations } from 'next-intl';
 
 export default function ApplyAsAgentPage() {
+  const t = useTranslations('auth.apply');
   const [showPassword, setShowPassword] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -33,12 +35,12 @@ export default function ApplyAsAgentPage() {
         'image/png',
       ];
       if (!validTypes.includes(file.type)) {
-        setErrorMessage('Please upload a PDF, JPG, or PNG file.');
+        setErrorMessage(t('errors.invalidFileType'));
         return;
       }
       // Validate file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
-        setErrorMessage('File size must be less than 5MB.');
+        setErrorMessage(t('errors.fileSizeLimit'));
         return;
       }
       setGovernmentIdFile(file);
@@ -53,31 +55,31 @@ export default function ApplyAsAgentPage() {
 
     // Client-side validation
     if (!firstName.trim() || !lastName.trim()) {
-      setErrorMessage('Please enter both first and last name.');
+      setErrorMessage(t('errors.bothNames'));
       setIsSubmitting(false);
       return;
     }
 
     if (!email.trim()) {
-      setErrorMessage('Email address is required.');
+      setErrorMessage(t('errors.emailRequired'));
       setIsSubmitting(false);
       return;
     }
 
     if (!password.trim()) {
-      setErrorMessage('Password is required.');
+      setErrorMessage(t('errors.passwordRequired'));
       setIsSubmitting(false);
       return;
     }
 
     if (password.length < 6) {
-      setErrorMessage('Password must be at least 6 characters long.');
+      setErrorMessage(t('errors.passwordMinLength'));
       setIsSubmitting(false);
       return;
     }
 
     if (!governmentIdFile) {
-      setErrorMessage('Government ID is required.');
+      setErrorMessage(t('errors.governmentIdRequired'));
       setIsSubmitting(false);
       return;
     }
@@ -85,7 +87,7 @@ export default function ApplyAsAgentPage() {
     // Email format validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      setErrorMessage('Please enter a valid email address.');
+      setErrorMessage(t('errors.emailInvalid'));
       setIsSubmitting(false);
       return;
     }
@@ -104,7 +106,7 @@ export default function ApplyAsAgentPage() {
       });
 
       if (!uploadResponse.ok) {
-        setErrorMessage('Failed to upload Government ID. Please try again.');
+        setErrorMessage(t('errors.uploadFailed'));
         setIsSubmitting(false);
         return;
       }
@@ -127,9 +129,7 @@ export default function ApplyAsAgentPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        setErrorMessage(
-          data.error || 'Unable to create account. Please try again.'
-        );
+        setErrorMessage(data.error || t('errors.createAccountFailed'));
         setIsSubmitting(false);
         return;
       }
@@ -138,9 +138,7 @@ export default function ApplyAsAgentPage() {
       router.push(`/otp?email=${encodeURIComponent(email)}`);
     } catch (error) {
       console.error('Registration error:', error);
-      setErrorMessage(
-        'Network error. Please check your connection and try again.'
-      );
+      setErrorMessage(t('errors.networkError'));
       setIsSubmitting(false);
     }
   };
@@ -150,11 +148,9 @@ export default function ApplyAsAgentPage() {
       <Logo />
 
       <div className="space-y-2 text-center">
-        <h1 className="text-4xl font-semibold text-gray-900">
-          Apply as an Agent
-        </h1>
+        <h1 className="text-4xl font-semibold text-gray-900">{t('title')}</h1>
         <p className="text-base text-gray-600 leading-relaxed">
-          Submit your details to apply for access to the agent portal.
+          {t('subtitle')}
         </p>
       </div>
 
@@ -165,12 +161,12 @@ export default function ApplyAsAgentPage() {
               htmlFor="first-name"
               className="text-sm font-medium text-gray-900"
             >
-              First Name
+              {t('firstName')}
             </Label>
             <Input
               id="first-name"
               type="text"
-              placeholder="Biruk"
+              placeholder={t('firstNamePlaceholder')}
               className="h-14 rounded-lg text-base"
               value={firstName}
               onChange={(event) => setFirstName(event.target.value)}
@@ -183,12 +179,12 @@ export default function ApplyAsAgentPage() {
               htmlFor="last-name"
               className="text-sm font-medium text-gray-900"
             >
-              Last Name
+              {t('lastName')}
             </Label>
             <Input
               id="last-name"
               type="text"
-              placeholder="Solomon"
+              placeholder={t('lastNamePlaceholder')}
               className="h-14 rounded-lg text-base"
               value={lastName}
               onChange={(event) => setLastName(event.target.value)}
@@ -199,12 +195,12 @@ export default function ApplyAsAgentPage() {
 
         <div className="space-y-2">
           <Label htmlFor="phone" className="text-sm font-medium text-gray-900">
-            Phone Number
+            {t('phone')}
           </Label>
           <Input
             id="phone"
             type="tel"
-            placeholder="+(251)-900-000-000"
+            placeholder={t('phonePlaceholder')}
             className="h-14 rounded-lg text-base"
             value={phone}
             onChange={(event) => setPhone(event.target.value)}
@@ -213,12 +209,12 @@ export default function ApplyAsAgentPage() {
 
         <div className="space-y-2">
           <Label htmlFor="email" className="text-sm font-medium text-gray-900">
-            Email
+            {t('email')}
           </Label>
           <Input
             id="email"
             type="email"
-            placeholder="Example1@gmail.com"
+            placeholder={t('emailPlaceholder')}
             className="h-14 rounded-lg text-base"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
@@ -231,13 +227,13 @@ export default function ApplyAsAgentPage() {
             htmlFor="password"
             className="text-sm font-medium text-gray-900"
           >
-            Password
+            {t('password')}
           </Label>
           <div className="relative">
             <Input
               id="password"
               type={showPassword ? 'text' : 'password'}
-              placeholder="•••••3"
+              placeholder={t('passwordPlaceholder')}
               className="h-14 rounded-lg pr-12 text-base"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
@@ -259,7 +255,8 @@ export default function ApplyAsAgentPage() {
 
         <div className="space-y-2">
           <Label className="text-base font-medium text-gray-700">
-            Government ID (Passport/ID) <span className="text-red-500">*</span>
+            {t('governmentId')}{' '}
+            <span className="text-red-500">{t('required')}</span>
           </Label>
           <div
             onClick={() => fileInputRef.current?.click()}
@@ -273,14 +270,12 @@ export default function ApplyAsAgentPage() {
               </div>
             </div>
             <p className="mt-2 text-sm font-medium text-gray-700">
-              {governmentIdFile ? governmentIdFile.name : 'Click to upload'}{' '}
+              {governmentIdFile ? governmentIdFile.name : t('uploadFile')}{' '}
               {!governmentIdFile && (
-                <span className="text-gray-500">or drag and drop</span>
+                <span className="text-gray-500">{t('dragDrop')}</span>
               )}
             </p>
-            <p className="mt-1 text-xs text-gray-500">
-              PDF, JPG, or PNG (max 5MB)
-            </p>
+            <p className="mt-1 text-xs text-gray-500">{t('fileTypes')}</p>
             <input
               ref={fileInputRef}
               type="file"
@@ -296,7 +291,7 @@ export default function ApplyAsAgentPage() {
           className="h-14 w-full rounded-full bg-primary text-base font-medium text-white hover:bg-primary/90"
           disabled={isSubmitting}
         >
-          {isSubmitting ? 'Creating account...' : 'Submit Application'}
+          {isSubmitting ? t('submitting') : t('submitButton')}
         </Button>
 
         {errorMessage && (
@@ -306,12 +301,12 @@ export default function ApplyAsAgentPage() {
         )}
 
         <div className="text-center text-base">
-          <span className="text-gray-600">Already have agent account? </span>
+          <span className="text-gray-600">{t('alreadyHaveAccount')} </span>
           <Link
             href="/login"
             className="font-medium text-blue-600! hover:text-blue-700 underline text-[18px]"
           >
-            Log In
+            {t('logIn')}
           </Link>
         </div>
       </form>
