@@ -7,6 +7,7 @@ import BlogContent from '../_components/BlogContent';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import LatestBlogs from '../_components/LatestBlogs';
+import { getTranslations } from 'next-intl/server';
 
 type Params = { uid: string };
 
@@ -16,6 +17,7 @@ export default async function BlogDetails({
   params: Promise<Params>;
 }) {
   const { uid } = await params;
+  const t = await getTranslations('blogs');
   const client = createClient();
   const blogs = await client
     .getAllByType('blog_post', {
@@ -38,7 +40,7 @@ export default async function BlogDetails({
           className="absolute hidden lg:flex items-center gap-2 rounded-full border py-1 shadow px-4 top-0 -left-44"
         >
           <ArrowLeft className="size-4" />
-          Back
+          {t('back')}
         </Link>
         <h1 className="text-3xl lg:text-5xl font-semibold leading-tight text-center">
           {blog.data.title}

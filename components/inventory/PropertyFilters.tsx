@@ -6,6 +6,7 @@ import { useDebounce } from '@/lib/hooks/useDebounce';
 import { cn } from '@/lib/utils';
 import { Ellipsis, Search, LayoutGrid, MapPin } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 // 1. Define the specific shape for Property Filters
 export type PropertyFilterTypes = {
@@ -43,6 +44,10 @@ type PropertyFiltersProps = {
 };
 
 export function PropertyFilters({ filters, onChange }: PropertyFiltersProps) {
+  const t = useTranslations('properties');
+  const tFilters = useTranslations('properties.filters');
+  const tViewToggle = useTranslations('properties.viewToggle');
+
   const [searchInput, setSearchInput] = useState(filters.search || '');
   const debouncedSearch = useDebounce(searchInput, 300);
   const [showMoreFilters, setShowMoreFilters] = useState(false);
@@ -57,7 +62,7 @@ export function PropertyFilters({ filters, onChange }: PropertyFiltersProps) {
     {
       key: 'search',
       type: 'search',
-      placeholder: 'Search by title, location, city...',
+      placeholder: tFilters('searchPlaceholder'),
       className: 'sm:col-span-2 lg:col-span-2',
       group: 'primary',
     },
@@ -75,28 +80,28 @@ export function PropertyFilters({ filters, onChange }: PropertyFiltersProps) {
     {
       key: 'propertyType',
       type: 'select',
-      placeholder: 'Property Type',
+      placeholder: tFilters('propertyType'),
       options: [
         { value: '', label: 'All' },
-        { value: 'APARTMENT', label: 'Apartment' },
-        { value: 'HOUSE', label: 'House' },
-        { value: 'VILLA', label: 'Villa' },
-        { value: 'CONDO', label: 'Condo' },
-        { value: 'COMMERCIAL', label: 'Commercial' },
+        { value: 'APARTMENT', label: tFilters('propertyTypes.apartment') },
+        { value: 'HOUSE', label: tFilters('propertyTypes.house') },
+        { value: 'VILLA', label: tFilters('propertyTypes.villa') },
+        { value: 'CONDO', label: tFilters('propertyTypes.condo') },
+        { value: 'COMMERCIAL', label: tFilters('propertyTypes.commercial') },
       ],
       group: 'primary',
     },
     {
       key: 'totalBedrooms',
       type: 'select',
-      placeholder: 'Bedrooms',
+      placeholder: tFilters('bedrooms'),
       options: [
         { value: '', label: 'All' },
-        { value: '1', label: '1 Bedroom' },
-        { value: '2', label: '2 Bedrooms' },
-        { value: '3', label: '3 Bedrooms' },
-        { value: '4', label: '4 Bedrooms' },
-        { value: '5', label: '5+ Bedrooms' },
+        { value: '1', label: tFilters('bedroomOptions.one') },
+        { value: '2', label: tFilters('bedroomOptions.two') },
+        { value: '3', label: tFilters('bedroomOptions.three') },
+        { value: '4', label: tFilters('bedroomOptions.four') },
+        { value: '5', label: tFilters('bedroomOptions.fivePlus') },
       ],
       group: 'primary',
     },
@@ -130,7 +135,7 @@ export function PropertyFilters({ filters, onChange }: PropertyFiltersProps) {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-            Properties in Addis Ababa
+            {t('pageTitle')}
           </h1>
         </div>
 
@@ -153,9 +158,7 @@ export function PropertyFilters({ filters, onChange }: PropertyFiltersProps) {
                   aria-pressed={isActive}
                 >
                   <Icon className="h-4 w-4" />
-                  <span className="capitalize">
-                    {view === 'list' ? 'List' : 'Map'}
-                  </span>
+                  <span className="capitalize">{tViewToggle(view)}</span>
                 </button>
               );
             })}
@@ -205,7 +208,7 @@ export function PropertyFilters({ filters, onChange }: PropertyFiltersProps) {
                   )}
                 >
                   <Ellipsis className="h-4 w-4" />
-                  <span>More</span>
+                  <span>{tFilters('more')}</span>
                 </button>
 
                 {showMoreFilters && (

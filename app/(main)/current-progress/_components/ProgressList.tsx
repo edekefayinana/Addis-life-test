@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import ProgressCard from './ProgressCard';
+import { useTranslations } from 'next-intl';
 
 interface Project {
   id: string;
@@ -29,6 +30,7 @@ interface SiteProgress {
 }
 
 export default function ProgressList() {
+  const t = useTranslations('progress');
   const [selectedProject, setSelectedProject] = useState<string>('all');
   const [progress, setProgress] = useState<SiteProgress[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
@@ -113,7 +115,7 @@ export default function ProgressList() {
           htmlFor="project-filter"
           className="block text-sm font-medium mb-2"
         >
-          Filter by Project
+          {t('filterByProject')}
         </label>
         <select
           id="project-filter"
@@ -121,7 +123,7 @@ export default function ProgressList() {
           onChange={(e) => setSelectedProject(e.target.value)}
           className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
-          <option value="all">All Projects</option>
+          <option value="all">{t('allProjects')}</option>
           {projects.map((project) => (
             <option key={project.id} value={project.id}>
               {project.name}
@@ -132,9 +134,7 @@ export default function ProgressList() {
 
       {/* Progress Grid */}
       {filteredProgress.length === 0 ? (
-        <div className="text-center py-12 text-gray-500">
-          No progress updates available
-        </div>
+        <div className="text-center py-12 text-gray-500">{t('noResults')}</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProgress.map((item) => (

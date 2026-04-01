@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { notFound, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { ArrowLeft, Calendar, Building2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface ProgressMedia {
   id: string;
@@ -33,6 +34,7 @@ interface Props {
 }
 
 export default function ProgressDetail({ id }: Props) {
+  const t = useTranslations('progress.detail');
   const router = useRouter();
   const [progress, setProgress] = useState<SiteProgress | null>(null);
   const [loading, setLoading] = useState(true);
@@ -57,6 +59,19 @@ export default function ProgressDetail({ id }: Props) {
 
     fetchProgress();
   }, [id]);
+
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'COMPLETED':
+        return t('statusCompleted');
+      case 'IN_PROGRESS':
+        return t('statusInProgress');
+      case 'PLANNED':
+        return t('statusPlanned');
+      default:
+        return status.replace('_', ' ');
+    }
+  };
 
   if (loading) {
     return (
@@ -108,7 +123,7 @@ export default function ProgressDetail({ id }: Props) {
         className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-8 transition-colors"
       >
         <ArrowLeft className="w-5 h-5" />
-        <span>Back to Progress Updates</span>
+        <span>{t('backToUpdates')}</span>
       </button>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -157,14 +172,14 @@ export default function ProgressDetail({ id }: Props) {
             </>
           ) : (
             <div className="h-96 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400">
-              No images available
+              {t('noImagesAvailable')}
             </div>
           )}
 
           {/* Videos */}
           {videos.length > 0 && (
             <div className="mt-6 space-y-4">
-              <h3 className="text-lg font-semibold">Videos</h3>
+              <h3 className="text-lg font-semibold">{t('videos')}</h3>
               {videos.map((video) => (
                 <div key={video.id} className="rounded-lg overflow-hidden">
                   <video src={video.url} controls className="w-full" />
@@ -192,7 +207,7 @@ export default function ProgressDetail({ id }: Props) {
                     : 'bg-gray-100 text-gray-800'
               }`}
             >
-              {progress.status.replace('_', ' ')}
+              {getStatusLabel(progress.status)}
             </span>
           </div>
 
@@ -211,7 +226,7 @@ export default function ProgressDetail({ id }: Props) {
           <div className="flex items-center gap-2 text-gray-600 mb-6">
             <Calendar className="w-5 h-5" />
             <span>
-              Published on{' '}
+              {t('publishedOn')}{' '}
               {new Date(progress.publishedAt!).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
@@ -223,7 +238,9 @@ export default function ProgressDetail({ id }: Props) {
           {/* Description */}
           {progress.description && (
             <div className="prose prose-gray max-w-none">
-              <h2 className="text-xl font-semibold mb-3">About this Update</h2>
+              <h2 className="text-xl font-semibold mb-3">
+                {t('aboutThisUpdate')}
+              </h2>
               <p className="text-gray-700 leading-relaxed whitespace-pre-line">
                 {progress.description}
               </p>
@@ -234,13 +251,13 @@ export default function ProgressDetail({ id }: Props) {
           <div className="mt-8 pt-6 border-t border-gray-200">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-sm text-gray-500">Total Media</p>
+                <p className="text-sm text-gray-500">{t('totalMedia')}</p>
                 <p className="text-2xl font-bold text-gray-900">
                   {progress.media.length}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Last Updated</p>
+                <p className="text-sm text-gray-500">{t('lastUpdated')}</p>
                 <p className="text-lg font-semibold text-gray-900">
                   {new Date(progress.createdAt).toLocaleDateString('en-US', {
                     month: 'short',

@@ -360,7 +360,21 @@
   "progress": {
     "title": "የአሁኑ እድገት",
     "subtitle": "በፕሮጀክቶቻችን ላይ የቅርብ ጊዜ የግንባታ ዝመናዎችን ይከታተሉ",
-    "noResults": "በአሁኑ ጊዜ ምንም የእድገት ዝመናዎች የሉም።"
+    "noResults": "በአሁኑ ጊዜ ምንም የእድገት ዝመናዎች የሉም።",
+    "filterByProject": "በፕሮጀክት አጣራ",
+    "allProjects": "ሁሉም ፕሮጀክቶች",
+    "detail": {
+      "backToUpdates": "ወደ እድገት ዝመናዎች ተመለስ",
+      "noImagesAvailable": "ምንም ምስሎች የሉም",
+      "videos": "ቪዲዮዎች",
+      "aboutThisUpdate": "ስለዚህ ዝመና",
+      "totalMedia": "ጠቅላላ ሚዲያ",
+      "lastUpdated": "መጨረሻ የዘመነው",
+      "publishedOn": "የታተመው",
+      "statusCompleted": "ተጠናቋል",
+      "statusInProgress": "በሂደት ላይ",
+      "statusPlanned": "ታቅዷል"
+    }
   },
   "blogs": {
     "title": "ብሎጎች",
@@ -375,7 +389,8 @@
       "previous": "ቀዳሚ",
       "next": "ቀጣይ",
       "showingPage": "ገጽ {current} ከ {total} በማሳየት ላይ"
-    }
+    },
+    "back": "ተመለስ"
   },
   "aboutUs": {
     "home": {

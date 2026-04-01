@@ -363,7 +363,21 @@
   "progress": {
     "title": "Current Progress",
     "subtitle": "Track the latest construction updates across our projects",
-    "noResults": "No progress updates available at the moment."
+    "noResults": "No progress updates available at the moment.",
+    "filterByProject": "Filter by Project",
+    "allProjects": "All Projects",
+    "detail": {
+      "backToUpdates": "Back to Progress Updates",
+      "noImagesAvailable": "No images available",
+      "videos": "Videos",
+      "aboutThisUpdate": "About this Update",
+      "totalMedia": "Total Media",
+      "lastUpdated": "Last Updated",
+      "publishedOn": "Published on",
+      "statusCompleted": "COMPLETED",
+      "statusInProgress": "IN PROGRESS",
+      "statusPlanned": "PLANNED"
+    }
   },
   "blogs": {
     "title": "Blogs",
@@ -378,7 +392,8 @@
       "previous": "Previous",
       "next": "Next",
       "showingPage": "Showing Page {current} of {total}"
-    }
+    },
+    "back": "Back"
   },
   "aboutUs": {
     "home": {
