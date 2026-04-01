@@ -9,6 +9,7 @@ import {
   MoreVertical,
   Settings,
   User,
+  Construction,
 } from 'lucide-react';
 import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
@@ -53,9 +54,16 @@ export function Sidebar() {
     //   label: 'Marketing Assets',
     //   href: '/admin/marketing-assets',
     // },
-    // Only show User Management for ADMIN role
+    // Only show User Management and Site Progress for ADMIN role
     ...(session?.user?.role === 'ADMIN'
-      ? [{ icon: User, label: 'User Managment', href: '/admin/users' }]
+      ? [
+          { icon: User, label: 'User Managment', href: '/admin/users' },
+          {
+            icon: Construction,
+            label: 'Site Progress',
+            href: '/admin/site-progress',
+          },
+        ]
       : []),
   ];
 

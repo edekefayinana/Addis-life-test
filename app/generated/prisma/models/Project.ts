@@ -29,6 +29,7 @@ export type ProjectMinAggregateOutputType = {
   name: string | null;
   createdAt: Date | null;
   updatedAt: Date | null;
+  pdfUrl: string | null;
 };
 
 export type ProjectMaxAggregateOutputType = {
@@ -36,6 +37,7 @@ export type ProjectMaxAggregateOutputType = {
   name: string | null;
   createdAt: Date | null;
   updatedAt: Date | null;
+  pdfUrl: string | null;
 };
 
 export type ProjectCountAggregateOutputType = {
@@ -43,6 +45,7 @@ export type ProjectCountAggregateOutputType = {
   name: number;
   createdAt: number;
   updatedAt: number;
+  pdfUrl: number;
   _all: number;
 };
 
@@ -51,6 +54,7 @@ export type ProjectMinAggregateInputType = {
   name?: true;
   createdAt?: true;
   updatedAt?: true;
+  pdfUrl?: true;
 };
 
 export type ProjectMaxAggregateInputType = {
@@ -58,6 +62,7 @@ export type ProjectMaxAggregateInputType = {
   name?: true;
   createdAt?: true;
   updatedAt?: true;
+  pdfUrl?: true;
 };
 
 export type ProjectCountAggregateInputType = {
@@ -65,6 +70,7 @@ export type ProjectCountAggregateInputType = {
   name?: true;
   createdAt?: true;
   updatedAt?: true;
+  pdfUrl?: true;
   _all?: true;
 };
 
@@ -152,6 +158,7 @@ export type ProjectGroupByOutputType = {
   name: string;
   createdAt: Date;
   updatedAt: Date;
+  pdfUrl: string | null;
   _count: ProjectCountAggregateOutputType | null;
   _min: ProjectMinAggregateOutputType | null;
   _max: ProjectMaxAggregateOutputType | null;
@@ -178,7 +185,9 @@ export type ProjectWhereInput = {
   name?: Prisma.StringFilter<'Project'> | string;
   createdAt?: Prisma.DateTimeFilter<'Project'> | Date | string;
   updatedAt?: Prisma.DateTimeFilter<'Project'> | Date | string;
+  pdfUrl?: Prisma.StringNullableFilter<'Project'> | string | null;
   properties?: Prisma.PropertyListRelationFilter;
+  siteProgress?: Prisma.SiteProgressListRelationFilter;
 };
 
 export type ProjectOrderByWithRelationInput = {
@@ -186,7 +195,9 @@ export type ProjectOrderByWithRelationInput = {
   name?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
+  pdfUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
   properties?: Prisma.PropertyOrderByRelationAggregateInput;
+  siteProgress?: Prisma.SiteProgressOrderByRelationAggregateInput;
 };
 
 export type ProjectWhereUniqueInput = Prisma.AtLeast<
@@ -198,7 +209,9 @@ export type ProjectWhereUniqueInput = Prisma.AtLeast<
     name?: Prisma.StringFilter<'Project'> | string;
     createdAt?: Prisma.DateTimeFilter<'Project'> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<'Project'> | Date | string;
+    pdfUrl?: Prisma.StringNullableFilter<'Project'> | string | null;
     properties?: Prisma.PropertyListRelationFilter;
+    siteProgress?: Prisma.SiteProgressListRelationFilter;
   },
   'id'
 >;
@@ -208,6 +221,7 @@ export type ProjectOrderByWithAggregationInput = {
   name?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
+  pdfUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
   _count?: Prisma.ProjectCountOrderByAggregateInput;
   _max?: Prisma.ProjectMaxOrderByAggregateInput;
   _min?: Prisma.ProjectMinOrderByAggregateInput;
@@ -225,6 +239,7 @@ export type ProjectScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<'Project'> | string;
   createdAt?: Prisma.DateTimeWithAggregatesFilter<'Project'> | Date | string;
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<'Project'> | Date | string;
+  pdfUrl?: Prisma.StringNullableWithAggregatesFilter<'Project'> | string | null;
 };
 
 export type ProjectCreateInput = {
@@ -232,7 +247,9 @@ export type ProjectCreateInput = {
   name: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  pdfUrl?: string | null;
   properties?: Prisma.PropertyCreateNestedManyWithoutProjectInput;
+  siteProgress?: Prisma.SiteProgressCreateNestedManyWithoutProjectInput;
 };
 
 export type ProjectUncheckedCreateInput = {
@@ -240,7 +257,9 @@ export type ProjectUncheckedCreateInput = {
   name: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  pdfUrl?: string | null;
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutProjectInput;
+  siteProgress?: Prisma.SiteProgressUncheckedCreateNestedManyWithoutProjectInput;
 };
 
 export type ProjectUpdateInput = {
@@ -248,7 +267,9 @@ export type ProjectUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  pdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   properties?: Prisma.PropertyUpdateManyWithoutProjectNestedInput;
+  siteProgress?: Prisma.SiteProgressUpdateManyWithoutProjectNestedInput;
 };
 
 export type ProjectUncheckedUpdateInput = {
@@ -256,7 +277,9 @@ export type ProjectUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  pdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutProjectNestedInput;
+  siteProgress?: Prisma.SiteProgressUncheckedUpdateManyWithoutProjectNestedInput;
 };
 
 export type ProjectCreateManyInput = {
@@ -264,6 +287,7 @@ export type ProjectCreateManyInput = {
   name: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  pdfUrl?: string | null;
 };
 
 export type ProjectUpdateManyMutationInput = {
@@ -271,6 +295,7 @@ export type ProjectUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  pdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
 };
 
 export type ProjectUncheckedUpdateManyInput = {
@@ -278,6 +303,7 @@ export type ProjectUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  pdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
 };
 
 export type ProjectCountOrderByAggregateInput = {
@@ -285,6 +311,7 @@ export type ProjectCountOrderByAggregateInput = {
   name?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
+  pdfUrl?: Prisma.SortOrder;
 };
 
 export type ProjectMaxOrderByAggregateInput = {
@@ -292,6 +319,7 @@ export type ProjectMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
+  pdfUrl?: Prisma.SortOrder;
 };
 
 export type ProjectMinOrderByAggregateInput = {
@@ -299,6 +327,7 @@ export type ProjectMinOrderByAggregateInput = {
   name?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
+  pdfUrl?: Prisma.SortOrder;
 };
 
 export type ProjectScalarRelationFilter = {
@@ -332,11 +361,39 @@ export type ProjectUpdateOneRequiredWithoutPropertiesNestedInput = {
   >;
 };
 
+export type ProjectCreateNestedOneWithoutSiteProgressInput = {
+  create?: Prisma.XOR<
+    Prisma.ProjectCreateWithoutSiteProgressInput,
+    Prisma.ProjectUncheckedCreateWithoutSiteProgressInput
+  >;
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutSiteProgressInput;
+  connect?: Prisma.ProjectWhereUniqueInput;
+};
+
+export type ProjectUpdateOneRequiredWithoutSiteProgressNestedInput = {
+  create?: Prisma.XOR<
+    Prisma.ProjectCreateWithoutSiteProgressInput,
+    Prisma.ProjectUncheckedCreateWithoutSiteProgressInput
+  >;
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutSiteProgressInput;
+  upsert?: Prisma.ProjectUpsertWithoutSiteProgressInput;
+  connect?: Prisma.ProjectWhereUniqueInput;
+  update?: Prisma.XOR<
+    Prisma.XOR<
+      Prisma.ProjectUpdateToOneWithWhereWithoutSiteProgressInput,
+      Prisma.ProjectUpdateWithoutSiteProgressInput
+    >,
+    Prisma.ProjectUncheckedUpdateWithoutSiteProgressInput
+  >;
+};
+
 export type ProjectCreateWithoutPropertiesInput = {
   id?: string;
   name: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  pdfUrl?: string | null;
+  siteProgress?: Prisma.SiteProgressCreateNestedManyWithoutProjectInput;
 };
 
 export type ProjectUncheckedCreateWithoutPropertiesInput = {
@@ -344,6 +401,8 @@ export type ProjectUncheckedCreateWithoutPropertiesInput = {
   name: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  pdfUrl?: string | null;
+  siteProgress?: Prisma.SiteProgressUncheckedCreateNestedManyWithoutProjectInput;
 };
 
 export type ProjectCreateOrConnectWithoutPropertiesInput = {
@@ -379,6 +438,8 @@ export type ProjectUpdateWithoutPropertiesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  pdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  siteProgress?: Prisma.SiteProgressUpdateManyWithoutProjectNestedInput;
 };
 
 export type ProjectUncheckedUpdateWithoutPropertiesInput = {
@@ -386,6 +447,72 @@ export type ProjectUncheckedUpdateWithoutPropertiesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  pdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  siteProgress?: Prisma.SiteProgressUncheckedUpdateManyWithoutProjectNestedInput;
+};
+
+export type ProjectCreateWithoutSiteProgressInput = {
+  id?: string;
+  name: string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  pdfUrl?: string | null;
+  properties?: Prisma.PropertyCreateNestedManyWithoutProjectInput;
+};
+
+export type ProjectUncheckedCreateWithoutSiteProgressInput = {
+  id?: string;
+  name: string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  pdfUrl?: string | null;
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutProjectInput;
+};
+
+export type ProjectCreateOrConnectWithoutSiteProgressInput = {
+  where: Prisma.ProjectWhereUniqueInput;
+  create: Prisma.XOR<
+    Prisma.ProjectCreateWithoutSiteProgressInput,
+    Prisma.ProjectUncheckedCreateWithoutSiteProgressInput
+  >;
+};
+
+export type ProjectUpsertWithoutSiteProgressInput = {
+  update: Prisma.XOR<
+    Prisma.ProjectUpdateWithoutSiteProgressInput,
+    Prisma.ProjectUncheckedUpdateWithoutSiteProgressInput
+  >;
+  create: Prisma.XOR<
+    Prisma.ProjectCreateWithoutSiteProgressInput,
+    Prisma.ProjectUncheckedCreateWithoutSiteProgressInput
+  >;
+  where?: Prisma.ProjectWhereInput;
+};
+
+export type ProjectUpdateToOneWithWhereWithoutSiteProgressInput = {
+  where?: Prisma.ProjectWhereInput;
+  data: Prisma.XOR<
+    Prisma.ProjectUpdateWithoutSiteProgressInput,
+    Prisma.ProjectUncheckedUpdateWithoutSiteProgressInput
+  >;
+};
+
+export type ProjectUpdateWithoutSiteProgressInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  name?: Prisma.StringFieldUpdateOperationsInput | string;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  pdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  properties?: Prisma.PropertyUpdateManyWithoutProjectNestedInput;
+};
+
+export type ProjectUncheckedUpdateWithoutSiteProgressInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  name?: Prisma.StringFieldUpdateOperationsInput | string;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  pdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutProjectNestedInput;
 };
 
 /**
@@ -394,6 +521,7 @@ export type ProjectUncheckedUpdateWithoutPropertiesInput = {
 
 export type ProjectCountOutputType = {
   properties: number;
+  siteProgress: number;
 };
 
 export type ProjectCountOutputTypeSelect<
@@ -401,6 +529,7 @@ export type ProjectCountOutputTypeSelect<
     runtime.Types.Extensions.DefaultArgs,
 > = {
   properties?: boolean | ProjectCountOutputTypeCountPropertiesArgs;
+  siteProgress?: boolean | ProjectCountOutputTypeCountSiteProgressArgs;
 };
 
 /**
@@ -426,6 +555,16 @@ export type ProjectCountOutputTypeCountPropertiesArgs<
   where?: Prisma.PropertyWhereInput;
 };
 
+/**
+ * ProjectCountOutputType without action
+ */
+export type ProjectCountOutputTypeCountSiteProgressArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  where?: Prisma.SiteProgressWhereInput;
+};
+
 export type ProjectSelect<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
@@ -435,7 +574,9 @@ export type ProjectSelect<
     name?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    pdfUrl?: boolean;
     properties?: boolean | Prisma.Project$propertiesArgs<ExtArgs>;
+    siteProgress?: boolean | Prisma.Project$siteProgressArgs<ExtArgs>;
     _count?: boolean | Prisma.ProjectCountOutputTypeDefaultArgs<ExtArgs>;
   },
   ExtArgs['result']['project']
@@ -450,6 +591,7 @@ export type ProjectSelectCreateManyAndReturn<
     name?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    pdfUrl?: boolean;
   },
   ExtArgs['result']['project']
 >;
@@ -463,6 +605,7 @@ export type ProjectSelectUpdateManyAndReturn<
     name?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    pdfUrl?: boolean;
   },
   ExtArgs['result']['project']
 >;
@@ -472,13 +615,14 @@ export type ProjectSelectScalar = {
   name?: boolean;
   createdAt?: boolean;
   updatedAt?: boolean;
+  pdfUrl?: boolean;
 };
 
 export type ProjectOmit<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = runtime.Types.Extensions.GetOmit<
-  'id' | 'name' | 'createdAt' | 'updatedAt',
+  'id' | 'name' | 'createdAt' | 'updatedAt' | 'pdfUrl',
   ExtArgs['result']['project']
 >;
 export type ProjectInclude<
@@ -486,6 +630,7 @@ export type ProjectInclude<
     runtime.Types.Extensions.DefaultArgs,
 > = {
   properties?: boolean | Prisma.Project$propertiesArgs<ExtArgs>;
+  siteProgress?: boolean | Prisma.Project$siteProgressArgs<ExtArgs>;
   _count?: boolean | Prisma.ProjectCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type ProjectIncludeCreateManyAndReturn<
@@ -504,6 +649,7 @@ export type $ProjectPayload<
   name: 'Project';
   objects: {
     properties: Prisma.$PropertyPayload<ExtArgs>[];
+    siteProgress: Prisma.$SiteProgressPayload<ExtArgs>[];
   };
   scalars: runtime.Types.Extensions.GetPayloadResult<
     {
@@ -511,6 +657,7 @@ export type $ProjectPayload<
       name: string;
       createdAt: Date;
       updatedAt: Date;
+      pdfUrl: string | null;
     },
     ExtArgs['result']['project']
   >;
@@ -1072,6 +1219,17 @@ export interface Prisma__ProjectClient<
       >
     | Null
   >;
+  siteProgress<T extends Prisma.Project$siteProgressArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.Project$siteProgressArgs<ExtArgs>>
+  ): Prisma.PrismaPromise<
+    | runtime.Types.Result.GetResult<
+        Prisma.$SiteProgressPayload<ExtArgs>,
+        T,
+        'findMany',
+        GlobalOmitOptions
+      >
+    | Null
+  >;
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1118,6 +1276,7 @@ export interface ProjectFieldRefs {
   readonly name: Prisma.FieldRef<'Project', 'String'>;
   readonly createdAt: Prisma.FieldRef<'Project', 'DateTime'>;
   readonly updatedAt: Prisma.FieldRef<'Project', 'DateTime'>;
+  readonly pdfUrl: Prisma.FieldRef<'Project', 'String'>;
 }
 
 // Custom InputTypes
@@ -1597,6 +1756,37 @@ export type Project$propertiesArgs<
   take?: number;
   skip?: number;
   distinct?: Prisma.PropertyScalarFieldEnum | Prisma.PropertyScalarFieldEnum[];
+};
+
+/**
+ * Project.siteProgress
+ */
+export type Project$siteProgressArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the SiteProgress
+   */
+  select?: Prisma.SiteProgressSelect<ExtArgs> | null;
+  /**
+   * Omit specific fields from the SiteProgress
+   */
+  omit?: Prisma.SiteProgressOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SiteProgressInclude<ExtArgs> | null;
+  where?: Prisma.SiteProgressWhereInput;
+  orderBy?:
+    | Prisma.SiteProgressOrderByWithRelationInput
+    | Prisma.SiteProgressOrderByWithRelationInput[];
+  cursor?: Prisma.SiteProgressWhereUniqueInput;
+  take?: number;
+  skip?: number;
+  distinct?:
+    | Prisma.SiteProgressScalarFieldEnum
+    | Prisma.SiteProgressScalarFieldEnum[];
 };
 
 /**

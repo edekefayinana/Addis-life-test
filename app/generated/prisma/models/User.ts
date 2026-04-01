@@ -36,6 +36,7 @@ export type UserMinAggregateOutputType = {
   approvalStatus: $Enums.ApprovalStatus | null;
   createdAt: Date | null;
   updatedAt: Date | null;
+  governmentIdUrl: string | null;
 };
 
 export type UserMaxAggregateOutputType = {
@@ -50,6 +51,7 @@ export type UserMaxAggregateOutputType = {
   approvalStatus: $Enums.ApprovalStatus | null;
   createdAt: Date | null;
   updatedAt: Date | null;
+  governmentIdUrl: string | null;
 };
 
 export type UserCountAggregateOutputType = {
@@ -64,6 +66,7 @@ export type UserCountAggregateOutputType = {
   approvalStatus: number;
   createdAt: number;
   updatedAt: number;
+  governmentIdUrl: number;
   _all: number;
 };
 
@@ -79,6 +82,7 @@ export type UserMinAggregateInputType = {
   approvalStatus?: true;
   createdAt?: true;
   updatedAt?: true;
+  governmentIdUrl?: true;
 };
 
 export type UserMaxAggregateInputType = {
@@ -93,6 +97,7 @@ export type UserMaxAggregateInputType = {
   approvalStatus?: true;
   createdAt?: true;
   updatedAt?: true;
+  governmentIdUrl?: true;
 };
 
 export type UserCountAggregateInputType = {
@@ -107,6 +112,7 @@ export type UserCountAggregateInputType = {
   approvalStatus?: true;
   createdAt?: true;
   updatedAt?: true;
+  governmentIdUrl?: true;
   _all?: true;
 };
 
@@ -201,6 +207,7 @@ export type UserGroupByOutputType = {
   approvalStatus: $Enums.ApprovalStatus;
   createdAt: Date;
   updatedAt: Date;
+  governmentIdUrl: string | null;
   _count: UserCountAggregateOutputType | null;
   _min: UserMinAggregateOutputType | null;
   _max: UserMaxAggregateOutputType | null;
@@ -235,11 +242,12 @@ export type UserWhereInput = {
     | $Enums.ApprovalStatus;
   createdAt?: Prisma.DateTimeFilter<'User'> | Date | string;
   updatedAt?: Prisma.DateTimeFilter<'User'> | Date | string;
+  governmentIdUrl?: Prisma.StringNullableFilter<'User'> | string | null;
   accounts?: Prisma.AccountListRelationFilter;
-  sessions?: Prisma.SessionListRelationFilter;
+  notifications?: Prisma.NotificationListRelationFilter;
   properties?: Prisma.PropertyListRelationFilter;
   reservations?: Prisma.ReservationListRelationFilter;
-  notifications?: Prisma.NotificationListRelationFilter;
+  sessions?: Prisma.SessionListRelationFilter;
 };
 
 export type UserOrderByWithRelationInput = {
@@ -254,11 +262,12 @@ export type UserOrderByWithRelationInput = {
   approvalStatus?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
+  governmentIdUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
   accounts?: Prisma.AccountOrderByRelationAggregateInput;
-  sessions?: Prisma.SessionOrderByRelationAggregateInput;
+  notifications?: Prisma.NotificationOrderByRelationAggregateInput;
   properties?: Prisma.PropertyOrderByRelationAggregateInput;
   reservations?: Prisma.ReservationOrderByRelationAggregateInput;
-  notifications?: Prisma.NotificationOrderByRelationAggregateInput;
+  sessions?: Prisma.SessionOrderByRelationAggregateInput;
 };
 
 export type UserWhereUniqueInput = Prisma.AtLeast<
@@ -283,11 +292,12 @@ export type UserWhereUniqueInput = Prisma.AtLeast<
       | $Enums.ApprovalStatus;
     createdAt?: Prisma.DateTimeFilter<'User'> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<'User'> | Date | string;
+    governmentIdUrl?: Prisma.StringNullableFilter<'User'> | string | null;
     accounts?: Prisma.AccountListRelationFilter;
-    sessions?: Prisma.SessionListRelationFilter;
+    notifications?: Prisma.NotificationListRelationFilter;
     properties?: Prisma.PropertyListRelationFilter;
     reservations?: Prisma.ReservationListRelationFilter;
-    notifications?: Prisma.NotificationListRelationFilter;
+    sessions?: Prisma.SessionListRelationFilter;
   },
   'id' | 'email'
 >;
@@ -304,6 +314,7 @@ export type UserOrderByWithAggregationInput = {
   approvalStatus?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
+  governmentIdUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
   _count?: Prisma.UserCountOrderByAggregateInput;
   _max?: Prisma.UserMaxOrderByAggregateInput;
   _min?: Prisma.UserMinOrderByAggregateInput;
@@ -334,6 +345,10 @@ export type UserScalarWhereWithAggregatesInput = {
     | $Enums.ApprovalStatus;
   createdAt?: Prisma.DateTimeWithAggregatesFilter<'User'> | Date | string;
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<'User'> | Date | string;
+  governmentIdUrl?:
+    | Prisma.StringNullableWithAggregatesFilter<'User'>
+    | string
+    | null;
 };
 
 export type UserCreateInput = {
@@ -348,11 +363,12 @@ export type UserCreateInput = {
   approvalStatus?: $Enums.ApprovalStatus;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  governmentIdUrl?: string | null;
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
   properties?: Prisma.PropertyCreateNestedManyWithoutCreatedByInput;
   reservations?: Prisma.ReservationCreateNestedManyWithoutUserInput;
-  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
 };
 
 export type UserUncheckedCreateInput = {
@@ -367,11 +383,12 @@ export type UserUncheckedCreateInput = {
   approvalStatus?: $Enums.ApprovalStatus;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  governmentIdUrl?: string | null;
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput;
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatedByInput;
   reservations?: Prisma.ReservationUncheckedCreateNestedManyWithoutUserInput;
-  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
 };
 
 export type UserUpdateInput = {
@@ -392,11 +409,15 @@ export type UserUpdateInput = {
     | $Enums.ApprovalStatus;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  governmentIdUrl?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput;
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
   properties?: Prisma.PropertyUpdateManyWithoutCreatedByNestedInput;
   reservations?: Prisma.ReservationUpdateManyWithoutUserNestedInput;
-  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
 };
 
 export type UserUncheckedUpdateInput = {
@@ -417,11 +438,15 @@ export type UserUncheckedUpdateInput = {
     | $Enums.ApprovalStatus;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  governmentIdUrl?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput;
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatedByNestedInput;
   reservations?: Prisma.ReservationUncheckedUpdateManyWithoutUserNestedInput;
-  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
 };
 
 export type UserCreateManyInput = {
@@ -436,6 +461,7 @@ export type UserCreateManyInput = {
   approvalStatus?: $Enums.ApprovalStatus;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  governmentIdUrl?: string | null;
 };
 
 export type UserUpdateManyMutationInput = {
@@ -456,6 +482,10 @@ export type UserUpdateManyMutationInput = {
     | $Enums.ApprovalStatus;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  governmentIdUrl?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
 };
 
 export type UserUncheckedUpdateManyInput = {
@@ -476,6 +506,10 @@ export type UserUncheckedUpdateManyInput = {
     | $Enums.ApprovalStatus;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  governmentIdUrl?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
 };
 
 export type UserCountOrderByAggregateInput = {
@@ -490,6 +524,7 @@ export type UserCountOrderByAggregateInput = {
   approvalStatus?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
+  governmentIdUrl?: Prisma.SortOrder;
 };
 
 export type UserMaxOrderByAggregateInput = {
@@ -504,6 +539,7 @@ export type UserMaxOrderByAggregateInput = {
   approvalStatus?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
+  governmentIdUrl?: Prisma.SortOrder;
 };
 
 export type UserMinOrderByAggregateInput = {
@@ -518,6 +554,7 @@ export type UserMinOrderByAggregateInput = {
   approvalStatus?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
+  governmentIdUrl?: Prisma.SortOrder;
 };
 
 export type UserScalarRelationFilter = {
@@ -691,10 +728,11 @@ export type UserCreateWithoutAccountsInput = {
   approvalStatus?: $Enums.ApprovalStatus;
   createdAt?: Date | string;
   updatedAt?: Date | string;
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
+  governmentIdUrl?: string | null;
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
   properties?: Prisma.PropertyCreateNestedManyWithoutCreatedByInput;
   reservations?: Prisma.ReservationCreateNestedManyWithoutUserInput;
-  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
 };
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -709,10 +747,11 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   approvalStatus?: $Enums.ApprovalStatus;
   createdAt?: Date | string;
   updatedAt?: Date | string;
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
+  governmentIdUrl?: string | null;
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatedByInput;
   reservations?: Prisma.ReservationUncheckedCreateNestedManyWithoutUserInput;
-  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
 };
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -761,10 +800,14 @@ export type UserUpdateWithoutAccountsInput = {
     | $Enums.ApprovalStatus;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
+  governmentIdUrl?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
   properties?: Prisma.PropertyUpdateManyWithoutCreatedByNestedInput;
   reservations?: Prisma.ReservationUpdateManyWithoutUserNestedInput;
-  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
 };
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -785,10 +828,14 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
     | $Enums.ApprovalStatus;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
+  governmentIdUrl?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatedByNestedInput;
   reservations?: Prisma.ReservationUncheckedUpdateManyWithoutUserNestedInput;
-  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
 };
 
 export type UserCreateWithoutSessionsInput = {
@@ -803,10 +850,11 @@ export type UserCreateWithoutSessionsInput = {
   approvalStatus?: $Enums.ApprovalStatus;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  governmentIdUrl?: string | null;
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
   properties?: Prisma.PropertyCreateNestedManyWithoutCreatedByInput;
   reservations?: Prisma.ReservationCreateNestedManyWithoutUserInput;
-  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
 };
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -821,10 +869,11 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   approvalStatus?: $Enums.ApprovalStatus;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  governmentIdUrl?: string | null;
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput;
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatedByInput;
   reservations?: Prisma.ReservationUncheckedCreateNestedManyWithoutUserInput;
-  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
 };
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -873,10 +922,14 @@ export type UserUpdateWithoutSessionsInput = {
     | $Enums.ApprovalStatus;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  governmentIdUrl?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput;
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
   properties?: Prisma.PropertyUpdateManyWithoutCreatedByNestedInput;
   reservations?: Prisma.ReservationUpdateManyWithoutUserNestedInput;
-  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
 };
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -897,10 +950,14 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
     | $Enums.ApprovalStatus;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  governmentIdUrl?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput;
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatedByNestedInput;
   reservations?: Prisma.ReservationUncheckedUpdateManyWithoutUserNestedInput;
-  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
 };
 
 export type UserCreateWithoutPropertiesInput = {
@@ -915,10 +972,11 @@ export type UserCreateWithoutPropertiesInput = {
   approvalStatus?: $Enums.ApprovalStatus;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  governmentIdUrl?: string | null;
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
-  reservations?: Prisma.ReservationCreateNestedManyWithoutUserInput;
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
+  reservations?: Prisma.ReservationCreateNestedManyWithoutUserInput;
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
 };
 
 export type UserUncheckedCreateWithoutPropertiesInput = {
@@ -933,10 +991,11 @@ export type UserUncheckedCreateWithoutPropertiesInput = {
   approvalStatus?: $Enums.ApprovalStatus;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  governmentIdUrl?: string | null;
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput;
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
-  reservations?: Prisma.ReservationUncheckedCreateNestedManyWithoutUserInput;
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
+  reservations?: Prisma.ReservationUncheckedCreateNestedManyWithoutUserInput;
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
 };
 
 export type UserCreateOrConnectWithoutPropertiesInput = {
@@ -985,10 +1044,14 @@ export type UserUpdateWithoutPropertiesInput = {
     | $Enums.ApprovalStatus;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  governmentIdUrl?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput;
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
-  reservations?: Prisma.ReservationUpdateManyWithoutUserNestedInput;
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
+  reservations?: Prisma.ReservationUpdateManyWithoutUserNestedInput;
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
 };
 
 export type UserUncheckedUpdateWithoutPropertiesInput = {
@@ -1009,10 +1072,14 @@ export type UserUncheckedUpdateWithoutPropertiesInput = {
     | $Enums.ApprovalStatus;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  governmentIdUrl?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput;
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
-  reservations?: Prisma.ReservationUncheckedUpdateManyWithoutUserNestedInput;
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
+  reservations?: Prisma.ReservationUncheckedUpdateManyWithoutUserNestedInput;
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
 };
 
 export type UserCreateWithoutReservationsInput = {
@@ -1027,10 +1094,11 @@ export type UserCreateWithoutReservationsInput = {
   approvalStatus?: $Enums.ApprovalStatus;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  governmentIdUrl?: string | null;
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
-  properties?: Prisma.PropertyCreateNestedManyWithoutCreatedByInput;
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
+  properties?: Prisma.PropertyCreateNestedManyWithoutCreatedByInput;
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
 };
 
 export type UserUncheckedCreateWithoutReservationsInput = {
@@ -1045,10 +1113,11 @@ export type UserUncheckedCreateWithoutReservationsInput = {
   approvalStatus?: $Enums.ApprovalStatus;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  governmentIdUrl?: string | null;
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput;
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
-  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatedByInput;
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatedByInput;
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
 };
 
 export type UserCreateOrConnectWithoutReservationsInput = {
@@ -1097,10 +1166,14 @@ export type UserUpdateWithoutReservationsInput = {
     | $Enums.ApprovalStatus;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  governmentIdUrl?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput;
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
-  properties?: Prisma.PropertyUpdateManyWithoutCreatedByNestedInput;
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
+  properties?: Prisma.PropertyUpdateManyWithoutCreatedByNestedInput;
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
 };
 
 export type UserUncheckedUpdateWithoutReservationsInput = {
@@ -1121,10 +1194,14 @@ export type UserUncheckedUpdateWithoutReservationsInput = {
     | $Enums.ApprovalStatus;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  governmentIdUrl?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput;
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
-  properties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatedByNestedInput;
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatedByNestedInput;
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
 };
 
 export type UserCreateWithoutNotificationsInput = {
@@ -1139,10 +1216,11 @@ export type UserCreateWithoutNotificationsInput = {
   approvalStatus?: $Enums.ApprovalStatus;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  governmentIdUrl?: string | null;
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
   properties?: Prisma.PropertyCreateNestedManyWithoutCreatedByInput;
   reservations?: Prisma.ReservationCreateNestedManyWithoutUserInput;
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
 };
 
 export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -1157,10 +1235,11 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   approvalStatus?: $Enums.ApprovalStatus;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  governmentIdUrl?: string | null;
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput;
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatedByInput;
   reservations?: Prisma.ReservationUncheckedCreateNestedManyWithoutUserInput;
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
 };
 
 export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -1209,10 +1288,14 @@ export type UserUpdateWithoutNotificationsInput = {
     | $Enums.ApprovalStatus;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  governmentIdUrl?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput;
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
   properties?: Prisma.PropertyUpdateManyWithoutCreatedByNestedInput;
   reservations?: Prisma.ReservationUpdateManyWithoutUserNestedInput;
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
 };
 
 export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -1233,10 +1316,14 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
     | $Enums.ApprovalStatus;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  governmentIdUrl?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput;
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatedByNestedInput;
   reservations?: Prisma.ReservationUncheckedUpdateManyWithoutUserNestedInput;
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
 };
 
 /**
@@ -1245,10 +1332,10 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
 
 export type UserCountOutputType = {
   accounts: number;
-  sessions: number;
+  notifications: number;
   properties: number;
   reservations: number;
-  notifications: number;
+  sessions: number;
 };
 
 export type UserCountOutputTypeSelect<
@@ -1256,10 +1343,10 @@ export type UserCountOutputTypeSelect<
     runtime.Types.Extensions.DefaultArgs,
 > = {
   accounts?: boolean | UserCountOutputTypeCountAccountsArgs;
-  sessions?: boolean | UserCountOutputTypeCountSessionsArgs;
+  notifications?: boolean | UserCountOutputTypeCountNotificationsArgs;
   properties?: boolean | UserCountOutputTypeCountPropertiesArgs;
   reservations?: boolean | UserCountOutputTypeCountReservationsArgs;
-  notifications?: boolean | UserCountOutputTypeCountNotificationsArgs;
+  sessions?: boolean | UserCountOutputTypeCountSessionsArgs;
 };
 
 /**
@@ -1288,11 +1375,11 @@ export type UserCountOutputTypeCountAccountsArgs<
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountSessionsArgs<
+export type UserCountOutputTypeCountNotificationsArgs<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = {
-  where?: Prisma.SessionWhereInput;
+  where?: Prisma.NotificationWhereInput;
 };
 
 /**
@@ -1318,11 +1405,11 @@ export type UserCountOutputTypeCountReservationsArgs<
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountNotificationsArgs<
+export type UserCountOutputTypeCountSessionsArgs<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = {
-  where?: Prisma.NotificationWhereInput;
+  where?: Prisma.SessionWhereInput;
 };
 
 export type UserSelect<
@@ -1341,11 +1428,12 @@ export type UserSelect<
     approvalStatus?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    governmentIdUrl?: boolean;
     accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>;
-    sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>;
+    notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>;
     properties?: boolean | Prisma.User$propertiesArgs<ExtArgs>;
     reservations?: boolean | Prisma.User$reservationsArgs<ExtArgs>;
-    notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>;
+    sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>;
     _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
   },
   ExtArgs['result']['user']
@@ -1367,6 +1455,7 @@ export type UserSelectCreateManyAndReturn<
     approvalStatus?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    governmentIdUrl?: boolean;
   },
   ExtArgs['result']['user']
 >;
@@ -1387,6 +1476,7 @@ export type UserSelectUpdateManyAndReturn<
     approvalStatus?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    governmentIdUrl?: boolean;
   },
   ExtArgs['result']['user']
 >;
@@ -1403,6 +1493,7 @@ export type UserSelectScalar = {
   approvalStatus?: boolean;
   createdAt?: boolean;
   updatedAt?: boolean;
+  governmentIdUrl?: boolean;
 };
 
 export type UserOmit<
@@ -1419,7 +1510,8 @@ export type UserOmit<
   | 'role'
   | 'approvalStatus'
   | 'createdAt'
-  | 'updatedAt',
+  | 'updatedAt'
+  | 'governmentIdUrl',
   ExtArgs['result']['user']
 >;
 export type UserInclude<
@@ -1427,10 +1519,10 @@ export type UserInclude<
     runtime.Types.Extensions.DefaultArgs,
 > = {
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>;
-  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>;
+  notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>;
   properties?: boolean | Prisma.User$propertiesArgs<ExtArgs>;
   reservations?: boolean | Prisma.User$reservationsArgs<ExtArgs>;
-  notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>;
+  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>;
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type UserIncludeCreateManyAndReturn<
@@ -1449,10 +1541,10 @@ export type $UserPayload<
   name: 'User';
   objects: {
     accounts: Prisma.$AccountPayload<ExtArgs>[];
-    sessions: Prisma.$SessionPayload<ExtArgs>[];
+    notifications: Prisma.$NotificationPayload<ExtArgs>[];
     properties: Prisma.$PropertyPayload<ExtArgs>[];
     reservations: Prisma.$ReservationPayload<ExtArgs>[];
-    notifications: Prisma.$NotificationPayload<ExtArgs>[];
+    sessions: Prisma.$SessionPayload<ExtArgs>[];
   };
   scalars: runtime.Types.Extensions.GetPayloadResult<
     {
@@ -1467,6 +1559,7 @@ export type $UserPayload<
       approvalStatus: $Enums.ApprovalStatus;
       createdAt: Date;
       updatedAt: Date;
+      governmentIdUrl: string | null;
     },
     ExtArgs['result']['user']
   >;
@@ -2028,11 +2121,11 @@ export interface Prisma__UserClient<
       >
     | Null
   >;
-  sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(
-    args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>
+  notifications<T extends Prisma.User$notificationsArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.User$notificationsArgs<ExtArgs>>
   ): Prisma.PrismaPromise<
     | runtime.Types.Result.GetResult<
-        Prisma.$SessionPayload<ExtArgs>,
+        Prisma.$NotificationPayload<ExtArgs>,
         T,
         'findMany',
         GlobalOmitOptions
@@ -2061,11 +2154,11 @@ export interface Prisma__UserClient<
       >
     | Null
   >;
-  notifications<T extends Prisma.User$notificationsArgs<ExtArgs> = {}>(
-    args?: Prisma.Subset<T, Prisma.User$notificationsArgs<ExtArgs>>
+  sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>
   ): Prisma.PrismaPromise<
     | runtime.Types.Result.GetResult<
-        Prisma.$NotificationPayload<ExtArgs>,
+        Prisma.$SessionPayload<ExtArgs>,
         T,
         'findMany',
         GlobalOmitOptions
@@ -2125,6 +2218,7 @@ export interface UserFieldRefs {
   readonly approvalStatus: Prisma.FieldRef<'User', 'ApprovalStatus'>;
   readonly createdAt: Prisma.FieldRef<'User', 'DateTime'>;
   readonly updatedAt: Prisma.FieldRef<'User', 'DateTime'>;
+  readonly governmentIdUrl: Prisma.FieldRef<'User', 'String'>;
 }
 
 // Custom InputTypes
@@ -2595,32 +2689,34 @@ export type User$accountsArgs<
 };
 
 /**
- * User.sessions
+ * User.notifications
  */
-export type User$sessionsArgs<
+export type User$notificationsArgs<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = {
   /**
-   * Select specific fields to fetch from the Session
+   * Select specific fields to fetch from the Notification
    */
-  select?: Prisma.SessionSelect<ExtArgs> | null;
+  select?: Prisma.NotificationSelect<ExtArgs> | null;
   /**
-   * Omit specific fields from the Session
+   * Omit specific fields from the Notification
    */
-  omit?: Prisma.SessionOmit<ExtArgs> | null;
+  omit?: Prisma.NotificationOmit<ExtArgs> | null;
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.SessionInclude<ExtArgs> | null;
-  where?: Prisma.SessionWhereInput;
+  include?: Prisma.NotificationInclude<ExtArgs> | null;
+  where?: Prisma.NotificationWhereInput;
   orderBy?:
-    | Prisma.SessionOrderByWithRelationInput
-    | Prisma.SessionOrderByWithRelationInput[];
-  cursor?: Prisma.SessionWhereUniqueInput;
+    | Prisma.NotificationOrderByWithRelationInput
+    | Prisma.NotificationOrderByWithRelationInput[];
+  cursor?: Prisma.NotificationWhereUniqueInput;
   take?: number;
   skip?: number;
-  distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[];
+  distinct?:
+    | Prisma.NotificationScalarFieldEnum
+    | Prisma.NotificationScalarFieldEnum[];
 };
 
 /**
@@ -2684,34 +2780,32 @@ export type User$reservationsArgs<
 };
 
 /**
- * User.notifications
+ * User.sessions
  */
-export type User$notificationsArgs<
+export type User$sessionsArgs<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = {
   /**
-   * Select specific fields to fetch from the Notification
+   * Select specific fields to fetch from the Session
    */
-  select?: Prisma.NotificationSelect<ExtArgs> | null;
+  select?: Prisma.SessionSelect<ExtArgs> | null;
   /**
-   * Omit specific fields from the Notification
+   * Omit specific fields from the Session
    */
-  omit?: Prisma.NotificationOmit<ExtArgs> | null;
+  omit?: Prisma.SessionOmit<ExtArgs> | null;
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.NotificationInclude<ExtArgs> | null;
-  where?: Prisma.NotificationWhereInput;
+  include?: Prisma.SessionInclude<ExtArgs> | null;
+  where?: Prisma.SessionWhereInput;
   orderBy?:
-    | Prisma.NotificationOrderByWithRelationInput
-    | Prisma.NotificationOrderByWithRelationInput[];
-  cursor?: Prisma.NotificationWhereUniqueInput;
+    | Prisma.SessionOrderByWithRelationInput
+    | Prisma.SessionOrderByWithRelationInput[];
+  cursor?: Prisma.SessionWhereUniqueInput;
   take?: number;
   skip?: number;
-  distinct?:
-    | Prisma.NotificationScalarFieldEnum
-    | Prisma.NotificationScalarFieldEnum[];
+  distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[];
 };
 
 /**

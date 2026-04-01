@@ -18,4 +18,6 @@ export type * from './models/NearbyPlace';
 export type * from './models/PropertyImage';
 export type * from './models/Reservation';
 export type * from './models/Notification';
+export type * from './models/SiteProgress';
+export type * from './models/ProgressMedia';
 export type * from './commonInputTypes';

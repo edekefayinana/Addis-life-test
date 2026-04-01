@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import ReserveUnitPanel from '@/components/panels/ReserveUnitPanel';
 import { Button } from '@/components/ui/button';
 import { cn, truncate } from '@/lib/utils';
 import {
@@ -28,6 +27,8 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { DeletePropertyDialog } from '@/components/inventory/DeletePropertyDialog';
 import { useRouter } from 'next/navigation';
+import { CreateReservationModal } from '@/components/modals/CreateReservationModal';
+import { toast } from 'sonner';
 
 // Property type based on provided structure
 export type Property = {
@@ -65,7 +66,10 @@ export function PropertyClient({ property }: { property: Property }) {
   const { data: session } = useSession();
   const router = useRouter();
   const isAdmin = session?.user?.role === 'ADMIN';
-  const [showReservePanel, setShowReservePanel] = useState(false);
+  const isApprovedAgent =
+    session?.user?.role === 'AGENT' &&
+    session?.user?.approvalStatus === 'APPROVED';
+  const [showReservationModal, setShowReservationModal] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [overviewExpanded, setOverviewExpanded] = useState(false);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
@@ -644,7 +648,7 @@ export function PropertyClient({ property }: { property: Property }) {
           {/* Right Column - Pricing & Contact */}
           <div className="lg:col-span-1">
             <div className="space-y-6 lg:sticky lg:top-24">
-              {!isAdmin && (
+              {isApprovedAgent && (
                 <div className="border rounded-2xl p-4 sm:p-6 bg-white">
                   <div className="flex justify-center w-full">
                     {checkingReservation ? (
@@ -663,7 +667,7 @@ export function PropertyClient({ property }: { property: Property }) {
                       </Button>
                     ) : (
                       <Button
-                        onClick={() => setShowReservePanel(true)}
+                        onClick={() => setShowReservationModal(true)}
                         className="px-6 sm:px-8 py-5 sm:py-6 bg-brand-dark hover:bg-brand-dark/90 text-white rounded-full w-full text-sm sm:text-base font-semibold"
                       >
                         Reserve Unit
@@ -677,15 +681,19 @@ export function PropertyClient({ property }: { property: Property }) {
         </div>
       </main>
 
-      <ReserveUnitPanel
-        isOpen={showReservePanel}
-        onClose={() => setShowReservePanel(false)}
-        propertyId={property.id}
-        onReservationSuccess={() => {
-          setHasReservation(true);
-          setShowReservePanel(false);
-        }}
-      />
+      {/* Reservation Modal */}
+      {showReservationModal && (
+        <CreateReservationModal
+          propertyId={property.id}
+          propertyTitle={property.title}
+          onClose={() => setShowReservationModal(false)}
+          onSuccess={() => {
+            toast.success('Reservation created successfully!');
+            setHasReservation(true);
+            setShowReservationModal(false);
+          }}
+        />
+      )}
       {/* Other Latest Listings - full width */}
       {/* You can fetch and display other listings here if needed, or remove this section if not applicable */}
       {isGalleryOpen && (

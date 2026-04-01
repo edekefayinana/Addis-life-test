@@ -12,6 +12,7 @@ export async function POST(request: Request) {
     const password = body?.password?.toString();
     const name = body?.name?.toString().trim();
     const phone = body?.phone?.toString().trim();
+    const governmentIdUrl = body?.governmentIdUrl?.toString().trim();
 
     // Validation
     if (!email || !password) {
@@ -24,6 +25,13 @@ export async function POST(request: Request) {
     if (!name) {
       return NextResponse.json(
         { error: 'Full name is required.' },
+        { status: 400 }
+      );
+    }
+
+    if (!governmentIdUrl) {
+      return NextResponse.json(
+        { error: 'Government ID is required.' },
         { status: 400 }
       );
     }
@@ -64,7 +72,7 @@ export async function POST(request: Request) {
       // Hash password
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      // Create user
+      // Create user with APPROVED status (auto-approval)
       const user = await tx.user.create({
         data: {
           email,
@@ -72,8 +80,8 @@ export async function POST(request: Request) {
           name,
           phone: phone || null,
           role: 'AGENT',
-          approvalStatus: 'PENDING',
-          emailVerified: new Date(), //TODO
+          approvalStatus: 'APPROVED',
+          governmentIdUrl,
         },
       });
 

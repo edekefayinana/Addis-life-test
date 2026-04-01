@@ -1,47 +1,54 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Resend } from 'resend';
 import nodemailer from 'nodemailer';
-import sgMail from '@sendgrid/mail';
 
 class SendEmail {
+  private resend: Resend | null = null;
+
   constructor() {
-    // Initialize the API key once during instantiation
     if (process.env.NODE_ENV === 'production') {
-      if (!process.env.SENDGRID_API_KEY) {
-        console.error('❌ MISSING: SENDGRID_API_KEY environment variable.');
+      if (!process.env.RESEND_API_KEY) {
+        console.error('❌ MISSING: RESEND_API_KEY environment variable.');
       } else {
-        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+        this.resend = new Resend(process.env.RESEND_API_KEY);
       }
     }
   }
 
   async send(to: string, subject: string, html: string) {
     const isProd = process.env.NODE_ENV === 'production';
+    console.log(
+      `[EmailService] Sending to: ${to} | Mode: ${process.env.NODE_ENV}`
+    );
 
     try {
-      if (isProd) {
-        return await this.sendViaSendGrid(to, subject, html);
+      if (isProd && this.resend) {
+        return await this.sendViaResend(to, subject, html);
       } else {
         return await this.sendViaNodemailer(to, subject, html);
       }
     } catch (error: any) {
-      // Critical: SendGrid errors are nested inside error.response.body
-      const errorMessage =
-        error.response?.body?.errors?.[0]?.message || error.message;
-      console.error(`❌ Email failed to send: ${errorMessage}`);
-      throw new Error(`Email delivery failed: ${errorMessage}`);
+      console.error(`❌ Email delivery failed: ${error.message}`);
+      throw error;
     }
   }
 
-  private async sendViaSendGrid(to: string, subject: string, html: string) {
-    const msg = {
-      to,
-      from: process.env.SENDGRID_FROM!, // e.g., 'no-reply@yourdomain.com'
+  private async sendViaResend(to: string, subject: string, html: string) {
+    const fromAddress = process.env.RESEND_FROM || 'onboarding@resend.dev';
+
+    const { data, error } = await this.resend!.emails.send({
+      from: fromAddress,
+      to: [to],
       subject,
       html,
-    };
+    });
 
-    const response = await sgMail.send(msg);
-    return response;
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    console.log('✅ Resend: Email sent successfully!', data?.id);
+    return data;
   }
 
   private async sendViaNodemailer(to: string, subject: string, html: string) {
@@ -62,6 +69,7 @@ class SendEmail {
       html,
     });
 
+    console.log(`✅ Nodemailer: Email sent. Message ID: ${info.messageId}`);
     return info;
   }
 

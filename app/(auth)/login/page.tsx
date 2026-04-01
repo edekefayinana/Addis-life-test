@@ -144,8 +144,8 @@ export default function LoginPage() {
             {"Don't have an agent account? "}
           </span>
           <Link
-            href="/signup"
-            className="font-medium !text-blue-600 hover:text-blue-700 underline text-[18px]"
+            href="/apply"
+            className="font-medium text-blue-600! hover:text-blue-700 underline text-[18px]"
           >
             Apply for access
           </Link>

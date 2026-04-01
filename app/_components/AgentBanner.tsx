@@ -47,7 +47,7 @@ export function AgentBanner() {
             size="lg"
             className="rounded-full bg-white text-black hover:bg-white/90 shadow-md px-9 py-6 font-normal"
           >
-            <Link href="/signup" className="flex items-center gap-2">
+            <Link href="/apply" className="flex items-center gap-2">
               Register <ArrowRight className="h-4 w-4 ml-1" />
             </Link>
           </Button>

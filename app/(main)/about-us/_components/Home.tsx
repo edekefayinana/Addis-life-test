@@ -50,7 +50,7 @@ export default function Home() {
                 </Link>
               </button>
               <button className="bg-white flex items-center gap-2 w-fit text-primary border-2 px-5 py-2 lg:px-9 lg:py-4 rounded-full font-medium transition-colors duration-200">
-                <Link href="/signup" className="flex items-center gap-2">
+                <Link href="/apply" className="flex items-center gap-2">
                   Register
                   <ArrowRight />
                 </Link>

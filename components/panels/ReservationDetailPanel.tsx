@@ -107,6 +107,74 @@ export function ReservationDetailPanel({
             <div className="flex items-center justify-between">
               <span className="text-gray-600">Client Name</span>
               <span className="text-gray-900 font-medium">
+                {reservation?.clientName || reservation?.user?.name}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-gray-600">Phone</span>
+              <span className="text-gray-900 inline-flex items-center gap-2 font-medium">
+                {reservation?.clientPhone || reservation?.user?.phone}
+                <button
+                  type="button"
+                  aria-label="Copy phone"
+                  className="text-gray-400 hover:text-gray-600"
+                  onClick={() =>
+                    navigator.clipboard?.writeText(
+                      reservation?.clientPhone || reservation?.user?.phone || ''
+                    )
+                  }
+                >
+                  <Copy className="w-4 h-4" />
+                </button>
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-gray-600">Email</span>
+              <span className="text-gray-900 inline-flex items-center gap-2 font-medium">
+                {reservation?.clientEmail || reservation?.user?.email || 'N/A'}
+                {(reservation?.clientEmail || reservation?.user?.email) && (
+                  <button
+                    type="button"
+                    aria-label="Copy email"
+                    className="text-gray-400 hover:text-gray-600"
+                    onClick={() =>
+                      navigator.clipboard?.writeText(
+                        reservation?.clientEmail ||
+                          reservation?.user?.email ||
+                          ''
+                      )
+                    }
+                  >
+                    <Copy className="w-4 h-4" />
+                  </button>
+                )}
+              </span>
+            </div>
+            {reservation?.clientGovernmentId && (
+              <div className="flex items-center justify-between">
+                <span className="text-gray-600">Government ID</span>
+                <a
+                  href={reservation?.clientGovernmentId}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-700 underline text-sm"
+                >
+                  View Document
+                </a>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Agent Information */}
+        <div className="pb-6 border-b border-gray-200">
+          <h3 className="text-sm font-semibold text-gray-900 mb-4">
+            Agent Information
+          </h3>
+          <div className="space-y-3 text-sm">
+            <div className="flex items-center justify-between">
+              <span className="text-gray-600">Agent Name</span>
+              <span className="text-gray-900 font-medium">
                 {reservation?.user?.name}
               </span>
             </div>
@@ -148,6 +216,44 @@ export function ReservationDetailPanel({
             </div>
           </div>
         </div>
+
+        {/* Payment Information */}
+        {reservation?.reservationAmount && (
+          <div className="pb-6 border-b border-gray-200">
+            <h3 className="text-sm font-semibold text-gray-900 mb-4">
+              Payment Information
+            </h3>
+            <div className="space-y-3 text-sm">
+              <div className="flex items-center justify-between">
+                <span className="text-gray-600">Reservation Amount</span>
+                <span className="text-gray-900 font-medium">
+                  ETB {reservation?.reservationAmount?.toLocaleString()}
+                </span>
+              </div>
+              {reservation?.bankSlipUrl && (
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600">Bank Slip</span>
+                  <a
+                    href={reservation?.bankSlipUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:text-blue-700 underline text-sm"
+                  >
+                    View Document
+                  </a>
+                </div>
+              )}
+              {reservation?.description && (
+                <div className="flex flex-col gap-1">
+                  <span className="text-gray-600">Notes</span>
+                  <span className="text-gray-900 text-sm">
+                    {reservation?.description}
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Recent Activity */}
         <div>

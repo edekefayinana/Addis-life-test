@@ -322,7 +322,7 @@ export function Hero({ slides }: HeroProps) {
             className="rounded-full bg-primary px-8 py-7 text-lg font-bold shadow-lg transition focus:outline-none focus:ring-4 focus:ring-emerald-200/50"
             size="lg"
           >
-            <Link href="/signup">Join Our Freelance Agent Network</Link>
+            <Link href="/apply">Join Our Freelance Agent Network</Link>
           </Button>
         </div>
       )}
