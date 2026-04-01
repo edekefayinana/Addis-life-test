@@ -1,0 +1,114 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "viewAll": "View All",
+    "learnMore": "Learn More",
+    "getStarted": "Get Started",
+    "contactUs": "Contact Us"
+  },
+  "nav": {
+    "home": "Home",
+    "properties": "Properties",
+    "aboutUs": "About Us",
+    "blogs": "Blogs",
+    "contactUs": "Contact Us",
+    "currentProgress": "Current Progress",
+    "login": "Log In",
+    "signup": "Sign Up",
+    "logout": "Log Out",
+    "dashboard": "Dashboard"
+  },
+  "home": {
+    "hero": {
+      "title": "Find Your Perfect Property",
+      "subtitle": "Browse top real estate options across Ethiopia. From modern apartments to luxury villas.",
+      "searchPlaceholder": "Search by location, property type..."
+    },
+    "featuredProperties": {
+      "title": "Find Your Perfect Property",
+      "description": "Browse top real estate options across Ethiopia. From modern apartments to luxury villas."
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Agent Log In",
+      "subtitle": "Access your agent dashboard to manage property reservations and commissions.",
+      "email": "Email",
+      "emailPlaceholder": "agent@example.com",
+      "password": "Password",
+      "passwordPlaceholder": "••••••",
+      "keepLoggedIn": "Keep me logged in",
+      "forgotPassword": "Forgot Password?",
+      "loginButton": "Log In",
+      "loggingIn": "Logging in...",
+      "noAccount": "Don't have an agent account?",
+      "applyAccess": "Apply for access",
+      "goBackHome": "Go Back to Home",
+      "errorInvalidCredentials": "Invalid email or password.",
+      "errorEmailNotVerified": "Your email is not verified. Please check your inbox for the verification code."
+    },
+    "signup": {
+      "title": "Create Agent Account",
+      "subtitle": "Join our network of professional real estate agents."
+    },
+    "forgotPassword": {
+      "title": "Forgot Password",
+      "subtitle": "Enter your email to receive a password reset link."
+    }
+  },
+  "properties": {
+    "title": "Properties",
+    "filters": {
+      "propertyType": "Property Type",
+      "priceRange": "Price Range",
+      "bedrooms": "Bedrooms",
+      "bathrooms": "Bathrooms",
+      "location": "Location"
+    },
+    "details": {
+      "overview": "Overview",
+      "features": "Features",
+      "location": "Location",
+      "amenities": "Amenities",
+      "nearbyPlaces": "Nearby Places",
+      "bedrooms": "Bedrooms",
+      "bathrooms": "Bathrooms",
+      "parkingSpace": "Parking Space",
+      "areaSize": "Area Size",
+      "floors": "Floors",
+      "buildingSize": "Building Size",
+      "deliveryTime": "Delivery Time"
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Get in touch with our team",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "message": "Message",
+      "send": "Send Message"
+    }
+  },
+  "footer": {
+    "description": "Your trusted partner in finding the perfect property in Ethiopia.",
+    "quickLinks": "Quick Links",
+    "followUs": "Follow Us",
+    "copyright": "© {year} Addis Life. All rights reserved."
+  }
+}

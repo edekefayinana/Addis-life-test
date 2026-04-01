@@ -8,6 +8,8 @@ import type { ReactNode } from 'react';
 import { Toaster } from 'sonner';
 import './globals.css';
 import { QueryClientProviderWrapper } from '@/components/providers/query-client-provider';
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages, getLocale } from 'next-intl/server';
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -70,13 +72,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body
         className={cn(
           'min-h-screen bg-background text-foreground font-sans antialiased',
@@ -85,36 +90,38 @@ export default function RootLayout({
           instrumentSans.variable
         )}
       >
-        <QueryClientProviderWrapper>
-          <AuthProvider>
-            {children}
-            <Toaster
-              richColors
-              position="bottom-right"
-              // toastOptions={{
-              //   success: {
-              //     style: { background: '#22c55e', color: '#fff' },
-              //     iconTheme: { primary: '#22c55e', secondary: '#fff' },
-              //   },
-              //   error: {
-              //     style: { background: '#ef4444', color: '#fff' },
-              //     iconTheme: { primary: '#ef4444', secondary: '#fff' },
-              //   },
-              //   info: {
-              //     style: { background: '#0ea5e9', color: '#fff' },
-              //     iconTheme: { primary: '#0ea5e9', secondary: '#fff' },
-              //   },
-              //   warning: {
-              //     style: { background: '#f59e42', color: '#fff' },
-              //     iconTheme: { primary: '#f59e42', secondary: '#fff' },
-              //   },
-              // }}
-            />
-          </AuthProvider>
-          <Analytics />
-        </QueryClientProviderWrapper>
+        <NextIntlClientProvider messages={messages}>
+          <QueryClientProviderWrapper>
+            <AuthProvider>
+              {children}
+              <Toaster
+                richColors
+                position="bottom-right"
+                // toastOptions={{
+                //   success: {
+                //     style: { background: '#22c55e', color: '#fff' },
+                //     iconTheme: { primary: '#22c55e', secondary: '#fff' },
+                //   },
+                //   error: {
+                //     style: { background: '#ef4444', color: '#fff' },
+                //     iconTheme: { primary: '#ef4444', secondary: '#fff' },
+                //   },
+                //   info: {
+                //     style: { background: '#0ea5e9', color: '#fff' },
+                //     iconTheme: { primary: '#0ea5e9', secondary: '#fff' },
+                //   },
+                //   warning: {
+                //     style: { background: '#f59e42', color: '#fff' },
+                //     iconTheme: { primary: '#f59e42', secondary: '#fff' },
+                //   },
+                // }}
+              />
+            </AuthProvider>
+            <Analytics />
+          </QueryClientProviderWrapper>
 
-        <ScrollToTop />
+          <ScrollToTop />
+        </NextIntlClientProvider>
       </body>
     </html>
   );

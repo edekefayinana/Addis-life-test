@@ -8,6 +8,7 @@ import { Menu, X, User, LogOut, LayoutDashboard, Package } from 'lucide-react';
 import { useSession, signOut } from 'next-auth/react';
 
 import { cn } from '@/lib/utils';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -214,7 +215,10 @@ export function Header({ variant }: HeaderProps) {
         </nav>
 
         {/* Right Actions */}
-        <div className="hidden items-center gap-6 md:flex">
+        <div className="hidden items-center gap-4 md:flex">
+          {/* Language Switcher */}
+          <LanguageSwitcher />
+
           {isAuthenticated ? (
             <div
               ref={profileRef}
@@ -425,6 +429,11 @@ export function Header({ variant }: HeaderProps) {
               </Link>
             );
           })}
+
+          {/* Language Switcher in Mobile */}
+          <div className="mt-2 px-3">
+            <LanguageSwitcher />
+          </div>
 
           <div className="mt-4 flex flex-col gap-2">
             {isAuthenticated ? (

@@ -1,0 +1,114 @@
+{
+  "common": {
+    "loading": "በመጫን ላይ...",
+    "error": "ስህተት ተከስቷል",
+    "success": "ተሳክቷል",
+    "cancel": "ሰርዝ",
+    "save": "አስቀምጥ",
+    "delete": "ሰርዝ",
+    "edit": "አርትዕ",
+    "close": "ዝጋ",
+    "back": "ተመለስ",
+    "next": "ቀጣይ",
+    "previous": "ቀዳሚ",
+    "submit": "አስገባ",
+    "search": "ፈልግ",
+    "filter": "አጣራ",
+    "sort": "ደርድር",
+    "viewAll": "ሁሉንም ይመልከቱ",
+    "learnMore": "ተጨማሪ ይወቁ",
+    "getStarted": "ይጀምሩ",
+    "contactUs": "ያግኙን"
+  },
+  "nav": {
+    "home": "መነሻ",
+    "properties": "ንብረቶች",
+    "aboutUs": "ስለ እኛ",
+    "blogs": "ብሎጎች",
+    "contactUs": "ያግኙን",
+    "currentProgress": "የአሁኑ እድገት",
+    "login": "ግባ",
+    "signup": "ተመዝገብ",
+    "logout": "ውጣ",
+    "dashboard": "ዳሽቦርድ"
+  },
+  "home": {
+    "hero": {
+      "title": "ፍጹም ንብረትዎን ያግኙ",
+      "subtitle": "በኢትዮጵያ ውስጥ ከፍተኛ የሪል እስቴት አማራጮችን ያስሱ። ከዘመናዊ አፓርትመንቶች እስከ የቅንጦት ቪላዎች።",
+      "searchPlaceholder": "በአካባቢ፣ በንብረት አይነት ይፈልጉ..."
+    },
+    "featuredProperties": {
+      "title": "ፍጹም ንብረትዎን ያግኙ",
+      "description": "በኢትዮጵያ ውስጥ ከፍተኛ የሪል እስቴት አማራጮችን ያስሱ። ከዘመናዊ አፓርትመንቶች እስከ የቅንጦት ቪላዎች።"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "የወኪል መግቢያ",
+      "subtitle": "የንብረት ቦታ ማስያዝ እና ኮሚሽኖችን ለማስተዳደር የወኪል ዳሽቦርድዎን ይድረሱ።",
+      "email": "ኢሜይል",
+      "emailPlaceholder": "agent@example.com",
+      "password": "የይለፍ ቃል",
+      "passwordPlaceholder": "••••••",
+      "keepLoggedIn": "ገብቼ እንድቆይ አድርግ",
+      "forgotPassword": "የይለፍ ቃል ረሱ?",
+      "loginButton": "ግባ",
+      "loggingIn": "በመግባት ላይ...",
+      "noAccount": "የወኪል መለያ የለዎትም?",
+      "applyAccess": "ለመዳረሻ ያመልክቱ",
+      "goBackHome": "ወደ መነሻ ተመለስ",
+      "errorInvalidCredentials": "ልክ ያልሆነ ኢሜይል ወይም የይለፍ ቃል።",
+      "errorEmailNotVerified": "ኢሜይልዎ አልተረጋገጠም። እባክዎ የማረጋገጫ ኮድ ለማግኘት የገቢ መልእክትዎን ይመልከቱ።"
+    },
+    "signup": {
+      "title": "የወኪል መለያ ይፍጠሩ",
+      "subtitle": "የእኛን ባለሙያ የሪል እስቴት ወኪሎች አውታረ መረብ ይቀላቀሉ።"
+    },
+    "forgotPassword": {
+      "title": "የይለፍ ቃል ረሱ",
+      "subtitle": "የይለፍ ቃል ዳግም ማስጀመሪያ አገናኝ ለመቀበል ኢሜይልዎን ያስገቡ።"
+    }
+  },
+  "properties": {
+    "title": "ንብረቶች",
+    "filters": {
+      "propertyType": "የንብረት አይነት",
+      "priceRange": "የዋጋ ክልል",
+      "bedrooms": "መኝታ ቤቶች",
+      "bathrooms": "መታጠቢያ ቤቶች",
+      "location": "አካባቢ"
+    },
+    "details": {
+      "overview": "አጠቃላይ እይታ",
+      "features": "ባህሪያት",
+      "location": "አካባቢ",
+      "amenities": "አገልግሎቶች",
+      "nearbyPlaces": "በአቅራቢያ ያሉ ቦታዎች",
+      "bedrooms": "መኝታ ቤቶች",
+      "bathrooms": "መታጠቢያ ቤቶች",
+      "parkingSpace": "የመኪና ማቆሚያ",
+      "areaSize": "የቦታ መጠን",
+      "floors": "ፎቆች",
+      "buildingSize": "የህንፃ መጠን",
+      "deliveryTime": "የማድረስ ጊዜ"
+    }
+  },
+  "contact": {
+    "title": "ያግኙን",
+    "subtitle": "ከቡድናችን ጋር ይገናኙ",
+    "form": {
+      "name": "ስም",
+      "email": "ኢሜይል",
+      "phone": "ስልክ",
+      "message": "መልእክት",
+      "send": "መልእክት ላክ"
+    }
+  },
+  "footer": {
+    "description": "በኢትዮጵያ ውስጥ ፍጹም ንብረት ለማግኘት የታመነ አጋርዎ።",
+    "quickLinks": "ፈጣን አገናኞች",
+    "followUs": "ይከተሉን",
+    "copyright": "© {year} አዲስ ላይፍ። ሁሉም መብቶች የተጠበቁ ናቸው።"
+  }
+}
