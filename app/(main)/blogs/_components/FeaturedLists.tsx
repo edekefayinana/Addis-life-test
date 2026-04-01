@@ -1,9 +1,13 @@
+'use client';
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Blog } from '@/types/blog';
+import { useTranslations } from 'next-intl';
 
 export default function FeaturedLists({ blogs }: { blogs: Blog[] }) {
+  const t = useTranslations('blogs.featured');
+
   if (!blogs || blogs.length === 0) {
     return null;
   }
@@ -13,7 +17,7 @@ export default function FeaturedLists({ blogs }: { blogs: Blog[] }) {
 
   return (
     <div className="flex flex-col gap-3 lg:gap-8 max-w-[1212px] mx-auto px-3 xl:px-0 py-10">
-      <p className="text-2xl lg:text-3xl font-semibold">Our Latest Articles</p>
+      <p className="text-2xl lg:text-3xl font-semibold">{t('title')}</p>
       <div className="flex mx-auto flex-col items-start justify-center lg:flex-row gap-6 lg:gap-8 w-full">
         <Link
           href={`/blogs/${featuredBlog.slug}`}

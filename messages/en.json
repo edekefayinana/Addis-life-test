@@ -153,13 +153,35 @@
   },
   "properties": {
     "title": "Properties",
-    "filters": {
-      "propertyType": "Property Type",
-      "priceRange": "Price Range",
-      "bedrooms": "Bedrooms",
-      "bathrooms": "Bathrooms",
-      "location": "Location"
+    "pageTitle": "Properties for Sale In Addis Ababa",
+    "viewToggle": {
+      "list": "List",
+      "map": "Map"
     },
+    "filters": {
+      "searchPlaceholder": "Search location, area",
+      "propertyType": "Property Type",
+      "bedrooms": "Bedrooms",
+      "price": "Price",
+      "more": "More",
+      "less": "Less",
+      "clear": "Clear",
+      "propertyTypes": {
+        "apartment": "Apartment",
+        "house": "House",
+        "villa": "Villa",
+        "condo": "Condo",
+        "commercial": "Commercial"
+      },
+      "bedroomOptions": {
+        "one": "1 Bedroom",
+        "two": "2 Bedrooms",
+        "three": "3 Bedrooms",
+        "four": "4 Bedrooms",
+        "fivePlus": "5+ Bedrooms"
+      }
+    },
+    "noResults": "No properties found. Try adjusting your filters.",
     "details": {
       "overview": "Overview",
       "features": "Features",
@@ -173,6 +195,26 @@
       "floors": "Floors",
       "buildingSize": "Building Size",
       "deliveryTime": "Delivery Time"
+    }
+  },
+  "progress": {
+    "title": "Current Progress",
+    "subtitle": "Track the latest construction updates across our projects",
+    "noResults": "No progress updates available at the moment."
+  },
+  "blogs": {
+    "title": "Blogs",
+    "hero": {
+      "title": "Real Estate Insights and Market Guidance",
+      "subtitle": "Stay updated with new listings, market trends, and investment opportunities delivered directly to your inbox."
+    },
+    "featured": {
+      "title": "Our Latest Articles"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "showingPage": "Showing Page {current} of {total}"
     }
   },
   "aboutUs": {

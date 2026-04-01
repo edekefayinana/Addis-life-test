@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import BlogCard from './BlogCard';
 import { Blog } from '@/types/blog';
@@ -10,6 +11,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
+import { useTranslations } from 'next-intl';
 
 export default function BlogsList({
   blogs,
@@ -20,6 +22,7 @@ export default function BlogsList({
   totalPages: number;
   currentPage: number;
 }) {
+  const t = useTranslations('blogs.pagination');
   const getPageNumbers = () => {
     const pages = [];
     const maxVisiblePages = 5;
@@ -76,7 +79,9 @@ export default function BlogsList({
                     className={
                       currentPage <= 1 ? 'pointer-events-none opacity-50' : ''
                     }
-                  />
+                  >
+                    {t('previous')}
+                  </PaginationPrevious>
                 </PaginationItem>
               </div>
 
@@ -109,13 +114,15 @@ export default function BlogsList({
                         ? 'pointer-events-none opacity-50'
                         : ''
                     }
-                  />
+                  >
+                    {t('next')}
+                  </PaginationNext>
                 </PaginationItem>
               </div>
             </PaginationContent>
           </Pagination>
           <p className="text-sm ml-8 -mt-4 text-muted-foreground text-center">
-            Showing Page {currentPage} of {totalPages}
+            {t('showingPage', { current: currentPage, total: totalPages })}
           </p>
         </div>
       )}

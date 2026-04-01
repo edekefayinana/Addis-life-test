@@ -150,13 +150,35 @@
   },
   "properties": {
     "title": "ንብረቶች",
-    "filters": {
-      "propertyType": "የንብረት አይነት",
-      "priceRange": "የዋጋ ክልል",
-      "bedrooms": "መኝታ ቤቶች",
-      "bathrooms": "መታጠቢያ ቤቶች",
-      "location": "አካባቢ"
+    "pageTitle": "በአዲስ አበባ ለሽያጭ የቀረቡ ንብረቶች",
+    "viewToggle": {
+      "list": "ዝርዝር",
+      "map": "ካርታ"
     },
+    "filters": {
+      "searchPlaceholder": "አካባቢ፣ ቦታ ይፈልጉ",
+      "propertyType": "የንብረት አይነት",
+      "bedrooms": "መኝታ ቤቶች",
+      "price": "ዋጋ",
+      "more": "ተጨማሪ",
+      "less": "ያነሰ",
+      "clear": "አጽዳ",
+      "propertyTypes": {
+        "apartment": "አፓርትመንት",
+        "house": "ቤት",
+        "villa": "ቪላ",
+        "condo": "ኮንዶሚኒየም",
+        "commercial": "የንግድ"
+      },
+      "bedroomOptions": {
+        "one": "1 መኝታ ቤት",
+        "two": "2 መኝታ ቤቶች",
+        "three": "3 መኝታ ቤቶች",
+        "four": "4 መኝታ ቤቶች",
+        "fivePlus": "5+ መኝታ ቤቶች"
+      }
+    },
+    "noResults": "ምንም ንብረቶች አልተገኙም። ማጣሪያዎችዎን ማስተካከል ይሞክሩ።",
     "details": {
       "overview": "አጠቃላይ እይታ",
       "features": "ባህሪያት",
@@ -170,6 +192,26 @@
       "floors": "ፎቆች",
       "buildingSize": "የህንፃ መጠን",
       "deliveryTime": "የማድረስ ጊዜ"
+    }
+  },
+  "progress": {
+    "title": "የአሁኑ እድገት",
+    "subtitle": "በፕሮጀክቶቻችን ላይ የቅርብ ጊዜ የግንባታ ዝመናዎችን ይከታተሉ",
+    "noResults": "በአሁኑ ጊዜ ምንም የእድገት ዝመናዎች የሉም።"
+  },
+  "blogs": {
+    "title": "ብሎጎች",
+    "hero": {
+      "title": "የሪል እስቴት ግንዛቤዎች እና የገበያ መመሪያ",
+      "subtitle": "አዳዲስ ዝርዝሮችን፣ የገበያ አዝማሚያዎችን እና የኢንቨስትመንት እድሎችን በቀጥታ ወደ መልእክት ሳጥንዎ ይቀበሉ።"
+    },
+    "featured": {
+      "title": "የእኛ የቅርብ ጊዜ ጽሑፎች"
+    },
+    "pagination": {
+      "previous": "ቀዳሚ",
+      "next": "ቀጣይ",
+      "showingPage": "ገጽ {current} ከ {total} በማሳየት ላይ"
     }
   },
   "aboutUs": {
