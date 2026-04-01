@@ -1,7 +1,10 @@
+'use client';
 import Link from 'next/link';
 import React from 'react';
+import { useTranslations } from 'next-intl';
 
 export default function MissionVision() {
+  const t = useTranslations('aboutUs.missionVision');
   return (
     <section className="py-10 lg:py-20">
       <div className="max-w-[1212px] mx-auto">
@@ -9,16 +12,14 @@ export default function MissionVision() {
           {/* Left Column - Main Heading and CTA */}
           <div className="flex flex-col gap-3 lg:gap-5 w-full max-w-[537px]">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-instrument font-semibold leading-[120%]">
-              Designing Spaces with Purpose
+              {t('title')}
             </h2>
             <p className="text-base lg:text-lg leading-[150%] font-instrument text-description">
-              Guiding every project with purpose, we aim to create exceptional
-              spaces that enrich lives, deliver lasting value, and shape the
-              future of real estate.
+              {t('description')}
             </p>
             <button className="bg-primary mt-3 lg:mt-5 w-fit text-white px-5 py-3 lg:px-9 lg:py-4 rounded-full font-medium transition-colors duration-200">
               <Link href="/contact-us" className="flex items-center gap-2">
-                Work With Us
+                {t('workWithUs')}
               </Link>
             </button>
           </div>
@@ -32,14 +33,11 @@ export default function MissionVision() {
                 <div className="flex items-center gap-9 lg:gap-10">
                   <span className="size-4 ml-1.5 lg:ml-0 rounded-full bg-[#FEAE01]"></span>
                   <h3 className="text-2xl font-semibold font-instrument">
-                    Our Mission
+                    {t('ourMission')}
                   </h3>
                 </div>
                 <p className="text-base lg:text-lg ml-[58.5px] leading-[165%] font-instrument text-description">
-                  To develop high quality, durable, and well-designed real
-                  estate that improves lives and adds value to our communities.
-                  We are committed to honest service, transparent processes, and
-                  delivering every project with professionalism and integrity.
+                  {t('missionText')}
                 </p>
               </div>
             </div>
@@ -50,13 +48,11 @@ export default function MissionVision() {
                 <div className="flex items-center gap-9 lg:gap-10">
                   <span className="size-4 ml-1.5 lg:ml-0 rounded-full bg-[#FEAE01]"></span>
                   <h3 className="text-2xl font-semibold font-instrument">
-                    Our Vision
+                    {t('ourVision')}
                   </h3>
                 </div>
                 <p className="text-base lg:text-lg ml-[58.5px] leading-[165%] font-instrument text-description">
-                  To become East Africa’s most trusted real estate developer,
-                  recognized for superior construction quality, reliability, and
-                  transparent business practices.
+                  {t('visionText')}
                 </p>
               </div>
             </div>
