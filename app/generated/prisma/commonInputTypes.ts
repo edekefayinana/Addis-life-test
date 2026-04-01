@@ -659,6 +659,62 @@ export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
   _max?: Prisma.NestedJsonNullableFilter<$PrismaModel>;
 };
 
+export type EnumProgressStatusFilter<$PrismaModel = never> = {
+  equals?:
+    | $Enums.ProgressStatus
+    | Prisma.EnumProgressStatusFieldRefInput<$PrismaModel>;
+  in?:
+    | $Enums.ProgressStatus[]
+    | Prisma.ListEnumProgressStatusFieldRefInput<$PrismaModel>;
+  notIn?:
+    | $Enums.ProgressStatus[]
+    | Prisma.ListEnumProgressStatusFieldRefInput<$PrismaModel>;
+  not?:
+    | Prisma.NestedEnumProgressStatusFilter<$PrismaModel>
+    | $Enums.ProgressStatus;
+};
+
+export type EnumProgressStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?:
+    | $Enums.ProgressStatus
+    | Prisma.EnumProgressStatusFieldRefInput<$PrismaModel>;
+  in?:
+    | $Enums.ProgressStatus[]
+    | Prisma.ListEnumProgressStatusFieldRefInput<$PrismaModel>;
+  notIn?:
+    | $Enums.ProgressStatus[]
+    | Prisma.ListEnumProgressStatusFieldRefInput<$PrismaModel>;
+  not?:
+    | Prisma.NestedEnumProgressStatusWithAggregatesFilter<$PrismaModel>
+    | $Enums.ProgressStatus;
+  _count?: Prisma.NestedIntFilter<$PrismaModel>;
+  _min?: Prisma.NestedEnumProgressStatusFilter<$PrismaModel>;
+  _max?: Prisma.NestedEnumProgressStatusFilter<$PrismaModel>;
+};
+
+export type EnumMediaTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.MediaType | Prisma.EnumMediaTypeFieldRefInput<$PrismaModel>;
+  in?: $Enums.MediaType[] | Prisma.ListEnumMediaTypeFieldRefInput<$PrismaModel>;
+  notIn?:
+    | $Enums.MediaType[]
+    | Prisma.ListEnumMediaTypeFieldRefInput<$PrismaModel>;
+  not?: Prisma.NestedEnumMediaTypeFilter<$PrismaModel> | $Enums.MediaType;
+};
+
+export type EnumMediaTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.MediaType | Prisma.EnumMediaTypeFieldRefInput<$PrismaModel>;
+  in?: $Enums.MediaType[] | Prisma.ListEnumMediaTypeFieldRefInput<$PrismaModel>;
+  notIn?:
+    | $Enums.MediaType[]
+    | Prisma.ListEnumMediaTypeFieldRefInput<$PrismaModel>;
+  not?:
+    | Prisma.NestedEnumMediaTypeWithAggregatesFilter<$PrismaModel>
+    | $Enums.MediaType;
+  _count?: Prisma.NestedIntFilter<$PrismaModel>;
+  _min?: Prisma.NestedEnumMediaTypeFilter<$PrismaModel>;
+  _max?: Prisma.NestedEnumMediaTypeFilter<$PrismaModel>;
+};
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>;
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>;
@@ -1217,4 +1273,61 @@ export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
     | runtime.InputJsonValue
     | Prisma.JsonFieldRefInput<$PrismaModel>
     | Prisma.JsonNullValueFilter;
+};
+
+export type NestedEnumProgressStatusFilter<$PrismaModel = never> = {
+  equals?:
+    | $Enums.ProgressStatus
+    | Prisma.EnumProgressStatusFieldRefInput<$PrismaModel>;
+  in?:
+    | $Enums.ProgressStatus[]
+    | Prisma.ListEnumProgressStatusFieldRefInput<$PrismaModel>;
+  notIn?:
+    | $Enums.ProgressStatus[]
+    | Prisma.ListEnumProgressStatusFieldRefInput<$PrismaModel>;
+  not?:
+    | Prisma.NestedEnumProgressStatusFilter<$PrismaModel>
+    | $Enums.ProgressStatus;
+};
+
+export type NestedEnumProgressStatusWithAggregatesFilter<$PrismaModel = never> =
+  {
+    equals?:
+      | $Enums.ProgressStatus
+      | Prisma.EnumProgressStatusFieldRefInput<$PrismaModel>;
+    in?:
+      | $Enums.ProgressStatus[]
+      | Prisma.ListEnumProgressStatusFieldRefInput<$PrismaModel>;
+    notIn?:
+      | $Enums.ProgressStatus[]
+      | Prisma.ListEnumProgressStatusFieldRefInput<$PrismaModel>;
+    not?:
+      | Prisma.NestedEnumProgressStatusWithAggregatesFilter<$PrismaModel>
+      | $Enums.ProgressStatus;
+    _count?: Prisma.NestedIntFilter<$PrismaModel>;
+    _min?: Prisma.NestedEnumProgressStatusFilter<$PrismaModel>;
+    _max?: Prisma.NestedEnumProgressStatusFilter<$PrismaModel>;
+  };
+
+export type NestedEnumMediaTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.MediaType | Prisma.EnumMediaTypeFieldRefInput<$PrismaModel>;
+  in?: $Enums.MediaType[] | Prisma.ListEnumMediaTypeFieldRefInput<$PrismaModel>;
+  notIn?:
+    | $Enums.MediaType[]
+    | Prisma.ListEnumMediaTypeFieldRefInput<$PrismaModel>;
+  not?: Prisma.NestedEnumMediaTypeFilter<$PrismaModel> | $Enums.MediaType;
+};
+
+export type NestedEnumMediaTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.MediaType | Prisma.EnumMediaTypeFieldRefInput<$PrismaModel>;
+  in?: $Enums.MediaType[] | Prisma.ListEnumMediaTypeFieldRefInput<$PrismaModel>;
+  notIn?:
+    | $Enums.MediaType[]
+    | Prisma.ListEnumMediaTypeFieldRefInput<$PrismaModel>;
+  not?:
+    | Prisma.NestedEnumMediaTypeWithAggregatesFilter<$PrismaModel>
+    | $Enums.MediaType;
+  _count?: Prisma.NestedIntFilter<$PrismaModel>;
+  _min?: Prisma.NestedEnumMediaTypeFilter<$PrismaModel>;
+  _max?: Prisma.NestedEnumMediaTypeFilter<$PrismaModel>;
 };

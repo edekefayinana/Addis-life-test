@@ -71,3 +71,19 @@ export const NotificationType = {
 
 export type NotificationType =
   (typeof NotificationType)[keyof typeof NotificationType];
+
+export const ProgressStatus = {
+  DRAFT: 'DRAFT',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+} as const;
+
+export type ProgressStatus =
+  (typeof ProgressStatus)[keyof typeof ProgressStatus];
+
+export const MediaType = {
+  IMAGE: 'IMAGE',
+  VIDEO: 'VIDEO',
+} as const;
+
+export type MediaType = (typeof MediaType)[keyof typeof MediaType];

@@ -65,6 +65,8 @@ export const ModelName = {
   PropertyImage: 'PropertyImage',
   Reservation: 'Reservation',
   Notification: 'Notification',
+  SiteProgress: 'SiteProgress',
+  ProgressMedia: 'ProgressMedia',
 } as const;
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
@@ -93,9 +95,9 @@ export const UserScalarFieldEnum = {
   password: 'password',
   role: 'role',
   approvalStatus: 'approvalStatus',
-  governmentIdUrl: 'governmentIdUrl',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
+  governmentIdUrl: 'governmentIdUrl',
 } as const;
 
 export type UserScalarFieldEnum =
@@ -145,6 +147,7 @@ export const ProjectScalarFieldEnum = {
   name: 'name',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
+  pdfUrl: 'pdfUrl',
 } as const;
 
 export type ProjectScalarFieldEnum =
@@ -211,16 +214,16 @@ export const ReservationScalarFieldEnum = {
   propertyId: 'propertyId',
   status: 'status',
   description: 'description',
-  clientName: 'clientName',
-  clientPhone: 'clientPhone',
-  clientEmail: 'clientEmail',
-  clientGovernmentId: 'clientGovernmentId',
-  reservationAmount: 'reservationAmount',
-  bankSlipUrl: 'bankSlipUrl',
   createdAt: 'createdAt',
   expiresAt: 'expiresAt',
   confirmedAt: 'confirmedAt',
   cancelledAt: 'cancelledAt',
+  bankSlipUrl: 'bankSlipUrl',
+  clientEmail: 'clientEmail',
+  clientGovernmentId: 'clientGovernmentId',
+  clientName: 'clientName',
+  clientPhone: 'clientPhone',
+  reservationAmount: 'reservationAmount',
 } as const;
 
 export type ReservationScalarFieldEnum =
@@ -241,6 +244,35 @@ export const NotificationScalarFieldEnum = {
 
 export type NotificationScalarFieldEnum =
   (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum];
+
+export const SiteProgressScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  projectId: 'projectId',
+  status: 'status',
+  publishedAt: 'publishedAt',
+  order: 'order',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type SiteProgressScalarFieldEnum =
+  (typeof SiteProgressScalarFieldEnum)[keyof typeof SiteProgressScalarFieldEnum];
+
+export const ProgressMediaScalarFieldEnum = {
+  id: 'id',
+  url: 'url',
+  type: 'type',
+  thumbnailUrl: 'thumbnailUrl',
+  caption: 'caption',
+  order: 'order',
+  siteProgressId: 'siteProgressId',
+  createdAt: 'createdAt',
+} as const;
+
+export type ProgressMediaScalarFieldEnum =
+  (typeof ProgressMediaScalarFieldEnum)[keyof typeof ProgressMediaScalarFieldEnum];
 
 export const SortOrder = {
   asc: 'asc',

@@ -867,6 +867,190 @@ async function main() {
     console.log(`✅ Created property: ${property.title}`);
   }
 
+  // Seed Site Progress for Vatican Project
+  console.log('🏗️ Creating site progress updates...');
+
+  const vaticanProgress1 = await prisma.siteProgress.create({
+    data: {
+      title: 'Vatican Site - Foundation Complete',
+      description:
+        'Foundation work has been completed successfully. All structural pillars are in place and concrete has been poured for the basement levels.',
+      projectId: vaticanProject.id,
+      status: 'COMPLETED',
+      publishedAt: new Date('2023-06-15'),
+      order: 1,
+      media: {
+        create: [
+          {
+            url: '/VATICAN-SITE/F 3/1.jpg',
+            type: 'IMAGE',
+            caption: 'Foundation pillars completed',
+            order: 0,
+          },
+          {
+            url: '/VATICAN-SITE/F 4/1.jpg',
+            type: 'IMAGE',
+            caption: 'Basement level concrete work',
+            order: 1,
+          },
+        ],
+      },
+    },
+  });
+
+  console.log(`✅ Created progress: ${vaticanProgress1.title}`);
+
+  const vaticanProgress2 = await prisma.siteProgress.create({
+    data: {
+      title: 'Vatican Site - 12th Floor Slab Completed',
+      description:
+        'Construction has reached the 12th floor. Slab work is complete and structural integrity checks have been passed. Moving forward with plastering work.',
+      projectId: vaticanProject.id,
+      status: 'IN_PROGRESS',
+      publishedAt: new Date('2024-11-20'),
+      order: 2,
+      media: {
+        create: [
+          {
+            url: '/VATICAN-SITE/F 6/1.jpg',
+            type: 'IMAGE',
+            caption: '12th floor slab completion',
+            order: 0,
+          },
+          {
+            url: '/VATICAN-SITE/F 3/2.jpg',
+            type: 'IMAGE',
+            caption: 'Interior structural work',
+            order: 1,
+          },
+          {
+            url: '/VATICAN-SITE/F 4/2.jpg',
+            type: 'IMAGE',
+            caption: 'Building exterior progress',
+            order: 2,
+          },
+        ],
+      },
+    },
+  });
+
+  console.log(`✅ Created progress: ${vaticanProgress2.title}`);
+
+  const vaticanProgress3 = await prisma.siteProgress.create({
+    data: {
+      title: 'Vatican Site - Plastering Phase',
+      description:
+        'Currently in the plastering phase across multiple floors. Interior finishing work has begun on lower floors while upper floors continue structural work.',
+      projectId: vaticanProject.id,
+      status: 'IN_PROGRESS',
+      publishedAt: new Date('2025-03-01'),
+      order: 3,
+      media: {
+        create: [
+          {
+            url: '/VATICAN-SITE/F 6/2.jpg',
+            type: 'IMAGE',
+            caption: 'Plastering work in progress',
+            order: 0,
+          },
+          {
+            url: '/VATICAN-SITE/F 3/3.jpg',
+            type: 'IMAGE',
+            caption: 'Interior wall finishing',
+            order: 1,
+          },
+        ],
+      },
+    },
+  });
+
+  console.log(`✅ Created progress: ${vaticanProgress3.title}`);
+
+  // Seed Site Progress for African Union Project
+  const africanUnionProgress1 = await prisma.siteProgress.create({
+    data: {
+      title: 'African Union Site 2 - Ground Breaking',
+      description:
+        'Official ground breaking ceremony completed. Site preparation and excavation work has begun for the foundation.',
+      projectId: africanUnionProject.id,
+      status: 'COMPLETED',
+      publishedAt: new Date('2024-03-14'),
+      order: 1,
+      media: {
+        create: [
+          {
+            url: '/African Union Site- visual Assets/Type A 3 bedroom + maids/1.jpg',
+            type: 'IMAGE',
+            caption: 'Ground breaking ceremony',
+            order: 0,
+          },
+        ],
+      },
+    },
+  });
+
+  console.log(`✅ Created progress: ${africanUnionProgress1.title}`);
+
+  const africanUnionProgress2 = await prisma.siteProgress.create({
+    data: {
+      title: 'African Union Site 2 - 6th Floor Slab',
+      description:
+        'Construction has progressed to the 6th floor. Structural work is on schedule with slab pouring completed. Foundation and lower floors are solid.',
+      projectId: africanUnionProject.id,
+      status: 'IN_PROGRESS',
+      publishedAt: new Date('2025-02-10'),
+      order: 2,
+      media: {
+        create: [
+          {
+            url: '/African Union Site- visual Assets/Type B 3 bedroom + maids/1.jpg',
+            type: 'IMAGE',
+            caption: '6th floor structural work',
+            order: 0,
+          },
+          {
+            url: '/African Union Site- visual Assets/Type C 2 bedroom + maids/1.jpg',
+            type: 'IMAGE',
+            caption: 'Building progress overview',
+            order: 1,
+          },
+          {
+            url: '/African Union Site- visual Assets/Type D 2 bedroom + maids/1.jpg',
+            type: 'IMAGE',
+            caption: 'Construction site aerial view',
+            order: 2,
+          },
+        ],
+      },
+    },
+  });
+
+  console.log(`✅ Created progress: ${africanUnionProgress2.title}`);
+
+  const africanUnionProgress3 = await prisma.siteProgress.create({
+    data: {
+      title: 'African Union Site 2 - Latest Update',
+      description:
+        'Continuing vertical construction. All safety protocols are being followed. Expected to reach 10th floor by end of next month.',
+      projectId: africanUnionProject.id,
+      status: 'IN_PROGRESS',
+      publishedAt: new Date('2025-03-25'),
+      order: 3,
+      media: {
+        create: [
+          {
+            url: '/African Union Site- visual Assets/Type E 2 bedroom + maids/1.jpg',
+            type: 'IMAGE',
+            caption: 'Current construction status',
+            order: 0,
+          },
+        ],
+      },
+    },
+  });
+
+  console.log(`✅ Created progress: ${africanUnionProgress3.title}`);
+
   console.log('🎉 Database seeding completed successfully!');
 }
 

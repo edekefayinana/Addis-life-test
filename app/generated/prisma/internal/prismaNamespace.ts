@@ -423,6 +423,8 @@ export const ModelName = {
   PropertyImage: 'PropertyImage',
   Reservation: 'Reservation',
   Notification: 'Notification',
+  SiteProgress: 'SiteProgress',
+  ProgressMedia: 'ProgressMedia',
 } as const;
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
@@ -455,7 +457,9 @@ export type TypeMap<
       | 'nearbyPlace'
       | 'propertyImage'
       | 'reservation'
-      | 'notification';
+      | 'notification'
+      | 'siteProgress'
+      | 'progressMedia';
     txIsolationLevel: TransactionIsolationLevel;
   };
   model: {
@@ -1295,6 +1299,158 @@ export type TypeMap<
         };
       };
     };
+    SiteProgress: {
+      payload: Prisma.$SiteProgressPayload<ExtArgs>;
+      fields: Prisma.SiteProgressFieldRefs;
+      operations: {
+        findUnique: {
+          args: Prisma.SiteProgressFindUniqueArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteProgressPayload> | null;
+        };
+        findUniqueOrThrow: {
+          args: Prisma.SiteProgressFindUniqueOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteProgressPayload>;
+        };
+        findFirst: {
+          args: Prisma.SiteProgressFindFirstArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteProgressPayload> | null;
+        };
+        findFirstOrThrow: {
+          args: Prisma.SiteProgressFindFirstOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteProgressPayload>;
+        };
+        findMany: {
+          args: Prisma.SiteProgressFindManyArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteProgressPayload>[];
+        };
+        create: {
+          args: Prisma.SiteProgressCreateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteProgressPayload>;
+        };
+        createMany: {
+          args: Prisma.SiteProgressCreateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        createManyAndReturn: {
+          args: Prisma.SiteProgressCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteProgressPayload>[];
+        };
+        delete: {
+          args: Prisma.SiteProgressDeleteArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteProgressPayload>;
+        };
+        update: {
+          args: Prisma.SiteProgressUpdateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteProgressPayload>;
+        };
+        deleteMany: {
+          args: Prisma.SiteProgressDeleteManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateMany: {
+          args: Prisma.SiteProgressUpdateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.SiteProgressUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteProgressPayload>[];
+        };
+        upsert: {
+          args: Prisma.SiteProgressUpsertArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteProgressPayload>;
+        };
+        aggregate: {
+          args: Prisma.SiteProgressAggregateArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSiteProgress>;
+        };
+        groupBy: {
+          args: Prisma.SiteProgressGroupByArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.SiteProgressGroupByOutputType>[];
+        };
+        count: {
+          args: Prisma.SiteProgressCountArgs<ExtArgs>;
+          result:
+            | runtime.Types.Utils.Optional<Prisma.SiteProgressCountAggregateOutputType>
+            | number;
+        };
+      };
+    };
+    ProgressMedia: {
+      payload: Prisma.$ProgressMediaPayload<ExtArgs>;
+      fields: Prisma.ProgressMediaFieldRefs;
+      operations: {
+        findUnique: {
+          args: Prisma.ProgressMediaFindUniqueArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressMediaPayload> | null;
+        };
+        findUniqueOrThrow: {
+          args: Prisma.ProgressMediaFindUniqueOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressMediaPayload>;
+        };
+        findFirst: {
+          args: Prisma.ProgressMediaFindFirstArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressMediaPayload> | null;
+        };
+        findFirstOrThrow: {
+          args: Prisma.ProgressMediaFindFirstOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressMediaPayload>;
+        };
+        findMany: {
+          args: Prisma.ProgressMediaFindManyArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressMediaPayload>[];
+        };
+        create: {
+          args: Prisma.ProgressMediaCreateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressMediaPayload>;
+        };
+        createMany: {
+          args: Prisma.ProgressMediaCreateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        createManyAndReturn: {
+          args: Prisma.ProgressMediaCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressMediaPayload>[];
+        };
+        delete: {
+          args: Prisma.ProgressMediaDeleteArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressMediaPayload>;
+        };
+        update: {
+          args: Prisma.ProgressMediaUpdateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressMediaPayload>;
+        };
+        deleteMany: {
+          args: Prisma.ProgressMediaDeleteManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateMany: {
+          args: Prisma.ProgressMediaUpdateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.ProgressMediaUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressMediaPayload>[];
+        };
+        upsert: {
+          args: Prisma.ProgressMediaUpsertArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressMediaPayload>;
+        };
+        aggregate: {
+          args: Prisma.ProgressMediaAggregateArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProgressMedia>;
+        };
+        groupBy: {
+          args: Prisma.ProgressMediaGroupByArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.ProgressMediaGroupByOutputType>[];
+        };
+        count: {
+          args: Prisma.ProgressMediaCountArgs<ExtArgs>;
+          result:
+            | runtime.Types.Utils.Optional<Prisma.ProgressMediaCountAggregateOutputType>
+            | number;
+        };
+      };
+    };
   };
 } & {
   other: {
@@ -1344,9 +1500,9 @@ export const UserScalarFieldEnum = {
   password: 'password',
   role: 'role',
   approvalStatus: 'approvalStatus',
-  governmentIdUrl: 'governmentIdUrl',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
+  governmentIdUrl: 'governmentIdUrl',
 } as const;
 
 export type UserScalarFieldEnum =
@@ -1396,6 +1552,7 @@ export const ProjectScalarFieldEnum = {
   name: 'name',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
+  pdfUrl: 'pdfUrl',
 } as const;
 
 export type ProjectScalarFieldEnum =
@@ -1462,16 +1619,16 @@ export const ReservationScalarFieldEnum = {
   propertyId: 'propertyId',
   status: 'status',
   description: 'description',
-  clientName: 'clientName',
-  clientPhone: 'clientPhone',
-  clientEmail: 'clientEmail',
-  clientGovernmentId: 'clientGovernmentId',
-  reservationAmount: 'reservationAmount',
-  bankSlipUrl: 'bankSlipUrl',
   createdAt: 'createdAt',
   expiresAt: 'expiresAt',
   confirmedAt: 'confirmedAt',
   cancelledAt: 'cancelledAt',
+  bankSlipUrl: 'bankSlipUrl',
+  clientEmail: 'clientEmail',
+  clientGovernmentId: 'clientGovernmentId',
+  clientName: 'clientName',
+  clientPhone: 'clientPhone',
+  reservationAmount: 'reservationAmount',
 } as const;
 
 export type ReservationScalarFieldEnum =
@@ -1492,6 +1649,35 @@ export const NotificationScalarFieldEnum = {
 
 export type NotificationScalarFieldEnum =
   (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum];
+
+export const SiteProgressScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  projectId: 'projectId',
+  status: 'status',
+  publishedAt: 'publishedAt',
+  order: 'order',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type SiteProgressScalarFieldEnum =
+  (typeof SiteProgressScalarFieldEnum)[keyof typeof SiteProgressScalarFieldEnum];
+
+export const ProgressMediaScalarFieldEnum = {
+  id: 'id',
+  url: 'url',
+  type: 'type',
+  thumbnailUrl: 'thumbnailUrl',
+  caption: 'caption',
+  order: 'order',
+  siteProgressId: 'siteProgressId',
+  createdAt: 'createdAt',
+} as const;
+
+export type ProgressMediaScalarFieldEnum =
+  (typeof ProgressMediaScalarFieldEnum)[keyof typeof ProgressMediaScalarFieldEnum];
 
 export const SortOrder = {
   asc: 'asc',
@@ -1727,6 +1913,36 @@ export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<
 >;
 
 /**
+ * Reference to a field of type 'ProgressStatus'
+ */
+export type EnumProgressStatusFieldRefInput<$PrismaModel> = FieldRefInputType<
+  $PrismaModel,
+  'ProgressStatus'
+>;
+
+/**
+ * Reference to a field of type 'ProgressStatus[]'
+ */
+export type ListEnumProgressStatusFieldRefInput<$PrismaModel> =
+  FieldRefInputType<$PrismaModel, 'ProgressStatus[]'>;
+
+/**
+ * Reference to a field of type 'MediaType'
+ */
+export type EnumMediaTypeFieldRefInput<$PrismaModel> = FieldRefInputType<
+  $PrismaModel,
+  'MediaType'
+>;
+
+/**
+ * Reference to a field of type 'MediaType[]'
+ */
+export type ListEnumMediaTypeFieldRefInput<$PrismaModel> = FieldRefInputType<
+  $PrismaModel,
+  'MediaType[]'
+>;
+
+/**
  * Batch Payload for updateMany & deleteMany & createMany
  */
 export type BatchPayload = {
@@ -1840,6 +2056,8 @@ export type GlobalOmitConfig = {
   propertyImage?: Prisma.PropertyImageOmit;
   reservation?: Prisma.ReservationOmit;
   notification?: Prisma.NotificationOmit;
+  siteProgress?: Prisma.SiteProgressOmit;
+  progressMedia?: Prisma.ProgressMediaOmit;
 };
 
 /* Types for Logging */

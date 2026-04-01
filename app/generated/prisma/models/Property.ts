@@ -376,6 +376,8 @@ export type PropertyWhereInput = {
   projectId?: Prisma.StringFilter<'Property'> | string;
   createdAt?: Prisma.DateTimeFilter<'Property'> | Date | string;
   updatedAt?: Prisma.DateTimeFilter<'Property'> | Date | string;
+  amenities?: Prisma.AmenityListRelationFilter;
+  nearbyPlaces?: Prisma.NearbyPlaceListRelationFilter;
   createdBy?: Prisma.XOR<
     Prisma.UserScalarRelationFilter,
     Prisma.UserWhereInput
@@ -384,8 +386,6 @@ export type PropertyWhereInput = {
     Prisma.ProjectScalarRelationFilter,
     Prisma.ProjectWhereInput
   >;
-  amenities?: Prisma.AmenityListRelationFilter;
-  nearbyPlaces?: Prisma.NearbyPlaceListRelationFilter;
   images?: Prisma.PropertyImageListRelationFilter;
   reservations?: Prisma.ReservationListRelationFilter;
 };
@@ -413,10 +413,10 @@ export type PropertyOrderByWithRelationInput = {
   projectId?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
-  createdBy?: Prisma.UserOrderByWithRelationInput;
-  project?: Prisma.ProjectOrderByWithRelationInput;
   amenities?: Prisma.AmenityOrderByRelationAggregateInput;
   nearbyPlaces?: Prisma.NearbyPlaceOrderByRelationAggregateInput;
+  createdBy?: Prisma.UserOrderByWithRelationInput;
+  project?: Prisma.ProjectOrderByWithRelationInput;
   images?: Prisma.PropertyImageOrderByRelationAggregateInput;
   reservations?: Prisma.ReservationOrderByRelationAggregateInput;
 };
@@ -452,6 +452,8 @@ export type PropertyWhereUniqueInput = Prisma.AtLeast<
     projectId?: Prisma.StringFilter<'Property'> | string;
     createdAt?: Prisma.DateTimeFilter<'Property'> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<'Property'> | Date | string;
+    amenities?: Prisma.AmenityListRelationFilter;
+    nearbyPlaces?: Prisma.NearbyPlaceListRelationFilter;
     createdBy?: Prisma.XOR<
       Prisma.UserScalarRelationFilter,
       Prisma.UserWhereInput
@@ -460,8 +462,6 @@ export type PropertyWhereUniqueInput = Prisma.AtLeast<
       Prisma.ProjectScalarRelationFilter,
       Prisma.ProjectWhereInput
     >;
-    amenities?: Prisma.AmenityListRelationFilter;
-    nearbyPlaces?: Prisma.NearbyPlaceListRelationFilter;
     images?: Prisma.PropertyImageListRelationFilter;
     reservations?: Prisma.ReservationListRelationFilter;
   },
@@ -558,10 +558,10 @@ export type PropertyCreateInput = {
   latitude: number;
   createdAt?: Date | string;
   updatedAt?: Date | string;
-  createdBy: Prisma.UserCreateNestedOneWithoutPropertiesInput;
-  project: Prisma.ProjectCreateNestedOneWithoutPropertiesInput;
   amenities?: Prisma.AmenityCreateNestedManyWithoutPropertyInput;
   nearbyPlaces?: Prisma.NearbyPlaceCreateNestedManyWithoutPropertyInput;
+  createdBy: Prisma.UserCreateNestedOneWithoutPropertiesInput;
+  project: Prisma.ProjectCreateNestedOneWithoutPropertiesInput;
   images?: Prisma.PropertyImageCreateNestedManyWithoutPropertyInput;
   reservations?: Prisma.ReservationCreateNestedManyWithoutPropertyInput;
 };
@@ -620,10 +620,10 @@ export type PropertyUpdateInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-  createdBy?: Prisma.UserUpdateOneRequiredWithoutPropertiesNestedInput;
-  project?: Prisma.ProjectUpdateOneRequiredWithoutPropertiesNestedInput;
   amenities?: Prisma.AmenityUpdateManyWithoutPropertyNestedInput;
   nearbyPlaces?: Prisma.NearbyPlaceUpdateManyWithoutPropertyNestedInput;
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutPropertiesNestedInput;
+  project?: Prisma.ProjectUpdateOneRequiredWithoutPropertiesNestedInput;
   images?: Prisma.PropertyImageUpdateManyWithoutPropertyNestedInput;
   reservations?: Prisma.ReservationUpdateManyWithoutPropertyNestedInput;
 };
@@ -1185,9 +1185,9 @@ export type PropertyCreateWithoutCreatedByInput = {
   latitude: number;
   createdAt?: Date | string;
   updatedAt?: Date | string;
-  project: Prisma.ProjectCreateNestedOneWithoutPropertiesInput;
   amenities?: Prisma.AmenityCreateNestedManyWithoutPropertyInput;
   nearbyPlaces?: Prisma.NearbyPlaceCreateNestedManyWithoutPropertyInput;
+  project: Prisma.ProjectCreateNestedOneWithoutPropertiesInput;
   images?: Prisma.PropertyImageCreateNestedManyWithoutPropertyInput;
   reservations?: Prisma.ReservationCreateNestedManyWithoutPropertyInput;
 };
@@ -1316,9 +1316,9 @@ export type PropertyCreateWithoutProjectInput = {
   latitude: number;
   createdAt?: Date | string;
   updatedAt?: Date | string;
-  createdBy: Prisma.UserCreateNestedOneWithoutPropertiesInput;
   amenities?: Prisma.AmenityCreateNestedManyWithoutPropertyInput;
   nearbyPlaces?: Prisma.NearbyPlaceCreateNestedManyWithoutPropertyInput;
+  createdBy: Prisma.UserCreateNestedOneWithoutPropertiesInput;
   images?: Prisma.PropertyImageCreateNestedManyWithoutPropertyInput;
   reservations?: Prisma.ReservationCreateNestedManyWithoutPropertyInput;
 };
@@ -1415,9 +1415,9 @@ export type PropertyCreateWithoutAmenitiesInput = {
   latitude: number;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  nearbyPlaces?: Prisma.NearbyPlaceCreateNestedManyWithoutPropertyInput;
   createdBy: Prisma.UserCreateNestedOneWithoutPropertiesInput;
   project: Prisma.ProjectCreateNestedOneWithoutPropertiesInput;
-  nearbyPlaces?: Prisma.NearbyPlaceCreateNestedManyWithoutPropertyInput;
   images?: Prisma.PropertyImageCreateNestedManyWithoutPropertyInput;
   reservations?: Prisma.ReservationCreateNestedManyWithoutPropertyInput;
 };
@@ -1503,9 +1503,9 @@ export type PropertyUpdateWithoutAmenitiesInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  nearbyPlaces?: Prisma.NearbyPlaceUpdateManyWithoutPropertyNestedInput;
   createdBy?: Prisma.UserUpdateOneRequiredWithoutPropertiesNestedInput;
   project?: Prisma.ProjectUpdateOneRequiredWithoutPropertiesNestedInput;
-  nearbyPlaces?: Prisma.NearbyPlaceUpdateManyWithoutPropertyNestedInput;
   images?: Prisma.PropertyImageUpdateManyWithoutPropertyNestedInput;
   reservations?: Prisma.ReservationUpdateManyWithoutPropertyNestedInput;
 };
@@ -1563,9 +1563,9 @@ export type PropertyCreateWithoutNearbyPlacesInput = {
   latitude: number;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  amenities?: Prisma.AmenityCreateNestedManyWithoutPropertyInput;
   createdBy: Prisma.UserCreateNestedOneWithoutPropertiesInput;
   project: Prisma.ProjectCreateNestedOneWithoutPropertiesInput;
-  amenities?: Prisma.AmenityCreateNestedManyWithoutPropertyInput;
   images?: Prisma.PropertyImageCreateNestedManyWithoutPropertyInput;
   reservations?: Prisma.ReservationCreateNestedManyWithoutPropertyInput;
 };
@@ -1651,9 +1651,9 @@ export type PropertyUpdateWithoutNearbyPlacesInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  amenities?: Prisma.AmenityUpdateManyWithoutPropertyNestedInput;
   createdBy?: Prisma.UserUpdateOneRequiredWithoutPropertiesNestedInput;
   project?: Prisma.ProjectUpdateOneRequiredWithoutPropertiesNestedInput;
-  amenities?: Prisma.AmenityUpdateManyWithoutPropertyNestedInput;
   images?: Prisma.PropertyImageUpdateManyWithoutPropertyNestedInput;
   reservations?: Prisma.ReservationUpdateManyWithoutPropertyNestedInput;
 };
@@ -1711,10 +1711,10 @@ export type PropertyCreateWithoutImagesInput = {
   latitude: number;
   createdAt?: Date | string;
   updatedAt?: Date | string;
-  createdBy: Prisma.UserCreateNestedOneWithoutPropertiesInput;
-  project: Prisma.ProjectCreateNestedOneWithoutPropertiesInput;
   amenities?: Prisma.AmenityCreateNestedManyWithoutPropertyInput;
   nearbyPlaces?: Prisma.NearbyPlaceCreateNestedManyWithoutPropertyInput;
+  createdBy: Prisma.UserCreateNestedOneWithoutPropertiesInput;
+  project: Prisma.ProjectCreateNestedOneWithoutPropertiesInput;
   reservations?: Prisma.ReservationCreateNestedManyWithoutPropertyInput;
 };
 
@@ -1799,10 +1799,10 @@ export type PropertyUpdateWithoutImagesInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-  createdBy?: Prisma.UserUpdateOneRequiredWithoutPropertiesNestedInput;
-  project?: Prisma.ProjectUpdateOneRequiredWithoutPropertiesNestedInput;
   amenities?: Prisma.AmenityUpdateManyWithoutPropertyNestedInput;
   nearbyPlaces?: Prisma.NearbyPlaceUpdateManyWithoutPropertyNestedInput;
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutPropertiesNestedInput;
+  project?: Prisma.ProjectUpdateOneRequiredWithoutPropertiesNestedInput;
   reservations?: Prisma.ReservationUpdateManyWithoutPropertyNestedInput;
 };
 
@@ -1859,10 +1859,10 @@ export type PropertyCreateWithoutReservationsInput = {
   latitude: number;
   createdAt?: Date | string;
   updatedAt?: Date | string;
-  createdBy: Prisma.UserCreateNestedOneWithoutPropertiesInput;
-  project: Prisma.ProjectCreateNestedOneWithoutPropertiesInput;
   amenities?: Prisma.AmenityCreateNestedManyWithoutPropertyInput;
   nearbyPlaces?: Prisma.NearbyPlaceCreateNestedManyWithoutPropertyInput;
+  createdBy: Prisma.UserCreateNestedOneWithoutPropertiesInput;
+  project: Prisma.ProjectCreateNestedOneWithoutPropertiesInput;
   images?: Prisma.PropertyImageCreateNestedManyWithoutPropertyInput;
 };
 
@@ -1947,10 +1947,10 @@ export type PropertyUpdateWithoutReservationsInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-  createdBy?: Prisma.UserUpdateOneRequiredWithoutPropertiesNestedInput;
-  project?: Prisma.ProjectUpdateOneRequiredWithoutPropertiesNestedInput;
   amenities?: Prisma.AmenityUpdateManyWithoutPropertyNestedInput;
   nearbyPlaces?: Prisma.NearbyPlaceUpdateManyWithoutPropertyNestedInput;
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutPropertiesNestedInput;
+  project?: Prisma.ProjectUpdateOneRequiredWithoutPropertiesNestedInput;
   images?: Prisma.PropertyImageUpdateManyWithoutPropertyNestedInput;
 };
 
@@ -2035,9 +2035,9 @@ export type PropertyUpdateWithoutCreatedByInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-  project?: Prisma.ProjectUpdateOneRequiredWithoutPropertiesNestedInput;
   amenities?: Prisma.AmenityUpdateManyWithoutPropertyNestedInput;
   nearbyPlaces?: Prisma.NearbyPlaceUpdateManyWithoutPropertyNestedInput;
+  project?: Prisma.ProjectUpdateOneRequiredWithoutPropertiesNestedInput;
   images?: Prisma.PropertyImageUpdateManyWithoutPropertyNestedInput;
   reservations?: Prisma.ReservationUpdateManyWithoutPropertyNestedInput;
 };
@@ -2151,9 +2151,9 @@ export type PropertyUpdateWithoutProjectInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-  createdBy?: Prisma.UserUpdateOneRequiredWithoutPropertiesNestedInput;
   amenities?: Prisma.AmenityUpdateManyWithoutPropertyNestedInput;
   nearbyPlaces?: Prisma.NearbyPlaceUpdateManyWithoutPropertyNestedInput;
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutPropertiesNestedInput;
   images?: Prisma.PropertyImageUpdateManyWithoutPropertyNestedInput;
   reservations?: Prisma.ReservationUpdateManyWithoutPropertyNestedInput;
 };
@@ -2319,10 +2319,10 @@ export type PropertySelect<
     projectId?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
-    createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
-    project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>;
     amenities?: boolean | Prisma.Property$amenitiesArgs<ExtArgs>;
     nearbyPlaces?: boolean | Prisma.Property$nearbyPlacesArgs<ExtArgs>;
+    createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>;
     images?: boolean | Prisma.Property$imagesArgs<ExtArgs>;
     reservations?: boolean | Prisma.Property$reservationsArgs<ExtArgs>;
     _count?: boolean | Prisma.PropertyCountOutputTypeDefaultArgs<ExtArgs>;
@@ -2453,10 +2453,10 @@ export type PropertyInclude<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = {
-  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
-  project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>;
   amenities?: boolean | Prisma.Property$amenitiesArgs<ExtArgs>;
   nearbyPlaces?: boolean | Prisma.Property$nearbyPlacesArgs<ExtArgs>;
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+  project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>;
   images?: boolean | Prisma.Property$imagesArgs<ExtArgs>;
   reservations?: boolean | Prisma.Property$reservationsArgs<ExtArgs>;
   _count?: boolean | Prisma.PropertyCountOutputTypeDefaultArgs<ExtArgs>;
@@ -2482,10 +2482,10 @@ export type $PropertyPayload<
 > = {
   name: 'Property';
   objects: {
-    createdBy: Prisma.$UserPayload<ExtArgs>;
-    project: Prisma.$ProjectPayload<ExtArgs>;
     amenities: Prisma.$AmenityPayload<ExtArgs>[];
     nearbyPlaces: Prisma.$NearbyPlacePayload<ExtArgs>[];
+    createdBy: Prisma.$UserPayload<ExtArgs>;
+    project: Prisma.$ProjectPayload<ExtArgs>;
     images: Prisma.$PropertyImagePayload<ExtArgs>[];
     reservations: Prisma.$ReservationPayload<ExtArgs>[];
   };
@@ -3063,6 +3063,28 @@ export interface Prisma__PropertyClient<
   GlobalOmitOptions = {},
 > extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: 'PrismaPromise';
+  amenities<T extends Prisma.Property$amenitiesArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.Property$amenitiesArgs<ExtArgs>>
+  ): Prisma.PrismaPromise<
+    | runtime.Types.Result.GetResult<
+        Prisma.$AmenityPayload<ExtArgs>,
+        T,
+        'findMany',
+        GlobalOmitOptions
+      >
+    | Null
+  >;
+  nearbyPlaces<T extends Prisma.Property$nearbyPlacesArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.Property$nearbyPlacesArgs<ExtArgs>>
+  ): Prisma.PrismaPromise<
+    | runtime.Types.Result.GetResult<
+        Prisma.$NearbyPlacePayload<ExtArgs>,
+        T,
+        'findMany',
+        GlobalOmitOptions
+      >
+    | Null
+  >;
   createdBy<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(
     args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>
   ): Prisma.Prisma__UserClient<
@@ -3090,28 +3112,6 @@ export interface Prisma__PropertyClient<
     Null,
     ExtArgs,
     GlobalOmitOptions
-  >;
-  amenities<T extends Prisma.Property$amenitiesArgs<ExtArgs> = {}>(
-    args?: Prisma.Subset<T, Prisma.Property$amenitiesArgs<ExtArgs>>
-  ): Prisma.PrismaPromise<
-    | runtime.Types.Result.GetResult<
-        Prisma.$AmenityPayload<ExtArgs>,
-        T,
-        'findMany',
-        GlobalOmitOptions
-      >
-    | Null
-  >;
-  nearbyPlaces<T extends Prisma.Property$nearbyPlacesArgs<ExtArgs> = {}>(
-    args?: Prisma.Subset<T, Prisma.Property$nearbyPlacesArgs<ExtArgs>>
-  ): Prisma.PrismaPromise<
-    | runtime.Types.Result.GetResult<
-        Prisma.$NearbyPlacePayload<ExtArgs>,
-        T,
-        'findMany',
-        GlobalOmitOptions
-      >
-    | Null
   >;
   images<T extends Prisma.Property$imagesArgs<ExtArgs> = {}>(
     args?: Prisma.Subset<T, Prisma.Property$imagesArgs<ExtArgs>>

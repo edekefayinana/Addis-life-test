@@ -99,3 +99,13 @@ export type Reservation = Prisma.ReservationModel;
  *
  */
 export type Notification = Prisma.NotificationModel;
+/**
+ * Model SiteProgress
+ *
+ */
+export type SiteProgress = Prisma.SiteProgressModel;
+/**
+ * Model ProgressMedia
+ *
+ */
+export type ProgressMedia = Prisma.ProgressMediaModel;
