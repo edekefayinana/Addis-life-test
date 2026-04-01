@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Quote, ChevronLeft, ChevronRight, Play } from 'lucide-react';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 const testimonials = [
   {
@@ -22,6 +23,7 @@ const testimonials = [
 ];
 
 export function Testimonials() {
+  const t = useTranslations('home.testimonials');
   const [activeIndex, setActiveIndex] = useState(0);
   const [isFading, setIsFading] = useState(false);
   const fadeTimeout = useRef<NodeJS.Timeout | null>(null);
@@ -56,12 +58,10 @@ export function Testimonials() {
       <div className="container mx-auto px-4 md:px-6">
         <div className="text-center mb-10 md:mb-14">
           <h2 className="text-4xl font-semibold text-black font-instrument">
-            What Our Clients Say
+            {t('title')}
           </h2>
           <p className="mt-4 text-muted-foreground max-w-2xl mx-auto font-instrument">
-            Addis Life Real Estate takes pride in delivering dependable homes
-            and a smooth buying experience. Here&apos;s what our customers are
-            saying.
+            {t('subtitle')}
           </p>
         </div>
 
@@ -121,14 +121,14 @@ export function Testimonials() {
                 <button
                   onClick={() => changeTestimonial('prev')}
                   className="flex h-12 w-12 items-center justify-center rounded-full border border-[var(--testimonial-border)] bg-white transition-colors hover:bg-[var(--testimonial-bg-hover)] hover:border-[var(--testimonial-border-hover)]"
-                  aria-label="Previous testimonial"
+                  aria-label={t('previousTestimonial')}
                 >
                   <ChevronLeft className="h-5 w-5 text-[var(--testimonial-play-fill)]" />
                 </button>
                 <button
                   onClick={() => changeTestimonial('next')}
                   className="flex h-12 w-12 items-center justify-center rounded-full border border-[var(--testimonial-border)] bg-white transition-colors hover:bg-[var(--testimonial-bg-hover)] hover:border-[var(--testimonial-border-hover)]"
-                  aria-label="Next testimonial"
+                  aria-label={t('nextTestimonial')}
                 >
                   <ChevronRight className="h-5 w-5 text-[var(--testimonial-play-fill)]" />
                 </button>

@@ -23,24 +23,102 @@
   "nav": {
     "home": "መነሻ",
     "properties": "ንብረቶች",
+    "progress": "እድገት",
     "aboutUs": "ስለ እኛ",
     "blogs": "ብሎጎች",
     "contactUs": "ያግኙን",
-    "currentProgress": "የአሁኑ እድገት",
     "login": "ግባ",
     "signup": "ተመዝገብ",
     "logout": "ውጣ",
-    "dashboard": "ዳሽቦርድ"
+    "dashboard": "ዳሽቦርድ",
+    "rent": "ኪራይ",
+    "sale": "ሽያጭ",
+    "adminDashboard": "የአስተዳዳሪ ዳሽቦርድ",
+    "inventory": "ዝርዝር",
+    "inventoryManagement": "የዝርዝር አስተዳደር",
+    "signOut": "ውጣ",
+    "account": "መለያ",
+    "admin": "አስተዳዳሪ",
+    "agent": "ወኪል"
   },
   "home": {
     "hero": {
-      "title": "ፍጹም ንብረትዎን ያግኙ",
-      "subtitle": "በኢትዮጵያ ውስጥ ከፍተኛ የሪል እስቴት አማራጮችን ያስሱ። ከዘመናዊ አፓርትመንቶች እስከ የቅንጦት ቪላዎች።",
-      "searchPlaceholder": "በአካባቢ፣ በንብረት አይነት ይፈልጉ..."
+      "title": "ለእርስዎ ተስማሚ የሆነ ንብረት ያግኙ",
+      "subtitle": "በኢትዮጵያ ውስጥ ከፍተኛ የሪል እስቴት አማራጮችን ይመልከቱ። ከዘመናዊ አፓርትመንቶች እስከ የቅንጦት ቪላዎች።",
+      "searchPlaceholder": "በአካባቢ፣ በንብረት አይነት ይፈልጉ...",
+      "joinAgentNetwork": "የእኛን ነፃ ወኪል አውታረ መረብ ይቀላቀሉ",
+      "limitedOffer": "ውስን ቅናش",
+      "newLaunch": "አዲስ ጅምር",
+      "openHouse": "ክፍት ቤት",
+      "verifiedUpdate": "የተረጋገጠ መረጃ"
     },
     "featuredProperties": {
-      "title": "ፍጹም ንብረትዎን ያግኙ",
-      "description": "በኢትዮጵያ ውስጥ ከፍተኛ የሪል እስቴት አማራጮችን ያስሱ። ከዘመናዊ አፓርትመንቶች እስከ የቅንጦት ቪላዎች።"
+      "title": "ለእርስዎ ተስማሚ የሆነ ንብረት ያግኙ",
+      "description": "በኢትዮጵያ ውስጥ ከፍተኛ የሪል እስቴት አማራጮችን ይመልከቱ። ከዘመናዊ አፓርትመንቶች እስከ የቅንጦት ቪላዎች።",
+      "viewAll": "ሁሉንም ንብረቶች ይመልከቱ"
+    },
+    "developer": {
+      "title": "የእርስዎ የታመነ የንብረት ገንቢ",
+      "aboutUs": "ስለ እኛ",
+      "description": "አዲስ ላይፍ ሪል እስቴት በአዲስ አበባ ውስጥ ዘመናዊ እና አስተማማኝ መኖሪያ ቤቶችን ያቀርባል። በዓመታት ልምድ እና በጠንካራ የግንባታ ብቃት የተደገፈ፣ በጥራት፣ በግልፅነት እና በወቅቱ አቅርቦት ላይ እናተኩራለን።",
+      "experience": "ልምድ",
+      "deliveredProjects": "የተላኩ ፕሮጀክቶች",
+      "learnMore": "ተጨማሪ ይወቁ"
+    },
+    "expertise": {
+      "title": "ለምን የእኛን ብቃት መምረጥ አለብዎት",
+      "subtitle": "ለእርስዎ ተስማሚ የሆነ ንብረት ማግኘትን ቀላል፣ ደህንነቱ የተጠበቀ እና ጭንቀት የለሽ እናደርገዋለን። በባለሙያ መመሪያ፣ በግል ድጋፍ እና በሰፊ አማራጮች፣ በራስ መተማመን ትክክለኛውን ምርጫ እንዲያደርጉ እንረዳዎታለን።",
+      "qualityExcellence": "የጥራት ብቃት",
+      "qualityDescription": "ጠንካራ፣ ደህንነቱ የተጠበቀ እና ዘላቂ ህንፃዎችን በጥብቅ የጥራት ደረጃዎች በመጠቀም ያቀርባሉ።",
+      "trustTransparency": "እምነት እና ግልፅነት",
+      "trustDescription": "ግልፅ ግንኙነት፣ ታማኝ ዋጋ እና እውነተኛ ቃል ኪዳኖችን ይጠብቁ።",
+      "customerConfidence": "የደንበኛ እምነት",
+      "customerDescription": "እያንዳንዱ ደንበኛ ደህንነቱ የተጠበቀ፣ መረጃ ያለው እና በኢንቨስትመንታቸው ኩራት እንዲሰማው ያረጋግጡ።",
+      "sustainableGrowth": "ዘላቂ እድገት",
+      "sustainableDescription": "ከፍተኛ የግንባታ እና የአገልግሎት ደረጃዎችን እየጠበቁ በኃላፊነት ይስፋፉ።"
+    },
+    "projects": {
+      "title": "የእኛ የፕሮጀክት ዝርዝሮች",
+      "subtitle": "የተጠናቀቁ ፕሮጀክቶቻችንን፣ በመካሄድ ላይ ያሉ እድገቶችን እና ዋና ቦታዎችን ይመልከቱ፣ ስራችንን በቀጥታ ለማየት፣ የኢንቨስትመንት እድሎችን ለማግኘት እና የወደፊት ቤትዎን ለማየት።",
+      "viewProperties": "ንብረቶችን ይመልከቱ",
+      "downloadPdf": "ፒዲኤፍ አውርድ"
+    },
+
+    "agentBanner": {
+      "title": "የእኛን ነፃ ወኪል አውታረ መረብ ይቀላቀሉ",
+      "description": "የአዲስ ላይፍ ሪል እስቴት ነፃ ወኪል ማህበረሰብን ይቀላቀሉ። ልዩ ዝርዝሮችን ያግኙ፣ ደንበኞችን ያስተዳድሩ እና በወኪል መግቢያችን በኩል ተወዳዳሪ ኮሚሽኖችን ያግኙ።",
+      "register": "ይመዝገቡ"
+    },
+    "testimonials": {
+      "title": "ደንበኞቻችን ምን ይላሉ",
+      "subtitle": "አዲስ ላይፍ ሪል እስቴት አስተማማኝ ቤቶችን እና ለስላሳ የግዢ ልምድን በማቅረብ ኩራት ይሰማዋል። ደንበኞቻችን የሚሉት ይህ ነው።",
+      "previousTestimonial": "ቀዳሚ ምስክርነት",
+      "nextTestimonial": "ቀጣይ ምስክርነት",
+      "client": "ደንበኛ",
+      "homeowner": "የቤት ባለቤት"
+    },
+    "insights": {
+      "title": "የእኛ የቅርብ ጊዜ መረጃዎች",
+      "subtitle": "ከሪል እስቴት ዓለም የቅርብ ጊዜ ዜናዎችን እና አዝማሚያዎችን በመከታተል ይቆዩ።",
+      "viewAllBlogs": "ሁሉንም ብሎጎች ይመልከቱ"
+    },
+    "heroSearch": {
+      "searchPlaceholder": "በአካባቢ፣ በቦታ ወይም በንብረት አይነት ይፈልጉ...",
+      "searchPlaceholderMobile": "በአካባቢ፣ በቦታ ይፈልጉ...",
+      "filter": "አጣራ",
+      "listingType": "የዝርዝር አይነት",
+      "bedrooms": "መኝታ ቤቶች",
+      "any": "ማንኛውም",
+      "forRent": "ለኪራይ",
+      "forSale": "ለሽያጭ",
+      "oneBedroom": "1 መኝታ ቤት",
+      "twoBedrooms": "2 መኝታ ቤቶች",
+      "threeBedrooms": "3 መኝታ ቤቶች",
+      "fourBedrooms": "4 መኝታ ቤቶች",
+      "fivePlusBedrooms": "5+ መኝታ ቤቶች",
+      "reset": "ዳግም አስጀምር",
+      "apply": "ተግብር",
+      "search": "ፈልግ"
     }
   },
   "auth": {
@@ -106,9 +184,18 @@
     }
   },
   "footer": {
-    "description": "በኢትዮጵያ ውስጥ ፍጹም ንብረት ለማግኘት የታመነ አጋርዎ።",
-    "quickLinks": "ፈጣን አገናኞች",
+    "description": "አዲስ ላይፍ ሪል እስቴት በአዲስ አበባ ውስጥ ዘመናዊ እና አስተማማኝ መኖሪያ ቤቶችን በግልፅነት፣ በጥራት ግንባታ እና በቀላል ልምድ ያቀርባል።",
+    "services": "አገልግሎቶች",
+    "links": "አገናኞች",
+    "contact": "ያግኙን",
     "followUs": "ይከተሉን",
-    "copyright": "© {year} አዲስ ላይፍ። ሁሉም መብቶች የተጠበቁ ናቸው።"
+    "copyright": "የቅጂ መብት © {year}። አዲስ ላይፍ ሪል እስቴት",
+    "developedBy": "የተሰራው በ",
+    "africaUnionOne": "አፍሪካ ህብረት አንድ",
+    "africaUnionTwo": "አፍሪካ ህብረት ሁለት",
+    "vaticanSite": "ቫቲካን ቦታ",
+    "bulgariaSite": "ቡልጋሪያ ቦታ",
+    "upcomingEastAddis": "በአዲስ አበባ ምስራቅ አካባቢ የሚመጣ",
+    "address": "አ.ሕ1 ሳይት (ቡልጋሪያ ሜክሲኮ ከአፍሪካ ሕብረት ፊት ለፊት)"
   }
 }

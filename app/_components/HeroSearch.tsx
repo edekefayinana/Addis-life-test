@@ -4,8 +4,10 @@ import { CustomSelect } from '@/components/ui/custom-select';
 import { Search, SlidersHorizontal } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 export function HeroSearch() {
+  const t = useTranslations('home.heroSearch');
   const router = useRouter();
   const [location, setLocation] = useState('');
   const [propertyType, setPropertyType] = useState('');
@@ -16,27 +18,27 @@ export function HeroSearch() {
   const selectFields = [
     {
       key: 'listingType',
-      label: 'Listing Type',
+      label: t('listingType'),
       value: propertyType,
       onChange: setPropertyType,
-      placeholder: 'Any',
+      placeholder: t('any'),
       options: [
-        { label: 'For Rent', value: 'RENT' },
-        { label: 'For Sale', value: 'SALE' },
+        { label: t('forRent'), value: 'RENT' },
+        { label: t('forSale'), value: 'SALE' },
       ],
     },
     {
       key: 'bedrooms',
-      label: 'Bedrooms',
+      label: t('bedrooms'),
       value: bedrooms,
       onChange: setBedrooms,
-      placeholder: 'Any',
+      placeholder: t('any'),
       options: [
-        { label: '1 Bedroom', value: '1' },
-        { label: '2 Bedrooms', value: '2' },
-        { label: '3 Bedrooms', value: '3' },
-        { label: '4 Bedrooms', value: '4' },
-        { label: '5+ Bedrooms', value: '5' },
+        { label: t('oneBedroom'), value: '1' },
+        { label: t('twoBedrooms'), value: '2' },
+        { label: t('threeBedrooms'), value: '3' },
+        { label: t('fourBedrooms'), value: '4' },
+        { label: t('fivePlusBedrooms'), value: '5' },
       ],
     },
   ];
@@ -98,7 +100,7 @@ export function HeroSearch() {
               type="text"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              placeholder="Search location, area, or property type..."
+              placeholder={t('searchPlaceholder')}
               className="w-full text-sm font-normal text-gray-700 outline-none placeholder:text-gray-500 bg-transparent"
             />
           </div>
@@ -116,7 +118,7 @@ export function HeroSearch() {
               aria-controls="hero-filters"
             >
               <SlidersHorizontal className="h-4 w-4" aria-hidden />
-              Filter
+              {t('filter')}
             </button>
 
             {showFilters && (
@@ -147,7 +149,7 @@ export function HeroSearch() {
                         setBedrooms('');
                       }}
                     >
-                      Reset
+                      {t('reset')}
                     </button>
                     <Button
                       type="button"
@@ -155,7 +157,7 @@ export function HeroSearch() {
                       className="rounded-full bg-brand-dark px-4 text-white hover:bg-brand-dark/90"
                       onClick={() => setShowFilters(false)}
                     >
-                      Apply
+                      {t('apply')}
                     </Button>
                   </div>
                 </div>
@@ -167,9 +169,9 @@ export function HeroSearch() {
           <button
             type="submit"
             className="ml-2 rounded-full bg-brand-dark px-6 py-3.5 text-sm font-medium text-white transition hover:bg-brand-dark/90"
-            aria-label="Search"
+            aria-label={t('search')}
           >
-            Search
+            {t('search')}
           </button>
         </div>
 
@@ -182,7 +184,7 @@ export function HeroSearch() {
               type="text"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              placeholder="Search location, area..."
+              placeholder={t('searchPlaceholderMobile')}
               className="w-full text-sm font-normal text-gray-700 outline-none placeholder:text-gray-500 bg-transparent "
             />
           </div>
@@ -190,7 +192,7 @@ export function HeroSearch() {
           <button
             type="submit"
             className="absolute right-1 top-1/2 flex h-10 w-10 -translate-y-1/2 shrink-0 items-center justify-center rounded-full bg-brand-dark text-white shadow-[0_2px_8px_rgba(0,0,0,0.15)] transition hover:bg-brand-dark/90 z-10"
-            aria-label="Search"
+            aria-label={t('search')}
           >
             <Search className="h-4 w-4" aria-hidden />
           </button>

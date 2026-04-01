@@ -23,24 +23,105 @@
   "nav": {
     "home": "Home",
     "properties": "Properties",
+    "progress": "Progress",
     "aboutUs": "About Us",
     "blogs": "Blogs",
     "contactUs": "Contact Us",
-    "currentProgress": "Current Progress",
     "login": "Log In",
     "signup": "Sign Up",
     "logout": "Log Out",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "rent": "Rent",
+    "sale": "Sale",
+    "adminDashboard": "Admin Dashboard",
+    "inventory": "Inventory",
+    "inventoryManagement": "Inventory Management",
+    "signOut": "Sign Out",
+    "account": "Account",
+    "admin": "Admin",
+    "agent": "Agent"
   },
   "home": {
     "hero": {
       "title": "Find Your Perfect Property",
       "subtitle": "Browse top real estate options across Ethiopia. From modern apartments to luxury villas.",
-      "searchPlaceholder": "Search by location, property type..."
+      "searchPlaceholder": "Search by location, property type...",
+      "joinAgentNetwork": "Join Our Freelance Agent Network",
+      "limitedOffer": "Limited offer",
+      "newLaunch": "New launch",
+      "openHouse": "Open house",
+      "verifiedUpdate": "Verified update"
     },
     "featuredProperties": {
       "title": "Find Your Perfect Property",
-      "description": "Browse top real estate options across Ethiopia. From modern apartments to luxury villas."
+      "description": "Browse top real estate options across Ethiopia. From modern apartments to luxury villas.",
+      "viewAll": "View All Properties"
+    },
+    "developer": {
+      "title": "Your Trusted Property Developer",
+      "aboutUs": "About Us",
+      "description": "Addis Life Real Estate delivers modern, reliable homes across Addis Ababa. Backed by years of experience and strong construction expertise, we focus on quality, transparency, and timely delivery.",
+      "experience": "Experience",
+      "deliveredProjects": "Delivered Projects",
+      "learnMore": "Learn More"
+    },
+    "expertise": {
+      "title": "Why Choose Our Expertise",
+      "subtitle": "We make finding your perfect property simple, secure, and stress-free. With expert guidance, personalized support, and a wide range of options, we help you make the right choice with confidence.",
+      "qualityExcellence": "Quality Excellence",
+      "qualityDescription": "Deliver strong, safe, and long-lasting buildings using strict quality standards.",
+      "trustTransparency": "Trust & Transparency",
+      "trustDescription": "Maintain clear communication, honest pricing, and realistic commitments.",
+      "customerConfidence": "Customer Confidence",
+      "customerDescription": "Ensure every client feels secure, informed, and proud of their investment.",
+      "sustainableGrowth": "Sustainable Growth",
+      "sustainableDescription": "Expand responsibly while maintaining high construction and service standards."
+    },
+    "projects": {
+      "title": "Our Project Listings",
+      "subtitle": "Explore our completed projects, ongoing developments, and prime sites to see our work firsthand, discover investment opportunities, and envision your future home.",
+      "viewProperties": "View Properties",
+      "downloadPdf": "Download PDF"
+    },
+    "testimonials": {
+      "title": "What Our Clients Say",
+      "subtitle": "Real Stories from Real People"
+    },
+    "agentBanner": {
+      "title": "Join Our Freelance Agent Network",
+      "description": "Join Addis Life Real Estate's freelance agent community. Access exclusive listings, manage clients, and earn competitive commissions through our Agent Portal.",
+      "register": "Register"
+    },
+    "testimonials": {
+      "title": "What Our Clients Say",
+      "subtitle": "Addis Life Real Estate takes pride in delivering dependable homes and a smooth buying experience. Here's what our customers are saying.",
+      "previousTestimonial": "Previous testimonial",
+      "nextTestimonial": "Next testimonial",
+      "client": "Client",
+      "homeowner": "Homeowner"
+    },
+    "insights": {
+      "title": "Our Latest Insights",
+      "subtitle": "Stay updated with the latest news and trends from the real estate world.",
+      "viewAllBlogs": "View All Blogs"
+    },
+    "heroSearch": {
+      "searchPlaceholder": "Search location, area, or property type...",
+      "searchPlaceholderMobile": "Search location, area...",
+      "filter": "Filter",
+      "listingType": "Listing Type",
+      "bedrooms": "Bedrooms",
+      "any": "Any",
+      "forRent": "For Rent",
+      "forSale": "For Sale",
+      "oneBedroom": "1 Bedroom",
+      "twoBedrooms": "2 Bedrooms",
+      "threeBedrooms": "3 Bedrooms",
+      "fourBedrooms": "4 Bedrooms",
+      "fivePlusBedrooms": "5+ Bedrooms",
+      "reset": "Reset",
+      "apply": "Apply",
+      "search": "Search"
     }
   },
   "auth": {
@@ -94,6 +175,68 @@
       "deliveryTime": "Delivery Time"
     }
   },
+  "aboutUs": {
+    "home": {
+      "title": "Your Partner in Quality Real Estate",
+      "description": "We craft quality properties that fit your lifestyle and investment goals, with prime locations and lasting value.",
+      "contactUs": "Contact Us",
+      "register": "Register",
+      "pauseVideo": "Pause video",
+      "playVideo": "Play video",
+      "muteVideo": "Mute video",
+      "unmuteVideo": "Unmute video"
+    },
+    "missionVision": {
+      "title": "Designing Spaces with Purpose",
+      "description": "Guiding every project with purpose, we aim to create exceptional spaces that enrich lives, deliver lasting value, and shape the future of real estate.",
+      "workWithUs": "Work With Us",
+      "ourMission": "Our Mission",
+      "missionText": "To develop high quality, durable, and well-designed real estate that improves lives and adds value to our communities. We are committed to honest service, transparent processes, and delivering every project with professionalism and integrity.",
+      "ourVision": "Our Vision",
+      "visionText": "To become East Africa's most trusted real estate developer, recognized for superior construction quality, reliability, and transparent business practices."
+    },
+    "coreValues": {
+      "title": "Our Core Values",
+      "subtitle": "Principles that shape our culture, guide our decisions, influence how we work together, and define the way we serve and support our clients.",
+      "qualityFirst": "Quality First:",
+      "qualityDescription": "To set a new gold standard in Addis Ababa's real estate market through rigorous construction standards and premium materials.",
+      "empowerment": "Empowerment through Ownership",
+      "empowermentDescription": "To make property ownership accessible and transparent for both the local community and the diaspora.",
+      "timelyDelivery": "Timely Delivery",
+      "timelyDescription": "To redefine industry trust by meeting project milestones and handovers with absolute precision.",
+      "numbersAchievements": "Number & Achievements",
+      "employee": "Employee",
+      "deliveredProjects": "Deliverd Projects",
+      "happyClient": "Happy Client",
+      "experienceDays": "Experience Days"
+    }
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "We provide thorough explanations to your most frequent questions, ensuring transparency and peace of mind throughout your property experience.",
+    "questions": {
+      "services": {
+        "question": "What Service Do you provide?",
+        "answer": "We offer a comprehensive range of real estate services including property sales and rentals. Our team is dedicated to helping you find the perfect property that meets your needs and budget"
+      },
+      "location": {
+        "question": "Where are your projects located?",
+        "answer": "Our projects are strategically located across prime areas in Addis Ababa, including Bole, Kazanchis, CMC, and other developing neighborhoods. We carefully select locations that offer excellent connectivity, amenities, and growth potential."
+      },
+      "updates": {
+        "question": "How can I get updates about ongoing projects?",
+        "answer": "You can stay updated about our ongoing projects by subscribing to our newsletter, following us on social media, or contacting our sales team directly. We regularly share project updates, new launches, and exclusive offers with our subscribers."
+      },
+      "purchase": {
+        "question": "How do I purchase a property?",
+        "answer": "The property purchase process is simple: First, browse our available properties and schedule a viewing. Once you find your ideal property, our team will guide you through the documentation, payment plans, and legal procedures to ensure a smooth transaction."
+      },
+      "payment": {
+        "question": "Do you offer flexible payment plans?",
+        "answer": "Yes, we offer flexible payment plans tailored to your financial situation. Our options include installment plans, mortgage assistance, and customized payment schedules. Contact our sales team to discuss the best payment plan for your needs."
+      }
+    }
+  },
   "contact": {
     "title": "Contact Us",
     "subtitle": "Get in touch with our team",
@@ -106,9 +249,18 @@
     }
   },
   "footer": {
-    "description": "Your trusted partner in finding the perfect property in Ethiopia.",
-    "quickLinks": "Quick Links",
+    "description": "Addis Life Real Estate provides modern, reliable housing in Addis Ababa with transparency, quality construction, and a seamless experience.",
+    "services": "Services",
+    "links": "Links",
+    "contact": "Contact",
     "followUs": "Follow Us",
-    "copyright": "© {year} Addis Life. All rights reserved."
+    "copyright": "Copyright © {year}. Addis Life Real Estate",
+    "developedBy": "Developed by",
+    "africaUnionOne": "Africa Union One",
+    "africaUnionTwo": "Africa Union Two",
+    "vaticanSite": "Vatican Site",
+    "bulgariaSite": "Bulgaria Site",
+    "upcomingEastAddis": "Upcoming Around East of Addis Ababa",
+    "address": "AU1 Site (Bulgaria, Mexico In front of African Union)"
   }
 }

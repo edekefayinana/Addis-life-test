@@ -5,28 +5,29 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { HeroSlide } from '@/data/heroSlides';
 import { HeroSearch } from './HeroSearch';
 import { Button } from '@/components/ui/button';
+import { useTranslations } from 'next-intl';
 
 const announcementConfigs = {
   discount: {
-    badge: 'Limited offer',
+    badgeKey: 'home.hero.limitedOffer',
     badgeClass: 'border-amber-200/60 bg-amber-200/15 text-amber-100',
     ctaClass: 'bg-emerald-400 text-slate-950 hover:bg-emerald-300',
     textAlignClass: 'items-start text-left',
   },
   launch: {
-    badge: 'New launch',
+    badgeKey: 'home.hero.newLaunch',
     badgeClass: 'border-cyan-200/60 bg-cyan-200/15 text-cyan-100',
     ctaClass: 'bg-emerald-400 text-slate-950 hover:bg-emerald-300',
     textAlignClass: 'items-center text-center',
   },
   event: {
-    badge: 'Open house',
+    badgeKey: 'home.hero.openHouse',
     badgeClass: 'border-rose-200/60 bg-rose-200/15 text-rose-100',
     ctaClass: 'bg-emerald-400 text-slate-950 hover:bg-emerald-300',
     textAlignClass: 'items-end text-right',
   },
   news: {
-    badge: 'Verified update',
+    badgeKey: 'home.hero.verifiedUpdate',
     badgeClass: 'border-emerald-200/60 bg-emerald-200/15 text-emerald-100',
     ctaClass: 'bg-emerald-400 text-slate-950 hover:bg-emerald-300',
     textAlignClass: 'items-center text-center',
@@ -38,6 +39,7 @@ type HeroProps = {
 };
 
 export function Hero({ slides }: HeroProps) {
+  const t = useTranslations();
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAutoPlay, setIsAutoPlay] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -241,7 +243,7 @@ export function Hero({ slides }: HeroProps) {
                   <span
                     className={`inline-flex items-center rounded-full border px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] ${announcementConfig.badgeClass}`}
                   >
-                    {announcementConfig.badge}
+                    {t(announcementConfig.badgeKey)}
                   </span>
                 )}
               </div>
@@ -322,7 +324,7 @@ export function Hero({ slides }: HeroProps) {
             className="rounded-full bg-primary px-8 py-7 text-lg font-bold shadow-lg transition focus:outline-none focus:ring-4 focus:ring-emerald-200/50"
             size="lg"
           >
-            <Link href="/apply">Join Our Freelance Agent Network</Link>
+            <Link href="/apply">{t('home.hero.joinAgentNetwork')}</Link>
           </Button>
         </div>
       )}

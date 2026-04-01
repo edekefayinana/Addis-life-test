@@ -9,6 +9,7 @@ import { AgentBanner } from '../_components/AgentBanner';
 import { createClient } from '@/prismicio';
 import { heroVideoSlide, type HeroSlide } from '@/data/heroSlides';
 import { PropertyCardProps } from '@/components/PropertyCard';
+import { getTranslations } from 'next-intl/server';
 
 type PrismicHeroSlide = {
   image?: { url?: string | null } | null;
@@ -180,6 +181,7 @@ async function fetchFeaturedProperties(): Promise<PropertyCardProps[]> {
 
 export default async function HomePage() {
   const client = createClient();
+  const t = await getTranslations('home.featuredProperties');
   let prismicSlides: HeroSlide[] = [];
 
   try {
@@ -209,8 +211,8 @@ export default async function HomePage() {
     <main>
       <Hero slides={slides} />
       <PropertyCarousel
-        title="Find Your Perfect Property"
-        description="Browse top real estate options across Ethiopia. From modern apartments to luxury villas."
+        title={t('title')}
+        description={t('description')}
         properties={properties}
       />
       <DeveloperSection />

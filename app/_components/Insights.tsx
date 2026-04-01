@@ -4,8 +4,10 @@ import { createClient } from '@/prismicio';
 import { ArrowRight } from 'lucide-react';
 import BlogCard from '../(main)/blogs/_components/BlogCard';
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 
 export async function Insights() {
+  const t = await getTranslations('home.insights');
   const client = createClient();
   const posts = await client.getAllByType('blog_post', {
     orderings: {
@@ -34,11 +36,8 @@ export async function Insights() {
   return (
     <section className="container mx-auto py-20 px-4 md:px-6">
       <div className="mb-10 text-center">
-        <h2 className="text-3xl font-bold md:text-4xl">Our Latest Insights</h2>
-        <p className="mt-4 text-muted-foreground">
-          Stay updated with the latest news and trends from the real estate
-          world.
-        </p>
+        <h2 className="text-3xl font-bold md:text-4xl">{t('title')}</h2>
+        <p className="mt-4 text-muted-foreground">{t('subtitle')}</p>
       </div>
 
       <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -53,7 +52,7 @@ export async function Insights() {
           size="lg"
         >
           <Link href="/blogs" className="flex items-center gap-2">
-            View All Blogs <ArrowRight className="ml-2 h-4 w-4" />
+            {t('viewAllBlogs')} <ArrowRight className="ml-2 h-4 w-4" />
           </Link>
         </Button>
       </div>

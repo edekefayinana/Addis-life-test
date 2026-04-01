@@ -5,6 +5,7 @@ import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PropertyCard, PropertyCardProps } from './PropertyCard';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 interface PropertyCarouselProps {
   title: string;
@@ -17,6 +18,7 @@ export function PropertyCarousel({
   description,
   properties,
 }: PropertyCarouselProps) {
+  const t = useTranslations('home.featuredProperties');
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const scroll = (direction: 'left' | 'right') => {
@@ -99,7 +101,7 @@ export function PropertyCarousel({
             size="lg"
           >
             <Link href="/properties" className="flex items-center gap-2">
-              View All Properties <ArrowRight className="ml-2 h-4 w-4" />
+              {t('viewAll')} <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
         </div>

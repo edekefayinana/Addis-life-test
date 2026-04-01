@@ -1,9 +1,14 @@
+'use client';
+
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 export function AgentBanner() {
+  const t = useTranslations('home.agentBanner');
+
   return (
     <section className="pb-10 ">
       <div className="relative overflow-hidden rounded-lg bg-cta-bg text-black shadow-sm py-12 lg:px-36 px-6 ">
@@ -33,12 +38,10 @@ export function AgentBanner() {
         <div className="relative flex flex-col items-center justify-between gap-6 px-6 py-10 md:flex-row md:items-center md:px-10 lg:px-12">
           <div className="space-y-3 max-w-3xl font-instrument ">
             <h3 className="text-2xl md:text-4xl font-semibold text-black text-center md:text-left">
-              Join Our Freelance Agent Network
+              {t('title')}
             </h3>
             <p className="text-base md:text-lg leading-relaxed text-black/70 font-light text-center md:text-left">
-              Join Addis Life Real Estate&apos;s freelance agent community.
-              Access exclusive listings, manage clients, and earn competitive
-              commissions through our Agent Portal.
+              {t('description')}
             </p>
           </div>
 
@@ -48,7 +51,7 @@ export function AgentBanner() {
             className="rounded-full bg-white text-black hover:bg-white/90 shadow-md px-9 py-6 font-normal"
           >
             <Link href="/apply" className="flex items-center gap-2">
-              Register <ArrowRight className="h-4 w-4 ml-1" />
+              {t('register')} <ArrowRight className="h-4 w-4 ml-1" />
             </Link>
           </Button>
         </div>

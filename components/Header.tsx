@@ -6,24 +6,10 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { Menu, X, User, LogOut, LayoutDashboard, Package } from 'lucide-react';
 import { useSession, signOut } from 'next-auth/react';
+import { useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
-
-const navItems = [
-  { href: '/', label: 'Home' },
-  // { href: '/projects', label: 'Projects' },
-  { href: '/properties', label: 'Properties' },
-  { href: '/current-progress', label: 'Progress' },
-  { href: '/about-us', label: 'About Us' },
-  { href: '/blogs', label: 'Blogs' },
-  { href: '/contact-us', label: 'Contact Us' },
-];
-
-const propertyMenuItems = [
-  { href: '/properties?listingType=RENT', label: 'Rent' },
-  { href: '/properties?listingType=SALE', label: 'Sale' },
-];
 
 type HeaderVariant = 'dark' | 'light';
 
@@ -63,6 +49,8 @@ const variantStyles: Record<
 export function Header({ variant }: HeaderProps) {
   const pathname = usePathname();
   const { data: session, status } = useSession();
+  const t = useTranslations('nav');
+
   const isDarkRoute = pathname === '/' || pathname === '/blogs';
   const resolvedVariant: HeaderVariant =
     variant ?? (isDarkRoute ? 'dark' : 'light');
@@ -76,6 +64,21 @@ export function Header({ variant }: HeaderProps) {
   const isAuthenticated = status === 'authenticated';
   const isAdmin = session?.user?.role === 'ADMIN';
   const isAgent = session?.user?.role === 'AGENT';
+
+  // Navigation items with translations
+  const navItems = [
+    { href: '/', label: t('home') },
+    { href: '/properties', label: t('properties') },
+    { href: '/current-progress', label: t('progress') },
+    { href: '/about-us', label: t('aboutUs') },
+    { href: '/blogs', label: t('blogs') },
+    { href: '/contact-us', label: t('contactUs') },
+  ];
+
+  const propertyMenuItems = [
+    { href: '/properties?listingType=RENT', label: t('rent') },
+    { href: '/properties?listingType=SALE', label: t('sale') },
+  ];
 
   useEffect(() => {
     if (!isPropertiesOpen) return;
@@ -247,7 +250,7 @@ export function Header({ variant }: HeaderProps) {
                   <User className="h-4 w-4" />
                 </div>
                 <span className="text-sm font-medium">
-                  {session?.user?.name || 'Account'}
+                  {session?.user?.name || t('account')}
                 </span>
               </button>
 
@@ -262,7 +265,7 @@ export function Header({ variant }: HeaderProps) {
                     </p>
                     {(isAdmin || isAgent) && (
                       <span className="mt-2 inline-block rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 ring-1 ring-blue-200">
-                        {isAdmin ? 'Admin' : 'Agent'}
+                        {isAdmin ? t('admin') : t('agent')}
                       </span>
                     )}
                   </div>
@@ -276,7 +279,7 @@ export function Header({ variant }: HeaderProps) {
                           onClick={() => setIsProfileOpen(false)}
                         >
                           <LayoutDashboard className="h-4 w-4" />
-                          {isAdmin ? 'Admin Dashboard' : 'Dashboard'}
+                          {isAdmin ? t('adminDashboard') : t('dashboard')}
                         </Link>
                         <Link
                           href="/admin/inventory"
@@ -284,7 +287,7 @@ export function Header({ variant }: HeaderProps) {
                           onClick={() => setIsProfileOpen(false)}
                         >
                           <Package className="h-4 w-4" />
-                          Inventory
+                          {t('inventory')}
                         </Link>
                         <div className="my-1 border-t border-gray-100" />
                       </>
@@ -296,7 +299,7 @@ export function Header({ variant }: HeaderProps) {
                       className="flex w-full items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-600 transition hover:bg-red-50"
                     >
                       <LogOut className="h-4 w-4" />
-                      Sign Out
+                      {t('signOut')}
                     </button>
                   </div>
                 </div>
@@ -311,7 +314,7 @@ export function Header({ variant }: HeaderProps) {
                   styles.action
                 )}
               >
-                Log In
+                {t('login')}
               </Link>
 
               <Link
@@ -321,7 +324,7 @@ export function Header({ variant }: HeaderProps) {
                   styles.cta
                 )}
               >
-                Sign Up
+                {t('signup')}
               </Link>
             </>
           )}
@@ -447,7 +450,7 @@ export function Header({ variant }: HeaderProps) {
                   </p>
                   {(isAdmin || isAgent) && (
                     <span className="mt-2 inline-block rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 ring-1 ring-blue-200">
-                      {isAdmin ? 'Admin' : 'Agent'}
+                      {isAdmin ? t('admin') : t('agent')}
                     </span>
                   )}
                 </div>
@@ -460,7 +463,7 @@ export function Header({ variant }: HeaderProps) {
                       onClick={() => setIsMobileOpen(false)}
                     >
                       <LayoutDashboard className="h-4 w-4" />
-                      {isAdmin ? 'Admin Dashboard' : 'Dashboard'}
+                      {isAdmin ? t('adminDashboard') : t('dashboard')}
                     </Link>
                     <Link
                       href="/admin/inventory"
@@ -468,7 +471,7 @@ export function Header({ variant }: HeaderProps) {
                       onClick={() => setIsMobileOpen(false)}
                     >
                       <Package className="h-4 w-4" />
-                      Inventory Management
+                      {t('inventoryManagement')}
                     </Link>
                   </>
                 )}
@@ -482,7 +485,7 @@ export function Header({ variant }: HeaderProps) {
                   className="flex items-center justify-center gap-2 rounded-xl border border-red-200 bg-white px-4 py-3 text-center text-sm font-semibold text-red-600 transition hover:bg-red-50"
                 >
                   <LogOut className="h-4 w-4" />
-                  Sign Out
+                  {t('signOut')}
                 </button>
               </>
             ) : (
@@ -492,14 +495,14 @@ export function Header({ variant }: HeaderProps) {
                   className="rounded-full px-4 py-2 text-center text-sm font-medium text-foreground hover:bg-gray-100"
                   onClick={() => setIsMobileOpen(false)}
                 >
-                  Log In
+                  {t('login')}
                 </Link>
                 <Link
                   href="/apply"
                   className="rounded-full bg-brand-dark px-4 py-2 text-center text-sm font-semibold !text-white hover:bg-brand-dark/90"
                   onClick={() => setIsMobileOpen(false)}
                 >
-                  Sign Up
+                  {t('signup')}
                 </Link>
               </>
             )}

@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Download } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 const projects = [
   {
@@ -10,7 +11,6 @@ const projects = [
     imageUrl: '/AU2 site Building Renders/1_1 - Photo.jpg',
     className: 'md:col-span-2 md:row-span-2',
     searchQuery: 'African',
-    // pdfUrl: '/pdfs/africa-union-one.pdf',
     pdfUrl: '/pdfs/translation.pdf',
   },
   {
@@ -18,7 +18,6 @@ const projects = [
     imageUrl: '/AU2 site Building Renders/1_4 - Photo.jpg',
     className: 'md:col-span-2 md:row-span-1',
     searchQuery: 'African',
-    // pdfUrl: '/pdfs/africa-union-two.pdf',
     pdfUrl: '/pdfs/translation.pdf',
   },
   {
@@ -26,7 +25,6 @@ const projects = [
     imageUrl: '/bulgaria_Addis_life/Scene_1.png',
     className: 'md:col-span-1 md:row-span-2',
     searchQuery: 'Bulgaria',
-    // pdfUrl: '/pdfs/bulgaria-site.pdf',
     pdfUrl: '/pdfs/translation.pdf',
   },
   {
@@ -34,7 +32,6 @@ const projects = [
     imageUrl: '/AU2 site Building Renders/1_2 - Photo.jpg',
     className: 'md:col-span-1 md:row-span-2',
     searchQuery: 'Vatican',
-    // pdfUrl: '/pdfs/vatican-site.pdf',
     pdfUrl: '/pdfs/translation.pdf',
   },
   {
@@ -42,22 +39,21 @@ const projects = [
     imageUrl: '/upcoming.jpg',
     className: 'md:col-span-2 md:row-span-1',
     searchQuery: 'East',
-    // pdfUrl: '/pdfs/east-addis-ababa.pdf',
     pdfUrl: '/pdfs/translation.pdf',
   },
 ];
 
 export function ProjectListings() {
+  const t = useTranslations('home.projects');
+
   return (
     <section className="container mx-auto py-20 px-4 lg:px-8">
       <div className="mb-16 text-center">
         <h2 className="text-4xl font-semibold md:text-5xl text-foreground font-instrument">
-          Our Project Listings
+          {t('title')}
         </h2>
         <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground font-instrument">
-          Explore our completed projects, ongoing developments, and prime sites
-          to see our work firsthand, discover investment opportunities, and
-          envision your future home.
+          {t('subtitle')}
         </p>
       </div>
 
@@ -87,7 +83,7 @@ export function ProjectListings() {
                   {project.title}
                 </h3>
                 <p className="text-sm text-white/90 drop-shadow-md">
-                  View Properties →
+                  {t('viewProperties')} →
                 </p>
               </div>
 
@@ -100,7 +96,7 @@ export function ProjectListings() {
                 aria-label={`Download ${project.title} PDF`}
               >
                 <Download className="w-4 h-4" />
-                <span className="text-sm font-medium">Download PDF</span>
+                <span className="text-sm font-medium">{t('downloadPdf')}</span>
               </a>
             </Link>
           );
