@@ -237,12 +237,49 @@
   "contact": {
     "title": "ያግኙን",
     "subtitle": "ከቡድናችን ጋር ይገናኙ",
+    "home": {
+      "title": "ለእርስዎ በተሻለ መንገድ ይገናኙ",
+      "description": "አዲስ ቤት እየፈለጉ ነው፣ ኢንቨስትመንት እያቀዱ ነው፣ ወይም ስለ በመካሄድ ላይ ያሉ ፕሮጀክቶቻችን የበለጠ ለማወቅ ይፈልጋሉ፣ ቡድናችን በግልፅ መመሪያ ለመርዳት ዝግጁ ነው።"
+    },
     "form": {
-      "name": "ስም",
+      "firstName": "የመጀመሪያ ስም",
+      "lastName": "የአባት ስም",
       "email": "ኢሜይል",
-      "phone": "ስልክ",
-      "message": "መልእክት",
-      "send": "መልእክት ላክ"
+      "phone": "ስልክ ቁጥር",
+      "description": "መግለጫ",
+      "firstNamePlaceholder": "ለምሳሌ፣ ብሩክ",
+      "lastNamePlaceholder": "ለምሳሌ፣ ሰለሞን",
+      "emailPlaceholder": "ምሳሌ1@gmail.com",
+      "phonePlaceholder": "(+251)-911-201096",
+      "descriptionPlaceholder": "ጥያቄዎችዎን በዝርዝር ይፃፉ...",
+      "send": "መልእክት ላክ",
+      "sending": "በመላክ ላይ...",
+      "required": "*",
+      "errors": {
+        "firstNameRequired": "የመጀመሪያ ስም ያስፈልጋል",
+        "lastNameRequired": "የአባት ስም ያስፈልጋል",
+        "emailRequired": "ኢሜይል ያስፈልጋል",
+        "emailInvalid": "እባክዎ ትክክለኛ ኢሜይል ያስገቡ",
+        "phoneRequired": "ስልክ ቁጥር ያስፈልጋል",
+        "descriptionRequired": "መግለጫ ያስፈልጋል",
+        "descriptionMinLength": "መግለጫ ቢያንስ 10 ቁምፊዎች መሆን አለበት",
+        "fixErrors": "እባክዎ በቅጹ ውስጥ ያሉትን ስህተቶች ያስተካክሉ",
+        "networkError": "የአውታረ መረብ ስህተት። እባክዎ ግንኙነትዎን ያረጋግጡ እና እንደገና ይሞክሩ።",
+        "sendFailed": "መልእክት መላክ አልተሳካም። እባክዎ እንደገና ይሞክሩ።"
+      },
+      "success": "መልእክትዎ በተሳካ ሁኔታ ተልኳል።"
+    },
+    "addresses": {
+      "emailSupport": "የኢሜይል ድጋፍ",
+      "emailDescription": "ለፈጣን ጥያቄዎች እና እርዳታ፣ የድጋፍ ቡድናችንን በማንኛውም ጊዜ በኢሜይል ያግኙ።",
+      "visitOffice": "ቢሮአችንን ይጎብኙ",
+      "visitDescription": "በአካል መመሪያ ያግኙ እና ስለሚገኙ ንብረቶች የበለጠ ይወቁ።",
+      "callUs": "በቀጥታ ይደውሉልን",
+      "callDescription": "በስራ ሰዓት ውስጥ ለፈጣን ድጋፍ ከቡድናችን ጋር ይነጋገሩ።",
+      "officeAddress": "ቂርቆስ፣ ከአፍሪካ ህብረት ፊት ለፊት፣ አ.አ"
+    },
+    "map": {
+      "loading": "ካርታ በመጫን ላይ..."
     }
   },
   "footer": {

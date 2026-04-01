@@ -240,12 +240,49 @@
   "contact": {
     "title": "Contact Us",
     "subtitle": "Get in touch with our team",
+    "home": {
+      "title": "Get in Touch the Way That Works Best for You",
+      "description": "Whether you're searching for a new home, planning an investment, or simply want to learn more about our ongoing projects, our team is ready to assist you with clear guidance."
+    },
     "form": {
-      "name": "Name",
+      "firstName": "First Name",
+      "lastName": "Last Name",
       "email": "Email",
-      "phone": "Phone",
-      "message": "Message",
-      "send": "Send Message"
+      "phone": "Phone Number",
+      "description": "Description",
+      "firstNamePlaceholder": "Eg, Biruk",
+      "lastNamePlaceholder": "Eg, Solomon",
+      "emailPlaceholder": "Example1@gmail.com",
+      "phonePlaceholder": "(+251)-911-201096",
+      "descriptionPlaceholder": "Write Your questions in detail...",
+      "send": "Send A message",
+      "sending": "Sending...",
+      "required": "*",
+      "errors": {
+        "firstNameRequired": "First name is required",
+        "lastNameRequired": "Last name is required",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Please enter a valid email address",
+        "phoneRequired": "Phone number is required",
+        "descriptionRequired": "Description is required",
+        "descriptionMinLength": "Description must be at least 10 characters",
+        "fixErrors": "Please fix the errors in the form",
+        "networkError": "Network error. Please check your connection and try again.",
+        "sendFailed": "Failed to send message. Please try again."
+      },
+      "success": "Your message is sent successfully."
+    },
+    "addresses": {
+      "emailSupport": "Email Support",
+      "emailDescription": "For quick questions and assistance, email our support team anytime.",
+      "visitOffice": "Visit Our Office",
+      "visitDescription": "Get in-person guidance and learn more about available properties.",
+      "callUs": "Call Us Directly",
+      "callDescription": "Speak with our team during working hours for immediate support.",
+      "officeAddress": "Kirkos, In front of Africa union, AA"
+    },
+    "map": {
+      "loading": "Loading map..."
     }
   },
   "footer": {
