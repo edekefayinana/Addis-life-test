@@ -9,6 +9,7 @@ import { useFilters } from '@/lib/hooks/useFilters';
 import { PAGE_SIZE } from '@/lib/constants';
 import { PropertyFilters } from '@/components/inventory/PropertyFilters';
 import { Pagination } from '@/components/inventory/Pagination';
+import { useTranslations } from 'next-intl';
 
 // Adapter function to convert API data to PropertyCard format
 function adaptPropertyData(apiProperty: any) {
@@ -60,6 +61,7 @@ function InventoryContent({
   currentView: string;
   isPending: boolean;
 }) {
+  const t = useTranslations('properties');
   const { isLoading, data } = useDataFetch<any>('inventory', {
     queryString: query,
   });
@@ -101,9 +103,7 @@ function InventoryContent({
       </section>
 
       {properties.length === 0 && (
-        <div className="text-center py-12 text-gray-500">
-          No properties found. Try adjusting your filters.
-        </div>
+        <div className="text-center py-12 text-gray-500">{t('noResults')}</div>
       )}
 
       <Pagination totalPages={totalPages} />

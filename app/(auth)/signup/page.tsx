@@ -8,8 +8,10 @@ import { Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 export default function ApplyPage() {
+  const t = useTranslations('auth.signup');
   const [showPassword, setShowPassword] = useState(false);
   const [showEmail, setShowEmail] = useState(false);
   const [firstName, setFirstName] = useState('');
@@ -28,25 +30,25 @@ export default function ApplyPage() {
 
     // Client-side validation
     if (!firstName.trim() || !lastName.trim()) {
-      setErrorMessage('Please enter both first and last name.');
+      setErrorMessage(t('errors.bothNames'));
       setIsSubmitting(false);
       return;
     }
 
     if (!email.trim()) {
-      setErrorMessage('Email address is required.');
+      setErrorMessage(t('errors.emailRequired'));
       setIsSubmitting(false);
       return;
     }
 
     if (!password.trim()) {
-      setErrorMessage('Password is required.');
+      setErrorMessage(t('errors.passwordRequired'));
       setIsSubmitting(false);
       return;
     }
 
     if (password.length < 6) {
-      setErrorMessage('Password must be at least 6 characters long.');
+      setErrorMessage(t('errors.passwordMinLength'));
       setIsSubmitting(false);
       return;
     }
@@ -54,7 +56,7 @@ export default function ApplyPage() {
     // Email format validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      setErrorMessage('Please enter a valid email address.');
+      setErrorMessage(t('errors.emailInvalid'));
       setIsSubmitting(false);
       return;
     }
@@ -71,9 +73,7 @@ export default function ApplyPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        setErrorMessage(
-          data.error || 'Unable to create account. Please try again.'
-        );
+        setErrorMessage(data.error || t('errors.createAccountFailed'));
         setIsSubmitting(false);
         return;
       }
@@ -82,9 +82,7 @@ export default function ApplyPage() {
       router.push(`/otp?email=${encodeURIComponent(email)}`);
     } catch (error) {
       console.error('Registration error:', error);
-      setErrorMessage(
-        'Network error. Please check your connection and try again.'
-      );
+      setErrorMessage(t('errors.networkError'));
       setIsSubmitting(false);
     }
   };
@@ -94,12 +92,9 @@ export default function ApplyPage() {
       <Logo />
 
       <div className="space-y-2 text-center">
-        <h1 className="text-4xl font-semibold text-gray-900">
-          Apply as an Agent
-        </h1>
+        <h1 className="text-4xl font-semibold text-gray-900">{t('title')}</h1>
         <p className="text-base text-gray-600 leading-relaxed">
-          Submit your details to apply for access to the agent portal. All
-          applications are reviewed before approval.
+          {t('subtitle')}
         </p>
       </div>
 
@@ -110,12 +105,12 @@ export default function ApplyPage() {
               htmlFor="first-name"
               className="text-sm font-medium text-gray-900"
             >
-              First Name
+              {t('firstName')}
             </Label>
             <Input
               id="first-name"
               type="text"
-              placeholder="Biruk"
+              placeholder={t('firstNamePlaceholder')}
               className="h-14 rounded-lg text-base"
               value={firstName}
               onChange={(event) => setFirstName(event.target.value)}
@@ -128,12 +123,12 @@ export default function ApplyPage() {
               htmlFor="last-name"
               className="text-sm font-medium text-gray-900"
             >
-              Last Name
+              {t('lastName')}
             </Label>
             <Input
               id="last-name"
               type="text"
-              placeholder="Solomon"
+              placeholder={t('lastNamePlaceholder')}
               className="h-14 rounded-lg text-base"
               value={lastName}
               onChange={(event) => setLastName(event.target.value)}
@@ -144,12 +139,13 @@ export default function ApplyPage() {
 
         <div className="space-y-2">
           <Label htmlFor="phone" className="text-sm font-medium text-gray-900">
-            Phone Number <span className="text-gray-500">(required)</span>
+            {t('phone')}{' '}
+            <span className="text-gray-500">{t('phoneRequired')}</span>
           </Label>
           <Input
             id="phone"
             type="tel"
-            placeholder="+(251)-900-000-000"
+            placeholder={t('phonePlaceholder')}
             className="h-14 rounded-lg text-base"
             value={phone}
             onChange={(event) => setPhone(event.target.value)}
@@ -158,14 +154,14 @@ export default function ApplyPage() {
 
         <div className="space-y-2">
           <Label htmlFor="email" className="text-sm font-medium text-gray-900">
-            Email{' '}
-            <span className="text-gray-500">(optional but recommended)</span>
+            {t('email')}{' '}
+            <span className="text-gray-500">{t('emailOptional')}</span>
           </Label>
           <div className="relative">
             <Input
               id="email"
               type="email"
-              placeholder="Example1@gmail.com"
+              placeholder={t('emailPlaceholder')}
               className="h-14 rounded-lg pr-12 text-base"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
@@ -190,13 +186,13 @@ export default function ApplyPage() {
             htmlFor="password"
             className="text-sm font-medium text-gray-900"
           >
-            Password
+            {t('password')}
           </Label>
           <div className="relative">
             <Input
               id="password"
               type={showPassword ? 'text' : 'password'}
-              placeholder="•••••3"
+              placeholder={t('passwordPlaceholder')}
               className="h-14 rounded-lg pr-12 text-base"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
@@ -221,7 +217,7 @@ export default function ApplyPage() {
           className="h-14 w-full rounded-full bg-primary text-base font-medium text-white hover:bg-primary/90"
           disabled={isSubmitting}
         >
-          {isSubmitting ? 'Creating account...' : 'Submit for Application'}
+          {isSubmitting ? t('submitting') : t('submitButton')}
         </Button>
 
         {errorMessage && (
@@ -231,12 +227,12 @@ export default function ApplyPage() {
         )}
 
         <div className="text-center text-base">
-          <span className="text-gray-600">Already have agent account? </span>
+          <span className="text-gray-600">{t('alreadyHaveAccount')} </span>
           <Link
             href="/login"
-            className="font-medium !text-blue-600 hover:text-blue-700 underline text-[18px]"
+            className="font-medium text-blue-600 hover:text-blue-700 underline text-[18px]"
           >
-            Log In
+            {t('logIn')}
           </Link>
         </div>
       </form>

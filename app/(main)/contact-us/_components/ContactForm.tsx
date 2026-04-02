@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 
 interface FormData {
   firstName: string;
@@ -25,6 +26,7 @@ interface FormErrors {
 }
 
 export default function ContactForm() {
+  const t = useTranslations('contact.form');
   const [formData, setFormData] = useState<FormData>({
     firstName: '',
     lastName: '',
@@ -52,27 +54,27 @@ export default function ContactForm() {
     const newErrors: FormErrors = {};
 
     if (!formData.firstName.trim()) {
-      newErrors.firstName = 'First name is required';
+      newErrors.firstName = t('errors.firstNameRequired');
     }
 
     if (!formData.lastName.trim()) {
-      newErrors.lastName = 'Last name is required';
+      newErrors.lastName = t('errors.lastNameRequired');
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
+      newErrors.email = t('errors.emailRequired');
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
+      newErrors.email = t('errors.emailInvalid');
     }
 
     if (!formData.phone.trim()) {
-      newErrors.phone = 'Phone number is required';
+      newErrors.phone = t('errors.phoneRequired');
     }
 
     if (!formData.description.trim()) {
-      newErrors.description = 'Description is required';
+      newErrors.description = t('errors.descriptionRequired');
     } else if (formData.description.trim().length < 10) {
-      newErrors.description = 'Description must be at least 10 characters';
+      newErrors.description = t('errors.descriptionMinLength');
     }
 
     setErrors(newErrors);
@@ -83,7 +85,7 @@ export default function ContactForm() {
     e.preventDefault();
 
     if (!validateForm()) {
-      toast.error('Please fix the errors in the form');
+      toast.error(t('errors.fixErrors'));
       return;
     }
 
@@ -101,7 +103,7 @@ export default function ContactForm() {
       const result = await response.json();
 
       if (response.ok) {
-        toast.success('Your message is sent successfully.');
+        toast.success(t('success'));
 
         // Reset form
         setFormData({
@@ -120,16 +122,14 @@ export default function ContactForm() {
             serverErrors[error.field as keyof FormErrors] = error.message;
           });
           setErrors(serverErrors);
-          toast.error('Please fix the errors in the form');
+          toast.error(t('errors.fixErrors'));
         } else {
-          toast.error(
-            result.message || 'Failed to send message. Please try again.'
-          );
+          toast.error(result.message || t('errors.sendFailed'));
         }
       }
     } catch (error) {
       console.error('Contact form error:', error);
-      toast.error('Network error. Please check your connection and try again.');
+      toast.error(t('errors.networkError'));
     } finally {
       setIsSubmitting(false);
     }
@@ -142,7 +142,7 @@ export default function ContactForm() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="space-y-3 flex flex-col">
             <Label htmlFor="firstName" className="text-base font-medium">
-              First Name *
+              {t('firstName')} {t('required')}
             </Label>
             <Input
               id="firstName"
@@ -150,7 +150,7 @@ export default function ContactForm() {
               type="text"
               value={formData.firstName}
               onChange={handleInputChange}
-              placeholder="Eg, Biruk"
+              placeholder={t('firstNamePlaceholder')}
               className={`h-14 px-6 py-4 rounded-xl shadow-none border ${
                 errors.firstName ? 'border-red-500 focus:border-red-500' : ''
               }`}
@@ -161,7 +161,7 @@ export default function ContactForm() {
           </div>
           <div className="space-y-3 flex flex-col">
             <Label htmlFor="lastName" className="text-base font-medium">
-              Last Name *
+              {t('lastName')} {t('required')}
             </Label>
             <Input
               id="lastName"
@@ -169,7 +169,7 @@ export default function ContactForm() {
               type="text"
               value={formData.lastName}
               onChange={handleInputChange}
-              placeholder="Eg, Solomon"
+              placeholder={t('lastNamePlaceholder')}
               className={`h-14 px-6 py-4 rounded-xl shadow-none border ${
                 errors.lastName ? 'border-red-500 focus:border-red-500' : ''
               }`}
@@ -183,7 +183,7 @@ export default function ContactForm() {
         {/* Email */}
         <div className="space-y-3 flex flex-col">
           <Label htmlFor="email" className="text-base font-medium">
-            Email *
+            {t('email')} {t('required')}
           </Label>
           <Input
             id="email"
@@ -191,7 +191,7 @@ export default function ContactForm() {
             type="email"
             value={formData.email}
             onChange={handleInputChange}
-            placeholder="Example1@gmail.com"
+            placeholder={t('emailPlaceholder')}
             className={`h-14 px-6 py-4 rounded-xl shadow-none ${
               errors.email ? 'border-red-500 focus:border-red-500' : ''
             }`}
@@ -204,7 +204,7 @@ export default function ContactForm() {
         {/* Phone Number */}
         <div className="space-y-3 flex flex-col">
           <Label htmlFor="phone" className="text-base font-medium">
-            Phone Number *
+            {t('phone')} {t('required')}
           </Label>
           <Input
             id="phone"
@@ -212,7 +212,7 @@ export default function ContactForm() {
             type="tel"
             value={formData.phone}
             onChange={handleInputChange}
-            placeholder="(+251)-911-201096"
+            placeholder={t('phonePlaceholder')}
             className={`h-14 px-6 py-4 rounded-xl shadow-none ${
               errors.phone ? 'border-red-500 focus:border-red-500' : ''
             }`}
@@ -225,14 +225,14 @@ export default function ContactForm() {
         {/* Description */}
         <div className="space-y-3 flex flex-col">
           <Label htmlFor="description" className="text-base font-medium">
-            Description *
+            {t('description')} {t('required')}
           </Label>
           <Textarea
             id="description"
             name="description"
             value={formData.description}
             onChange={handleInputChange}
-            placeholder="Write Your questions in detail..."
+            placeholder={t('descriptionPlaceholder')}
             className={`min-h-[140px] px-7 py-4 rounded-xl shadow-none ${
               errors.description ? 'border-red-500 focus:border-red-500' : ''
             }`}
@@ -248,7 +248,7 @@ export default function ContactForm() {
           disabled={isSubmitting}
           className="h-12 lg:h-14 w-full rounded-full bg-primary text-base mt-4 lg:mt-8 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isSubmitting ? 'Sending...' : 'Send A message'}
+          {isSubmitting ? t('sending') : t('send')}
         </Button>
       </form>
     </Card>

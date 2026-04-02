@@ -1,9 +1,12 @@
+'use client';
 import React from 'react';
 import { Mail, MapPin, Phone } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 export default function ContactAddresses() {
+  const t = useTranslations('contact.addresses');
   return (
     <section className=" mx-auto py-5 lg:py-16 max-w-[1212px]">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -12,10 +15,8 @@ export default function ContactAddresses() {
           <div className=" inline-flex rounded-lg mb-4 bg-white border drop-shadow-sm p-3">
             <Mail className="h-6 w-6" />
           </div>
-          <h3 className=" text-lg font-semibold ">Email Support</h3>
-          <p className="text-base text-description">
-            For quick questions and assistance, email our support team anytime.
-          </p>
+          <h3 className=" text-lg font-semibold ">{t('emailSupport')}</h3>
+          <p className="text-base text-description">{t('emailDescription')}</p>
           <Link
             href="mailto:info@addisliferealestate.com"
             className="text-lg font-medium mt-2"
@@ -29,14 +30,10 @@ export default function ContactAddresses() {
           <div className=" inline-flex rounded-lg mb-4 bg-white border drop-shadow-sm p-3">
             <MapPin className="h-6 w-6" />
           </div>
-          <h3 className=" text-lg font-semibold ">Visit Our Office</h3>
-          <p className=" text-base text-description">
-            Get in-person guidance and learn more about available properties.
-          </p>
+          <h3 className=" text-lg font-semibold ">{t('visitOffice')}</h3>
+          <p className=" text-base text-description">{t('visitDescription')}</p>
           <Link href="#" className="text-lg font-medium mt-2">
-            <span className="text-blue-600">
-              Kirkos, In front of Africa union, AA
-            </span>
+            <span className="text-blue-600">{t('officeAddress')}</span>
           </Link>
         </Card>
 
@@ -45,10 +42,8 @@ export default function ContactAddresses() {
           <div className=" inline-flex rounded-lg mb-4 bg-white border drop-shadow-sm p-3">
             <Phone className="h-6 w-6" />
           </div>
-          <h3 className=" text-lg font-semibold ">Call Us Directly</h3>
-          <p className=" text-base text-description">
-            Speak with our team during working hours for immediate support.
-          </p>
+          <h3 className=" text-lg font-semibold ">{t('callUs')}</h3>
+          <p className=" text-base text-description">{t('callDescription')}</p>
           <Link href="tel:+251911201096" className="text-lg font-medium mt-2">
             <span className="text-blue-600">0930696969/0930656565</span>
           </Link>

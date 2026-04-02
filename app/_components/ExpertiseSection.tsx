@@ -1,3 +1,5 @@
+'use client';
+
 import {
   CircleUserRound,
   HandCoins,
@@ -5,44 +7,34 @@ import {
   UserCheck,
 } from 'lucide-react';
 import { FeatureCard } from './FeatureCard';
-
-const features = [
-  {
-    icon: ShieldCheck,
-    title: 'Quality Excellence',
-    description:
-      'Deliver strong, safe, and long-lasting buildings using strict quality standards.',
-  },
-  {
-    icon: UserCheck,
-    title: 'Trust & Transparency',
-    description:
-      'Maintain clear communication, honest pricing, and realistic commitments.',
-  },
-  {
-    icon: CircleUserRound,
-    title: 'Customer Confidence',
-    description:
-      'Ensure every client feels secure, informed, and proud of their investment.',
-  },
-  {
-    icon: HandCoins,
-    title: 'Sustainable Growth',
-    description:
-      'Expand responsibly while maintaining high construction and service standards.',
-  },
-];
-
-// const partners = [
-//   { name: 'Lumina', icon: Hexagon },
-//   { name: 'Vortex', icon: Globe },
-//   { name: 'Velocity', icon: Zap },
-//   { name: 'Synergy', icon: Triangle },
-//   { name: 'Enigma', icon: Component },
-//   { name: 'Spectrum', icon: Hexagon },
-// ];
+import { useTranslations } from 'next-intl';
 
 export function ExpertiseSection() {
+  const t = useTranslations('home.expertise');
+
+  const features = [
+    {
+      icon: ShieldCheck,
+      titleKey: 'qualityExcellence',
+      descriptionKey: 'qualityDescription',
+    },
+    {
+      icon: UserCheck,
+      titleKey: 'trustTransparency',
+      descriptionKey: 'trustDescription',
+    },
+    {
+      icon: CircleUserRound,
+      titleKey: 'customerConfidence',
+      descriptionKey: 'customerDescription',
+    },
+    {
+      icon: HandCoins,
+      titleKey: 'sustainableGrowth',
+      descriptionKey: 'sustainableDescription',
+    },
+  ];
+
   return (
     <section className="bg-brand-dark py-20 text-white rounded-lg">
       <div className="container mx-auto px-4 lg:px-8">
@@ -50,13 +42,10 @@ export function ExpertiseSection() {
           {/* Left Text Content */}
           <div className="flex flex-col justify-center lg:col-span-5">
             <h2 className="text-4xl font-bold leading-tight md:text-5xl">
-              Why Choose Our Expertise
+              {t('title')}
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-slate-300">
-              We make finding your perfect property simple, secure, and
-              stress-free. With expert guidance, personalized support, and a
-              wide range of options, we help you make the right choice with
-              confidence.
+              {t('subtitle')}
             </p>
           </div>
 
@@ -66,37 +55,14 @@ export function ExpertiseSection() {
               <FeatureCard
                 key={idx}
                 icon={feature.icon}
-                title={feature.title}
-                description={feature.description}
+                title={t(feature.titleKey)}
+                description={t(feature.descriptionKey)}
                 className="h-full"
               />
             ))}
           </div>
         </div>
       </div>
-
-      {/* Partners Section */}
-      {/* <div className="mt-24 border-t border-white/10 pt-12 text-center w-full">
-        <div className="container mx-auto px-4 lg:px-8">
-          <p className="mb-8 text-sm font-medium text-slate-400">
-            Trusted by 10+ Industry Partners
-          </p>
-          <div className="relative flex w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-            <div className="flex min-w-full shrink-0 animate-scroll items-center gap-12 py-4 hover:[animation-play-state:paused]">
-              {[...partners, ...partners, ...partners, ...partners].map(
-                (partner, idx) => (
-                  <div key={idx} className="flex items-center gap-2">
-                    <partner.icon className="h-6 w-6 grayscale transition-all duration-500 hover:grayscale-0" />
-                    <span className="text-lg font-semibold grayscale transition-all duration-500 hover:grayscale-0">
-                      {partner.name}
-                    </span>
-                  </div>
-                )
-              )}
-            </div>
-          </div>
-        </div>
-      </div> */}
     </section>
   );
 }

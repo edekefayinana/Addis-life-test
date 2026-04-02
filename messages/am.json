@@ -1,0 +1,520 @@
+{
+  "common": {
+    "loading": "በመጫን ላይ...",
+    "error": "ስህተት ተከስቷል",
+    "success": "ተሳክቷል",
+    "cancel": "ሰርዝ",
+    "save": "አስቀምጥ",
+    "delete": "ሰርዝ",
+    "edit": "አርትዕ",
+    "close": "ዝጋ",
+    "back": "ተመለስ",
+    "next": "ቀጣይ",
+    "previous": "ቀዳሚ",
+    "submit": "አስገባ",
+    "search": "ፈልግ",
+    "filter": "አጣራ",
+    "sort": "ደርድር",
+    "viewAll": "ሁሉንም ይመልከቱ",
+    "learnMore": "ተጨማሪ ይወቁ",
+    "getStarted": "ይጀምሩ",
+    "contactUs": "ያግኙን"
+  },
+  "nav": {
+    "home": "መነሻ",
+    "properties": "ንብረቶች",
+    "progress": "እድገት",
+    "aboutUs": "ስለ እኛ",
+    "blogs": "ብሎጎች",
+    "contactUs": "ያግኙን",
+    "login": "ግባ",
+    "signup": "ተመዝገብ",
+    "logout": "ውጣ",
+    "dashboard": "ዳሽቦርድ",
+    "rent": "ኪራይ",
+    "sale": "ሽያጭ",
+    "adminDashboard": "የአስተዳዳሪ ዳሽቦርድ",
+    "inventory": "ዝርዝር",
+    "inventoryManagement": "የዝርዝር አስተዳደር",
+    "signOut": "ውጣ",
+    "account": "መለያ",
+    "admin": "አስተዳዳሪ",
+    "agent": "ወኪል"
+  },
+  "home": {
+    "hero": {
+      "title": "ለእርስዎ ተስማሚ የሆነ ንብረት ያግኙ",
+      "subtitle": "በኢትዮጵያ ውስጥ ከፍተኛ የሪል እስቴት አማራጮችን ይመልከቱ። ከዘመናዊ አፓርትመንቶች እስከ የቅንጦት ቪላዎች።",
+      "searchPlaceholder": "በአካባቢ፣ በንብረት አይነት ይፈልጉ...",
+      "joinAgentNetwork": "የእኛን ነፃ ወኪል አውታረ መረብ ይቀላቀሉ",
+      "limitedOffer": "ውስን ቅናش",
+      "newLaunch": "አዲስ ጅምር",
+      "openHouse": "ክፍት ቤት",
+      "verifiedUpdate": "የተረጋገጠ መረጃ"
+    },
+    "featuredProperties": {
+      "title": "ለእርስዎ ተስማሚ የሆነ ንብረት ያግኙ",
+      "description": "በኢትዮጵያ ውስጥ ከፍተኛ የሪል እስቴት አማራጮችን ይመልከቱ። ከዘመናዊ አፓርትመንቶች እስከ የቅንጦት ቪላዎች።",
+      "viewAll": "ሁሉንም ንብረቶች ይመልከቱ"
+    },
+    "developer": {
+      "title": "የእርስዎ የታመነ የንብረት ገንቢ",
+      "aboutUs": "ስለ እኛ",
+      "description": "አዲስ ላይፍ ሪል እስቴት በአዲስ አበባ ውስጥ ዘመናዊ እና አስተማማኝ መኖሪያ ቤቶችን ያቀርባል። በዓመታት ልምድ እና በጠንካራ የግንባታ ብቃት የተደገፈ፣ በጥራት፣ በግልፅነት እና በወቅቱ አቅርቦት ላይ እናተኩራለን።",
+      "experience": "ልምድ",
+      "deliveredProjects": "የተላኩ ፕሮጀክቶች",
+      "learnMore": "ተጨማሪ ይወቁ"
+    },
+    "expertise": {
+      "title": "ለምን የእኛን ብቃት መምረጥ አለብዎት",
+      "subtitle": "ለእርስዎ ተስማሚ የሆነ ንብረት ማግኘትን ቀላል፣ ደህንነቱ የተጠበቀ እና ጭንቀት የለሽ እናደርገዋለን። በባለሙያ መመሪያ፣ በግል ድጋፍ እና በሰፊ አማራጮች፣ በራስ መተማመን ትክክለኛውን ምርጫ እንዲያደርጉ እንረዳዎታለን።",
+      "qualityExcellence": "የጥራት ብቃት",
+      "qualityDescription": "ጠንካራ፣ ደህንነቱ የተጠበቀ እና ዘላቂ ህንፃዎችን በጥብቅ የጥራት ደረጃዎች በመጠቀም ያቀርባሉ።",
+      "trustTransparency": "እምነት እና ግልፅነት",
+      "trustDescription": "ግልፅ ግንኙነት፣ ታማኝ ዋጋ እና እውነተኛ ቃል ኪዳኖችን ይጠብቁ።",
+      "customerConfidence": "የደንበኛ እምነት",
+      "customerDescription": "እያንዳንዱ ደንበኛ ደህንነቱ የተጠበቀ፣ መረጃ ያለው እና በኢንቨስትመንታቸው ኩራት እንዲሰማው ያረጋግጡ።",
+      "sustainableGrowth": "ዘላቂ እድገት",
+      "sustainableDescription": "ከፍተኛ የግንባታ እና የአገልግሎት ደረጃዎችን እየጠበቁ በኃላፊነት ይስፋፉ።"
+    },
+    "projects": {
+      "title": "የእኛ የፕሮጀክት ዝርዝሮች",
+      "subtitle": "የተጠናቀቁ ፕሮጀክቶቻችንን፣ በመካሄድ ላይ ያሉ እድገቶችን እና ዋና ቦታዎችን ይመልከቱ፣ ስራችንን በቀጥታ ለማየት፣ የኢንቨስትመንት እድሎችን ለማግኘት እና የወደፊት ቤትዎን ለማየት።",
+      "viewProperties": "ንብረቶችን ይመልከቱ",
+      "downloadPdf": "ፒዲኤፍ አውርድ"
+    },
+
+    "agentBanner": {
+      "title": "የእኛን ነፃ ወኪል አውታረ መረብ ይቀላቀሉ",
+      "description": "የአዲስ ላይፍ ሪል እስቴት ነፃ ወኪል ማህበረሰብን ይቀላቀሉ። ልዩ ዝርዝሮችን ያግኙ፣ ደንበኞችን ያስተዳድሩ እና በወኪል መግቢያችን በኩል ተወዳዳሪ ኮሚሽኖችን ያግኙ።",
+      "register": "ይመዝገቡ"
+    },
+    "testimonials": {
+      "title": "ደንበኞቻችን ምን ይላሉ",
+      "subtitle": "አዲስ ላይፍ ሪል እስቴት አስተማማኝ ቤቶችን እና ለስላሳ የግዢ ልምድን በማቅረብ ኩራት ይሰማዋል። ደንበኞቻችን የሚሉት ይህ ነው።",
+      "previousTestimonial": "ቀዳሚ ምስክርነት",
+      "nextTestimonial": "ቀጣይ ምስክርነት",
+      "client": "ደንበኛ",
+      "homeowner": "የቤት ባለቤት"
+    },
+    "insights": {
+      "title": "የእኛ የቅርብ ጊዜ መረጃዎች",
+      "subtitle": "ከሪል እስቴት ዓለም የቅርብ ጊዜ ዜናዎችን እና አዝማሚያዎችን በመከታተል ይቆዩ።",
+      "viewAllBlogs": "ሁሉንም ብሎጎች ይመልከቱ"
+    },
+    "heroSearch": {
+      "searchPlaceholder": "በአካባቢ፣ በቦታ ወይም በንብረት አይነት ይፈልጉ...",
+      "searchPlaceholderMobile": "በአካባቢ፣ በቦታ ይፈልጉ...",
+      "filter": "አጣራ",
+      "listingType": "የዝርዝር አይነት",
+      "bedrooms": "መኝታ ቤቶች",
+      "any": "ማንኛውም",
+      "forRent": "ለኪራይ",
+      "forSale": "ለሽያጭ",
+      "oneBedroom": "1 መኝታ ቤት",
+      "twoBedrooms": "2 መኝታ ቤቶች",
+      "threeBedrooms": "3 መኝታ ቤቶች",
+      "fourBedrooms": "4 መኝታ ቤቶች",
+      "fivePlusBedrooms": "5+ መኝታ ቤቶች",
+      "reset": "ዳግም አስጀምር",
+      "apply": "ተግብር",
+      "search": "ፈልግ"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "የወኪል መግቢያ",
+      "subtitle": "የንብረት ቦታ ማስያዝ እና ኮሚሽኖችን ለማስተዳደር የወኪል ዳሽቦርድዎን ይድረሱ።",
+      "email": "ኢሜይል",
+      "emailPlaceholder": "agent@example.com",
+      "password": "የይለፍ ቃል",
+      "passwordPlaceholder": "••••••",
+      "keepLoggedIn": "ገብቼ እንድቆይ አድርግ",
+      "forgotPassword": "የይለፍ ቃል ረሱ?",
+      "loginButton": "ግባ",
+      "loggingIn": "በመግባት ላይ...",
+      "noAccount": "የወኪል መለያ የለዎትም?",
+      "applyAccess": "ለመዳረሻ ያመልክቱ",
+      "goBackHome": "ወደ መነሻ ተመለስ",
+      "errorInvalidCredentials": "ልክ ያልሆነ ኢሜይል ወይም የይለፍ ቃል።",
+      "errorEmailNotVerified": "ኢሜይልዎ አልተረጋገጠም። እባክዎ የማረጋገጫ ኮድ ለማግኘት የገቢ መልእክትዎን ይመልከቱ።"
+    },
+    "signup": {
+      "title": "እንደ ወኪል ያመልክቱ",
+      "subtitle": "ወደ ወኪል ፖርታል ለመድረስ ዝርዝሮችዎን ያስገቡ። ሁሉም ማመልከቻዎች ከማጽደቅ በፊት ይገመገማሉ።",
+      "firstName": "የመጀመሪያ ስም",
+      "lastName": "የአባት ስም",
+      "phone": "ስልክ ቁጥር",
+      "email": "ኢሜይል",
+      "password": "የይለፍ ቃል",
+      "firstNamePlaceholder": "ብሩክ",
+      "lastNamePlaceholder": "ሰለሞን",
+      "phonePlaceholder": "+(251)-900-000-000",
+      "phoneRequired": "(ያስፈልጋል)",
+      "emailOptional": "(አማራጭ ነገር ግን የሚመከር)",
+      "emailPlaceholder": "ምሳሌ1@gmail.com",
+      "passwordPlaceholder": "•••••3",
+      "submitButton": "ለማመልከት ያስገቡ",
+      "submitting": "መለያ በመፍጠር ላይ...",
+      "alreadyHaveAccount": "ቀድሞውኑ የወኪል መለያ አለዎት?",
+      "logIn": "ግባ",
+      "errors": {
+        "bothNames": "እባክዎ የመጀመሪያ እና የአባት ስም ያስገቡ።",
+        "emailRequired": "የኢሜይል አድራሻ ያስፈልጋል።",
+        "passwordRequired": "የይለፍ ቃል ያስፈልጋል።",
+        "passwordMinLength": "የይለፍ ቃል ቢያንስ 6 ቁምፊዎች መሆን አለበት።",
+        "emailInvalid": "እባክዎ ትክክለኛ የኢሜይል አድራሻ ያስገቡ።",
+        "createAccountFailed": "መለያ መፍጠር አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
+        "networkError": "የአውታረ መረብ ስህተት። እባክዎ ግንኙነትዎን ያረጋግጡ እና እንደገና ይሞክሩ።"
+      }
+    },
+    "apply": {
+      "title": "እንደ ወኪል ያመልክቱ",
+      "subtitle": "ወደ ወኪል መግቢያ ለመድረስ ዝርዝሮችዎን ያስገቡ።",
+      "firstName": "የመጀመሪያ ስም",
+      "lastName": "የአባት ስም",
+      "phone": "ስልክ ቁጥር",
+      "email": "ኢሜይል",
+      "password": "የይለፍ ቃል",
+      "governmentId": "የመንግስት መታወቂያ (ፓስፖርት/መታወቂያ)",
+      "required": "*",
+      "firstNamePlaceholder": "ብሩክ",
+      "lastNamePlaceholder": "ሰለሞን",
+      "phonePlaceholder": "+(251)-900-000-000",
+      "emailPlaceholder": "ምሳሌ1@gmail.com",
+      "passwordPlaceholder": "•••••3",
+      "uploadFile": "ለመስቀል ጠቅ ያድርጉ",
+      "dragDrop": "ወይም ይጎትቱ እና ይጣሉ",
+      "fileTypes": "PDF፣ JPG፣ ወይም PNG (ከ 5MB በታች)",
+      "submitButton": "ማመልከቻ አስገባ",
+      "submitting": "መለያ በመፍጠር ላይ...",
+      "alreadyHaveAccount": "ቀድሞውኑ የወኪል መለያ አለዎት?",
+      "logIn": "ግባ",
+      "errors": {
+        "bothNames": "እባክዎ የመጀመሪያ እና የአባት ስም ያስገቡ።",
+        "emailRequired": "የኢሜይል አድራሻ ያስፈልጋል።",
+        "passwordRequired": "የይለፍ ቃል ያስፈልጋል።",
+        "passwordMinLength": "የይለፍ ቃል ቢያንስ 6 ቁምፊዎች መሆን አለበት።",
+        "governmentIdRequired": "የመንግስት መታወቂያ ያስፈልጋል።",
+        "emailInvalid": "እባክዎ ትክክለኛ የኢሜይል አድራሻ ያስገቡ።",
+        "invalidFileType": "እባክዎ PDF፣ JPG፣ ወይም PNG ፋይል ይስቀሉ።",
+        "fileSizeLimit": "የፋይል መጠን ከ 5MB በታች መሆን አለበት።",
+        "uploadFailed": "የመንግስት መታወቂያ መስቀል አልተሳካም። እባክዎ እንደገና ይሞክሩ።",
+        "createAccountFailed": "መለያ መፍጠር አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
+        "networkError": "የአውታረ መረብ ስህተት። እባክዎ ግንኙነትዎን ያረጋግጡ እና እንደገና ይሞክሩ።"
+      }
+    },
+    "otp": {
+      "title": "OTP ያስገቡ",
+      "subtitle": "ወደ ኢሜይልዎ የተላከውን 6-አሃዝ ኮድ ያስገቡ።",
+      "didntGetOtp": "OTP አላገኙም?",
+      "resendOtp": "OTP እንደገና ላክ",
+      "resending": "እንደገና በመላክ ላይ...",
+      "verify": "አረጋግጥ",
+      "verifying": "በማረጋገጥ ላይ...",
+      "errors": {
+        "enterOtp": "እባክዎ 6-አሃዝ OTP ያስገቡ።",
+        "emailNotFound": "ኢሜይል አልተገኘም። እባክዎ እንደገና ይመዝገቡ።",
+        "resendFailed": "OTP እንደገና መላክ አልተሳካም።",
+        "verificationFailed": "ማረጋገጥ አልተሳካም።"
+      },
+      "success": {
+        "resent": "OTP ወደ ኢሜይልዎ እንደገና ተልኳል።",
+        "verified": "ኢሜይል በተሳካ ሁኔታ ተረጋግጧል! አሁን መግባት ይችላሉ።"
+      }
+    },
+    "forgotPassword": {
+      "title": "የይለፍ ቃል ረሱ",
+      "subtitle": "ኢሜይልዎን ያስገቡ፣ እና የይለፍ ቃልዎን ለመቀየር OTP እንልክልዎታለን።",
+      "email": "ኢሜይል",
+      "emailPlaceholder": "johndue@email.com",
+      "sendOtp": "OTP ላክ",
+      "sending": "በመላክ ላይ...",
+      "dontHaveAccount": "የወኪል መለያ የለዎትም?",
+      "applyForAccess": "ለመድረስ ያመልክቱ",
+      "errors": {
+        "sendFailed": "OTP መላክ አልተሳካም።"
+      },
+      "success": {
+        "otpSent": "OTP ተልኳል! እባክዎ ኢሜይልዎን ያረጋግጡ።"
+      }
+    },
+    "resetPassword": {
+      "title": "የይለፍ ቃል ይቀይሩ",
+      "subtitleOtp": "ወደ ኢሜይልዎ የተላከውን 6-አሃዝ ኮድ ያስገቡ።",
+      "subtitlePassword": "መለያዎን ደህንነቱ የተጠበቀ እና ጥብቅ ለማድረግ አዲስ ጠንካራ የይለፍ ቃል ያዘጋጁ።",
+      "newPassword": "አዲስ የይለፍ ቃል",
+      "confirmPassword": "የይለፍ ቃል ያረጋግጡ",
+      "passwordPlaceholder": "•••••3",
+      "verifyOtp": "OTP ያረጋግጡ",
+      "verifying": "በማረጋገጥ ላይ...",
+      "resetPassword": "የይለፍ ቃል ይቀይሩ",
+      "resetting": "በመቀየር ላይ...",
+      "errors": {
+        "enterOtp": "እባክዎ 6-አሃዝ OTP ያስገቡ።",
+        "verificationFailed": "ማረጋገጥ አልተሳካም።",
+        "fillAllFields": "እባክዎ ሁሉንም መስኮች ይሙሉ።",
+        "passwordsNotMatch": "የይለፍ ቃሎች አይዛመዱም።",
+        "resetFailed": "የይለፍ ቃል መቀየር አልተሳካም።"
+      },
+      "success": {
+        "otpVerified": "OTP ተረጋግጧል! እባክዎ አዲስ የይለፍ ቃልዎን ያዘጋጁ።",
+        "passwordReset": "የይለፍ ቃል በተሳካ ሁኔታ ተቀይሯል! አሁን መግባት ይችላሉ።"
+      }
+    }
+  },
+  "authLayout": {
+    "title": "ለባለሙያ የሪል እስቴት ወኪሎች በኢትዮጵያ የተገነባ",
+    "description": "የተረጋገጡ የሚገኙ ክፍሎችን ያግኙ፣ ንብረቶችን በቅጽበት ያስያዙ እና ኮሚሽኖችዎን ይከታተሉ—ሁሉም ከአንድ ደህንነቱ የተጠበቀ መድረክ።"
+  },
+  "properties": {
+    "title": "ንብረቶች",
+    "pageTitle": "በአዲስ አበባ ለሽያጭ የቀረቡ ንብረቶች",
+    "viewToggle": {
+      "list": "ዝርዝር",
+      "map": "ካርታ"
+    },
+    "filters": {
+      "searchPlaceholder": "አካባቢ፣ ቦታ ይፈልጉ",
+      "propertyType": "የንብረት አይነት",
+      "bedrooms": "መኝታ ቤቶች",
+      "price": "ዋጋ",
+      "more": "ተጨማሪ",
+      "less": "ያነሰ",
+      "clear": "አጽዳ",
+      "propertyTypes": {
+        "apartment": "አፓርትመንት",
+        "house": "ቤት",
+        "villa": "ቪላ",
+        "condo": "ኮንዶሚኒየም",
+        "commercial": "የንግድ"
+      },
+      "bedroomOptions": {
+        "one": "1 መኝታ ቤት",
+        "two": "2 መኝታ ቤቶች",
+        "three": "3 መኝታ ቤቶች",
+        "four": "4 መኝታ ቤቶች",
+        "fivePlus": "5+ መኝታ ቤቶች"
+      }
+    },
+    "noResults": "ምንም ንብረቶች አልተገኙም። ማጣሪያዎችዎን ማስተካከል ይሞክሩ።",
+    "details": {
+      "back": "ተመለስ",
+      "beds": "መኝታ ቤቶች",
+      "baths": "መታጠቢያ ቤቶች",
+      "overview": "አጠቃላይ እይታ",
+      "videoTour": "የቪዲዮ ጉብኝት",
+      "virtualTour": "ምናባዊ ጉብኝት",
+      "showMore": "ተጨማሪ አሳይ",
+      "showLess": "ያነሰ አሳይ",
+      "builtFrom": "የተገነባው ከ",
+      "propertyType": "የንብረት አይነት",
+      "listingType": "የዝርዝር አይነት",
+      "workLevel": "የስራ ደረጃ",
+      "propertyDetails": "የንብረት ዝርዝሮች",
+      "totalBedroom": "ጠቅላላ መኝታ ቤት",
+      "totalBathroom": "ጠቅላላ መታጠቢያ ቤት",
+      "parkingSpace": "የመኪና ማቆሚያ",
+      "availableFloors": "የሚገኙ ፎቆች",
+      "buildingSize": "የህንፃ መጠን",
+      "areaSize": "የቦታ መጠን",
+      "deliveryTime": "የማድረስ ጊዜ",
+      "amenities": "አገልግሎቶች",
+      "locationSurroundings": "አካባቢ እና አካባቢዎች",
+      "locationDescription": "ከሱፐርማርኬት፣ ከመንገዶች፣ ከትምህርት ቤቶች እና ከክሊኒኮች በደቂቃዎች ርቀት ላይ የሚገኝ ይህ ንብረት ሁለቱንም ቀዳሚነት እና ተደራሽነት ያረጋግጣል። እያደገ ያለ እና የመኖሪያ ዋጋ እየጨመረ ያለ አካባቢ።",
+      "location": "አካባቢ",
+      "askAboutHome": "ስለዚህ ቤት ይጠይቁ",
+      "name": "ስም",
+      "email": "ኢሜይል",
+      "message": "መልእክት",
+      "required": "*",
+      "namePlaceholder": "የእርስዎ ስም",
+      "emailPlaceholder": "you@email.com",
+      "messagePlaceholder": "በ{title} ላይ ፍላጎት አለኝ...",
+      "sendInquiry": "ጥያቄ ላክ",
+      "sending": "በመላክ ላይ...",
+      "bedroom": "መኝታ ቤት",
+      "bathroom": "መታጠቢያ ቤት",
+      "parking": "ማቆሚያ",
+      "errors": {
+        "nameRequired": "ስም ያስፈልጋል",
+        "emailRequired": "ኢሜይል ያስፈልጋል",
+        "emailInvalid": "እባክዎ ትክክለኛ የኢሜይል አድራሻ ያስገቡ",
+        "messageRequired": "መልእክት ያስፈልጋል",
+        "messageMinLength": "መልእክት ቢያንስ 10 ቁምፊዎች መሆን አለበት",
+        "fixErrors": "እባክዎ በቅጹ ውስጥ ያሉትን ስህተቶች ያስተካክሉ",
+        "sendFailed": "ጥያቄ መላክ አልተሳካም። እባክዎ እንደገና ይሞክሩ።",
+        "networkError": "የአውታረ መረብ ስህተት። እባክዎ ግንኙነትዎን ያረጋግጡ እና እንደገና ይሞክሩ።"
+      },
+      "success": {
+        "inquirySent": "ጥያቄዎ በተሳካ ሁኔታ ተልኳል!"
+      },
+      "gallery": {
+        "close": "ዝጋ",
+        "previous": "ቀዳሚ ምስል",
+        "next": "ቀጣይ ምስል",
+        "viewImage": "ምስል {number} ይመልከቱ"
+      }
+    }
+  },
+  "progress": {
+    "title": "የአሁኑ እድገት",
+    "subtitle": "በፕሮጀክቶቻችን ላይ የቅርብ ጊዜ የግንባታ ዝመናዎችን ይከታተሉ",
+    "noResults": "በአሁኑ ጊዜ ምንም የእድገት ዝመናዎች የሉም።",
+    "filterByProject": "በፕሮጀክት አጣራ",
+    "allProjects": "ሁሉም ፕሮጀክቶች",
+    "detail": {
+      "backToUpdates": "ወደ እድገት ዝመናዎች ተመለስ",
+      "noImagesAvailable": "ምንም ምስሎች የሉም",
+      "videos": "ቪዲዮዎች",
+      "aboutThisUpdate": "ስለዚህ ዝመና",
+      "totalMedia": "ጠቅላላ ሚዲያ",
+      "lastUpdated": "መጨረሻ የዘመነው",
+      "publishedOn": "የታተመው",
+      "statusCompleted": "ተጠናቋል",
+      "statusInProgress": "በሂደት ላይ",
+      "statusPlanned": "ታቅዷል"
+    }
+  },
+  "blogs": {
+    "title": "ብሎጎች",
+    "hero": {
+      "title": "የሪል እስቴት ግንዛቤዎች እና የገበያ መመሪያ",
+      "subtitle": "አዳዲስ ዝርዝሮችን፣ የገበያ አዝማሚያዎችን እና የኢንቨስትመንት እድሎችን በቀጥታ ወደ መልእክት ሳጥንዎ ይቀበሉ።"
+    },
+    "featured": {
+      "title": "የእኛ የቅርብ ጊዜ ጽሑፎች"
+    },
+    "pagination": {
+      "previous": "ቀዳሚ",
+      "next": "ቀጣይ",
+      "showingPage": "ገጽ {current} ከ {total} በማሳየት ላይ"
+    },
+    "back": "ተመለስ"
+  },
+  "aboutUs": {
+    "home": {
+      "title": "በጥራት ሪል እስቴት ውስጥ የእርስዎ አጋር",
+      "description": "የእርስዎን የአኗኗር ዘይቤ እና የኢንቨስትመንት ግቦች የሚስማሙ፣ ከፍተኛ ቦታዎች እና ዘላቂ ዋጋ ያላቸው ጥራት ያላቸውን ንብረቶች እንሰራለን።",
+      "contactUs": "ያግኙን",
+      "register": "ይመዝገቡ",
+      "pauseVideo": "ቪዲዮ አቁም",
+      "playVideo": "ቪዲዮ አጫውት",
+      "muteVideo": "ድምፅ አጥፋ",
+      "unmuteVideo": "ድምፅ አብራ"
+    },
+    "missionVision": {
+      "title": "ቦታዎችን በዓላማ መንደፍ",
+      "description": "እያንዳንዱን ፕሮጀክት በዓላማ እየመራን፣ ህይወትን የሚያበለፅጉ፣ ዘላቂ ዋጋ የሚያቀርቡ እና የሪል እስቴትን ወደፊት የሚቀርፁ ልዩ ቦታዎችን ለመፍጠር እንጥራለን።",
+      "workWithUs": "ከእኛ ጋር ይስሩ",
+      "ourMission": "የእኛ ተልዕኮ",
+      "missionText": "ህይወትን የሚያሻሽሉ እና ለማህበረሰባችን ዋጋ የሚጨምሩ ከፍተኛ ጥራት ያላቸው፣ ዘላቂ እና በደንብ የተነደፉ ሪል እስቴቶችን ማዳበር። ለታማኝ አገልግሎት፣ ለግልፅ ሂደቶች እና እያንዳንዱን ፕሮጀክት በሙያዊነት እና በታማኝነት ለማቅረብ ቁርጠኞች ነን።",
+      "ourVision": "የእኛ ራዕይ",
+      "visionText": "በከፍተኛ የግንባታ ጥራት፣ በታማኝነት እና በግልፅ የንግድ ልምዶች የሚታወቅ የምስራቅ አፍሪካ በጣም የታመነ የሪል እስቴት ገንቢ መሆን።"
+    },
+    "coreValues": {
+      "title": "የእኛ ዋና እሴቶች",
+      "subtitle": "ባህላችንን የሚቀርፁ፣ ውሳኔዎቻችንን የሚመሩ፣ አብረን የምንሰራበትን መንገድ የሚነኩ እና ደንበኞቻችንን የምናገለግልበትን እና የምንደግፍበትን መንገድ የሚገልጹ መርሆዎች።",
+      "qualityFirst": "ጥራት በመጀመሪያ:",
+      "qualityDescription": "በጥብቅ የግንባታ ደረጃዎች እና በከፍተኛ ቁሳቁሶች በአዲስ አበባ የሪል እስቴት ገበያ ውስጥ አዲስ የወርቅ ደረጃ ማስቀመጥ።",
+      "empowerment": "በባለቤትነት ማብቃት",
+      "empowermentDescription": "የንብረት ባለቤትነትን ለአካባቢው ማህበረሰብ እና ለዲያስፖራ ተደራሽ እና ግልፅ ማድረግ።",
+      "timelyDelivery": "በወቅቱ ማድረስ",
+      "timelyDescription": "የፕሮጀክት ምዕራፎችን እና ማስረከቢያዎችን በፍፁም ትክክለኛነት በማሟላት የኢንዱስትሪ እምነትን እንደገና መገለጽ።",
+      "numbersAchievements": "ቁጥሮች እና ስኬቶች",
+      "employee": "ሰራተኛ",
+      "deliveredProjects": "የተላኩ ፕሮጀክቶች",
+      "happyClient": "ደስተኛ ደንበኛ",
+      "experienceDays": "የልምድ ቀናት"
+    }
+  },
+  "faq": {
+    "title": "በተደጋጋሚ የሚጠየቁ ጥያቄዎች",
+    "subtitle": "በንብረት ልምድዎ ውስጥ ግልፅነትን እና የአእምሮ ሰላምን በማረጋገጥ ለተደጋጋሚ ጥያቄዎችዎ ሙሉ ማብራሪያዎችን እንሰጣለን።",
+    "questions": {
+      "services": {
+        "question": "ምን አገልግሎት ይሰጣሉ?",
+        "answer": "የንብረት ሽያጭ እና ኪራይን ጨምሮ አጠቃላይ የሪል እስቴት አገልግሎቶችን እናቀርባለን። ቡድናችን የእርስዎን ፍላጎት እና በጀት የሚያሟላ ፍጹም ንብረት እንዲያገኙ ለመርዳት ቁርጠኛ ነው።"
+      },
+      "location": {
+        "question": "ፕሮጀክቶችዎ የት ይገኛሉ?",
+        "answer": "ፕሮጀክቶቻችን በአዲስ አበባ ውስጥ ቦሌ፣ ካዛንቺስ፣ ሲኤምሲ እና ሌሎች እያደጉ ያሉ ሰፈሮችን ጨምሮ በስትራቴጂያዊ መልኩ ይገኛሉ። በጥሩ ግንኙነት፣ አገልግሎቶች እና የእድገት አቅም ያላቸውን ቦታዎች በጥንቃቄ እንመርጣለን።"
+      },
+      "updates": {
+        "question": "ስለ በመካሄድ ላይ ያሉ ፕሮጀክቶች እንዴት መረጃ ማግኘት እችላለሁ?",
+        "answer": "በጋዜጣችን በመመዝገብ፣ በማህበራዊ ሚዲያ በመከተል ወይም የሽያጭ ቡድናችንን በቀጥታ በማነጋገር ስለ በመካሄድ ላይ ያሉ ፕሮጀክቶቻችን መረጃ ማግኘት ይችላሉ። የፕሮጀክት ዝመናዎችን፣ አዳዲስ ጅምሮችን እና ልዩ ቅናሾችን ከደንበኞቻችን ጋር በመደበኛነት እናካፍላለን።"
+      },
+      "purchase": {
+        "question": "ንብረት እንዴት መግዛት እችላለሁ?",
+        "answer": "የንብረት ግዢ ሂደቱ ቀላል ነው፡ በመጀመሪያ የሚገኙ ንብረቶቻችንን ይመልከቱ እና ለመመልከት ይያዙ። ተስማሚ ንብረትዎን ካገኙ በኋላ ቡድናችን በሰነድ፣ በክፍያ እቅዶች እና በህጋዊ ሂደቶች ለስላሳ ግብይት እንዲኖር ይመራዎታል።"
+      },
+      "payment": {
+        "question": "ተለዋዋጭ የክፍያ እቅዶችን ይሰጣሉ?",
+        "answer": "አዎ፣ ከእርስዎ የገንዘብ ሁኔታ ጋር የሚስማሙ ተለዋዋጭ የክፍያ እቅዶችን እናቀርባለን። አማራጮቻችን የመክፈያ እቅዶችን፣ የሞርጌጅ እርዳታን እና ብጁ የክፍያ መርሃ ግብሮችን ያካትታሉ። ለፍላጎትዎ ምርጡን የክፍያ እቅድ ለመወያየት የሽያጭ ቡድናችንን ያነጋግሩ።"
+      }
+    }
+  },
+  "contact": {
+    "title": "ያግኙን",
+    "subtitle": "ከቡድናችን ጋር ይገናኙ",
+    "home": {
+      "title": "ለእርስዎ በተሻለ መንገድ ይገናኙ",
+      "description": "አዲስ ቤት እየፈለጉ ነው፣ ኢንቨስትመንት እያቀዱ ነው፣ ወይም ስለ በመካሄድ ላይ ያሉ ፕሮጀክቶቻችን የበለጠ ለማወቅ ይፈልጋሉ፣ ቡድናችን በግልፅ መመሪያ ለመርዳት ዝግጁ ነው።"
+    },
+    "form": {
+      "firstName": "የመጀመሪያ ስም",
+      "lastName": "የአባት ስም",
+      "email": "ኢሜይል",
+      "phone": "ስልክ ቁጥር",
+      "description": "መግለጫ",
+      "firstNamePlaceholder": "ለምሳሌ፣ ብሩክ",
+      "lastNamePlaceholder": "ለምሳሌ፣ ሰለሞን",
+      "emailPlaceholder": "ምሳሌ1@gmail.com",
+      "phonePlaceholder": "(+251)-911-201096",
+      "descriptionPlaceholder": "ጥያቄዎችዎን በዝርዝር ይፃፉ...",
+      "send": "መልእክት ላክ",
+      "sending": "በመላክ ላይ...",
+      "required": "*",
+      "errors": {
+        "firstNameRequired": "የመጀመሪያ ስም ያስፈልጋል",
+        "lastNameRequired": "የአባት ስም ያስፈልጋል",
+        "emailRequired": "ኢሜይል ያስፈልጋል",
+        "emailInvalid": "እባክዎ ትክክለኛ ኢሜይል ያስገቡ",
+        "phoneRequired": "ስልክ ቁጥር ያስፈልጋል",
+        "descriptionRequired": "መግለጫ ያስፈልጋል",
+        "descriptionMinLength": "መግለጫ ቢያንስ 10 ቁምፊዎች መሆን አለበት",
+        "fixErrors": "እባክዎ በቅጹ ውስጥ ያሉትን ስህተቶች ያስተካክሉ",
+        "networkError": "የአውታረ መረብ ስህተት። እባክዎ ግንኙነትዎን ያረጋግጡ እና እንደገና ይሞክሩ።",
+        "sendFailed": "መልእክት መላክ አልተሳካም። እባክዎ እንደገና ይሞክሩ።"
+      },
+      "success": "መልእክትዎ በተሳካ ሁኔታ ተልኳል።"
+    },
+    "addresses": {
+      "emailSupport": "የኢሜይል ድጋፍ",
+      "emailDescription": "ለፈጣን ጥያቄዎች እና እርዳታ፣ የድጋፍ ቡድናችንን በማንኛውም ጊዜ በኢሜይል ያግኙ።",
+      "visitOffice": "ቢሮአችንን ይጎብኙ",
+      "visitDescription": "በአካል መመሪያ ያግኙ እና ስለሚገኙ ንብረቶች የበለጠ ይወቁ።",
+      "callUs": "በቀጥታ ይደውሉልን",
+      "callDescription": "በስራ ሰዓት ውስጥ ለፈጣን ድጋፍ ከቡድናችን ጋር ይነጋገሩ።",
+      "officeAddress": "ቂርቆስ፣ ከአፍሪካ ህብረት ፊት ለፊት፣ አ.አ"
+    },
+    "map": {
+      "loading": "ካርታ በመጫን ላይ..."
+    }
+  },
+  "footer": {
+    "description": "አዲስ ላይፍ ሪል እስቴት በአዲስ አበባ ውስጥ ዘመናዊ እና አስተማማኝ መኖሪያ ቤቶችን በግልፅነት፣ በጥራት ግንባታ እና በቀላል ልምድ ያቀርባል።",
+    "services": "አገልግሎቶች",
+    "links": "አገናኞች",
+    "contact": "ያግኙን",
+    "followUs": "ይከተሉን",
+    "copyright": "የቅጂ መብት © {year}። አዲስ ላይፍ ሪል እስቴት",
+    "developedBy": "የተሰራው በ",
+    "africaUnionOne": "አፍሪካ ህብረት አንድ",
+    "africaUnionTwo": "አፍሪካ ህብረት ሁለት",
+    "vaticanSite": "ቫቲካን ቦታ",
+    "bulgariaSite": "ቡልጋሪያ ቦታ",
+    "upcomingEastAddis": "በአዲስ አበባ ምስራቅ አካባቢ የሚመጣ",
+    "address": "አ.ሕ1 ሳይት (ቡልጋሪያ ሜክሲኮ ከአፍሪካ ሕብረት ፊት ለፊት)"
+  }
+}

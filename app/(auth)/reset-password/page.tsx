@@ -7,7 +7,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Logo } from '@/components/Logo';
+import { useTranslations } from 'next-intl';
+
 export default function ResetPasswordPage() {
+  const t = useTranslations('auth.resetPassword');
   const [step, setStep] = useState<'otp' | 'password'>('otp');
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -20,8 +23,6 @@ export default function ResetPasswordPage() {
   const searchParams = useSearchParams();
   const email = useMemo(() => searchParams.get('email') || '', [searchParams]);
   const router = useRouter();
-
-  // No need for useEffect to set email from searchParams; handled by useMemo above
 
   const handleOtpChange = (index: number, value: string) => {
     if (value.length <= 1 && /^\d*$/.test(value)) {
@@ -52,7 +53,7 @@ export default function ResetPasswordPage() {
     setIsSubmitting(true);
     const otpValue = Number(otp.join(''));
     if (!email || otp.join('').length !== 6 || isNaN(otpValue)) {
-      setErrorMessage('Please enter the 6-digit OTP.');
+      setErrorMessage(t('errors.enterOtp'));
       setIsSubmitting(false);
       return;
     }
@@ -64,13 +65,13 @@ export default function ResetPasswordPage() {
       });
       const data = await response.json();
       if (!response.ok) {
-        setErrorMessage(data.error || 'Verification failed.');
+        setErrorMessage(data.error || t('errors.verificationFailed'));
       } else {
-        setSuccessMessage('OTP verified! Please set your new password.');
+        setSuccessMessage(t('success.otpVerified'));
         setStep('password');
       }
     } catch {
-      setErrorMessage('Verification failed.');
+      setErrorMessage(t('errors.verificationFailed'));
     }
     setIsSubmitting(false);
   };
@@ -81,12 +82,12 @@ export default function ResetPasswordPage() {
     setSuccessMessage('');
     setIsSubmitting(true);
     if (!newPassword || !confirmPassword) {
-      setErrorMessage('Please fill all fields.');
+      setErrorMessage(t('errors.fillAllFields'));
       setIsSubmitting(false);
       return;
     }
     if (newPassword !== confirmPassword) {
-      setErrorMessage('Passwords do not match.');
+      setErrorMessage(t('errors.passwordsNotMatch'));
       setIsSubmitting(false);
       return;
     }
@@ -98,15 +99,15 @@ export default function ResetPasswordPage() {
       });
       const data = await response.json();
       if (!response.ok) {
-        setErrorMessage(data.error || 'Failed to reset password.');
+        setErrorMessage(data.error || t('errors.resetFailed'));
       } else {
-        setSuccessMessage('Password reset successfully! You can now log in.');
+        setSuccessMessage(t('success.passwordReset'));
         setTimeout(() => {
           if (router) router.push('/login');
         }, 2000);
       }
     } catch {
-      setErrorMessage('Failed to reset password.');
+      setErrorMessage(t('errors.resetFailed'));
     }
     setIsSubmitting(false);
   };
@@ -115,11 +116,9 @@ export default function ResetPasswordPage() {
     <div className="space-y-8">
       <Logo />
       <div className="space-y-2 text-center">
-        <h1 className="text-4xl font-semibold text-gray-900">Reset Password</h1>
+        <h1 className="text-4xl font-semibold text-gray-900">{t('title')}</h1>
         <p className="text-base text-gray-600 leading-relaxed">
-          {step === 'otp'
-            ? 'Enter the 6-digit code sent to your email.'
-            : 'Set a new strong password to keep your account safe and secure.'}
+          {step === 'otp' ? t('subtitleOtp') : t('subtitlePassword')}
         </p>
       </div>
       {step === 'otp' ? (
@@ -147,7 +146,7 @@ export default function ResetPasswordPage() {
             className="h-14 w-full rounded-full bg-primary text-base font-medium text-white hover:bg-primary/90"
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'Verifying...' : 'Verify OTP'}
+            {isSubmitting ? t('verifying') : t('verifyOtp')}
           </Button>
           {errorMessage && (
             <p className="text-sm text-red-600 text-center">{errorMessage}</p>
@@ -165,13 +164,13 @@ export default function ResetPasswordPage() {
               htmlFor="new-password"
               className="text-sm font-medium text-gray-900"
             >
-              New Password
+              {t('newPassword')}
             </Label>
             <div className="relative">
               <Input
                 id="new-password"
                 type={showNewPassword ? 'text' : 'password'}
-                placeholder="•••••3"
+                placeholder={t('passwordPlaceholder')}
                 className="h-14 rounded-lg pr-12 text-base"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
@@ -196,13 +195,13 @@ export default function ResetPasswordPage() {
               htmlFor="confirm-password"
               className="text-sm font-medium text-gray-900"
             >
-              Confirm Password
+              {t('confirmPassword')}
             </Label>
             <div className="relative">
               <Input
                 id="confirm-password"
                 type={showConfirmPassword ? 'text' : 'password'}
-                placeholder="•••••3"
+                placeholder={t('passwordPlaceholder')}
                 className="h-14 rounded-lg pr-12 text-base"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
@@ -227,7 +226,7 @@ export default function ResetPasswordPage() {
             className="h-14 w-full rounded-full bg-primary text-base font-medium text-white hover:bg-primary/90"
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'Resetting...' : 'Reset Password'}
+            {isSubmitting ? t('resetting') : t('resetPassword')}
           </Button>
           {errorMessage && (
             <p className="text-sm text-red-600 text-center">{errorMessage}</p>

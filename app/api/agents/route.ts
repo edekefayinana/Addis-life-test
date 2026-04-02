@@ -29,7 +29,17 @@ export async function GET(req: NextRequest) {
     const [users, totalCount] = await Promise.all([
       prisma.user.findMany({
         ...features.build(),
-        include: { _count: { select: { properties: true } } },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          phone: true,
+          role: true,
+          approvalStatus: true,
+          createdAt: true,
+          governmentIdUrl: true,
+          _count: { select: { properties: true } },
+        },
       }),
       prisma.user.count({ where: features.build().where }),
     ]);
@@ -38,7 +48,14 @@ export async function GET(req: NextRequest) {
       _count?: { properties: number };
     };
     const formattedUsers = (users as UserWithCount[]).map((u) => ({
-      ...u,
+      id: u.id,
+      name: u.name,
+      email: u.email,
+      phone: u.phone,
+      role: u.role,
+      approvalStatus: u.approvalStatus,
+      createdAt: u.createdAt,
+      governmentIdUrl: u.governmentIdUrl,
       propertyCount: u._count?.properties ?? 0,
     }));
 

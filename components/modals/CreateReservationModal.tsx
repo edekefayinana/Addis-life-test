@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useSession } from 'next-auth/react';
+import { toast } from 'sonner';
 
 interface CreateReservationModalProps {
   propertyId: string;
@@ -35,7 +36,6 @@ export function CreateReservationModal({
   const [bankSlipFile, setBankSlipFile] = useState<File | null>(null);
   const [description, setDescription] = useState('');
 
-  const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoadingUserData, setIsLoadingUserData] = useState(true);
 
@@ -90,12 +90,12 @@ export function CreateReservationModal({
         'image/png',
       ];
       if (!validTypes.includes(file.type)) {
-        setErrorMessage('Please upload a PDF, JPG, or PNG file.');
+        toast.error('Please upload a PDF, JPG, or PNG file.');
         return;
       }
       // Validate file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
-        setErrorMessage('File size must be less than 5MB.');
+        toast.error('File size must be less than 5MB.');
         return;
       }
 
@@ -105,37 +105,35 @@ export function CreateReservationModal({
       } else {
         setBankSlipFile(file);
       }
-      setErrorMessage('');
     }
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setErrorMessage('');
     setIsSubmitting(true);
 
     // Validation
     if (!clientName.trim() || !clientPhone.trim()) {
-      setErrorMessage('Client name and phone are required.');
+      toast.error('Client name and phone are required.');
       setIsSubmitting(false);
       return;
     }
 
     // Check if we have government ID (either existing or newly uploaded)
     if (!clientGovIdFile && !existingGovIdUrl) {
-      setErrorMessage('Client government ID is required.');
+      toast.error('Client government ID is required.');
       setIsSubmitting(false);
       return;
     }
 
     if (!reservationAmount || parseFloat(reservationAmount) <= 0) {
-      setErrorMessage('Valid reservation amount is required.');
+      toast.error('Valid reservation amount is required.');
       setIsSubmitting(false);
       return;
     }
 
     if (!bankSlipFile) {
-      setErrorMessage('Bank slip/payment proof is required.');
+      toast.error('Bank slip/payment proof is required.');
       setIsSubmitting(false);
       return;
     }
@@ -155,7 +153,7 @@ export function CreateReservationModal({
         });
 
         if (!govIdResponse.ok) {
-          setErrorMessage('Failed to upload client government ID.');
+          toast.error('Failed to upload client government ID.');
           setIsSubmitting(false);
           return;
         }
@@ -178,7 +176,7 @@ export function CreateReservationModal({
       );
 
       if (!bankSlipResponse.ok) {
-        setErrorMessage('Failed to upload bank slip.');
+        toast.error('Failed to upload bank slip.');
         setIsSubmitting(false);
         return;
       }
@@ -204,17 +202,51 @@ export function CreateReservationModal({
       const data = await response.json();
 
       if (!response.ok) {
-        setErrorMessage(data.error || 'Failed to create reservation.');
+        // Handle specific error cases
+        if (response.status === 403) {
+          if (data.error?.includes('approved')) {
+            toast.error(
+              'Your account needs approval before creating reservations. Please contact an administrator.'
+            );
+          } else if (data.error?.includes('Only agents')) {
+            toast.error('Only agents can create reservations.');
+          } else {
+            toast.error(
+              data.error || 'You do not have permission to create reservations.'
+            );
+          }
+        } else if (response.status === 409) {
+          if (data.error?.includes('already have a reservation')) {
+            toast.error(
+              'You already have an active reservation for this property.'
+            );
+          } else if (data.error?.includes('already reserved')) {
+            toast.error('This property is already reserved by another agent.');
+          } else {
+            toast.error(
+              data.error || 'This property is not available for reservation.'
+            );
+          }
+        } else if (response.status === 400) {
+          toast.error(
+            data.error || 'Please check all required fields and try again.'
+          );
+        } else {
+          toast.error(
+            data.error || 'Failed to create reservation. Please try again.'
+          );
+        }
         setIsSubmitting(false);
         return;
       }
 
       // Success
+      toast.success('Reservation created successfully!');
       onSuccess();
       onClose();
     } catch (error) {
       console.error('Reservation error:', error);
-      setErrorMessage('Network error. Please try again.');
+      toast.error('Network error. Please check your connection and try again.');
       setIsSubmitting(false);
     }
   };
@@ -456,15 +488,6 @@ export function CreateReservationModal({
                 />
               </div>
             </div>
-
-            {/* Error Message */}
-            {errorMessage && (
-              <div className="p-4 rounded-lg bg-red-50 border border-red-200">
-                <p className="text-sm text-red-700 text-center">
-                  {errorMessage}
-                </p>
-              </div>
-            )}
 
             {/* Actions */}
             <div className="flex gap-3 pt-4 border-t">

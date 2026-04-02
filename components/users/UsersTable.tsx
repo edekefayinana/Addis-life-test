@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
@@ -9,14 +10,18 @@ import { useFilters } from '@/lib/hooks/useFilters';
 import { PAGE_SIZE } from '@/lib/constants';
 import { useDataFetch } from '@/lib/hooks/usedataFetch';
 import { Suspense, useState } from 'react';
+import { Eye } from 'lucide-react';
 
 interface User {
   id: string;
   name?: string;
   email?: string;
+  phone?: string;
   role?: string;
   approvalStatus?: 'PENDING' | 'APPROVED';
   propertyCount?: number;
+  createdAt?: string;
+  governmentIdUrl?: string;
 }
 
 function UsersContent({
@@ -33,6 +38,9 @@ function UsersContent({
   const { isLoading, data, refetch } = useDataFetch<any>('agents', {
     queryString: query,
   });
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [isGovIdModalOpen, setIsGovIdModalOpen] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(true);
 
   // Show skeleton during filter transitions
   if (isLoading || isPending) {
@@ -67,18 +75,54 @@ function UsersContent({
     }
   };
 
+  const handleViewGovId = (user: User) => {
+    setIsImageLoading(true);
+    setSelectedUser(user);
+    setIsGovIdModalOpen(true);
+  };
+
+  const handleCloseGovIdModal = () => {
+    setIsGovIdModalOpen(false);
+    setIsImageLoading(true);
+    setSelectedUser(null);
+  };
+
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return 'N/A';
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+  };
+
   const columns: Column<User>[] = [
-    { key: 'name', header: 'Name' },
-    { key: 'email', header: 'Email' },
-    { key: 'role', header: 'Role' },
+    { key: 'name', header: 'Name', width: '15%' },
+    { key: 'email', header: 'Email', width: '20%' },
+    {
+      key: 'phone',
+      header: 'Phone',
+      width: '12%',
+      render: (row) => row.phone || 'N/A',
+    },
+    { key: 'role', header: 'Role', width: '10%' },
+    {
+      key: 'createdAt',
+      header: 'Joined',
+      width: '12%',
+      render: (row) => formatDate(row.createdAt),
+    },
     {
       key: 'propertyCount',
       header: 'Properties',
+      width: '10%',
+      align: 'center' as const,
       render: (row) => row.propertyCount ?? 0,
     },
     {
       key: 'status',
       header: 'Status',
+      width: '15%',
       render: (row) => <StatusBadge status={row.approvalStatus || 'pending'} />,
     },
   ];
@@ -116,8 +160,84 @@ function UsersContent({
             label: row.approvalStatus === 'APPROVED' ? 'Reject' : 'Approve',
             onClick: () => handleToggleApproval(row),
           },
+          ...(row.governmentIdUrl
+            ? [
+                {
+                  label: 'View Gov ID',
+                  onClick: () => handleViewGovId(row),
+                },
+              ]
+            : []),
         ]}
       />
+
+      {/* Government ID Modal */}
+      {isGovIdModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center"
+          onClick={handleCloseGovIdModal}
+        >
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-black/80" />
+
+          {/* Modal Content */}
+          <div
+            className="relative z-50 w-full max-w-3xl bg-white rounded-lg shadow-lg p-6 mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="mb-4">
+              <h2 className="text-lg font-semibold text-gray-900">
+                Government ID
+              </h2>
+              <p className="text-sm text-gray-500 mt-1">
+                {selectedUser?.name} - {selectedUser?.email}
+              </p>
+            </div>
+
+            {/* Image Content */}
+            <div className="mt-4">
+              {selectedUser?.governmentIdUrl ? (
+                <div className="relative w-full">
+                  {isImageLoading && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-lg">
+                      <div className="space-y-4 w-full p-8">
+                        <div className="animate-pulse space-y-4">
+                          <div className="h-64 bg-gray-300 rounded-lg"></div>
+                          <div className="h-4 bg-gray-300 rounded w-3/4 mx-auto"></div>
+                          <div className="h-4 bg-gray-300 rounded w-1/2 mx-auto"></div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  <img
+                    src={selectedUser.governmentIdUrl}
+                    alt="Government ID"
+                    className={`w-full h-auto rounded-lg border border-gray-200 ${isImageLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
+                    onLoad={() => setIsImageLoading(false)}
+                    onError={() => setIsImageLoading(false)}
+                  />
+                </div>
+              ) : (
+                <div className="py-12 text-center text-gray-500">
+                  <Eye className="mx-auto h-12 w-12 text-gray-300 mb-2" />
+                  <p>No government ID available</p>
+                </div>
+              )}
+            </div>
+
+            {/* Footer */}
+            <div className="mt-6 flex justify-end">
+              <button
+                onClick={handleCloseGovIdModal}
+                className="inline-flex h-10 items-center justify-center rounded-md border border-gray-200 bg-white px-4 py-2 text-sm font-semibold transition-colors hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
@@ -177,7 +297,9 @@ function UsersSkeleton({ row = 8 }: { row?: number }) {
   const columns = [
     { header: 'Name' },
     { header: 'Email' },
+    { header: 'Phone' },
     { header: 'Role' },
+    { header: 'Joined' },
     { header: 'Properties' },
     { header: 'Status' },
   ];

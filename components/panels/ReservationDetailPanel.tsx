@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { X, Copy } from 'lucide-react';
+import { X, Copy, Check } from 'lucide-react';
+import { toast } from 'sonner';
+import { useState } from 'react';
 
 interface ReservationDetailPanelProps {
   reservation: any;
@@ -12,9 +14,25 @@ export function ReservationDetailPanel({
   reservation,
   onClose,
 }: ReservationDetailPanelProps) {
-  // Remove debug logs
+  const [copiedField, setCopiedField] = useState<string | null>(null);
+
+  // Helper to copy text to clipboard
+  const handleCopy = async (text: string, fieldName: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedField(fieldName);
+      toast.success(`${fieldName} copied to clipboard`);
+      setTimeout(() => setCopiedField(null), 2000);
+    } catch {
+      toast.error('Failed to copy to clipboard');
+    }
+  };
+
   // Helper to shorten unit title
-  const shortUnitTitle = reservation?.unit?.split('–')[0]?.trim() + '...';
+  const unitTitle = reservation?.property?.title || 'N/A';
+  const shortUnitTitle =
+    unitTitle.length > 30 ? unitTitle.substring(0, 30) + '...' : unitTitle;
+
   // Helper to format price
   const dealValue = reservation?.property?.areaSizeM2
     ? (reservation?.property?.areaSizeM2 * 310_800).toFixed(2)
@@ -22,6 +40,17 @@ export function ReservationDetailPanel({
   const commission = reservation?.property?.areaSizeM2
     ? (reservation?.property?.areaSizeM2 * 310_800 * 0.0077).toFixed(2)
     : '-';
+
+  const projectName = reservation?.property?.project?.name || 'Unknown Project';
+  const bedrooms = reservation?.property?.totalBedrooms?.toString() || '-';
+  const reservationDate = reservation?.createdAt
+    ? new Date(reservation.createdAt).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      })
+    : '-';
+
   return (
     <div className="w-96 h-screen bg-white border-l border-gray-200 flex flex-col">
       {/* Header */}
@@ -41,17 +70,20 @@ export function ReservationDetailPanel({
           <div className="space-y-3 text-sm">
             <div className="flex items-center justify-between">
               <span className="text-gray-600">Unit</span>
-              <span className="text-gray-900 font-medium underline">
+              <span
+                className="text-gray-900 font-medium underline"
+                title={unitTitle}
+              >
                 {shortUnitTitle}
               </span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-gray-600">Project</span>
-              <span className="text-gray-900">{reservation?.project}</span>
+              <span className="text-gray-900">{projectName}</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-gray-600">Bedroom</span>
-              <span className="text-gray-900">{reservation?.bedrooms}</span>
+              <span className="text-gray-900">{bedrooms}</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-gray-600">Floor Number</span>
@@ -81,7 +113,7 @@ export function ReservationDetailPanel({
             </div>
             <div className="flex items-center justify-between">
               <span className="text-gray-600">Reservation Date</span>
-              <span className="text-gray-900">{reservation?.date}</span>
+              <span className="text-gray-900">{reservationDate}</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-gray-600">Unit&apos;s Deal value</span>
@@ -98,6 +130,65 @@ export function ReservationDetailPanel({
           </div>
         </div>
 
+        {/* Agent Information */}
+        <div className="pb-6 border-b border-gray-200">
+          <h3 className="text-sm font-semibold text-gray-900 mb-4">
+            Agent Information
+          </h3>
+          <div className="space-y-3 text-sm">
+            <div className="flex items-center justify-between">
+              <span className="text-gray-600">Agent Name</span>
+              <span className="text-gray-900 font-medium">
+                {reservation?.user?.name || 'N/A'}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-gray-600">Phone</span>
+              <span className="text-gray-900 inline-flex items-center gap-2 font-medium">
+                {reservation?.user?.phone || 'N/A'}
+                {reservation?.user?.phone && (
+                  <button
+                    type="button"
+                    aria-label="Copy phone"
+                    className="text-gray-400 hover:text-gray-600 transition-colors"
+                    onClick={() =>
+                      handleCopy(reservation.user.phone, 'Agent Phone')
+                    }
+                  >
+                    {copiedField === 'Agent Phone' ? (
+                      <Check className="w-4 h-4 text-green-600" />
+                    ) : (
+                      <Copy className="w-4 h-4" />
+                    )}
+                  </button>
+                )}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-gray-600">Email</span>
+              <span className="text-gray-900 inline-flex items-center gap-2 font-medium">
+                {reservation?.user?.email || 'N/A'}
+                {reservation?.user?.email && (
+                  <button
+                    type="button"
+                    aria-label="Copy email"
+                    className="text-gray-400 hover:text-gray-600 transition-colors"
+                    onClick={() =>
+                      handleCopy(reservation.user.email, 'Agent Email')
+                    }
+                  >
+                    {copiedField === 'Agent Email' ? (
+                      <Check className="w-4 h-4 text-green-600" />
+                    ) : (
+                      <Copy className="w-4 h-4" />
+                    )}
+                  </button>
+                )}
+              </span>
+            </div>
+          </div>
+        </div>
+
         {/* Client Information */}
         <div className="pb-6 border-b border-gray-200">
           <h3 className="text-sm font-semibold text-gray-900 mb-4">
@@ -107,45 +198,49 @@ export function ReservationDetailPanel({
             <div className="flex items-center justify-between">
               <span className="text-gray-600">Client Name</span>
               <span className="text-gray-900 font-medium">
-                {reservation?.clientName || reservation?.user?.name}
+                {reservation?.clientName || 'N/A'}
               </span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-gray-600">Phone</span>
               <span className="text-gray-900 inline-flex items-center gap-2 font-medium">
-                {reservation?.clientPhone || reservation?.user?.phone}
-                <button
-                  type="button"
-                  aria-label="Copy phone"
-                  className="text-gray-400 hover:text-gray-600"
-                  onClick={() =>
-                    navigator.clipboard?.writeText(
-                      reservation?.clientPhone || reservation?.user?.phone || ''
-                    )
-                  }
-                >
-                  <Copy className="w-4 h-4" />
-                </button>
+                {reservation?.clientPhone || 'N/A'}
+                {reservation?.clientPhone && (
+                  <button
+                    type="button"
+                    aria-label="Copy phone"
+                    className="text-gray-400 hover:text-gray-600 transition-colors"
+                    onClick={() =>
+                      handleCopy(reservation.clientPhone, 'Client Phone')
+                    }
+                  >
+                    {copiedField === 'Client Phone' ? (
+                      <Check className="w-4 h-4 text-green-600" />
+                    ) : (
+                      <Copy className="w-4 h-4" />
+                    )}
+                  </button>
+                )}
               </span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-gray-600">Email</span>
               <span className="text-gray-900 inline-flex items-center gap-2 font-medium">
-                {reservation?.clientEmail || reservation?.user?.email || 'N/A'}
-                {(reservation?.clientEmail || reservation?.user?.email) && (
+                {reservation?.clientEmail || 'N/A'}
+                {reservation?.clientEmail && (
                   <button
                     type="button"
                     aria-label="Copy email"
-                    className="text-gray-400 hover:text-gray-600"
+                    className="text-gray-400 hover:text-gray-600 transition-colors"
                     onClick={() =>
-                      navigator.clipboard?.writeText(
-                        reservation?.clientEmail ||
-                          reservation?.user?.email ||
-                          ''
-                      )
+                      handleCopy(reservation.clientEmail, 'Client Email')
                     }
                   >
-                    <Copy className="w-4 h-4" />
+                    {copiedField === 'Client Email' ? (
+                      <Check className="w-4 h-4 text-green-600" />
+                    ) : (
+                      <Copy className="w-4 h-4" />
+                    )}
                   </button>
                 )}
               </span>
@@ -163,57 +258,6 @@ export function ReservationDetailPanel({
                 </a>
               </div>
             )}
-          </div>
-        </div>
-
-        {/* Agent Information */}
-        <div className="pb-6 border-b border-gray-200">
-          <h3 className="text-sm font-semibold text-gray-900 mb-4">
-            Agent Information
-          </h3>
-          <div className="space-y-3 text-sm">
-            <div className="flex items-center justify-between">
-              <span className="text-gray-600">Agent Name</span>
-              <span className="text-gray-900 font-medium">
-                {reservation?.user?.name}
-              </span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-gray-600">Phone</span>
-              <span className="text-gray-900 inline-flex items-center gap-2 font-medium">
-                {reservation?.user?.phone}
-                <button
-                  type="button"
-                  aria-label="Copy phone"
-                  className="text-gray-400 hover:text-gray-600"
-                  onClick={() =>
-                    navigator.clipboard?.writeText(
-                      reservation?.user?.phone || ''
-                    )
-                  }
-                >
-                  <Copy className="w-4 h-4" />
-                </button>
-              </span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-gray-600">Email</span>
-              <span className="text-gray-900 inline-flex items-center gap-2 font-medium">
-                {reservation?.user?.email}
-                <button
-                  type="button"
-                  aria-label="Copy email"
-                  className="text-gray-400 hover:text-gray-600"
-                  onClick={() =>
-                    navigator.clipboard?.writeText(
-                      reservation?.user?.email || ''
-                    )
-                  }
-                >
-                  <Copy className="w-4 h-4" />
-                </button>
-              </span>
-            </div>
           </div>
         </div>
 

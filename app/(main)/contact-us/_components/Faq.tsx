@@ -2,41 +2,38 @@
 
 import { Plus } from 'lucide-react';
 import React, { useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface FaqItem {
-  question: string;
-  answer: string;
+  questionKey: string;
+  answerKey: string;
 }
 
-const faqData: FaqItem[] = [
+const faqKeys: FaqItem[] = [
   {
-    question: 'What Service Do you provide?',
-    answer:
-      'We offer a comprehensive range of real estate services including property sales and rentals. Our team is dedicated to helping you find the perfect property that meets your needs and budget',
+    questionKey: 'services.question',
+    answerKey: 'services.answer',
   },
   {
-    question: 'Where are your projects located?',
-    answer:
-      'Our projects are strategically located across prime areas in Addis Ababa, including Bole, Kazanchis, CMC, and other developing neighborhoods. We carefully select locations that offer excellent connectivity, amenities, and growth potential.',
+    questionKey: 'location.question',
+    answerKey: 'location.answer',
   },
   {
-    question: 'How can I get updates about ongoing projects?',
-    answer:
-      'You can stay updated about our ongoing projects by subscribing to our newsletter, following us on social media, or contacting our sales team directly. We regularly share project updates, new launches, and exclusive offers with our subscribers.',
+    questionKey: 'updates.question',
+    answerKey: 'updates.answer',
   },
   {
-    question: 'How do I purchase a property?',
-    answer:
-      'The property purchase process is simple: First, browse our available properties and schedule a viewing. Once you find your ideal property, our team will guide you through the documentation, payment plans, and legal procedures to ensure a smooth transaction.',
+    questionKey: 'purchase.question',
+    answerKey: 'purchase.answer',
   },
   {
-    question: 'Do you offer flexible payment plans?',
-    answer:
-      'Yes, we offer flexible payment plans tailored to your financial situation. Our options include installment plans, mortgage assistance, and customized payment schedules. Contact our sales team to discuss the best payment plan for your needs.',
+    questionKey: 'payment.question',
+    answerKey: 'payment.answer',
   },
 ];
 
 export default function Faq() {
+  const t = useTranslations('faq');
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const toggleFaq = (index: number) => {
@@ -50,19 +47,16 @@ export default function Faq() {
           {/* Left Column - Title and Description */}
           <div className="w-full max-w-[457px] space-y-4 md:space-y-6">
             <h2 className="text-3xl md:text-5xl font-semibold font-instrument leading-tight">
-              Frequently Asked Questions
-              {/* <br className='lg:block'/> */}
+              {t('title')}
             </h2>
             <p className="text-description text-base lg:text-lg leading-[150%] font-normal tracking-normal">
-              We provide thorough explanations to your most frequent questions,
-              ensuring transparency and peace of mind throughout your property
-              experience.
+              {t('subtitle')}
             </p>
           </div>
 
           {/* Right Column - FAQ Items */}
           <div className="space-y-5 w-full max-w-[693px]">
-            {faqData.map((faq, index) => (
+            {faqKeys.map((faq, index) => (
               <div
                 key={index}
                 className="bg-white hover:bg-primary/5 rounded-xl md:rounded-3xl px-3 min-h-20 overflow-hidden transition-all duration-300"
@@ -74,7 +68,7 @@ export default function Faq() {
                   aria-expanded={openIndex === index}
                 >
                   <span className="font-medium text-lg md:text-xl">
-                    {faq.question}
+                    {t(`questions.${faq.questionKey}`)}
                   </span>
                   <div
                     className={`flex-shrink-0 size-8 flex items-center justify-center transition-transform duration-300 ${
@@ -95,7 +89,7 @@ export default function Faq() {
                 >
                   <div className="px-6 pb-6 pt-0">
                     <p className="text-description text-base leading-relaxed">
-                      {faq.answer}
+                      {t(`questions.${faq.answerKey}`)}
                     </p>
                   </div>
                 </div>

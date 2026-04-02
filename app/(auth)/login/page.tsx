@@ -10,7 +10,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Logo } from '@/components/Logo';
 import { Checkbox } from '@/components/ui/checkbox';
+import { useTranslations } from 'next-intl';
+
 export default function LoginPage() {
+  const t = useTranslations('auth.login');
   const [showPassword, setShowPassword] = useState(false);
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
   const [email, setEmail] = useState('');
@@ -34,11 +37,9 @@ export default function LoginPage() {
 
     if (result?.error) {
       if (result.error.includes('verify your email')) {
-        setErrorMessage(
-          'Your email is not verified. Please check your inbox for the verification code.'
-        );
+        setErrorMessage(t('errorEmailNotVerified'));
       } else {
-        setErrorMessage('Invalid email or password.');
+        setErrorMessage(t('errorInvalidCredentials'));
       }
       return;
     }
@@ -51,22 +52,21 @@ export default function LoginPage() {
       <Logo />
 
       <div className="space-y-2 text-center">
-        <h1 className="text-4xl font-semibold text-gray-900">Agent Log In</h1>
+        <h1 className="text-4xl font-semibold text-gray-900">{t('title')}</h1>
         <p className="text-base text-gray-600 leading-relaxed">
-          Access your agent dashboard to manage property reservations and
-          commissions.
+          {t('subtitle')}
         </p>
       </div>
 
       <form className="space-y-6" onSubmit={handleSubmit}>
         <div className="space-y-2">
           <Label htmlFor="email" className="text-sm font-medium text-gray-900">
-            Email
+            {t('email')}
           </Label>
           <Input
             id="email"
             type="email"
-            placeholder="agent@example.com"
+            placeholder={t('emailPlaceholder')}
             className="h-14 rounded-lg text-base"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
@@ -79,13 +79,13 @@ export default function LoginPage() {
             htmlFor="password"
             className="text-sm font-medium text-gray-900"
           >
-            Password
+            {t('password')}
           </Label>
           <div className="relative">
             <Input
               id="password"
               type={showPassword ? 'text' : 'password'}
-              placeholder="•••••3"
+              placeholder={t('passwordPlaceholder')}
               className="h-14 rounded-lg pr-12 text-base"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
@@ -116,14 +116,14 @@ export default function LoginPage() {
               htmlFor="keep-logged-in"
               className="text-base font-normal text-gray-600 cursor-pointer"
             >
-              Keep me logged in
+              {t('keepLoggedIn')}
             </Label>
           </div>
           <Link
             href="/forgot-password"
             className="text-base font-normal text-gray-900 hover:text-gray-700"
           >
-            Forgot Password?
+            {t('forgotPassword')}
           </Link>
         </div>
 
@@ -132,7 +132,7 @@ export default function LoginPage() {
           className="h-14 w-full rounded-full bg-primary text-base font-medium text-white hover:bg-primary/90"
           disabled={isSubmitting}
         >
-          {isSubmitting ? 'Logging in...' : 'Log In'}
+          {isSubmitting ? t('loggingIn') : t('loginButton')}
         </Button>
 
         {errorMessage ? (
@@ -140,14 +140,12 @@ export default function LoginPage() {
         ) : null}
 
         <div className="text-center text-sm">
-          <span className="text-gray-600">
-            {"Don't have an agent account? "}
-          </span>
+          <span className="text-gray-600">{t('noAccount')} </span>
           <Link
             href="/apply"
-            className="font-medium text-blue-600! hover:text-blue-700 underline text-[18px]"
+            className="font-medium text-blue-600 hover:text-blue-700 underline text-[18px]"
           >
-            Apply for access
+            {t('applyAccess')}
           </Link>
         </div>
 
@@ -160,7 +158,7 @@ export default function LoginPage() {
             href="/"
           >
             <ChevronLeft className="h-4 w-4" />
-            Go Back to Home
+            {t('goBackHome')}
           </Button>
         </div>
       </form>

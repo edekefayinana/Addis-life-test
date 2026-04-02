@@ -3,45 +3,12 @@
 import { Facebook, Instagram, Mail, MapPin, Phone } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-// import type { SVGProps } from 'react';
+import { useTranslations } from 'next-intl';
 
 const sectionTitleClass = 'text-footer-title text-base mb-6';
 const linkClass = 'hover:text-white transition-colors';
 const listClass = 'space-y-4 text-base font-normal text-footer-text';
 const socialLinkClass = 'hover:text-white transition-colors';
-
-const services = [
-  {
-    label: 'Africa Union One',
-    href: `/properties?&search=Africa&page=1`,
-  },
-  {
-    label: 'Africa Union Two',
-    href: `/properties?&search=Africa&page=1`,
-  },
-  {
-    label: 'Vatican Site',
-    href: `/properties?&search=Vatican&page=1`,
-  },
-  {
-    label: 'Bulgaria Site',
-    href: `/properties?&search=Bulgaria&page=1`,
-  },
-  {
-    label: 'Upcoming Around East of Addis Ababa',
-    href: `/properties?&search=Upcoming&page=1`,
-  },
-];
-
-const links = [
-  { href: '/about-us', label: 'About Us' },
-  { href: '/blogs', label: 'Blogs' },
-  // { href: '/projects', label: 'Projects' },
-  { href: '/properties', label: 'Properties' },
-  // { href: '#', label: 'Privacy Policy' },
-  // { href: '#', label: 'Terms & Conditions' },
-  // { href: '#', label: 'Disclaimer' },
-];
 
 const socialLinks = [
   { href: 'https://www.facebook.com/share/1CAHdG7TSC/', Icon: Facebook },
@@ -60,6 +27,7 @@ const contactItems = [
   {
     Icon: MapPin,
     label: 'AU1 Site (Bulgaria, Mexico In front of African Union)',
+    labelKey: 'address',
     multiline: true,
   },
 ];
@@ -105,9 +73,11 @@ function FooterList({
 }
 
 function SocialLinks() {
+  const t = useTranslations('footer');
+
   return (
     <div className="flex items-center gap-6">
-      <span className="text-base font-medium">Follow Us</span>
+      <span className="text-base font-medium">{t('followUs')}</span>
       <div className="flex gap-4">
         {socialLinks.map(({ href, Icon }, index) => (
           <Link
@@ -125,11 +95,13 @@ function SocialLinks() {
 }
 
 function ContactList() {
+  const t = useTranslations('footer');
+
   return (
     <div>
-      <h3 className={sectionTitleClass}>Contact</h3>
+      <h3 className={sectionTitleClass}>{t('contact')}</h3>
       <ul className="space-y-6 text-base font-normal text-footer-text">
-        {contactItems.map(({ Icon, label, multiline }) => {
+        {contactItems.map(({ Icon, label, labelKey, multiline }) => {
           // Email
           if (Icon === Mail) {
             return (
@@ -166,7 +138,8 @@ function ContactList() {
               </li>
             );
           }
-          // Default (e.g. address)
+          // Address with translation
+          const displayLabel = labelKey ? t(labelKey) : label;
           return (
             <li
               key={label}
@@ -175,7 +148,9 @@ function ContactList() {
               <Icon
                 className={`h-5 w-5 text-footer-text shrink-0 ${multiline ? 'mt-0.5' : ''}`}
               />
-              <span className={multiline ? 'leading-tight' : ''}>{label}</span>
+              <span className={multiline ? 'leading-tight' : ''}>
+                {displayLabel}
+              </span>
             </li>
           );
         })}
@@ -205,6 +180,40 @@ function ContactList() {
 // }
 
 export function Footer() {
+  const t = useTranslations('footer');
+  const tNav = useTranslations('nav');
+
+  // Services with translations
+  const services = [
+    {
+      label: t('africaUnionOne'),
+      href: `/properties?&search=Africa&page=1`,
+    },
+    {
+      label: t('africaUnionTwo'),
+      href: `/properties?&search=Africa&page=1`,
+    },
+    {
+      label: t('vaticanSite'),
+      href: `/properties?&search=Vatican&page=1`,
+    },
+    {
+      label: t('bulgariaSite'),
+      href: `/properties?&search=Bulgaria&page=1`,
+    },
+    {
+      label: t('upcomingEastAddis'),
+      href: `/properties?&search=Upcoming&page=1`,
+    },
+  ];
+
+  // Links with translations
+  const links = [
+    { href: '/about-us', label: tNav('aboutUs') },
+    { href: '/blogs', label: tNav('blogs') },
+    { href: '/properties', label: tNav('properties') },
+  ];
+
   return (
     <footer className="bg-footer-bg text-footer-text pt-16 pb-8 font-instrument rounded-lg lg:px-20">
       <div className="container mx-auto px-4 md:px-8">
@@ -228,23 +237,21 @@ export function Footer() {
           {/* Column 1: Description & Subscribe */}
           <div className="space-y-8 lg:col-span-2">
             <p className="text-footer-white text-base leading-relaxed max-w-xs">
-              Addis Life Real Estate provides modern, reliable housing in Addis
-              Ababa with transparency, quality construction, and a seamless
-              experience.
+              {t('description')}
             </p>
 
             {/* <SubscribeForm /> */}
           </div>
 
           <FooterList
-            title="Services"
+            title={t('services')}
             items={services.map((service) => ({
               href: service.href,
               label: service.label,
             }))}
           />
 
-          <FooterList title="Links" items={links} />
+          <FooterList title={t('links')} items={links} />
 
           <ContactList />
         </div>
@@ -252,10 +259,10 @@ export function Footer() {
         {/* Footer Bottom */}
         <div className="border-t border-footer-border/10 pt-12 pb-4 flex flex-col md:flex-row justify-between items-center relative">
           <p className="text-footer-white text-base text-center md:text-left">
-            Copyright &copy; 2025. Addis Life Real Estate
+            {t('copyright', { year: new Date().getFullYear() })}
           </p>
           <p className="text-footer-white text-base text-center md:text-right mt-2 md:mt-0">
-            Developed by{' '}
+            {t('developedBy')}{' '}
             <Link
               href="https://www.venastechnology.com/"
               target="_blank"

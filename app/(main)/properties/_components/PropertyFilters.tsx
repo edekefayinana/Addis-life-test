@@ -5,6 +5,7 @@ import { useDebounce } from '@/lib/hooks/useDebounce';
 import { cn } from '@/lib/utils';
 import { Ellipsis, LayoutGrid, MapPin, Search, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 type Filters = {
   location?: string;
@@ -23,15 +24,15 @@ type FilterField =
   | {
       key: 'location';
       type: 'search';
-      placeholder: string;
+      placeholderKey: string;
       className: string;
       group: 'primary' | 'more';
     }
   | {
       key: 'propertyType' | 'totalBedrooms' | 'price';
       type: 'select';
-      placeholder: string;
-      options: SelectOption[];
+      placeholderKey: string;
+      optionsKey: string;
       group: 'primary' | 'more';
     };
 
@@ -48,6 +49,7 @@ export function PropertyFilters({
   clearFilters,
   hasActiveFilters,
 }: PropertyFiltersProps) {
+  const t = useTranslations('properties');
   const [locationInput, setLocationInput] = useState(filters.location || '');
   const debouncedLocation = useDebounce(locationInput, 300);
   const [showMoreFilters, setShowMoreFilters] = useState(false);
@@ -57,37 +59,47 @@ export function PropertyFilters({
     {
       key: 'location',
       type: 'search',
-      placeholder: 'Search location, area',
+      placeholderKey: 'filters.searchPlaceholder',
       className: 'sm:col-span-2 lg:col-span-3',
       group: 'primary',
     },
     {
       key: 'propertyType',
       type: 'select',
-      placeholder: 'Property Type',
-      options: [
-        { value: 'APARTMENT', label: 'Apartment' },
-        { value: 'HOUSE', label: 'House' },
-        { value: 'VILLA', label: 'Villa' },
-        { value: 'CONDO', label: 'Condo' },
-        { value: 'COMMERCIAL', label: 'Commercial' },
-      ],
+      placeholderKey: 'filters.propertyType',
+      optionsKey: 'propertyTypes',
       group: 'primary',
     },
     {
       key: 'totalBedrooms',
       type: 'select',
-      placeholder: 'Bedrooms',
-      options: [
-        { value: '1', label: '1 Bedroom' },
-        { value: '2', label: '2 Bedrooms' },
-        { value: '3', label: '3 Bedrooms' },
-        { value: '4', label: '4 Bedrooms' },
-        { value: '5', label: '5+ Bedrooms' },
-      ],
+      placeholderKey: 'filters.bedrooms',
+      optionsKey: 'bedroomOptions',
       group: 'primary',
     },
   ];
+
+  const getSelectOptions = (optionsKey: string): SelectOption[] => {
+    if (optionsKey === 'propertyTypes') {
+      return [
+        { value: 'APARTMENT', label: t('filters.propertyTypes.apartment') },
+        { value: 'HOUSE', label: t('filters.propertyTypes.house') },
+        { value: 'VILLA', label: t('filters.propertyTypes.villa') },
+        { value: 'CONDO', label: t('filters.propertyTypes.condo') },
+        { value: 'COMMERCIAL', label: t('filters.propertyTypes.commercial') },
+      ];
+    }
+    if (optionsKey === 'bedroomOptions') {
+      return [
+        { value: '1', label: t('filters.bedroomOptions.one') },
+        { value: '2', label: t('filters.bedroomOptions.two') },
+        { value: '3', label: t('filters.bedroomOptions.three') },
+        { value: '4', label: t('filters.bedroomOptions.four') },
+        { value: '5', label: t('filters.bedroomOptions.fivePlus') },
+      ];
+    }
+    return [];
+  };
 
   const hasMoreFilters = filterFields.some((field) => field.group === 'more');
   const showMoreButton = hasMoreFilters;
@@ -137,7 +149,7 @@ export function PropertyFilters({
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">
-            Properties for Sale In Addis Ababa
+            {t('pageTitle')}
           </h1>
         </div>
 
@@ -159,9 +171,7 @@ export function PropertyFilters({
                 aria-pressed={isActive}
               >
                 <Icon className="h-4 w-4" />
-                <span className="capitalize">
-                  {view === 'list' ? 'List' : 'Map'}
-                </span>
+                <span className="capitalize">{t(`viewToggle.${view}`)}</span>
               </button>
             );
           })}
@@ -184,7 +194,7 @@ export function PropertyFilters({
                       type="text"
                       value={locationInput}
                       onChange={(e) => setLocationInput(e.target.value)}
-                      placeholder={field.placeholder}
+                      placeholder={t(field.placeholderKey)}
                       className="h-12 w-full rounded-full border border-gray-200 pl-11 pr-4 text-sm font-medium text-gray-900 placeholder:text-gray-400 outline-none transition-all focus:border-gray-300 focus:bg-white focus:ring-2 focus:ring-gray-100"
                     />
                   </div>
@@ -194,10 +204,10 @@ export function PropertyFilters({
               return (
                 <CustomSelect
                   key={field.key}
-                  options={field.options}
+                  options={getSelectOptions(field.optionsKey)}
                   value={filters[field.key] || ''}
                   onChange={(val) => setFilter(field.key, val || null)}
-                  placeholder={field.placeholder}
+                  placeholder={t(field.placeholderKey)}
                 />
               );
             })}
@@ -212,7 +222,9 @@ export function PropertyFilters({
                   aria-haspopup="dialog"
                 >
                   <Ellipsis className="h-4 w-4" />
-                  <span>{showMoreFilters ? 'Less' : 'More'}</span>
+                  <span>
+                    {showMoreFilters ? t('filters.less') : t('filters.more')}
+                  </span>
                 </button>
                 {showMoreFilters && (
                   <div className="absolute right-0 top-full z-20 mt-2 w-80 rounded-2xl border border-gray-200 bg-white p-4 shadow-xl">
@@ -228,7 +240,7 @@ export function PropertyFilters({
                                 onChange={(e) =>
                                   setLocationInput(e.target.value)
                                 }
-                                placeholder={field.placeholder}
+                                placeholder={t(field.placeholderKey)}
                                 className="h-12 w-full rounded-full border border-gray-200 pl-11 pr-4 text-sm font-medium text-gray-900 placeholder:text-gray-400 outline-none transition-all focus:border-gray-300 focus:bg-white focus:ring-2 focus:ring-gray-100"
                               />
                             </div>
@@ -238,12 +250,12 @@ export function PropertyFilters({
                         return (
                           <CustomSelect
                             key={field.key}
-                            options={field.options}
+                            options={getSelectOptions(field.optionsKey)}
                             value={filters[field.key] || ''}
                             onChange={(val) =>
                               setFilter(field.key, val || null)
                             }
-                            placeholder={field.placeholder}
+                            placeholder={t(field.placeholderKey)}
                           />
                         );
                       })}
@@ -260,7 +272,7 @@ export function PropertyFilters({
                 className="h-12 flex items-center justify-center gap-1.5 rounded-full border border-gray-200 bg-white px-4 text-sm font-medium text-gray-700 transition-all hover:bg-gray-50 focus:border-gray-300 focus:ring-2 focus:ring-gray-100"
               >
                 <X className="h-4 w-4" />
-                <span>Clear</span>
+                <span>{t('filters.clear')}</span>
               </button>
             )}
           </div>
