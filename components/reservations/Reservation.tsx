@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
@@ -9,6 +10,7 @@ import { ReservationFilters } from './ReservationFilters';
 import { useFilters } from '@/lib/hooks/useFilters';
 import { PAGE_SIZE } from '@/lib/constants';
 import { useDataFetch } from '@/lib/hooks/usedataFetch';
+import { Eye } from 'lucide-react';
 
 export type ReservationRow = {
   id: string;
@@ -49,6 +51,13 @@ function ReservationContent({
   onRefetch: () => void;
 }) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedGovId, setSelectedGovId] = useState<{
+    url: string;
+    clientName: string;
+    clientEmail?: string;
+  } | null>(null);
+  const [isGovIdModalOpen, setIsGovIdModalOpen] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(true);
 
   const { isLoading, data, refetch } = useDataFetch<any>('reservations', {
     queryString: query,
@@ -88,6 +97,22 @@ function ReservationContent({
     });
     refetch();
     onRefetch();
+  };
+
+  const handleViewGovId = (reservation: any) => {
+    setIsImageLoading(true);
+    setSelectedGovId({
+      url: reservation.clientGovernmentId,
+      clientName: reservation.clientName,
+      clientEmail: reservation.clientEmail,
+    });
+    setIsGovIdModalOpen(true);
+  };
+
+  const handleCloseGovIdModal = () => {
+    setIsGovIdModalOpen(false);
+    setIsImageLoading(true);
+    setSelectedGovId(null);
   };
 
   return (
@@ -143,9 +168,19 @@ function ReservationContent({
         total={data?.meta?.totalRecords || reservations.length}
         getRowId={(row) => row.id}
         actionsMenuItems={(row) => {
+          const reservation = rawReservations.find((r: any) => r.id === row.id);
           const actions = [
             { label: 'View Detail', onClick: () => setSelectedId(row.id) },
           ];
+
+          // Add View Gov ID option if available
+          if (reservation?.clientGovernmentId) {
+            actions.push({
+              label: 'View Gov ID',
+              onClick: () => handleViewGovId(reservation),
+            });
+          }
+
           if (userRole === 'ADMIN') {
             actions.push(
               {
@@ -184,6 +219,76 @@ function ReservationContent({
             reservation={rawReservations.find((r: any) => r.id === selectedId)}
             onClose={() => setSelectedId(null)}
           />
+        </div>
+      )}
+
+      {/* Government ID Modal */}
+      {isGovIdModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center"
+          onClick={handleCloseGovIdModal}
+        >
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-black/80" />
+
+          {/* Modal Content */}
+          <div
+            className="relative z-50 w-full max-w-3xl bg-white rounded-lg shadow-lg p-6 mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="mb-4">
+              <h2 className="text-lg font-semibold text-gray-900">
+                Client Government ID
+              </h2>
+              <p className="text-sm text-gray-500 mt-1">
+                {selectedGovId?.clientName}
+                {selectedGovId?.clientEmail &&
+                  ` - ${selectedGovId.clientEmail}`}
+              </p>
+            </div>
+
+            {/* Image Content */}
+            <div className="mt-4">
+              {selectedGovId?.url ? (
+                <div className="relative w-full">
+                  {isImageLoading && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-lg">
+                      <div className="space-y-4 w-full p-8">
+                        <div className="animate-pulse space-y-4">
+                          <div className="h-64 bg-gray-300 rounded-lg"></div>
+                          <div className="h-4 bg-gray-300 rounded w-3/4 mx-auto"></div>
+                          <div className="h-4 bg-gray-300 rounded w-1/2 mx-auto"></div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  <img
+                    src={selectedGovId.url}
+                    alt="Government ID"
+                    className={`w-full h-auto rounded-lg border border-gray-200 ${isImageLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
+                    onLoad={() => setIsImageLoading(false)}
+                    onError={() => setIsImageLoading(false)}
+                  />
+                </div>
+              ) : (
+                <div className="py-12 text-center text-gray-500">
+                  <Eye className="mx-auto h-12 w-12 text-gray-300 mb-2" />
+                  <p>No government ID available</p>
+                </div>
+              )}
+            </div>
+
+            {/* Footer */}
+            <div className="mt-6 flex justify-end">
+              <button
+                onClick={handleCloseGovIdModal}
+                className="inline-flex h-10 items-center justify-center rounded-md border border-gray-200 bg-white px-4 py-2 text-sm font-semibold transition-colors hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
+              >
+                Close
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </>

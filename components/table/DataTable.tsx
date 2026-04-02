@@ -294,8 +294,7 @@ export default function DataTable<T>({
                               ).map((item, i) => (
                                 <DropdownMenuItem
                                   key={i}
-                                  onSelect={(e) => {
-                                    e.preventDefault();
+                                  onSelect={() => {
                                     item.onClick?.(row);
                                   }}
                                   className="text-gray-900"

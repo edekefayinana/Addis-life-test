@@ -418,12 +418,12 @@ export async function notifyAdminsNewAgentRegistration(
 ) {
   return createSmartNotification({
     title: 'New Agent Registration',
-    body: `${agentName} (${agentEmail}) has registered and is pending approval.`,
+    body: `${agentName} (${agentEmail}) has registered. Please review their government ID.`,
     type: 'PROFILE',
-    link: `/admin/users/${agentId}`,
+    link: `/admin/users`,
     targetAudience: 'ALL_ADMINS',
     context: { adminAction: true },
-    data: { agentId, agentName, agentEmail, status: 'PENDING' },
+    data: { agentId, agentName, agentEmail, status: 'REGISTERED' },
   });
 }
 
