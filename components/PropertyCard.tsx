@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { cn, truncate } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 
 type PropertyType = 'Residential' | 'Commercial';
 
@@ -74,6 +75,7 @@ export function PropertyCard({
   property_details,
   images,
 }: PropertyCardProps) {
+  const t = useTranslations('properties.details');
   const propertyId = id;
 
   // Use API images if available, otherwise fallback to default
@@ -186,7 +188,7 @@ export function PropertyCard({
           <div className="flex items-center gap-1">
             <Bed className="h-5 w-5 stroke-1" />
             <span className="font-normal">
-              {property_details.total_bedrooms} Beds
+              {property_details.total_bedrooms} {t('beds')}
             </span>
           </div>
 
@@ -195,7 +197,7 @@ export function PropertyCard({
           <div className="flex items-center gap-1">
             <Bath className="h-5 w-5 stroke-1" />
             <span className="font-normal">
-              {property_details.total_bathrooms} Baths
+              {property_details.total_bathrooms} {t('baths')}
             </span>
           </div>
 

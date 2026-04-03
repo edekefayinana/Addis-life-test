@@ -215,14 +215,22 @@ export function Hero({ slides }: HeroProps) {
         <div className="mx-auto flex w-full max-w-5xl flex-col items-center px-6 pb-32 pt-24 text-center">
           {activeSlide?.eyebrow && (
             <span className="text-xs font-semibold uppercase tracking-[0.35em] text-white/70">
-              {activeSlide.eyebrow}
+              {activeSlide.eyebrow.startsWith('home.hero.')
+                ? t(activeSlide.eyebrow)
+                : activeSlide.eyebrow}
             </span>
           )}
           <h1 className="mt-5 text-4xl font-semibold leading-tight tracking-tight sm:text-6xl md:text-7xl font-instrument">
-            {activeSlide?.headline}
+            {activeSlide?.headline &&
+            activeSlide.headline.startsWith('home.hero.')
+              ? t(activeSlide.headline)
+              : activeSlide?.headline}
           </h1>
           <p className="mt-4 text-base font-normal text-slate-200/90 sm:text-lg font-instrument">
-            {activeSlide?.subhead}
+            {activeSlide?.subhead &&
+            activeSlide.subhead.startsWith('home.hero.')
+              ? t(activeSlide.subhead)
+              : activeSlide?.subhead}
           </p>
         </div>
       ) : (
@@ -264,10 +272,14 @@ export function Hero({ slides }: HeroProps) {
                       className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left"
                     >
                       <div className="text-lg font-semibold text-white">
-                        {item.value}
+                        {item.value.startsWith('home.hero.')
+                          ? t(item.value)
+                          : item.value}
                       </div>
                       <div className="text-xs uppercase tracking-[0.2em] text-white/60">
-                        {item.label}
+                        {item.label.startsWith('home.hero.')
+                          ? t(item.label)
+                          : item.label}
                       </div>
                     </div>
                   ))}

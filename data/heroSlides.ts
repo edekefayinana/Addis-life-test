@@ -20,14 +20,16 @@ export const heroVideoSlide: HeroSlide = {
   id: 'intro-video',
   type: 'video',
   src: '/video/vid.mp4',
-  eyebrow: 'Beyond Promises, We Deliver.',
-  headline: 'Where Quality Meets Integrity',
-  subhead:
-    'Experience real estate built on trust and delivered with excellence.',
+  eyebrow: 'home.hero.videoSlide.eyebrow',
+  headline: 'home.hero.videoSlide.headline',
+  subhead: 'home.hero.videoSlide.subhead',
   highlights: [
-    { label: 'Communities', value: '12+' },
-    { label: 'Verified units', value: '480+' },
-    { label: 'Payment plans', value: 'Flexible' },
+    { label: 'home.hero.videoSlide.communities', value: '12+' },
+    { label: 'home.hero.videoSlide.verifiedUnits', value: '480+' },
+    {
+      label: 'home.hero.videoSlide.paymentPlans',
+      value: 'home.hero.videoSlide.flexible',
+    },
   ],
 };
 
