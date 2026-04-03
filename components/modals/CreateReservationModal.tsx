@@ -126,7 +126,10 @@ export function CreateReservationModal({
       return;
     }
 
-    if (!reservationAmount || parseFloat(reservationAmount) <= 0) {
+    if (
+      !reservationAmount ||
+      parseFloat(reservationAmount.replace(/,/g, '')) <= 0
+    ) {
       toast.error('Valid reservation amount is required.');
       setIsSubmitting(false);
       return;
@@ -193,7 +196,7 @@ export function CreateReservationModal({
           clientPhone,
           clientEmail: clientEmail || null,
           clientGovernmentId,
-          reservationAmount: parseFloat(reservationAmount),
+          reservationAmount: parseFloat(reservationAmount.replace(/,/g, '')),
           bankSlipUrl,
           description: description || null,
         }),
@@ -437,12 +440,31 @@ export function CreateReservationModal({
                 </Label>
                 <Input
                   id="reservationAmount"
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  placeholder="10000.00"
+                  type="text"
+                  placeholder="10,000.00"
                   value={reservationAmount}
-                  onChange={(e) => setReservationAmount(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    // Allow only numbers, commas, and one decimal point
+                    const sanitized = value.replace(/[^\d,.]/g, '');
+                    // Ensure only one decimal point
+                    const parts = sanitized.split('.');
+                    if (parts.length > 2) {
+                      return; // Don't update if more than one decimal point
+                    }
+                    setReservationAmount(sanitized);
+                  }}
+                  onBlur={(e) => {
+                    // Format with commas on blur
+                    const value = e.target.value.replace(/,/g, '');
+                    if (value && !isNaN(Number(value))) {
+                      const formatted = Number(value).toLocaleString('en-US', {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 2,
+                      });
+                      setReservationAmount(formatted);
+                    }
+                  }}
                   required
                 />
               </div>

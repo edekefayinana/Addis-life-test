@@ -28,7 +28,6 @@ import { useEffect, useState } from 'react';
 import { DeletePropertyDialog } from '@/components/inventory/DeletePropertyDialog';
 import { useRouter } from 'next/navigation';
 import { CreateReservationModal } from '@/components/modals/CreateReservationModal';
-import { toast } from 'sonner';
 
 // Property type based on provided structure
 export type Property = {
@@ -688,7 +687,6 @@ export function PropertyClient({ property }: { property: Property }) {
           propertyTitle={property.title}
           onClose={() => setShowReservationModal(false)}
           onSuccess={() => {
-            toast.success('Reservation created successfully!');
             setHasReservation(true);
             setShowReservationModal(false);
           }}
