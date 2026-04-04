@@ -830,7 +830,11 @@ export function PropertyForm({
                         )}
                         {form.formState.errors.amenities && (
                           <p className="text-sm text-destructive font-medium">
-                            {form.formState.errors.amenities.message as string}
+                            {form.formState.errors.amenities.message ===
+                            'Expected string, received array'
+                              ? 'Please enter amenities as comma-separated text (e.g., "Pool, Gym, Parking")'
+                              : (form.formState.errors.amenities
+                                  .message as string)}
                           </p>
                         )}
                       </>
@@ -910,11 +914,12 @@ export function PropertyForm({
                           </div>
                         )}
                         {form.formState.errors.nearbyPlaces && (
-                          <p className="text-sm text-destructive">
-                            {
-                              form.formState.errors.nearbyPlaces
-                                .message as string
-                            }
+                          <p className="text-sm text-destructive font-medium">
+                            {form.formState.errors.nearbyPlaces.message ===
+                            'Expected string, received array'
+                              ? 'Please enter nearby places as comma-separated text (e.g., "School, Hospital, Mall")'
+                              : (form.formState.errors.nearbyPlaces
+                                  .message as string)}
                           </p>
                         )}
                       </>

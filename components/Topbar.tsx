@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { NotificationsModalNew } from './modals/NotificationsModalNew';
 import { SettingsModal } from './modals/SettingsModal';
 
@@ -24,7 +25,7 @@ export function TopBar() {
   const unreadCount = stats?.unread || 0;
 
   return (
-    <div className="px-8 py-4 border-b border-gray-200 bg-white sticky top-0 z-10">
+    <div className="px-8 py-4 border-b border-gray-200 bg-white sticky top-0 z-20">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-4">
           <Link
@@ -119,16 +120,22 @@ export function TopBar() {
           </button>
         </div>
       </div>
-      {showNotifications && (
-        <NotificationsModalNew onClose={() => setShowNotifications(false)} />
-      )}
+      {showNotifications &&
+        typeof document !== 'undefined' &&
+        createPortal(
+          <NotificationsModalNew onClose={() => setShowNotifications(false)} />,
+          document.body
+        )}
 
-      {showSettings && (
-        <SettingsModal
-          isOpen={showSettings}
-          onClose={() => setShowSettings(false)}
-        />
-      )}
+      {showSettings &&
+        typeof document !== 'undefined' &&
+        createPortal(
+          <SettingsModal
+            isOpen={showSettings}
+            onClose={() => setShowSettings(false)}
+          />,
+          document.body
+        )}
     </div>
   );
 }

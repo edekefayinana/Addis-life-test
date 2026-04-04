@@ -459,7 +459,7 @@ export function Header({ variant }: HeaderProps) {
                   <>
                     <Link
                       href="/admin"
-                      className="flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700"
+                      className="flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-primary/90"
                       onClick={() => setIsMobileOpen(false)}
                     >
                       <LayoutDashboard className="h-4 w-4" />
@@ -467,7 +467,7 @@ export function Header({ variant }: HeaderProps) {
                     </Link>
                     <Link
                       href="/admin/inventory"
-                      className="flex items-center justify-center gap-2 rounded-xl border border-blue-200 bg-white px-4 py-3 text-center text-sm font-semibold text-blue-600 transition hover:bg-blue-50"
+                      className="flex items-center justify-center gap-2 rounded-xl border border-primary/20 bg-white px-4 py-3 text-center text-sm font-semibold text-primary transition hover:bg-primary/5"
                       onClick={() => setIsMobileOpen(false)}
                     >
                       <Package className="h-4 w-4" />

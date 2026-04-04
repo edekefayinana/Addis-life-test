@@ -31,7 +31,7 @@ function titleFromPath(pathname: string, userRole?: string): string {
     pathname.includes('/admin') &&
     pathname.split('/').filter(Boolean).length <= 2
   ) {
-    return userRole === 'ADMIN' ? 'Admin' : 'Agent';
+    return userRole === 'ADMIN' ? 'Admin' : userRole === 'AGENT' ? 'Agent' : '';
   }
 
   const seg = pathname.split('/').filter(Boolean)[0] || '';

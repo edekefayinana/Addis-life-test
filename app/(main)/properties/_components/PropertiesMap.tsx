@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Bath, Bed, Maximize } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 import 'leaflet/dist/leaflet.css';
 
@@ -159,6 +160,7 @@ export const PropertyCard = ({
   areaSizeM2,
   images,
 }: Property) => {
+  const t = useTranslations('properties.details');
   const resolvedImage = images?.[0]?.url || '/property-1.jpg';
 
   // Generate slug from title if id is not provided (same as main PropertyCard)
@@ -192,14 +194,18 @@ export const PropertyCard = ({
           <div className="flex items-center justify-between gap-1 text-xs text-gray-600">
             <div className="flex items-center gap-1 min-w-0">
               <Bed className="h-4 w-4 shrink-0" />
-              <span className="font-medium">{totalBedrooms} Beds</span>
+              <span className="font-medium">
+                {totalBedrooms} {t('beds')}
+              </span>
             </div>
 
             <div className="h-4 w-px bg-gray-200 shrink-0" />
 
             <div className="flex items-center gap-1 min-w-0">
               <Bath className="h-4 w-4 shrink-0" />
-              <span className="font-medium">{totalBathrooms} Baths</span>
+              <span className="font-medium">
+                {totalBathrooms} {t('baths')}
+              </span>
             </div>
 
             <div className="h-4 w-px bg-gray-200 shrink-0" />

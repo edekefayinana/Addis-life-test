@@ -17,6 +17,7 @@ import { useState } from 'react';
 import { DeletePropertyDialog } from '@/components/inventory/DeletePropertyDialog';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
+import { useTranslations } from 'next-intl';
 
 export type PropertyCardProps = {
   id: string;
@@ -62,6 +63,7 @@ export function PropertyCard({
 }: PropertyCardProps) {
   const [imgIndex, setImgIndex] = useState(0);
   const { isAdmin } = useAuth();
+  const t = useTranslations('properties.details');
 
   const showImage =
     images && images.length > 0 ? images[imgIndex] : { url: '/property-1.jpg' };
@@ -139,12 +141,16 @@ export function PropertyCard({
           <CardFooter className="flex justify-between items-center p-4 text-sm text-black">
             <div className="flex items-center gap-1">
               <Bed className="h-5 w-5 stroke-1" />
-              <span className="font-normal">{totalBedrooms} Beds</span>
+              <span className="font-normal">
+                {totalBedrooms} {t('beds')}
+              </span>
             </div>
             <div className="h-8 w-px bg-gray-200 mx-1" />
             <div className="flex items-center gap-1">
               <Bath className="h-5 w-5 stroke-1" />
-              <span className="font-normal">{totalBathrooms} Baths</span>
+              <span className="font-normal">
+                {totalBathrooms} {t('baths')}
+              </span>
             </div>
             <div className="h-8 w-px bg-gray-200 mx-1" />
             <div className="flex items-center gap-1">

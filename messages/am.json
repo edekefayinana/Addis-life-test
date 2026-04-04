@@ -50,7 +50,16 @@
       "limitedOffer": "ውስን ቅናش",
       "newLaunch": "አዲስ ጅምር",
       "openHouse": "ክፍት ቤት",
-      "verifiedUpdate": "የተረጋገጠ መረጃ"
+      "verifiedUpdate": "የተረጋገጠ መረጃ",
+      "videoSlide": {
+        "eyebrow": "ከቃል በላይ፣ እናደርሳለን።",
+        "headline": "ጥራትና ታማኝነት የሚገናኙበት",
+        "subhead": "በእምነት ላይ የተገነባ እና በብቃት የሚቀርብ ሪል እስቴት ይሞክሩ።",
+        "communities": "ማህበረሰቦች",
+        "verifiedUnits": "የተረጋገጡ ክፍሎች",
+        "paymentPlans": "የክፍያ እቅዶች",
+        "flexible": "ተለዋዋጭ"
+      }
     },
     "featuredProperties": {
       "title": "ለእርስዎ ተስማሚ የሆነ ንብረት ያግኙ",

@@ -50,7 +50,16 @@
       "limitedOffer": "Limited offer",
       "newLaunch": "New launch",
       "openHouse": "Open house",
-      "verifiedUpdate": "Verified update"
+      "verifiedUpdate": "Verified update",
+      "videoSlide": {
+        "eyebrow": "Beyond Promises, We Deliver.",
+        "headline": "Where Quality Meets Integrity",
+        "subhead": "Experience real estate built on trust and delivered with excellence.",
+        "communities": "Communities",
+        "verifiedUnits": "Verified units",
+        "paymentPlans": "Payment plans",
+        "flexible": "Flexible"
+      }
     },
     "featuredProperties": {
       "title": "Find Your Perfect Property",

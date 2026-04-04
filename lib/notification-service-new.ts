@@ -404,7 +404,7 @@ export async function notifyAdminsNewReservation(
     title: 'New Property Reservation',
     body: `${agentName} has made a reservation for "${propertyTitle}". Please review and confirm.`,
     type: 'RESERVATION',
-    link: `/admin/reservations/${reservationId}`,
+    link: `/admin/reservations`,
     targetAudience: 'ALL_ADMINS',
     context: { adminAction: true },
     data: { reservationId, propertyTitle, agentName },

@@ -2,6 +2,7 @@
 
 import { X, Bell, RefreshCw } from 'lucide-react';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   useNotifications,
   Notification,
@@ -13,6 +14,7 @@ interface NotificationsModalProps {
 }
 
 export function NotificationsModalNew({ onClose }: NotificationsModalProps) {
+  const router = useRouter();
   const [filter, setFilter] = useState<'all' | 'unread'>('all');
   //   const [typeFilter, setTypeFilter] = useState<string>('');
 
@@ -67,6 +69,41 @@ export function NotificationsModalNew({ onClose }: NotificationsModalProps) {
     }
   };
 
+  const handleNotificationClick = async (notif: Notification) => {
+    // Mark as read if unread
+    if (!notif.read) {
+      await handleMarkAsRead(notif.id);
+    }
+
+    // For reservation notifications, always navigate to reservations list (override link)
+    if (notif.type === 'RESERVATION') {
+      onClose();
+      router.push('/admin/reservations');
+      return;
+    }
+
+    // For commission notifications, navigate to commissions page
+    if (notif.type === 'COMMISSION') {
+      onClose();
+      router.push('/admin/commissions');
+      return;
+    }
+
+    // For asset notifications, navigate to marketing assets page
+    if (notif.type === 'ASSET') {
+      onClose();
+      router.push('/admin/marketing-assets');
+      return;
+    }
+
+    // Navigate to the link if it exists (for other notification types)
+    if (notif.link) {
+      onClose();
+      router.push(notif.link);
+      return;
+    }
+  };
+
   const handleMarkAllAsRead = async () => {
     const count = await markAllAsRead();
     if (count > 0) {
@@ -88,10 +125,8 @@ export function NotificationsModalNew({ onClose }: NotificationsModalProps) {
           {notifications.map((notif) => (
             <div
               key={notif.id}
-              onClick={() => !notif.read && handleMarkAsRead(notif.id)}
-              className={`flex gap-3 pb-4 border-b border-gray-200 last:border-b-0 ${
-                !notif.read ? 'cursor-pointer hover:bg-gray-50' : ''
-              } transition-colors`}
+              onClick={() => handleNotificationClick(notif)}
+              className="flex gap-3 pb-4 border-b border-gray-200 last:border-b-0 cursor-pointer hover:bg-gray-50 transition-colors"
             >
               <div
                 className={`w-2 h-2 rounded-full mt-2 shrink-0 ${
