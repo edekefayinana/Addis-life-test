@@ -331,12 +331,14 @@ export function Hero({ slides }: HeroProps) {
         </div>
       )}
       {activeIndex === 0 && (
-        <div className="mt-8 flex justify-center">
+        <div className="mt-4 sm:mt-8 flex justify-center px-4">
           <Button
-            className="rounded-full bg-primary px-8 py-7 text-lg font-bold shadow-lg transition focus:outline-none focus:ring-4 focus:ring-emerald-200/50"
+            className="rounded-full bg-primary px-6 py-5 sm:px-8 sm:py-7 text-sm sm:text-lg font-bold shadow-lg transition focus:outline-none focus:ring-4 focus:ring-emerald-200/50 w-full sm:w-auto max-w-md whitespace-normal text-center leading-tight"
             size="lg"
           >
-            <Link href="/apply">{t('home.hero.joinAgentNetwork')}</Link>
+            <Link href="/apply" className="block w-full">
+              {t('home.hero.joinAgentNetwork')}
+            </Link>
           </Button>
         </div>
       )}

@@ -146,7 +146,7 @@
       "loginButton": "Log In",
       "loggingIn": "Logging in...",
       "noAccount": "Don't have an agent account?",
-      "applyAccess": "Apply for access",
+      "applyAccess": "Join as a freelancer",
       "goBackHome": "Go Back to Home",
       "errorInvalidCredentials": "Invalid email or password.",
       "errorEmailNotVerified": "Your email is not verified. Please check your inbox for the verification code."
@@ -243,7 +243,7 @@
       "sendOtp": "Send OTP",
       "sending": "Sending...",
       "dontHaveAccount": "Don't have agent account?",
-      "applyForAccess": "Apply for Access",
+      "applyForAccess": "Join as a freelancer",
       "errors": {
         "sendFailed": "Failed to send OTP."
       },

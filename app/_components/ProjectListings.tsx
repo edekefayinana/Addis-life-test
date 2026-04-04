@@ -11,35 +11,35 @@ const projects = [
     imageUrl: '/AU2 site Building Renders/1_1 - Photo.jpg',
     className: 'md:col-span-2 md:row-span-2',
     searchQuery: 'African',
-    pdfUrl: '/pdfs/translation.pdf',
+    pdfUrl: '/pdfs/AAU_site_Floorplan.pdf',
   },
   {
     title: 'Africa Union Two',
     imageUrl: '/AU2 site Building Renders/1_4 - Photo.jpg',
     className: 'md:col-span-2 md:row-span-1',
     searchQuery: 'African',
-    pdfUrl: '/pdfs/translation.pdf',
+    pdfUrl: '/pdfs/AAU_site_Floorplan.pdf',
   },
   {
     title: 'Bulgaria Site',
     imageUrl: '/bulgaria_Addis_life/Scene_1.png',
     className: 'md:col-span-1 md:row-span-2',
     searchQuery: 'Bulgaria',
-    pdfUrl: '/pdfs/translation.pdf',
+    pdfUrl: '/pdfs/Bulgaria_Floorplan.pdf',
   },
   {
     title: 'Vatican Site',
     imageUrl: '/AU2 site Building Renders/1_2 - Photo.jpg',
     className: 'md:col-span-1 md:row-span-2',
     searchQuery: 'Vatican',
-    pdfUrl: '/pdfs/translation.pdf',
+    pdfUrl: '/pdfs/Vatican_square_floorplan.pdf',
   },
   {
     title: 'Upcoming Around East of Addis Ababa',
     imageUrl: '/upcoming.jpg',
     className: 'md:col-span-2 md:row-span-1',
     searchQuery: 'East',
-    pdfUrl: '/pdfs/translation.pdf',
+    pdfUrl: null,
   },
 ];
 
@@ -88,16 +88,20 @@ export function ProjectListings() {
               </div>
 
               {/* Download PDF Button */}
-              <a
-                href={project.pdfUrl}
-                download
-                onClick={(e) => e.stopPropagation()}
-                className="absolute bottom-6 right-6 z-10 flex items-center gap-2 bg-white/90 hover:bg-white text-gray-900 px-4 py-2 rounded-full transition-all duration-200 shadow-lg hover:shadow-xl backdrop-blur-sm"
-                aria-label={`Download ${project.title} PDF`}
-              >
-                <Download className="w-4 h-4" />
-                <span className="text-sm font-medium">{t('downloadPdf')}</span>
-              </a>
+              {project.pdfUrl && (
+                <a
+                  href={project.pdfUrl}
+                  download
+                  onClick={(e) => e.stopPropagation()}
+                  className="absolute bottom-6 right-6 z-10 flex items-center gap-2 bg-white/90 hover:bg-white text-gray-900 px-4 py-2 rounded-full transition-all duration-200 shadow-lg hover:shadow-xl backdrop-blur-sm"
+                  aria-label={`Download ${project.title} PDF`}
+                >
+                  <Download className="w-4 h-4" />
+                  <span className="text-sm font-medium">
+                    {t('downloadPdf')}
+                  </span>
+                </a>
+              )}
             </Link>
           );
         })}
