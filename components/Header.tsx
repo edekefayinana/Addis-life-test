@@ -136,25 +136,26 @@ export function Header({ variant }: HeaderProps) {
     <header className={cn('z-50 w-full', styles.header)}>
       <div
         className={cn(
-          `relative mx-auto flex ${
-            resolvedVariant === 'dark' ? 'h-24' : 'h-18 md:-mt-4'
-          } items-center justify-between transition-colors px-6 sm:px-10 lg:px-24 xl:px-40`,
+          `relative mx-auto flex items-center justify-between transition-colors`,
+          resolvedVariant === 'dark' ? 'h-20 lg:h-24' : 'h-16 lg:h-20',
+          'px-4 sm:px-6 lg:px-12 xl:px-24',
           styles.inner
         )}
       >
-        <Link href="/" className="flex items-center gap-2">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2 flex-shrink-0 z-10">
           <Image
             src="/logo.png"
             alt="Addis Life Logo"
-            width={100}
-            height={30}
-            className="object-contain"
+            width={90}
+            height={28}
+            className="object-contain w-20 sm:w-24 lg:w-28"
             priority
           />
         </Link>
 
         {/* Centered Navigation */}
-        <nav className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-8 text-sm font-medium leading-none md:flex">
+        <nav className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 lg:flex items-center gap-4 xl:gap-8 text-sm font-medium">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             if (item.href === '/properties') {
@@ -173,7 +174,7 @@ export function Header({ variant }: HeaderProps) {
                   <button
                     type="button"
                     className={cn(
-                      `inline-flex h-6 items-center gap-1 transition-colors focus:outline-none`,
+                      `inline-flex h-6 items-center gap-1 transition-colors focus:outline-none whitespace-nowrap`,
                       styles.nav,
                       isActive && styles.navActive
                     )}
@@ -184,7 +185,7 @@ export function Header({ variant }: HeaderProps) {
                     {item.label}
                   </button>
                   {isPropertiesOpen && (
-                    <div className="absolute left-1/2 top-full z-50 mt-2 w-44 -translate-x-1/2 rounded-lg border border-border bg-white/95 p-1 text-sm text-foreground shadow-lg">
+                    <div className="absolute left-1/2 top-full z-50 mt-2 w-44 -translate-x-1/2 rounded-lg border border-border bg-white/95 backdrop-blur-sm p-1 text-sm text-foreground shadow-lg">
                       {propertyMenuItems.map((menuItem) => (
                         <Link
                           key={menuItem.href}
@@ -206,7 +207,7 @@ export function Header({ variant }: HeaderProps) {
                 href={item.href}
                 aria-current={isActive ? 'page' : undefined}
                 className={cn(
-                  'inline-flex h-6 items-center transition-colors',
+                  'inline-flex h-6 items-center transition-colors whitespace-nowrap',
                   styles.nav,
                   isActive && styles.navActive
                 )}
@@ -218,7 +219,7 @@ export function Header({ variant }: HeaderProps) {
         </nav>
 
         {/* Right Actions */}
-        <div className="hidden items-center gap-4 md:flex">
+        <div className="hidden lg:flex items-center gap-3 xl:gap-4 flex-shrink-0">
           {/* Language Switcher */}
           <LanguageSwitcher />
 
@@ -232,7 +233,7 @@ export function Header({ variant }: HeaderProps) {
               <button
                 type="button"
                 className={cn(
-                  'flex items-center gap-2 rounded-full border px-4 py-2 transition-colors',
+                  'flex items-center gap-2 rounded-full border px-3 xl:px-4 py-2 transition-colors',
                   resolvedVariant === 'dark'
                     ? 'border-white/30 hover:bg-white/10'
                     : 'border-gray-300 hover:bg-gray-100'
@@ -243,13 +244,13 @@ export function Header({ variant }: HeaderProps) {
               >
                 <div
                   className={cn(
-                    'flex h-8 w-8 items-center justify-center rounded-full',
+                    'flex h-7 w-7 xl:h-8 xl:w-8 items-center justify-center rounded-full',
                     resolvedVariant === 'dark' ? 'bg-white/20' : 'bg-gray-200'
                   )}
                 >
                   <User className="h-4 w-4" />
                 </div>
-                <span className="text-sm font-medium">
+                <span className="text-sm font-medium max-w-[100px] truncate">
                   {session?.user?.name || t('account')}
                 </span>
               </button>
@@ -257,10 +258,10 @@ export function Header({ variant }: HeaderProps) {
               {isProfileOpen && (
                 <div className="absolute right-0 top-full z-50 mt-2 w-64 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-xl">
                   <div className="border-b border-gray-100 bg-gradient-to-br from-gray-50 to-white px-4 py-4">
-                    <p className="text-base font-semibold text-gray-900">
+                    <p className="text-base font-semibold text-gray-900 truncate">
                       {session?.user?.name}
                     </p>
-                    <p className="mt-0.5 text-sm text-gray-600">
+                    <p className="mt-0.5 text-sm text-gray-600 truncate">
                       {session?.user?.email}
                     </p>
                     {(isAdmin || isAgent) && (
@@ -310,7 +311,7 @@ export function Header({ variant }: HeaderProps) {
               <Link
                 href="/login"
                 className={cn(
-                  'text-base font-medium font-instrument',
+                  'text-sm xl:text-base font-medium font-instrument whitespace-nowrap',
                   styles.action
                 )}
               >
@@ -320,7 +321,7 @@ export function Header({ variant }: HeaderProps) {
               <Link
                 href="/apply"
                 className={cn(
-                  'rounded-full px-6 py-2.5 text-base font-instrument font-medium transition-colors',
+                  'rounded-full px-4 xl:px-6 py-2 xl:py-2.5 text-sm xl:text-base font-instrument font-medium transition-colors whitespace-nowrap',
                   styles.cta
                 )}
               >
@@ -331,7 +332,8 @@ export function Header({ variant }: HeaderProps) {
         </div>
 
         {/* Mobile toggle */}
-        <div className="md:hidden">
+        <div className="lg:hidden flex items-center gap-2">
+          <LanguageSwitcher />
           <button
             type="button"
             onClick={() => setIsMobileOpen((prev) => !prev)}
